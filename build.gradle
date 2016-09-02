@@ -1,0 +1,61 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'http://maven.tmatesoft.com/content/repositories/releases/'
+        }
+    }
+
+    dependencies {
+        classpath 'au.com.ish.gradle:release:2.2.2'
+    }
+}
+
+
+plugins {
+    id "net.vivin.gradle-semantic-build-versioning" version "1.2.1"
+}
+
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+apply plugin: 'release'
+
+release {
+    failOnSnapshotDependencies = true
+    allowLocalModifications = false
+    releaseDryRun = false
+    scm = 'git'
+    username = 'fred'
+    password = 'secret01'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+// JDK 8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
