@@ -71,3 +71,22 @@ A gradle task may look like this
 Go through the plugin documentation and semantic versioning before start
 a release phase.
 
+
+## Project Sub-Modules
+**Orion** has the following project sub module structure
+```Root project 'Orion'
+   +--- Project ':HermeseAgent'
+   +--- Project ':OrionAPI'
+   +--- Project ':OrionDataAbstraction'
+   \--- Project ':Services'
+        +--- Project ':Services:APIServices'
+        +--- Project ':Services:CoreServices'
+        \--- Project ':Services:HermeseAgentServices'
+```
+##### Orion
+This is the root project. All the sub modules are included to this root project.
+
+##### OrionDataAbstraction
+This sub module will contain all the components related to the data abstraction
+including all the *Entity* classes generated.
+
