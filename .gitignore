@@ -11,6 +11,9 @@ Services/APIServices/build/
 Services/CoreServices/build/
 Services/HermesAgentServices/build/
 
+# ignoring out directories
+out/
+
 
 
 

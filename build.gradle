@@ -1,0 +1,22 @@
+
+
+group = "com.fintech.orion"
+apply plugin: "idea"
+
+subprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+
+    repositories {
+        mavenCentral()
+        maven { url "http://repo.maven.apache.org/maven2" }
+        maven { url "http://repository.jboss.com" }
+        maven { url "http://download.java.net/maven/2/" }
+        maven { url "http://repository.springsource.com/maven/bundles/external" }
+        maven { url "http://forplay.googlecode.com/svn/mavenrepo" }
+        mavenLocal()
+    }
+
+}
