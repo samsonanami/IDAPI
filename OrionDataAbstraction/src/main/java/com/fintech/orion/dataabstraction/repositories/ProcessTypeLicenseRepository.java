@@ -1,15 +1,14 @@
 package com.fintech.orion.dataabstraction.repositories;
 
-import com.fintech.orion.dataabstraction.entities.common.AbstractConfigDAO;
+import com.fintech.orion.dataabstraction.entities.common.AbstractDAO;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessTypeLicense;
+import org.springframework.stereotype.Repository;
 
-/**
- * Created by ChathurangaRW on 9/19/2016.
- */
-public class ProcessTypeLicenseRepository extends AbstractConfigDAO<ProcessTypeLicense , Integer> implements ProcessTypeLicenseRepositoryInterface {
+@Repository
+public class ProcessTypeLicenseRepository extends AbstractDAO<ProcessTypeLicense , Integer> implements ProcessTypeLicenseRepositoryInterface {
 
-    protected ProcessTypeLicenseRepository(Class<ProcessTypeLicense> entityClass) {
-        super(entityClass);
+    protected ProcessTypeLicenseRepository() {
+        super(ProcessTypeLicense.class);
     }
 
 }
