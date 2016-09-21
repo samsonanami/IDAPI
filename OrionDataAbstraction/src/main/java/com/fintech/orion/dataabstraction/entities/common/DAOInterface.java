@@ -8,60 +8,29 @@ import org.hibernate.criterion.Criterion;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- *
- * Created by sasitha on 9/12/16.
- */
 public interface DAOInterface<E, I extends Serializable> {
 
-    /**
-     * @return
-     */
-    public Session getCurrentSession();
+    Session getCurrentSession();
 
-    /**
-     * @param id
-     * @return
-     */
-    public E findById(I id) throws ItemNotFoundException;
+    E findById(I id) throws ItemNotFoundException;
 
-    /**
-     * @param e
-     */
-    public void saveOrUpdate(E e);
+    void saveOrUpdate(E e);
 
-    /**
-     * @param e
-     */
-    public void delete(E e);
+    void delete(E e);
 
-    /**
-     * @param criterion
-     * @return
-     */
-    public List findByCriteria(Criterion criterion);
+    List<E> findByCriteria(Criterion criterion);
 
-    /**
-     * @return
-     */
-    public List<E> getAll();
+    List<E> getAll();
 
-    public List findByCriteria(List<Criterion> criterion);
+    List<E> findByCriteria(List<Criterion> criterionList);
 
-    /**
-     * Returns the sorted resultset for the page
-     *
-     * @param sortField    sortfield to sort by
-     * @param page         current page
-     * @param itemsPerPage items per page
-     */
-    public Object getAllBySort(String sortField, int page, int itemsPerPage);
+    Object getAllBySort(String sortField, int page, int itemsPerPage);
 
-    public Object getAllBySort(String sortField, int page, int itemsPerPage, List<Criterion> dataCriterionList);
+    Object getAllBySort(String sortField, int page, int itemsPerPage, List<Criterion> criterionList);
 
-    public Object getAllBySort(String sortField, SortDirection direction, int page, int itemsPerPage);
+    Object getAllBySort(String sortField, SortDirection direction, int page, int itemsPerPage);
 
-    public Object getAllBySort(String sortField, SortDirection direction, int page, int itemsPerPage, List<Criterion> dataCriterionList);
+    Object getAllBySort(String sortField, SortDirection direction, int page, int itemsPerPage, List<Criterion> criterionList);
 
-    public Object getAllBySort(int page, int itemsPerPage, Criteria dataCriteria);
+    Object getAllBySort(int page, int itemsPerPage, Criteria criteria);
 }
