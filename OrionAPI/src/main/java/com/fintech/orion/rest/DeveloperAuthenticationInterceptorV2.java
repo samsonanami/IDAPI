@@ -64,10 +64,7 @@ public class DeveloperAuthenticationInterceptorV2 implements HandlerInterceptor 
                 String errorMessageToBeReturned = gson.toJson(responseMessage);
                 response.getWriter().write(errorMessageToBeReturned);
                 return false;
-            }else {
-
             }
-            
         } catch (Exception e) {
             LOGGER.error(e);
             return false;
