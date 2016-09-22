@@ -24,7 +24,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/v2/item/**"/>
-            <bean class="com.fintech.orion.DeveloperAuthenticationInterceptorV2"/>
+            <bean class="com.fintech.orion.rest.DeveloperAuthenticationInterceptorV2"/>
         </mvc:interceptor>
         <!--<mvc:interceptor>
             <mvc:mapping path="/v2/image/**"/>

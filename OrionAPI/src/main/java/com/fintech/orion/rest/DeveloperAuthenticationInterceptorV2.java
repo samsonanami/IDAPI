@@ -1,4 +1,4 @@
-package com.fintech.orion;
+package com.fintech.orion.rest;
 
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
