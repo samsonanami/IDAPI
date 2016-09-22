@@ -1,0 +1,46 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+
+    <context:component-scan
+            base-package="com.fintech.orion.dataabstraction.entities.common com.fintech.orion.coreservices com.fintech.orion"/>
+
+    <mvc:resources mapping="/res/**" location="/webresources/"/>
+    <mvc:annotation-driven/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/v2/item/**"/>
+            <bean class="com.fintech.orion.DeveloperAuthenticationInterceptorV2"/>
+        </mvc:interceptor>
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/v2/image/**"/>
+            <bean class="com.recqd.rest.v2.interceptor.DeveloperAuthenticationInterceptorV2"/>
+        </mvc:interceptor>-->
+    </mvc:interceptors>
+
+    <import resource="dbSession-config.xml"/>
+    <import resource="orion-bean-config.xml"/>
+
+    <bean id="developerKey" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="499f5cd1f27548c392c01b09ac705f35"/>
+    </bean>
+
+    <bean id="securityTokenHeaderName" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="AuthToken"/>
+    </bean>
+
+</beans>
