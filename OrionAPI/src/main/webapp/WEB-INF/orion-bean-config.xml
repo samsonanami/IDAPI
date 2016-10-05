@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
+
+    <bean id="clientLicenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientLicenseRepository"/>
+    <bean id="clientRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientRepository"/>
+    <bean id="licenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.LicenseRepository"/>
+    <bean id="processingRequestRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepository"/>
+    <bean id="processResourceRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessResourceRepository"/>
+    <bean id="processRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessRepository"/>
+    <bean id="processTypeLicenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessTypeLicenseRepository"/>
+    <bean id="processTypeRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessTypeRepository"/>
+    <bean id="resourceRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResourceRepository"/>
+    <bean id="resourceTypeRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResourceTypeRepository"/>
+    <bean id="responseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResponseRepository"/>
+
+</beans>
