@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 7, 2016 10:51:46 AM by Hibernate Tools 4.3.1
+// Generated Oct 7, 2016 12:44:51 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -31,6 +31,7 @@ public class Process  implements java.io.Serializable {
      private Integer id;
      private ProcessType processType;
      private ProcessingRequest processingRequest;
+     private ProcessingStatus processingStatus;
      private Date requestSentOn;
      private Date responseReceivedOn;
      private String processIdentificationCode;
@@ -41,14 +42,16 @@ public class Process  implements java.io.Serializable {
     }
 
 	
-    public Process(ProcessType processType, ProcessingRequest processingRequest, String processIdentificationCode) {
+    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, String processIdentificationCode) {
         this.processType = processType;
         this.processingRequest = processingRequest;
+        this.processingStatus = processingStatus;
         this.processIdentificationCode = processIdentificationCode;
     }
-    public Process(ProcessType processType, ProcessingRequest processingRequest, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Set<ProcessResource> processResources, Set<Response> responses) {
+    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Set<ProcessResource> processResources, Set<Response> responses) {
        this.processType = processType;
        this.processingRequest = processingRequest;
+       this.processingStatus = processingStatus;
        this.requestSentOn = requestSentOn;
        this.responseReceivedOn = responseReceivedOn;
        this.processIdentificationCode = processIdentificationCode;
@@ -86,6 +89,16 @@ public class Process  implements java.io.Serializable {
     
     public void setProcessingRequest(ProcessingRequest processingRequest) {
         this.processingRequest = processingRequest;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PROCESSING_STATUS", nullable=false)
+    public ProcessingStatus getProcessingStatus() {
+        return this.processingStatus;
+    }
+    
+    public void setProcessingStatus(ProcessingStatus processingStatus) {
+        this.processingStatus = processingStatus;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
