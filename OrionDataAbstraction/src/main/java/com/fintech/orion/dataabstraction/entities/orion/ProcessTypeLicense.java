@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 7, 2016 10:51:46 AM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -17,6 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="process_type_license"
+    ,catalog="orion"
 )
 public class ProcessTypeLicense  implements java.io.Serializable {
 

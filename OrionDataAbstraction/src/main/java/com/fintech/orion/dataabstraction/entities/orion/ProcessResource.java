@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 7, 2016 10:51:46 AM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -17,6 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="process_resource"
+    ,catalog="orion"
 )
 public class ProcessResource  implements java.io.Serializable {
 
@@ -24,13 +25,15 @@ public class ProcessResource  implements java.io.Serializable {
      private Integer id;
      private Process process;
      private Resource resource;
+     private String resourceName;
 
     public ProcessResource() {
     }
 
-    public ProcessResource(Process process, Resource resource) {
+    public ProcessResource(Process process, Resource resource, String resourceName) {
        this.process = process;
        this.resource = resource;
+       this.resourceName = resourceName;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -63,6 +66,16 @@ public class ProcessResource  implements java.io.Serializable {
     
     public void setResource(Resource resource) {
         this.resource = resource;
+    }
+
+    
+    @Column(name="RESOURCE_NAME", nullable=false, length=40)
+    public String getResourceName() {
+        return this.resourceName;
+    }
+    
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
     }
 
 

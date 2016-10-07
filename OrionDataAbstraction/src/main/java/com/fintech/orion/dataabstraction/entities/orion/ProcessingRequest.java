@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 7, 2016 10:51:46 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,39 +23,41 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="processing_request"
+    ,catalog="orion"
 )
 public class ProcessingRequest  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private Client client;
      private Date receivedOn;
+     private String processingRequestIdentificationCode;
      private Set<Process> processes = new HashSet<Process>(0);
 
     public ProcessingRequest() {
     }
 
 	
-    public ProcessingRequest(int id, Client client) {
-        this.id = id;
+    public ProcessingRequest(Client client, String processingRequestIdentificationCode) {
         this.client = client;
+        this.processingRequestIdentificationCode = processingRequestIdentificationCode;
     }
-    public ProcessingRequest(int id, Client client, Date receivedOn, Set<Process> processes) {
-       this.id = id;
+    public ProcessingRequest(Client client, Date receivedOn, String processingRequestIdentificationCode, Set<Process> processes) {
        this.client = client;
        this.receivedOn = receivedOn;
+       this.processingRequestIdentificationCode = processingRequestIdentificationCode;
        this.processes = processes;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
 
     
     @Column(name="ID", unique=true, nullable=false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -75,6 +79,16 @@ public class ProcessingRequest  implements java.io.Serializable {
     
     public void setReceivedOn(Date receivedOn) {
         this.receivedOn = receivedOn;
+    }
+
+    
+    @Column(name="PROCESSING_REQUEST_IDENTIFICATION_CODE", nullable=false, length=40)
+    public String getProcessingRequestIdentificationCode() {
+        return this.processingRequestIdentificationCode;
+    }
+    
+    public void setProcessingRequestIdentificationCode(String processingRequestIdentificationCode) {
+        this.processingRequestIdentificationCode = processingRequestIdentificationCode;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="processingRequest")
