@@ -1,6 +1,8 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
+import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepository;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepositoryInterface;
@@ -11,6 +13,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -41,6 +44,29 @@ public class ResourceServiceTest extends ObjectCreator {
         for(Resource r : found){
             assertTrue(resources.contains(r));
         }
+    }
+
+    @Test
+    public void should_saveResourceObject_when_saveResource1Called() throws ItemNotFoundException {
+        ResourceServiceInterface serviceInterface = new ResourceService();
+
+        Client client = createClientObject();
+        ResourceType resourceType = createResourceTypeObject();
+
+        ClientServiceInterface clientService = mock(ClientService.class);
+        when(clientService.getClientByAuthToken("123456")).thenReturn(client);
+        ReflectionTestUtils.setField(serviceInterface, "clientServiceInterface", clientService);
+
+        ResourceTypeServiceInterface resourceTypeService = mock(ResourceTypeService.class);
+        when(resourceTypeService.getResourceTypeByType("image")).thenReturn(resourceType);
+        ReflectionTestUtils.setField(serviceInterface, "resourceTypeServiceInterface", resourceTypeService);
+
+        ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
+        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
+        serviceInterface.updateResource(resource);
+
+        serviceInterface.saveResource("12345abcde.jpg", "12345abcde", "image", "123456");
+        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);
     }
 
     @Test
