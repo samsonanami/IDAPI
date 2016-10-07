@@ -1,12 +1,34 @@
 package com.fintech.orion.messaging.job;
 
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
+
 /**
  * Created by TharinduMP on 10/7/2016.
+ * Implementation of Job Consumer
  */
-public class JobConsumer implements JobConsumerInterface {
+public class JobConsumer extends JobCommon implements JobConsumerInterface {
+
+    private MessageConsumer consumer;
+
+    public JobConsumer(String queueName) {
+        super(queueName);
+        establishConsumer();
+    }
 
     @Override
-    public void setJobConsumer() {
+    public void setJobConsumer(MessageListener messageListener) throws JMSException {
+        consumer.setMessageListener(messageListener);
+    }
 
+    private void establishConsumer() {
+        try {
+            LOGGER.info("Messaging queue consumer creation started");
+            this.consumer = session.createConsumer(destination);
+            LOGGER.info("Messaging queue consumer created successfully");
+        } catch (JMSException e) {
+            LOGGER.error("Messaging queue consumer creation failed", e);
+        }
     }
 }
