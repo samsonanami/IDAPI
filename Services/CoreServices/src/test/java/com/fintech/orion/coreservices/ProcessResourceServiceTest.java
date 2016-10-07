@@ -32,7 +32,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_returnListOfProcessResources_when_getProcessResourceListCalled() throws Exception {
+    public void should_returnTrueFor5MBJpegImage_when_checkSizeCalled() throws Exception {
         ProcessResourceServiceInterface serviceInterface = new ProcessResourceService();
         ProcessResourceRepositoryInterface repositoryInterfaceMock = mock(ProcessResourceRepository.class);
         when(repositoryInterfaceMock.getAll()).thenReturn(processResources);
