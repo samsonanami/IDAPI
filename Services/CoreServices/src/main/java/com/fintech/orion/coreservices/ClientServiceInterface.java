@@ -17,4 +17,6 @@ public interface ClientServiceInterface {
     boolean deleteClientById(int id) throws ItemNotFoundException;
 
     void deleteClient(Client client);
+
+    Client getClientByAuthToken(String authToken) throws ItemNotFoundException;
 }

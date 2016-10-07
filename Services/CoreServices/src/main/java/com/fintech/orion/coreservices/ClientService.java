@@ -58,4 +58,10 @@ public class ClientService implements ClientServiceInterface {
     public void deleteClient(Client client) {
         clientRepositoryInterface.delete(client);
     }
+
+    @Transactional
+    @Override
+    public Client getClientByAuthToken(String authToken) throws ItemNotFoundException {
+        return clientRepositoryInterface.getClientByAuthToken(authToken);
+    }
 }
