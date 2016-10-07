@@ -32,6 +32,12 @@ public class ProcessTypeService implements ProcessTypeServiceInterface {
 
     @Transactional
     @Override
+    public ProcessType getProcessTypeByName(String type) throws ItemNotFoundException {
+        return processTypeRepositoryInterface.getProcessTypeByName(type);
+    }
+
+    @Transactional
+    @Override
     public void saveProcessType(ProcessType processType) {
         processTypeRepositoryInterface.saveOrUpdate(processType);
     }
