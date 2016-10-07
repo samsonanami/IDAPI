@@ -7,3 +7,5 @@ include 'Services:APIServices'
 include 'Services:HermeseAgentServices'
 include 'OrionAPI'
 include 'HermeseAgent'
+include 'JobMessagingChannelHandler'
+
