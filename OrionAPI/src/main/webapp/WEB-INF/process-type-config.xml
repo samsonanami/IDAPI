@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="verificationProcessList" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.dataabstraction.models.VerificationProcess">
+                <ref bean="idVerificationType"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="idVerificationType" class="com.fintech.orion.dataabstraction.models.VerificationProcess">
+    <property name="verificationProcessType" value="idVerification"/>
+    <property name="resources" ref="idVerificationTypeResources"/>
+</bean>
+
+    <bean id="idVerificationTypeResources" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.dataabstraction.models.Resource">
+                <ref bean="idVerificationTypeResource1"/>
+                <ref bean="idVerificationTypeResource2"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="idVerificationTypeResource1" class="com.fintech.orion.dataabstraction.models.Resource">
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value=""/>
+    </bean>
+
+    <bean id="idVerificationTypeResource2" class="com.fintech.orion.dataabstraction.models.Resource">
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value=""/>
+    </bean>
+</beans>
