@@ -1,4 +1,4 @@
-package com.fintech.orion.rest;
+package com.fintech.orion.model;
 
 public class ResponseMessage {
     private int status;

@@ -1,5 +1,6 @@
-package com.fintech.orion.rest;
+package com.fintech.orion;
 
+import com.fintech.orion.model.ResponseMessage;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
