@@ -18,4 +18,6 @@ public interface ResourceTypeServiceInterface {
     boolean deleteResourceTypeById(int id) throws ItemNotFoundException;
 
     void deleteResourceType(ResourceType resourceType);
+
+    ResourceType getResourceTypeByType(String type) throws ItemNotFoundException;
 }

@@ -32,6 +32,12 @@ public class ResourceTypeService implements ResourceTypeServiceInterface {
 
     @Transactional
     @Override
+    public ResourceType getResourceTypeByType(String type) throws ItemNotFoundException {
+        return resourceTypeRepositoryInterface.getResourceTypeByType(type);
+    }
+
+    @Transactional
+    @Override
     public void saveResourceType(ResourceType resourceType) {
         resourceTypeRepositoryInterface.saveOrUpdate(resourceType);
     }
