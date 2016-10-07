@@ -14,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.jms.*;
 import java.util.Map;
 
+/**
+ * Created by TharinduMP on 10/7/2016.
+ * The class is responsible for producing jobs in a messaging queue
+ */
+
 public class JobProducer implements JobProducerInterface {
 
     @Autowired
@@ -52,6 +57,7 @@ public class JobProducer implements JobProducerInterface {
             LOGGER.error("Producing the Job failed", e);
             throw new JobProducerException(e);
         } catch (JsonProcessingException e) {
+
             LOGGER.error("Parsing the jobData of the job failed", e);
             throw new JobProducerException(e);
         }

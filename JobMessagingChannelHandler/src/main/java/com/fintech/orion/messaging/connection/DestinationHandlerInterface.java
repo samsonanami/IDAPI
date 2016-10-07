@@ -3,7 +3,6 @@ package com.fintech.orion.messaging.connection;
 import com.fintech.orion.common.exceptions.DestinationHandlerException;
 
 import javax.jms.Destination;
-import javax.jms.JMSException;
 import javax.jms.Session;
 
 /**
