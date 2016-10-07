@@ -1,7 +1,11 @@
 package com.fintech.orion.coreservices;
 
 import com.fintech.orion.dataabstraction.entities.orion.Process;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
+import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +61,17 @@ public class ProcessService implements ProcessServiceInterface {
     @Override
     public void deleteProcess(Process process) {
         processRepositoryInterface.delete(process);
+    }
+
+    @Transactional
+    @Override
+    public Process saveProcess(ProcessType processType, ProcessingRequest processingRequest) {
+        Process process = new Process();
+        process.setRequestSentOn(GenerateTimestamp.timestamp());
+        process.setProcessingRequest(processingRequest);
+        process.setProcessType(processType);
+        process.setProcessIdentificationCode(GenerateUUID.uuidNumber());
+        processRepositoryInterface.saveOrUpdate(process);
+        return process;
     }
 }
