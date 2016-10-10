@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 7, 2016 12:44:51 PM by Hibernate Tools 4.3.1
+// Generated Oct 10, 2016 8:50:22 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -32,11 +32,11 @@ public class Process  implements java.io.Serializable {
      private ProcessType processType;
      private ProcessingRequest processingRequest;
      private ProcessingStatus processingStatus;
+     private Response response;
      private Date requestSentOn;
      private Date responseReceivedOn;
      private String processIdentificationCode;
      private Set<ProcessResource> processResources = new HashSet<ProcessResource>(0);
-     private Set<Response> responses = new HashSet<Response>(0);
 
     public Process() {
     }
@@ -48,15 +48,15 @@ public class Process  implements java.io.Serializable {
         this.processingStatus = processingStatus;
         this.processIdentificationCode = processIdentificationCode;
     }
-    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Set<ProcessResource> processResources, Set<Response> responses) {
+    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, Response response, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Set<ProcessResource> processResources) {
        this.processType = processType;
        this.processingRequest = processingRequest;
        this.processingStatus = processingStatus;
+       this.response = response;
        this.requestSentOn = requestSentOn;
        this.responseReceivedOn = responseReceivedOn;
        this.processIdentificationCode = processIdentificationCode;
        this.processResources = processResources;
-       this.responses = responses;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -101,6 +101,16 @@ public class Process  implements java.io.Serializable {
         this.processingStatus = processingStatus;
     }
 
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="RESPONSE")
+    public Response getResponse() {
+        return this.response;
+    }
+    
+    public void setResponse(Response response) {
+        this.response = response;
+    }
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="REQUEST_SENT_ON", length=19)
     public Date getRequestSentOn() {
@@ -138,15 +148,6 @@ public class Process  implements java.io.Serializable {
     
     public void setProcessResources(Set<ProcessResource> processResources) {
         this.processResources = processResources;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="process")
-    public Set<Response> getResponses() {
-        return this.responses;
-    }
-    
-    public void setResponses(Set<Response> responses) {
-        this.responses = responses;
     }
 
 
