@@ -34,7 +34,7 @@ public class ProcessResourceService implements ProcessResourceServiceInterface {
 
     @Transactional
     @Override
-    public void saveProcessResource(ProcessResource processResource) {
+    public void saveOrUpdateProcessResource(ProcessResource processResource) {
         processResourceRepositoryInterface.saveOrUpdate(processResource);
     }
 
@@ -47,12 +47,6 @@ public class ProcessResourceService implements ProcessResourceServiceInterface {
             return true;
         }
         return false;
-    }
-
-    @Transactional
-    @Override
-    public void updateProcessResource(ProcessResource processResource) {
-        processResourceRepositoryInterface.saveOrUpdate(processResource);
     }
 
     @Transactional

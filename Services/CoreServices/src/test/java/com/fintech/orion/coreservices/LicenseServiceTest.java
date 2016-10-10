@@ -65,20 +65,11 @@ public class LicenseServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveLicenseObject_when_saveLicenseCalled() {
+    public void should_saveLicenseObject_when_saveOrUpdateLicenseCalled() {
         LicenseServiceInterface serviceInterface = new LicenseService();
         LicenseRepositoryInterface repositoryInterfaceMock = mock(LicenseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveLicense(license);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(license);
-    }
-
-    @Test
-    public void should_updateLicenseObject_when_updateLicenseCalled() {
-        LicenseServiceInterface serviceInterface = new LicenseService();
-        LicenseRepositoryInterface repositoryInterfaceMock = mock(LicenseRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateLicense(license);
+        serviceInterface.saveOrUpdateLicense(license);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(license);
     }
 

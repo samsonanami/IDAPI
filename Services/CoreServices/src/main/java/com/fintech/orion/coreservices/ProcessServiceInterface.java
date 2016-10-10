@@ -13,9 +13,7 @@ public interface ProcessServiceInterface {
 
     Process getProcessById(int id) throws ItemNotFoundException;
 
-    void saveProcess(Process process);
-
-    void updateProcess(Process process);
+    void saveOrUpdateProcess(Process process);
 
     boolean deleteProcessById(int id) throws ItemNotFoundException;
 

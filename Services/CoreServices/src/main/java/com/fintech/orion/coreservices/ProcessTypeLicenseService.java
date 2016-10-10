@@ -32,13 +32,7 @@ public class ProcessTypeLicenseService implements ProcessTypeLicenseServiceInter
 
     @Transactional
     @Override
-    public void saveProcessTypeLicense(ProcessTypeLicense processTypeLicense) {
-        processTypeLicenseRepositoryInterface.saveOrUpdate(processTypeLicense);
-    }
-
-    @Transactional
-    @Override
-    public void updateProcessTypeLicense(ProcessTypeLicense processTypeLicense) {
+    public void saveOrUpdateProcessTypeLicense(ProcessTypeLicense processTypeLicense) {
         processTypeLicenseRepositoryInterface.saveOrUpdate(processTypeLicense);
     }
 

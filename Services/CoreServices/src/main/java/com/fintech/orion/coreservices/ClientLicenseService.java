@@ -32,13 +32,7 @@ public class ClientLicenseService implements ClientLicenseServiceInterface {
 
     @Transactional
     @Override
-    public void saveClientLicense(ClientLicense clientLicense) {
-        clientLicenseRepositoryInterface.saveOrUpdate(clientLicense);
-    }
-
-    @Transactional
-    @Override
-    public void updateClientLicense(ClientLicense clientLicense) {
+    public void saveOrUpdateClientLicense(ClientLicense clientLicense) {
         clientLicenseRepositoryInterface.saveOrUpdate(clientLicense);
     }
 

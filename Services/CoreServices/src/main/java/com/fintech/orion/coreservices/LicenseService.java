@@ -32,13 +32,7 @@ public class LicenseService implements LicenseServiceInterface {
 
     @Transactional
     @Override
-    public void saveLicense(License license) {
-        licenseRepositoryInterface.saveOrUpdate(license);
-    }
-
-    @Transactional
-    @Override
-    public void updateLicense(License license) {
+    public void saveOrUpdateLicense(License license) {
         licenseRepositoryInterface.saveOrUpdate(license);
     }
 

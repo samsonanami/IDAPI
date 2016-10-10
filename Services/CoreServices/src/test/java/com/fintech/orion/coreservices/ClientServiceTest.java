@@ -76,20 +76,11 @@ public class ClientServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveClientObject_when_saveClientCalled() {
+    public void should_saveClientObject_when_saveOrUpdateClientCalled() {
         ClientServiceInterface serviceInterface = new ClientService();
         ClientRepositoryInterface repositoryInterfaceMock = mock(ClientRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveClient(client);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(client);
-    }
-
-    @Test
-    public void should_updateClientObject_when_updateClientCalled() {
-        ClientServiceInterface serviceInterface = new ClientService();
-        ClientRepositoryInterface repositoryInterfaceMock = mock(ClientRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateClient(client);
+        serviceInterface.saveOrUpdateClient(client);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(client);
     }
 

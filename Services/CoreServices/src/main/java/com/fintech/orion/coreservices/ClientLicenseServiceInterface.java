@@ -11,9 +11,7 @@ public interface ClientLicenseServiceInterface {
 
     ClientLicense getClientLicenseById(int id) throws ItemNotFoundException;
 
-    void saveClientLicense(ClientLicense clientLicense);
-
-    void updateClientLicense(ClientLicense clientLicense);
+    void saveOrUpdateClientLicense(ClientLicense clientLicense);
 
     boolean deleteClientLicenseById(int id) throws ItemNotFoundException;
 

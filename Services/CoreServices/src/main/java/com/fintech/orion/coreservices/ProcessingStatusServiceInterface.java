@@ -11,9 +11,7 @@ public interface ProcessingStatusServiceInterface {
 
     ProcessingStatus getProcessingStatusById(int id) throws ItemNotFoundException;
 
-    void saveProcessingStatus(ProcessingStatus processingStatus);
-
-    void updateProcessingStatus(ProcessingStatus processingStatus);
+    void saveOrUpdateProcessingStatus(ProcessingStatus processingStatus);
 
     boolean deleteProcessingStatusById(int id) throws ItemNotFoundException;
 

@@ -11,9 +11,7 @@ public interface ResourceTypeServiceInterface {
 
     ResourceType getResourceTypeById(int id) throws ItemNotFoundException;
 
-    void saveResourceType(ResourceType resourceType);
-
-    void updateResourceType(ResourceType resourceType);
+    void saveOrUpdateResourceType(ResourceType resourceType);
 
     boolean deleteResourceTypeById(int id) throws ItemNotFoundException;
 

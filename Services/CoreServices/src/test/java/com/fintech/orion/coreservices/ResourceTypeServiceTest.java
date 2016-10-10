@@ -77,20 +77,11 @@ public class ResourceTypeServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveResourceTypeObject_when_saveResourceTypeCalled() {
+    public void should_saveResourceTypeObject_when_saveOrUpdateResourceTypeCalled() {
         ResourceTypeServiceInterface serviceInterface = new ResourceTypeService();
         ResourceTypeRepositoryInterface repositoryInterfaceMock = mock(ResourceTypeRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveResourceType(resourceType);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resourceType);
-    }
-
-    @Test
-    public void should_updateResourceTypeObject_when_updateResourceTypeCalled() {
-        ResourceTypeServiceInterface serviceInterface = new ResourceTypeService();
-        ResourceTypeRepositoryInterface repositoryInterfaceMock = mock(ResourceTypeRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateResourceType(resourceType);
+        serviceInterface.saveOrUpdateResourceType(resourceType);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resourceType);
     }
 

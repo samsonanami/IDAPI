@@ -38,13 +38,7 @@ public class ResourceTypeService implements ResourceTypeServiceInterface {
 
     @Transactional
     @Override
-    public void saveResourceType(ResourceType resourceType) {
-        resourceTypeRepositoryInterface.saveOrUpdate(resourceType);
-    }
-
-    @Transactional
-    @Override
-    public void updateResourceType(ResourceType resourceType) {
+    public void saveOrUpdateResourceType(ResourceType resourceType) {
         resourceTypeRepositoryInterface.saveOrUpdate(resourceType);
     }
 

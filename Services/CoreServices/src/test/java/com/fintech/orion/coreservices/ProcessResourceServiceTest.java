@@ -67,20 +67,11 @@ public class ProcessResourceServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveProcessResourceObject_when_saveProcessResourceCalled() {
+    public void should_saveProcessResourceObject_when_saveOrUpdateProcessResourceCalled() {
         ProcessResourceServiceInterface serviceInterface = new ProcessResourceService();
         ProcessResourceRepositoryInterface repositoryInterfaceMock = mock(ProcessResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveProcessResource(processResource);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processResource);
-    }
-
-    @Test
-    public void should_updateProcessResourceObject_when_updateProcessResourceCalled() {
-        ProcessResourceServiceInterface serviceInterface = new ProcessResourceService();
-        ProcessResourceRepositoryInterface repositoryInterfaceMock = mock(ProcessResourceRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateProcessResource(processResource);
+        serviceInterface.saveOrUpdateProcessResource(processResource);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processResource);
     }
 

@@ -40,13 +40,7 @@ public class ResourceService implements ResourceServiceInterface {
 
     @Transactional
     @Override
-    public void saveResource(Resource resource) {
-        resourceRepositoryInterface.saveOrUpdate(resource);
-    }
-
-    @Transactional
-    @Override
-    public void updateResource(Resource resource) {
+    public void saveOrUpdateResource(Resource resource) {
         resourceRepositoryInterface.saveOrUpdate(resource);
     }
 

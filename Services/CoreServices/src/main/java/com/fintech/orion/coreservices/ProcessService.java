@@ -37,13 +37,7 @@ public class ProcessService implements ProcessServiceInterface {
 
     @Transactional
     @Override
-    public void saveProcess(Process process) {
-        processRepositoryInterface.saveOrUpdate(process);
-    }
-
-    @Transactional
-    @Override
-    public void updateProcess(Process process) {
+    public void saveOrUpdateProcess(Process process) {
         processRepositoryInterface.saveOrUpdate(process);
     }
 

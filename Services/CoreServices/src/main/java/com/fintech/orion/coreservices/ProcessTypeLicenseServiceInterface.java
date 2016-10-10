@@ -10,9 +10,7 @@ public interface ProcessTypeLicenseServiceInterface {
 
     ProcessTypeLicense getProcessTypeLicenseById(int id) throws ItemNotFoundException;
 
-    void saveProcessTypeLicense(ProcessTypeLicense processTypeLicense);
-
-    void updateProcessTypeLicense(ProcessTypeLicense processTypeLicense);
+    void saveOrUpdateProcessTypeLicense(ProcessTypeLicense processTypeLicense);
 
     boolean deleteProcessTypeLicenseById(int id) throws ItemNotFoundException;
 

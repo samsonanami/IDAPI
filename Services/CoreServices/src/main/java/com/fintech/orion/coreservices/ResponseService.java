@@ -32,13 +32,7 @@ public class ResponseService implements ResponseServiceInterface {
 
     @Transactional
     @Override
-    public void saveResponse(Response response) {
-        responseRepositoryInterface.saveOrUpdate(response);
-    }
-
-    @Transactional
-    @Override
-    public void updateResponse(Response response) {
+    public void saveOrUpdateResponse(Response response) {
         responseRepositoryInterface.saveOrUpdate(response);
     }
 

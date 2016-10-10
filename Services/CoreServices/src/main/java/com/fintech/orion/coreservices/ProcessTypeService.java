@@ -38,13 +38,7 @@ public class ProcessTypeService implements ProcessTypeServiceInterface {
 
     @Transactional
     @Override
-    public void saveProcessType(ProcessType processType) {
-        processTypeRepositoryInterface.saveOrUpdate(processType);
-    }
-
-    @Transactional
-    @Override
-    public void updateProcessType(ProcessType processType) {
+    public void saveOrUpdateProcessType(ProcessType processType) {
         processTypeRepositoryInterface.saveOrUpdate(processType);
     }
 

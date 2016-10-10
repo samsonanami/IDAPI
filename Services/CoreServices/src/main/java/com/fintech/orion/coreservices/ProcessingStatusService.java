@@ -30,13 +30,7 @@ public class ProcessingStatusService implements ProcessingStatusServiceInterface
 
     @Transactional
     @Override
-    public void saveProcessingStatus(ProcessingStatus processingStatus) {
-        processingStatusRepositoryInterface.saveOrUpdate(processingStatus);
-    }
-
-    @Transactional
-    @Override
-    public void updateProcessingStatus(ProcessingStatus processingStatus) {
+    public void saveOrUpdateProcessingStatus(ProcessingStatus processingStatus) {
         processingStatusRepositoryInterface.saveOrUpdate(processingStatus);
     }
 

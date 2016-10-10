@@ -11,11 +11,9 @@ public interface ProcessingRequestServiceInterface {
 
     ProcessingRequest getProcessingRequestById(int id) throws ItemNotFoundException;
 
-    void saveProcessingRequest(ProcessingRequest processingRequest);
+    void saveOrUpdateProcessingRequest(ProcessingRequest processingRequest);
 
     ProcessingRequest saveProcessingRequest(Client client);
-
-    void updateProcessingRequest(ProcessingRequest processingRequest);
 
     boolean deleteProcessingRequestById(int id) throws ItemNotFoundException;
 

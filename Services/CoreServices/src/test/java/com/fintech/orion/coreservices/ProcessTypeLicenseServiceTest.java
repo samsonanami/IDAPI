@@ -65,20 +65,11 @@ public class ProcessTypeLicenseServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveProcessTypeLicenseObject_when_saveProcessTypeLicenseCalled() {
+    public void should_saveProcessTypeLicenseObject_when_saveOrUpdateProcessTypeLicenseCalled() {
         ProcessTypeLicenseServiceInterface serviceInterface = new ProcessTypeLicenseService();
         ProcessTypeLicenseRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeLicenseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveProcessTypeLicense(processTypeLicense);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processTypeLicense);
-    }
-
-    @Test
-    public void should_updateProcessTypeLicenseObject_when_updateProcessTypeLicenseCalled() {
-        ProcessTypeLicenseServiceInterface serviceInterface = new ProcessTypeLicenseService();
-        ProcessTypeLicenseRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeLicenseRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateProcessTypeLicense(processTypeLicense);
+        serviceInterface.saveOrUpdateProcessTypeLicense(processTypeLicense);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processTypeLicense);
     }
 

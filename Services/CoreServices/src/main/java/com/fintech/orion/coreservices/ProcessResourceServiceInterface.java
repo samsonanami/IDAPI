@@ -12,11 +12,9 @@ public interface ProcessResourceServiceInterface {
 
     ProcessResource getProcessResourceById(int id) throws ItemNotFoundException;
 
-    void saveProcessResource(ProcessResource processResource);
+    void saveOrUpdateProcessResource(ProcessResource processResource);
 
     boolean deleteProcessResourceById(int id) throws ItemNotFoundException;
-
-    void updateProcessResource(ProcessResource processResource);
 
     void deleteProcessResource(ProcessResource processResource);
 

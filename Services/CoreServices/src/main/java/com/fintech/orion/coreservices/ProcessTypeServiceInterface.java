@@ -12,9 +12,7 @@ public interface ProcessTypeServiceInterface {
 
     ProcessType getProcessTypeByName(String type) throws ItemNotFoundException;
 
-    void saveProcessType(ProcessType processType);
-
-    void updateProcessType(ProcessType processType);
+    void saveOrUpdateProcessType(ProcessType processType);
 
     boolean deleteProcessTypeById(int id) throws ItemNotFoundException;
 

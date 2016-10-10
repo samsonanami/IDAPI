@@ -65,20 +65,11 @@ public class ResponseServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveResponseObject_when_saveResponseCalled() {
+    public void should_saveResponseObject_when_saveOrUpdateResponseCalled() {
         ResponseServiceInterface serviceInterface = new ResponseService();
         ResponseRepositoryInterface repositoryInterfaceMock = mock(ResponseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveResponse(response);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(response);
-    }
-
-    @Test
-    public void should_updateResponseObject_when_updateResponseCalled() {
-        ResponseServiceInterface serviceInterface = new ResponseService();
-        ResponseRepositoryInterface repositoryInterfaceMock = mock(ResponseRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateResponse(response);
+        serviceInterface.saveOrUpdateResponse(response);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(response);
     }
 

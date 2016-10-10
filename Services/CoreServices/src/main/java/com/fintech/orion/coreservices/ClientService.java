@@ -32,13 +32,7 @@ public class ClientService implements ClientServiceInterface {
 
     @Transactional
     @Override
-    public void saveClient(Client client) {
-        clientRepositoryInterface.saveOrUpdate(client);
-    }
-
-    @Transactional
-    @Override
-    public void updateClient(Client client) {
+    public void saveOrUpdateClient(Client client) {
         clientRepositoryInterface.saveOrUpdate(client);
     }
 

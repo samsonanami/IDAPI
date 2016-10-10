@@ -63,7 +63,7 @@ public class ResourceServiceTest extends ObjectCreator {
 
         ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateResource(resource);
+        serviceInterface.saveOrUpdateResource(resource);
 
         serviceInterface.saveResource("12345abcde.jpg", "12345abcde", "image", "123456");
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);
@@ -91,20 +91,11 @@ public class ResourceServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveResourceObject_when_saveResourceCalled() {
+    public void should_saveResourceObject_when_saveOrUpdateResourceCalled() {
         ResourceServiceInterface serviceInterface = new ResourceService();
         ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveResource(resource);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);
-    }
-
-    @Test
-    public void should_updateResourceObject_when_updateResourceCalled() {
-        ResourceServiceInterface serviceInterface = new ResourceService();
-        ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateResource(resource);
+        serviceInterface.saveOrUpdateResource(resource);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);
     }
 

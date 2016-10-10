@@ -10,9 +10,7 @@ public interface LicenseServiceInterface {
 
     License getLicenseById(int id)  throws ItemNotFoundException;
 
-    void saveLicense(License license);
-
-    void updateLicense(License license);
+    void saveOrUpdateLicense(License license);
 
     boolean deleteLicenseById(int id) throws ItemNotFoundException;
 

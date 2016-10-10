@@ -38,7 +38,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
     @Transactional
     @Override
-    public void saveProcessingRequest(ProcessingRequest processingRequest) {
+    public void saveOrUpdateProcessingRequest(ProcessingRequest processingRequest) {
         processingRequestRepositoryInterface.saveOrUpdate(processingRequest);
     }
 
@@ -51,12 +51,6 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         processingRequest.setProcessingRequestIdentificationCode(GenerateUUID.uuidNumber());
         processingRequestRepositoryInterface.saveOrUpdate(processingRequest);
         return processingRequest;
-    }
-
-    @Transactional
-    @Override
-    public void updateProcessingRequest(ProcessingRequest processingRequest) {
-        processingRequestRepositoryInterface.saveOrUpdate(processingRequest);
     }
 
     @Transactional

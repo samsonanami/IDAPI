@@ -10,9 +10,7 @@ public interface ClientServiceInterface {
 
     Client getClientById(int id) throws ItemNotFoundException;
 
-    void saveClient(Client client);
-
-    void updateClient(Client client);
+    void saveOrUpdateClient(Client client);
 
     boolean deleteClientById(int id) throws ItemNotFoundException;
 

@@ -67,20 +67,11 @@ public class ProcessTypeServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveProcessTypeObject_when_saveProcessTypeCalled() {
+    public void should_saveProcessTypeObject_when_saveOrUpdateProcessTypeCalled() {
         ProcessTypeServiceInterface serviceInterface = new ProcessTypeService();
         ProcessTypeRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveProcessType(processType);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processType);
-    }
-
-    @Test
-    public void should_updateProcessTypeObject_when_updateProcessTypeCalled() {
-        ProcessTypeServiceInterface serviceInterface = new ProcessTypeService();
-        ProcessTypeRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateProcessType(processType);
+        serviceInterface.saveOrUpdateProcessType(processType);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processType);
     }
 

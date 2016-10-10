@@ -65,20 +65,11 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
     }
 
     @Test
-    public void should_saveProcessingRequestObject_when_saveProcessingRequestCalled() {
+    public void should_saveProcessingRequestObject_when_saveOrUpdateProcessingRequestCalled() {
         ProcessingRequestServiceInterface serviceInterface = new ProcessingRequestService();
         ProcessingRequestRepositoryInterface repositoryInterfaceMock = mock(ProcessingRequestRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveProcessingRequest(processingRequest);
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processingRequest);
-    }
-
-    @Test
-    public void should_updateProcessingRequestObject_when_updateProcessingRequestCalled() {
-        ProcessingRequestServiceInterface serviceInterface = new ProcessingRequestService();
-        ProcessingRequestRepositoryInterface repositoryInterfaceMock = mock(ProcessingRequestRepository.class);
-        ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.updateProcessingRequest(processingRequest);
+        serviceInterface.saveOrUpdateProcessingRequest(processingRequest);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processingRequest);
     }
 
