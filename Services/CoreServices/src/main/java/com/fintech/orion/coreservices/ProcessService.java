@@ -3,6 +3,7 @@ package com.fintech.orion.coreservices;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
@@ -65,12 +66,13 @@ public class ProcessService implements ProcessServiceInterface {
 
     @Transactional
     @Override
-    public Process saveProcess(ProcessType processType, ProcessingRequest processingRequest) {
+    public Process saveProcess(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus) {
         Process process = new Process();
         process.setRequestSentOn(GenerateTimestamp.timestamp());
         process.setProcessingRequest(processingRequest);
         process.setProcessType(processType);
         process.setProcessIdentificationCode(GenerateUUID.uuidNumber());
+        process.setProcessingStatus(processingStatus);
         processRepositoryInterface.saveOrUpdate(process);
         return process;
     }
