@@ -32,6 +32,10 @@ public class JobCommon {
         initializeJobCommon();
     }
 
+    public Session getSession() {
+        return session;
+    }
+
     private void initializeJobCommon() {
         try {
             establishSession();
