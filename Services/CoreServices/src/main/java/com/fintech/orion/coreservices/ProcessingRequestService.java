@@ -5,12 +5,10 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
-import com.fintech.orion.dataabstraction.models.VerificationProcess;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.security.provider.VerificationProvider;
 
 import java.util.List;
 
@@ -76,5 +74,11 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     @Override
     public void deleteProcessingRequest(ProcessingRequest processingRequest) {
         processingRequestRepositoryInterface.delete(processingRequest);
+    }
+
+    @Transactional
+    @Override
+    public ProcessingRequest getProcessingRequestByIdentificationCode(String identificationCode) throws ItemNotFoundException {
+        return processingRequestRepositoryInterface.getProcessingRequestByIdentificationCode(identificationCode);
     }
 }
