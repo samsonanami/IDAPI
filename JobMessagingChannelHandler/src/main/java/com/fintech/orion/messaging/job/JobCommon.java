@@ -13,7 +13,7 @@ import javax.jms.Session;
 
 /**
  * Created by TharinduMP on 10/7/2016.
- * The class is responsible for producing jobs in a messaging queue
+ * The class is responsible for providing the common functionality for Consumer and Producer
  */
 
 public class JobCommon {

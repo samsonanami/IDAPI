@@ -19,7 +19,9 @@ public class JobConsumer extends JobCommon implements JobConsumerInterface {
 
     @Override
     public void setJobConsumer(MessageListener messageListener) throws JMSException {
+        LOGGER.info("Setting Consumer Message Listener");
         consumer.setMessageListener(messageListener);
+        LOGGER.info("Setting Consumer Message Listener Successful", messageListener.getClass());
     }
 
     private void establishConsumer() {

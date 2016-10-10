@@ -18,7 +18,6 @@ public class SessionHandler implements SessionHandlerInterface {
     private static final Boolean NON_TRANSACTED = false;
 
     private ConnectionFactory connectionFactory;
-    private Connection connection;
 
     public SessionHandler(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
@@ -28,7 +27,7 @@ public class SessionHandler implements SessionHandlerInterface {
     public Session establishSession() throws SessionHandlerException {
         try {
             LOGGER.info("Starting Messaging Queue Session Creation");
-            connection = connectionFactory.createConnection();
+            Connection connection = connectionFactory.createConnection();
             connection.start();
             return connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
         } catch (JMSException e) {
