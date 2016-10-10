@@ -1,14 +1,13 @@
 package com.fintech.orion.helper;
 
-import com.fintech.orion.dataabstraction.models.Resource;
-import com.fintech.orion.dataabstraction.models.VerificationProcess;
+import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
+import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class JsonValidator implements JsonValidatorInterface {
@@ -17,7 +16,7 @@ public class JsonValidator implements JsonValidatorInterface {
     private List<VerificationProcess> verificationProcessList;
 
     @Override
-    public boolean jsonValidate(List<VerificationProcess> verificationProcessList) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public boolean jsonValidate(List<VerificationProcess> verificationProcessList) throws ReflectiveOperationException {
         for (VerificationProcess v : verificationProcessList) {
             VerificationProcess verificationProcess = getVerificationProcessForType(v.getVerificationProcessType());
 
@@ -29,7 +28,7 @@ public class JsonValidator implements JsonValidatorInterface {
         return false;
     }
 
-    private boolean compareObjects(VerificationProcess correctObject, VerificationProcess tempObject) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private boolean compareObjects(VerificationProcess correctObject, VerificationProcess tempObject) throws ReflectiveOperationException {
         Field[] fields = Resource.class.getDeclaredFields();
         for (Field f : fields) {
             if ((BeanUtils.getProperty(correctObject.getResources().get(0), f.getName()) == null && BeanUtils.getProperty(tempObject.getResources().get(0), f.getName()) != null) ||

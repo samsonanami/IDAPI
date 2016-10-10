@@ -1,15 +1,14 @@
 package com.fintech.orion;
 
-import com.fintech.orion.dataabstraction.models.ProcessingRequest;
-import com.fintech.orion.dataabstraction.models.VerificationProcess;
+import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
+import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.helper.JsonValidator;
 import com.fintech.orion.helper.JsonValidatorInterface;
-import com.fintech.orion.dataabstraction.models.Resource;
+import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class JsonValidatorTest {
     }
 
     @Test
-    public void shouldReturnTrueForIdVerificationJsonWhenJsonValidateCalled() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public void shouldReturnTrueForIdVerificationJsonWhenJsonValidateCalled() throws ReflectiveOperationException {
         JsonValidatorInterface jsonValidatorInterface = new JsonValidator();
         ReflectionTestUtils.setField(jsonValidatorInterface, VERIFICATION_PROCESS_LIST, verificationProcessList);
 
@@ -60,7 +59,7 @@ public class JsonValidatorTest {
     }
 
     @Test
-    public void shouldReturnFalseForIdVerificationJsonWhenJsonValidateCalledWithOutResourceIdValue() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public void shouldReturnFalseForIdVerificationJsonWhenJsonValidateCalledWithOutResourceIdValue() throws ReflectiveOperationException {
         JsonValidatorInterface jsonValidatorInterface = new JsonValidator();
         ReflectionTestUtils.setField(jsonValidatorInterface, VERIFICATION_PROCESS_LIST, verificationProcessList);
 
@@ -78,7 +77,7 @@ public class JsonValidatorTest {
     }
 
     @Test
-    public void shouldReturnFalseForIdVerificationJsonWhenJsonValidateCalledWithUnwantedValues() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public void shouldReturnFalseForIdVerificationJsonWhenJsonValidateCalledWithUnwantedValues() throws ReflectiveOperationException {
         JsonValidatorInterface jsonValidatorInterface = new JsonValidator();
         ReflectionTestUtils.setField(jsonValidatorInterface, VERIFICATION_PROCESS_LIST, verificationProcessList);
 
@@ -98,7 +97,7 @@ public class JsonValidatorTest {
     }
 
     @Test
-    public void shouldReturnFalseForIdVerificationJsonWhenJsonValidateCalledWithFaultProcessType() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public void shouldReturnFalseForIdVerificationJsonWhenJsonValidateCalledWithFaultProcessType() throws ReflectiveOperationException {
         JsonValidatorInterface jsonValidatorInterface = new JsonValidator();
         ReflectionTestUtils.setField(jsonValidatorInterface, VERIFICATION_PROCESS_LIST, verificationProcessList);
 

@@ -1,4 +1,4 @@
-package com.fintech.orion.dataabstraction.models;
+package com.fintech.orion.dataabstraction.models.verificationprocess;
 
 public class Resource {
     private String resourceName;

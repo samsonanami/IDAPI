@@ -48,4 +48,6 @@ public class ObjectCreator {
     public Response createResponseObject() {
         return new Response();
     }
+
+    public ProcessingStatus createProcessingStatusObject() { return new ProcessingStatus(); }
 }

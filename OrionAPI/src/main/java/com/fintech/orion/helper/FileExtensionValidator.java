@@ -1,6 +1,10 @@
 package com.fintech.orion.helper;
 
+import org.apache.log4j.Logger;
+
 public class FileExtensionValidator implements FileExtensionValidatorInterface {
+
+    private static final Logger LOGGER = Logger.getLogger(FileExtensionValidator.class);
 
     private static final String JPEG_FILE_FORMAT = "jpeg";
     private static final String MP4_FILE_FORMAT = "mp4";

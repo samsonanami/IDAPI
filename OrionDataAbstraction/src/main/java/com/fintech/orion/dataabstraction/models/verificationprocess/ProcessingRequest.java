@@ -1,4 +1,4 @@
-package com.fintech.orion.dataabstraction.models;
+package com.fintech.orion.dataabstraction.models.verificationprocess;
 
 import java.util.List;
 

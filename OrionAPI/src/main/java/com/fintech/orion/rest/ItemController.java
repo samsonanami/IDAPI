@@ -3,7 +3,7 @@ package com.fintech.orion.rest;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dataabstraction.models.ProcessingRequest;
+import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.helper.*;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.model.ContentUploadResourceResult;
@@ -18,11 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ItemController {
+
+    private static final Logger LOGGER = Logger.getLogger(ItemController.class);
+
     private static final String THE_SUBMITTED_FILE_IS_NOT_IN_CORRECT_FORMAT = "The submitted file is not in correct format";
     private static final String FILE_UPLOAD_ERROR = "File Upload Error";
     private static final String JSON_NOT_IN_CORRECT_FORMAT = "Json not in correct format";
-
-    private static final Logger LOGGER = Logger.getLogger(ItemController.class);
 
     @Autowired
     private ResourceServiceInterface resourceServiceInterface;
@@ -101,10 +102,11 @@ public class ItemController {
                                 HttpServletResponse response,
                                 @RequestParam("access_token") String accessToken) {
         try {
-            // TODO
-            return null;
+            return processingRequestHandlerInterface.getData(verificationRequestId);
         } catch (Exception ex){
-            throw ex;
+            LOGGER.error(ex);
+            LOGGER.error(ex.getMessage());
+            return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
         }
     }
 

@@ -15,6 +15,7 @@
     <bean id="resourceServiceInterface" class="com.fintech.orion.coreservices.ResourceService"/>
     <bean id="resourceTypeServiceInterface" class="com.fintech.orion.coreservices.ResourceTypeService"/>
     <bean id="responseServiceInterface" class="com.fintech.orion.coreservices.ResponseService"/>
+    <bean id="processingStatusServiceInterface" class="com.fintech.orion.coreservices.ProcessingStatusService"/>
 
     <bean id="clientLicenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientLicenseRepository"/>
     <bean id="clientRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientRepository"/>
@@ -27,7 +28,7 @@
     <bean id="resourceRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResourceRepository"/>
     <bean id="resourceTypeRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResourceTypeRepository"/>
     <bean id="responseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResponseRepository"/>
-
+    <bean id="processingStatusRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingStatusRepository"/>
 
     <bean id="fileExtensionValidatorInterface" class="com.fintech.orion.helper.FileExtensionValidator"></bean>
     <bean id="fileUploadHandlerInterface" class="com.fintech.orion.helper.FileUploadHandler"></bean>
