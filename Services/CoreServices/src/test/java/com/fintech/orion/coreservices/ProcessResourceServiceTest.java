@@ -38,7 +38,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(processResources);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<ProcessResource> found = serviceInterface.getProcessResourceList();
+        List<ProcessResource> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(ProcessResource p : found){
             assertTrue(processResources.contains(p));
@@ -52,7 +52,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processResource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        ProcessResource found = serviceInterface.getProcessResourceById(1);
+        ProcessResource found = serviceInterface.findById(1);
         assertTrue(processResource.equals(found));
     }
 
@@ -63,7 +63,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processResource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getProcessResourceById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
         ProcessResourceServiceInterface serviceInterface = new ProcessResourceService();
         ProcessResourceRepositoryInterface repositoryInterfaceMock = mock(ProcessResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateProcessResource(processResource);
+        serviceInterface.saveOrUpdate(processResource);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processResource);
     }
 
@@ -82,7 +82,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processResource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessResourceById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -93,7 +93,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processResource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessResourceById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -103,7 +103,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
         ProcessResourceRepositoryInterface repositoryInterfaceMock = mock(ProcessResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteProcessResource(processResource);
+        serviceInterface.delete(processResource);
         verify(repositoryInterfaceMock, times(1)).delete(processResource);
     }
     

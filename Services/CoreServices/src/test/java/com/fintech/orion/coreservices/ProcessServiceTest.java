@@ -38,7 +38,7 @@ public class ProcessServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(processes);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<Process> found = serviceInterface.getProcessList();
+        List<Process> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(Process p : found){
             assertTrue(processes.contains(p));
@@ -52,7 +52,7 @@ public class ProcessServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(process);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        Process found = serviceInterface.getProcessById(1);
+        Process found = serviceInterface.findById(1);
         assertTrue(process.equals(found));
     }
 
@@ -63,7 +63,7 @@ public class ProcessServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(process);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getProcessById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ProcessServiceTest extends ObjectCreator {
         ProcessServiceInterface serviceInterface = new ProcessService();
         ProcessRepositoryInterface repositoryInterfaceMock = mock(ProcessRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateProcess(process);
+        serviceInterface.saveOrUpdate(process);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(process);
     }
 
@@ -82,7 +82,7 @@ public class ProcessServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(process);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -93,7 +93,7 @@ public class ProcessServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(process);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -103,7 +103,7 @@ public class ProcessServiceTest extends ObjectCreator {
         ProcessRepositoryInterface repositoryInterfaceMock = mock(ProcessRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteProcess(process);
+        serviceInterface.delete(process);
         verify(repositoryInterfaceMock, times(1)).delete(process);
     }
 

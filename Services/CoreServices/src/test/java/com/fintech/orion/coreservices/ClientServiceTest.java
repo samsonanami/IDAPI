@@ -36,7 +36,7 @@ public class ClientServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(clients);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<Client> found = serviceInterface.getClientList();
+        List<Client> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(Client c : found){
             assertTrue(clients.contains(c));
@@ -61,7 +61,7 @@ public class ClientServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(client);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        Client found = serviceInterface.getClientById(1);
+        Client found = serviceInterface.findById(1);
         assertTrue(client.equals(found));
     }
 
@@ -72,7 +72,7 @@ public class ClientServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(client);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getClientById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class ClientServiceTest extends ObjectCreator {
         ClientServiceInterface serviceInterface = new ClientService();
         ClientRepositoryInterface repositoryInterfaceMock = mock(ClientRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateClient(client);
+        serviceInterface.saveOrUpdate(client);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(client);
     }
 
@@ -91,7 +91,7 @@ public class ClientServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(client);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteClientById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -102,7 +102,7 @@ public class ClientServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(client);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteClientById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -112,7 +112,7 @@ public class ClientServiceTest extends ObjectCreator {
         ClientRepositoryInterface repositoryInterfaceMock = mock(ClientRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteClient(client);
+        serviceInterface.delete(client);
         verify(repositoryInterfaceMock, times(1)).delete(client);
     }
 

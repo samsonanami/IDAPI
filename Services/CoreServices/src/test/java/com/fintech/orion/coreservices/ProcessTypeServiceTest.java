@@ -38,7 +38,7 @@ public class ProcessTypeServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(processTypes);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<ProcessType> found = serviceInterface.getProcessTypeList();
+        List<ProcessType> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(ProcessType p : found){
             assertTrue(processTypes.contains(p));
@@ -52,7 +52,7 @@ public class ProcessTypeServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processType);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        ProcessType found = serviceInterface.getProcessTypeById(1);
+        ProcessType found = serviceInterface.findById(1);
         assertTrue(processType.equals(found));
     }
 
@@ -63,7 +63,7 @@ public class ProcessTypeServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processType);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getProcessTypeById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ProcessTypeServiceTest extends ObjectCreator {
         ProcessTypeServiceInterface serviceInterface = new ProcessTypeService();
         ProcessTypeRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateProcessType(processType);
+        serviceInterface.saveOrUpdate(processType);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processType);
     }
 
@@ -82,7 +82,7 @@ public class ProcessTypeServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processType);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessTypeById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -93,7 +93,7 @@ public class ProcessTypeServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processType);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessTypeById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -103,7 +103,7 @@ public class ProcessTypeServiceTest extends ObjectCreator {
         ProcessTypeRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteProcessType(processType);
+        serviceInterface.delete(processType);
         verify(repositoryInterfaceMock, times(1)).delete(processType);
     }
 

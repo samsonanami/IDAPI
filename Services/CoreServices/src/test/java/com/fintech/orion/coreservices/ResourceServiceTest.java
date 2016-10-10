@@ -38,7 +38,7 @@ public class ResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(resources);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<Resource> found = serviceInterface.getResourceList();
+        List<Resource> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(Resource r : found){
             assertTrue(resources.contains(r));
@@ -62,7 +62,7 @@ public class ResourceServiceTest extends ObjectCreator {
 
         ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateResource(resource);
+        serviceInterface.saveOrUpdate(resource);
 
         serviceInterface.save("12345abcde.jpg", "12345abcde", "image", "123456");
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);
@@ -75,7 +75,7 @@ public class ResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(resource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        Resource found = serviceInterface.getResourceById(1);
+        Resource found = serviceInterface.findById(1);
         assertTrue(resource.equals(found));
     }
 
@@ -86,7 +86,7 @@ public class ResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(resource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getResourceById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -94,7 +94,7 @@ public class ResourceServiceTest extends ObjectCreator {
         ResourceServiceInterface serviceInterface = new ResourceService();
         ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateResource(resource);
+        serviceInterface.saveOrUpdate(resource);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);
     }
 
@@ -105,7 +105,7 @@ public class ResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(resource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteResourceById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -116,7 +116,7 @@ public class ResourceServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(resource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteResourceById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -126,7 +126,7 @@ public class ResourceServiceTest extends ObjectCreator {
         ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteResource(resource);
+        serviceInterface.delete(resource);
         verify(repositoryInterfaceMock, times(1)).delete(resource);
     }
 

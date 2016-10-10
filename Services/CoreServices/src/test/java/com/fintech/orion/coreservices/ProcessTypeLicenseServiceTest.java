@@ -36,7 +36,7 @@ public class ProcessTypeLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(processTypeLicenses);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<ProcessTypeLicense> found = serviceInterface.getProcessTypeLicenseList();
+        List<ProcessTypeLicense> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(ProcessTypeLicense p : found){
             assertTrue(processTypeLicenses.contains(p));
@@ -50,7 +50,7 @@ public class ProcessTypeLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processTypeLicense);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        ProcessTypeLicense found = serviceInterface.getProcessTypeLicenseById(1);
+        ProcessTypeLicense found = serviceInterface.findById(1);
         assertTrue(processTypeLicense.equals(found));
     }
 
@@ -61,7 +61,7 @@ public class ProcessTypeLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processTypeLicense);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getProcessTypeLicenseById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ProcessTypeLicenseServiceTest extends ObjectCreator {
         ProcessTypeLicenseServiceInterface serviceInterface = new ProcessTypeLicenseService();
         ProcessTypeLicenseRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeLicenseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateProcessTypeLicense(processTypeLicense);
+        serviceInterface.saveOrUpdate(processTypeLicense);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processTypeLicense);
     }
 
@@ -80,7 +80,7 @@ public class ProcessTypeLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processTypeLicense);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessTypeLicenseById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -91,7 +91,7 @@ public class ProcessTypeLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processTypeLicense);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessTypeLicenseById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -101,7 +101,7 @@ public class ProcessTypeLicenseServiceTest extends ObjectCreator {
         ProcessTypeLicenseRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeLicenseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteProcessTypeLicense(processTypeLicense);
+        serviceInterface.delete(processTypeLicense);
         verify(repositoryInterfaceMock, times(1)).delete(processTypeLicense);
     }
 

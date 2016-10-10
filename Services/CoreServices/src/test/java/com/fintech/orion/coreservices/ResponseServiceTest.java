@@ -36,7 +36,7 @@ public class ResponseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(responses);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<Response> found = serviceInterface.getResponseList();
+        List<Response> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(Response r : found){
             assertTrue(responses.contains(r));
@@ -50,7 +50,7 @@ public class ResponseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(response);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        Response found = serviceInterface.getResponseById(1);
+        Response found = serviceInterface.findById(1);
         assertTrue(response.equals(found));
     }
 
@@ -61,7 +61,7 @@ public class ResponseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(response);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getResponseById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ResponseServiceTest extends ObjectCreator {
         ResponseServiceInterface serviceInterface = new ResponseService();
         ResponseRepositoryInterface repositoryInterfaceMock = mock(ResponseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateResponse(response);
+        serviceInterface.saveOrUpdate(response);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(response);
     }
 
@@ -80,7 +80,7 @@ public class ResponseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(response);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteResponseById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -91,7 +91,7 @@ public class ResponseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(response);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteResponseById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -101,7 +101,7 @@ public class ResponseServiceTest extends ObjectCreator {
         ResponseRepositoryInterface repositoryInterfaceMock = mock(ResponseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteResponse(response);
+        serviceInterface.delete(response);
         verify(repositoryInterfaceMock, times(1)).delete(response);
     }
 

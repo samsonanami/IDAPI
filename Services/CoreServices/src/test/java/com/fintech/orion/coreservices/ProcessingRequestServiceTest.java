@@ -36,7 +36,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(processingRequests);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<ProcessingRequest> found = serviceInterface.getProcessingRequestList();
+        List<ProcessingRequest> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(ProcessingRequest p : found){
             assertTrue(processingRequests.contains(p));
@@ -50,7 +50,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processingRequest);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        ProcessingRequest found = serviceInterface.getProcessingRequestById(1);
+        ProcessingRequest found = serviceInterface.findById(1);
         assertTrue(processingRequest.equals(found));
     }
 
@@ -61,7 +61,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processingRequest);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getProcessingRequestById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
         ProcessingRequestServiceInterface serviceInterface = new ProcessingRequestService();
         ProcessingRequestRepositoryInterface repositoryInterfaceMock = mock(ProcessingRequestRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateProcessingRequest(processingRequest);
+        serviceInterface.saveOrUpdate(processingRequest);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processingRequest);
     }
 
@@ -80,7 +80,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processingRequest);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessingRequestById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -91,7 +91,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(processingRequest);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteProcessingRequestById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -101,7 +101,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
         ProcessingRequestRepositoryInterface repositoryInterfaceMock = mock(ProcessingRequestRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteProcessingRequest(processingRequest);
+        serviceInterface.delete(processingRequest);
         verify(repositoryInterfaceMock, times(1)).delete(processingRequest);
     }
 

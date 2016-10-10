@@ -37,7 +37,7 @@ public class ClientLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.getAll()).thenReturn(clientLicenses);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        List<ClientLicense> found = serviceInterface.getClientLicenseList();
+        List<ClientLicense> found = serviceInterface.getAll();
         assertEquals(3, found.size());
         for(ClientLicense c : found){
             assertTrue(clientLicenses.contains(c));
@@ -51,7 +51,7 @@ public class ClientLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(clientLicense);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        ClientLicense found = serviceInterface.getClientLicenseById(1);
+        ClientLicense found = serviceInterface.findById(1);
         assertTrue(clientLicense.equals(found));
     }
 
@@ -62,7 +62,7 @@ public class ClientLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(clientLicense);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.getClientLicenseById(2);
+        serviceInterface.findById(2);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ClientLicenseServiceTest extends ObjectCreator {
         ClientLicenseServiceInterface serviceInterface = new ClientLicenseService();
         ClientLicenseRepositoryInterface repositoryInterfaceMock = mock(ClientLicenseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        serviceInterface.saveOrUpdateClientLicense(clientLicense);
+        serviceInterface.saveOrUpdate(clientLicense);
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(clientLicense);
     }
 
@@ -81,7 +81,7 @@ public class ClientLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(clientLicense);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteClientLicenseById(1);
+        boolean found = serviceInterface.deleteById(1);
         assertTrue(found);
     }
 
@@ -92,7 +92,7 @@ public class ClientLicenseServiceTest extends ObjectCreator {
         when(repositoryInterfaceMock.findById(1)).thenReturn(clientLicense);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        boolean found = serviceInterface.deleteClientLicenseById(2);
+        boolean found = serviceInterface.deleteById(2);
         assertFalse(found);
     }
 
@@ -102,7 +102,7 @@ public class ClientLicenseServiceTest extends ObjectCreator {
         ClientLicenseRepositoryInterface repositoryInterfaceMock = mock(ClientLicenseRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        serviceInterface.deleteClientLicense(clientLicense);
+        serviceInterface.delete(clientLicense);
         verify(repositoryInterfaceMock, times(1)).delete(clientLicense);
     }
 
