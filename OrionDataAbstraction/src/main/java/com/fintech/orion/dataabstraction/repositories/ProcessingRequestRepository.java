@@ -18,7 +18,7 @@ public class ProcessingRequestRepository extends AbstractDAO<ProcessingRequest, 
     }
 
     @Override
-    public ProcessingRequest getProcessingRequestByIdentificationCode(String identificationCode) throws ItemNotFoundException {
+    public ProcessingRequest findByIdIdentificationCode(String identificationCode) throws ItemNotFoundException {
         List<ProcessingRequest> processingRequests = findByCriteria(Restrictions.eq(PROCESSING_REQUEST_IDENTIFICATION_CODE, identificationCode));
         if (processingRequests != null && !processingRequests.isEmpty()) {
             return processingRequests.get(0);

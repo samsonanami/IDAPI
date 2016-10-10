@@ -18,7 +18,7 @@ public class ResourceTypeRepository extends AbstractDAO<ResourceType, Integer> i
     }
 
     @Override
-    public ResourceType getResourceTypeByType(String type) throws ItemNotFoundException {
+    public ResourceType findByType(String type) throws ItemNotFoundException {
         List<ResourceType> resourceTypes = findByCriteria(Restrictions.eq(TYPE, type));
         if (resourceTypes != null && !resourceTypes.isEmpty()) {
             return resourceTypes.get(0);

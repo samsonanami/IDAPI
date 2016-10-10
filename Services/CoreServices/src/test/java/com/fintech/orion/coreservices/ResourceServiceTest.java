@@ -13,7 +13,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -54,18 +53,18 @@ public class ResourceServiceTest extends ObjectCreator {
         ResourceType resourceType = createResourceTypeObject();
 
         ClientServiceInterface clientService = mock(ClientService.class);
-        when(clientService.getClientByAuthToken("123456")).thenReturn(client);
+        when(clientService.findByAuthToken("123456")).thenReturn(client);
         ReflectionTestUtils.setField(serviceInterface, "clientServiceInterface", clientService);
 
         ResourceTypeServiceInterface resourceTypeService = mock(ResourceTypeService.class);
-        when(resourceTypeService.getResourceTypeByType("image")).thenReturn(resourceType);
+        when(resourceTypeService.findByType("image")).thenReturn(resourceType);
         ReflectionTestUtils.setField(serviceInterface, "resourceTypeServiceInterface", resourceTypeService);
 
         ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
         serviceInterface.saveOrUpdateResource(resource);
 
-        serviceInterface.saveResource("12345abcde.jpg", "12345abcde", "image", "123456");
+        serviceInterface.save("12345abcde.jpg", "12345abcde", "image", "123456");
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);
     }
 

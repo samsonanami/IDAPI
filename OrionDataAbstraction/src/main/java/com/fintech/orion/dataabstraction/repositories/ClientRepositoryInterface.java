@@ -6,6 +6,6 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 
 public interface ClientRepositoryInterface extends DAOInterface<Client, Integer> {
 
-    Client getClientByAuthToken(String authToken) throws ItemNotFoundException;
+    Client findByAuthToken(String authToken) throws ItemNotFoundException;
 
 }

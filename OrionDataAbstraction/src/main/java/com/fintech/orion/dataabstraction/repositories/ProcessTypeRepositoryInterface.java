@@ -6,6 +6,6 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 
 public interface ProcessTypeRepositoryInterface extends DAOInterface<ProcessType, Integer> {
 
-    ProcessType getProcessTypeByName(String type) throws ItemNotFoundException;
+    ProcessType findByType(String type) throws ItemNotFoundException;
 
 }

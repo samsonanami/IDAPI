@@ -47,12 +47,12 @@ public class ResourceTypeServiceTest extends ObjectCreator {
     public void should_returnResourceTypeObject_when_getResourceTypeByTypeCalled() throws ItemNotFoundException {
         ResourceTypeServiceInterface serviceInterface = new ResourceTypeService();
         ResourceTypeRepositoryInterface repositoryInterfaceMock = mock(ResourceTypeRepository.class);
-        when(repositoryInterfaceMock.getResourceTypeByType("image")).thenReturn(resourceType);
+        when(repositoryInterfaceMock.findByType("image")).thenReturn(resourceType);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        ResourceType found = serviceInterface.getResourceTypeByType("image");
+        ResourceType found = serviceInterface.findByType("image");
         assertTrue(resourceType.equals(found));
-        verify(repositoryInterfaceMock, times(1)).getResourceTypeByType("image");
+        verify(repositoryInterfaceMock, times(1)).findByType("image");
     }
 
     @Test

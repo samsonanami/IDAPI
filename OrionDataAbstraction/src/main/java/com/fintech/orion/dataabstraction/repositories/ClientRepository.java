@@ -18,7 +18,7 @@ public class ClientRepository extends AbstractDAO<Client, Integer> implements Cl
     }
 
     @Override
-    public Client getClientByAuthToken(String authToken) throws ItemNotFoundException {
+    public Client findByAuthToken(String authToken) throws ItemNotFoundException {
         List<Client> clients = findByCriteria(Restrictions.eq(AUTH_TOKEN, authToken));
         if (clients != null && !clients.isEmpty()) {
             return clients.get(0);

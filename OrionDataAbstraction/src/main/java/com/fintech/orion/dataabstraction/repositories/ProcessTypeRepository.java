@@ -18,7 +18,7 @@ public class ProcessTypeRepository extends AbstractDAO<ProcessType, Integer> imp
     }
 
     @Override
-    public ProcessType getProcessTypeByName(String type) throws ItemNotFoundException {
+    public ProcessType findByType(String type) throws ItemNotFoundException {
         List<ProcessType> processTypes = findByCriteria(Restrictions.eq(PROCESS_TYPE, type));
         if (processTypes != null && !processTypes.isEmpty()) {
             return processTypes.get(0);

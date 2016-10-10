@@ -18,7 +18,7 @@ public class ResourceRepository extends AbstractDAO<Resource, Integer> implement
     }
 
     @Override
-    public Resource getResourceByIdentificationCode(String resourceIdentificationCode) throws ItemNotFoundException {
+    public Resource findByIdentificationCode(String resourceIdentificationCode) throws ItemNotFoundException {
         List<Resource> resources = findByCriteria(Restrictions.eq(RESOURCE_IDENTIFICATION_CODE, resourceIdentificationCode));
         if (resources != null && !resources.isEmpty()) {
             return resources.get(0);

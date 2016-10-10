@@ -6,6 +6,6 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 
 public interface ResourceTypeRepositoryInterface extends DAOInterface<ResourceType, Integer> {
 
-    ResourceType getResourceTypeByType(String type) throws ItemNotFoundException;
+    ResourceType findByType(String type) throws ItemNotFoundException;
 
 }

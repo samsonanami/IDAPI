@@ -1,5 +1,6 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
@@ -10,41 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
-public class ProcessingRequestService implements ProcessingRequestServiceInterface {
+public class ProcessingRequestService extends AbstractService<ProcessingRequest, Integer> implements ProcessingRequestServiceInterface {
 
     @Autowired
     private ProcessingRequestRepositoryInterface processingRequestRepositoryInterface;
 
-    @Autowired
-    private ClientServiceInterface clientServiceInterface;
-
     @Transactional
     @Override
-    public List<ProcessingRequest> getProcessingRequestList() {
-        return processingRequestRepositoryInterface.getAll();
-    }
-
-    @Transactional
-    @Override
-    public ProcessingRequest getProcessingRequestById(int id) throws ItemNotFoundException {
-        ProcessingRequest processingRequest = processingRequestRepositoryInterface.findById(id);
-        if (processingRequest != null) {
-            return processingRequest;
-        } else { throw new ItemNotFoundException("Item Not Found"); }
-    }
-
-    @Transactional
-    @Override
-    public void saveOrUpdateProcessingRequest(ProcessingRequest processingRequest) {
-        processingRequestRepositoryInterface.saveOrUpdate(processingRequest);
-    }
-
-    @Transactional
-    @Override
-    public ProcessingRequest saveProcessingRequest(Client client) {
+    public ProcessingRequest save(Client client) {
         ProcessingRequest processingRequest = new ProcessingRequest();
         processingRequest.setReceivedOn(GenerateTimestamp.timestamp());
         processingRequest.setClient(client);
@@ -55,24 +30,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
     @Transactional
     @Override
-    public boolean deleteProcessingRequestById(int id) throws ItemNotFoundException {
-        ProcessingRequest processingRequest = processingRequestRepositoryInterface.findById(id);
-        if(processingRequest != null){
-            processingRequestRepositoryInterface.delete(processingRequest);
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
-    @Override
-    public void deleteProcessingRequest(ProcessingRequest processingRequest) {
-        processingRequestRepositoryInterface.delete(processingRequest);
-    }
-
-    @Transactional
-    @Override
-    public ProcessingRequest getProcessingRequestByIdentificationCode(String identificationCode) throws ItemNotFoundException {
-        return processingRequestRepositoryInterface.getProcessingRequestByIdentificationCode(identificationCode);
+    public ProcessingRequest findByIdIdentificationCode(String identificationCode) throws ItemNotFoundException {
+        return processingRequestRepositoryInterface.findByIdIdentificationCode(identificationCode);
     }
 }

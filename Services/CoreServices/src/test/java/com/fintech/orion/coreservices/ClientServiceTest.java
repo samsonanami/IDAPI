@@ -47,10 +47,10 @@ public class ClientServiceTest extends ObjectCreator {
     public void should_returnClientObject_when_getClientByAuthTokenCalled() throws ItemNotFoundException {
         ClientServiceInterface serviceInterface = new ClientService();
         ClientRepositoryInterface repositoryInterfaceMock = mock(ClientRepository.class);
-        when(repositoryInterfaceMock.getClientByAuthToken("token")).thenReturn(client);
+        when(repositoryInterfaceMock.findByAuthToken("token")).thenReturn(client);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        Client found = serviceInterface.getClientByAuthToken("token");
+        Client found = serviceInterface.findByAuthToken("token");
         assertTrue(client.equals(found));
     }
 
