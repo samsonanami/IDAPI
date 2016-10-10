@@ -1,5 +1,8 @@
 package com.fintech.orion.messaging.job;
 
+import com.fintech.orion.messaging.connection.DestinationHandlerInterface;
+import com.fintech.orion.messaging.connection.SessionHandlerInterface;
+
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
@@ -12,8 +15,8 @@ public class JobConsumer extends JobCommon implements JobConsumerInterface {
 
     private MessageConsumer consumer;
 
-    public JobConsumer(String queueName) {
-        super(queueName);
+    public JobConsumer(String queueName, DestinationHandlerInterface destinationHandler, SessionHandlerInterface sessionHandler) {
+        super(queueName, destinationHandler, sessionHandler);
         establishConsumer();
     }
 

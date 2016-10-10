@@ -6,7 +6,6 @@ import com.fintech.orion.messaging.connection.DestinationHandlerInterface;
 import com.fintech.orion.messaging.connection.SessionHandlerInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jms.Destination;
 import javax.jms.Session;
@@ -18,20 +17,18 @@ import javax.jms.Session;
 
 public class JobCommon {
 
-    @Autowired
-    private SessionHandlerInterface sessionHandler;
-
-    @Autowired
-    private DestinationHandlerInterface destinationHandler;
-
     static final Logger LOGGER = LoggerFactory.getLogger(JobCommon.class);
 
+    private SessionHandlerInterface sessionHandler;
+    private DestinationHandlerInterface destinationHandler;
     protected String queueName;
     protected Session session;
     protected Destination destination;
 
-    public JobCommon(String queueName) {
+    public JobCommon(String queueName, DestinationHandlerInterface destinationHandler, SessionHandlerInterface sessionHandler) {
         this.queueName = queueName;
+        this.destinationHandler = destinationHandler;
+        this.sessionHandler = sessionHandler;
         initializeJobCommon();
     }
 

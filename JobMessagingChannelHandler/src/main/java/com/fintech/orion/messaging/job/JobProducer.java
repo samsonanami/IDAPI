@@ -1,6 +1,8 @@
 package com.fintech.orion.messaging.job;
 
 import com.fintech.orion.common.exceptions.job.JobProducerException;
+import com.fintech.orion.messaging.connection.DestinationHandlerInterface;
+import com.fintech.orion.messaging.connection.SessionHandlerInterface;
 
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -16,8 +18,8 @@ public class JobProducer extends JobCommon implements JobProducerInterface {
     private MessageProducer producer;
     private static final long MESSAGE_TIME_TO_LIVE_MILLISECONDS = 0;
 
-    public JobProducer(String queueName) {
-        super(queueName);
+    public JobProducer(String queueName, DestinationHandlerInterface destinationHandler, SessionHandlerInterface sessionHandler) {
+        super(queueName, destinationHandler, sessionHandler);
         establishProducer();
     }
 
