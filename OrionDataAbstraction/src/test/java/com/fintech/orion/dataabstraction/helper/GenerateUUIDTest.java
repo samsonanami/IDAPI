@@ -1,6 +1,5 @@
-package com.fintech.orion;
+package com.fintech.orion.dataabstraction.helper;
 
-import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertFalse;

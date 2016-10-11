@@ -1,4 +1,4 @@
-package com.fintech.orion;
+package com.fintech.orion.helper;
 
 import com.fintech.orion.coreservices.ResourceService;
 import com.fintech.orion.coreservices.ResourceServiceInterface;

@@ -1,4 +1,4 @@
-package com.fintech.orion;
+package com.fintech.orion.helper;
 
 import com.fintech.orion.helper.FileExtensionValidator;
 import com.fintech.orion.helper.FileExtensionValidatorInterface;

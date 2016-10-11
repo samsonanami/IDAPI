@@ -1,4 +1,4 @@
-package com.fintech.orion;
+package com.fintech.orion.helper;
 
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;

@@ -1,7 +1,5 @@
-package com.fintech.orion;
+package com.fintech.orion.helper;
 
-import com.fintech.orion.helper.FileSizeChecker;
-import com.fintech.orion.helper.FileSizeCheckerInterface;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
