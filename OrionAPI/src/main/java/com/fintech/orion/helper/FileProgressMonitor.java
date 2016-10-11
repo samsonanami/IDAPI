@@ -1,7 +1,8 @@
 package com.fintech.orion.helper;
 
 import com.jcraft.jsch.SftpProgressMonitor;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 
@@ -11,7 +12,7 @@ public class FileProgressMonitor implements SftpProgressMonitor {
     long max = 0;
     private long percent = 1000;
 
-    private static final Logger LOGGER = Logger.getLogger(FileProgressMonitor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileProgressMonitor.class);
 
     @Override
     public void init(int op, String src, String dest, long max) {

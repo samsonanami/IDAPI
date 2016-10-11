@@ -1,14 +1,15 @@
 package com.fintech.orion.helper;
 
 import com.fintech.orion.model.Configuration;
+import org.slf4j.Logger;
 import com.jcraft.jsch.*;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
 public class SFileTransfer {
 
-    private static final Logger LOGGER = Logger.getLogger(SFileTransfer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SFileTransfer.class);
 
     private static final String TAG = "SFileTransfer: ";
 
@@ -50,7 +51,7 @@ public class SFileTransfer {
             return true;
 
         } catch (IOException | JSchException | SftpException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.toString());
             LOGGER.info(TAG + e.getMessage());
             return false;
         }

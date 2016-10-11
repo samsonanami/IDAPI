@@ -1,7 +1,8 @@
 package com.fintech.orion.helper;
 
 import com.fintech.orion.model.Configuration;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +10,7 @@ import java.io.*;
 
 public class FileUploadHandler implements FileUploadHandlerInterface {
 
-    private static final Logger LOGGER = Logger.getLogger(SFileTransfer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SFileTransfer.class);
 
     @Autowired
     private Configuration configuration;
@@ -44,7 +45,7 @@ public class FileUploadHandler implements FileUploadHandlerInterface {
                 return false;
             }
         } catch (IOException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.toString());
             LOGGER.error("File Not Found." + e.getMessage());
             return false;
         }
