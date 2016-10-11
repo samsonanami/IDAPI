@@ -11,7 +11,7 @@ import javax.jms.MessageListener;
  * Created by TharinduMP on 10/7/2016.
  * Implementation of Job Consumer
  */
-public class JobConsumer extends JobCommon implements JobConsumerInterface {
+public class JobConsumer extends JobCommon implements JobConsumerInterface, JobCommonInterface {
 
     private MessageConsumer consumer;
 

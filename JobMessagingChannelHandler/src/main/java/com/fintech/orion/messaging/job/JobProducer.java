@@ -4,16 +4,13 @@ import com.fintech.orion.common.exceptions.job.JobProducerException;
 import com.fintech.orion.messaging.connection.DestinationHandlerInterface;
 import com.fintech.orion.messaging.connection.SessionHandlerInterface;
 
-import javax.jms.DeliveryMode;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.TextMessage;
+import javax.jms.*;
 
 /**
  * Created by TharinduMP on 10/7/2016.
  * Implementation of Job Producer
  */
-public class JobProducer extends JobCommon implements JobProducerInterface {
+public class JobProducer extends JobCommon implements JobProducerInterface, JobCommonInterface {
 
     private MessageProducer producer;
     private static final long MESSAGE_TIME_TO_LIVE_MILLISECONDS = 0;
@@ -25,16 +22,15 @@ public class JobProducer extends JobCommon implements JobProducerInterface {
 
     /**
      * Produce a job to a provided destination
-     * @param jobData job information
+     * @param message job information
      * @throws JobProducerException
      */
     @Override
-    public void produceJob(String jobData) throws JobProducerException {
+    public void sendJob(Message message) throws JobProducerException {
         try {
             LOGGER.info("Started Producing a Job");
-            TextMessage messageToSend = session.createTextMessage(jobData);
-            producer.send(messageToSend);
-            LOGGER.info("Job Produced Successfully and sent the following message : {}", messageToSend);
+            producer.send(message);
+            LOGGER.info("Job Produced Successfully and sent the following message : {}", message.toString());
         } catch (JMSException e) {
             LOGGER.error("Producing the Job failed", e);
             throw new JobProducerException(e);

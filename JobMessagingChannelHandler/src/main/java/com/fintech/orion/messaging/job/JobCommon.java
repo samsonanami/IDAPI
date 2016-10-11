@@ -15,7 +15,7 @@ import javax.jms.Session;
  * The class is responsible for providing the common functionality for Consumer and Producer
  */
 
-public class JobCommon {
+public class JobCommon implements JobCommonInterface {
 
     static final Logger LOGGER = LoggerFactory.getLogger(JobCommon.class);
 
