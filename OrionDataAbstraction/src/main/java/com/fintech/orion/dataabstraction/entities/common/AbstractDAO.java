@@ -31,7 +31,7 @@ public abstract class AbstractDAO<E,I extends Serializable> implements DAOInterf
     public E findById(I id) throws ItemNotFoundException {
         Object entity = getCurrentSession().get(entityClass, id);
         if (entity != null) {
-            return (E) getCurrentSession().get(entityClass, id);
+            return (E) entity;
         } else {
             throw new ItemNotFoundException(itemNotFoundMessage);
         }
