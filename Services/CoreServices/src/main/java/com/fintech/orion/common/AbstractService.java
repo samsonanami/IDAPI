@@ -8,13 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by ChathurangaRW on 10/10/2016.
- */
 @Service
 public abstract class AbstractService<E,I extends Serializable> implements ServiceInterface<E, I> {
 
     private AbstractDAO<E, I> abstractDAO;
+
+    @Override
+    @Transactional
+    public List<E> getAll() {
+        return abstractDAO.getAll();
+    }
 
     @Override
     @Transactional
@@ -32,12 +35,6 @@ public abstract class AbstractService<E,I extends Serializable> implements Servi
     @Transactional
     public void delete(E e) {
         abstractDAO.delete(e);
-    }
-
-    @Override
-    @Transactional
-    public List<E> getAll() {
-        return abstractDAO.getAll();
     }
 
     @Override
