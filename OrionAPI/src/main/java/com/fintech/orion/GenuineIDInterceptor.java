@@ -2,7 +2,8 @@ package com.fintech.orion;
 
 import com.fintech.orion.model.ResponseMessage;
 import com.google.gson.Gson;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,14 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-public class DeveloperAuthenticationInterceptorV2 implements HandlerInterceptor {
+public class GenuineIDInterceptor implements HandlerInterceptor {
 
 
     private static final String APPLICATION_JSON = "application/json";
     private static final String CONTENT_TYPE = "content-type";
     private static final String ATTEMPTED_TO_LOG_WITHOUT_AUTHENTICATION = "Attempted to log without authentication";
     private static final String AUTHENTICATION_HEADER_IS_NOT_PRESENT_OR_INVALID = "Authentication Headers not present or is invalid";
-    private static final Logger LOGGER = Logger.getLogger(DeveloperAuthenticationInterceptorV2.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenuineIDInterceptor.class);
 
     /**
      * The developer key used for authentication.
@@ -67,7 +68,7 @@ public class DeveloperAuthenticationInterceptorV2 implements HandlerInterceptor 
                 return false;
             }
         } catch (Exception e) {
-            LOGGER.error(e);
+            LOGGER.error(e.toString());
             return false;
         }
         return true;
@@ -85,7 +86,7 @@ public class DeveloperAuthenticationInterceptorV2 implements HandlerInterceptor 
      */
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        LOGGER.info(o);
+        LOGGER.info(o.toString());
     }
 
     /**
@@ -99,6 +100,6 @@ public class DeveloperAuthenticationInterceptorV2 implements HandlerInterceptor 
      */
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        LOGGER.info(o);
+        LOGGER.info(o.toString());
     }
 }
