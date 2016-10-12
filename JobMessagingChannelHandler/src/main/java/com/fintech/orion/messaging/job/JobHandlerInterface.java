@@ -1,5 +1,6 @@
 package com.fintech.orion.messaging.job;
 
+import com.fintech.orion.common.exceptions.job.JobHandlerException;
 import com.fintech.orion.dto.messaging.GenericMapMessage;
 
 import javax.jms.JMSException;
@@ -12,7 +13,7 @@ import javax.jms.Session;
  */
 public interface JobHandlerInterface {
 
-    Message createGenericMapMessageToMessage(Session session, GenericMapMessage genericMapMessage) throws JMSException;
+    Message createGenericMapMessageToMessage(Session session, GenericMapMessage genericMapMessage) throws JobHandlerException;
 
-    GenericMapMessage createMapMessageToGenericMapMessage(MapMessage mapMessage) throws JMSException;
+    GenericMapMessage createMapMessageToGenericMapMessage(MapMessage mapMessage) throws JobHandlerException;
 }
