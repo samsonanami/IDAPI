@@ -45,6 +45,11 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     private String imageItemResourceUrl;
 
     @Override
+    public Client isValidClient(String accessToken) throws ItemNotFoundException {
+        return clientServiceInterface.findByAuthToken(accessToken);
+    }
+
+    @Override
     public String saveData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
         Client client = clientServiceInterface.findByAuthToken(accessToken);
 
@@ -65,9 +70,6 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
 
     @Override
     public VerificationRequest getData(String accessToken, String verificationRequestId) throws ItemNotFoundException {
-        // Check client is valid
-        clientServiceInterface.findByAuthToken(accessToken);
-
         ProcessingRequest processingRequest = processingRequestServiceInterface.findByIdIdentificationCode(verificationRequestId);
 
         VerificationRequest verificationRequest = new VerificationRequest();

@@ -2,6 +2,7 @@ package com.fintech.orion.helper;
 
 import com.fintech.orion.coreservices.ResourceService;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.rest.ItemController;
@@ -25,22 +26,27 @@ public class ItemControllerTest {
         final byte[] content = "image data".getBytes();
         MockMultipartFile mockMultipartFile = new MockMultipartFile("content", filename, "text/plain", content);
         MockHttpServletResponse response = new MockHttpServletResponse();
-        String assessToken = "123456";
+        String accessToken = "123456";
         String contentType = "image";
+        String uuidNumber = "1234-5678";
+        String newFilename = uuidNumber + "jpeg";
 
         FileExtensionValidatorInterface fileExtensionValidatorInterfaceMock = mock(FileExtensionValidator.class);
         when(fileExtensionValidatorInterfaceMock.validate("jpg")).thenReturn(true);
         ReflectionTestUtils.setField(itemController, "fileExtensionValidatorInterface", fileExtensionValidatorInterfaceMock);
 
         FileUploadHandlerInterface fileUploadHandlerInterfaceMock = mock(FileUploadHandler.class);
-        when(fileUploadHandlerInterfaceMock.upload(mockMultipartFile, filename)).thenReturn(true);
-        ReflectionTestUtils.setField(itemController, "fileSaveHandlerInterface", fileUploadHandlerInterfaceMock);
+        when(fileUploadHandlerInterfaceMock.upload(mockMultipartFile, newFilename)).thenReturn(true);
+        ReflectionTestUtils.setField(itemController, "fileUploadHandlerInterface", fileUploadHandlerInterfaceMock);
 
         ResourceServiceInterface resourceServiceInterfaceMock = mock(ResourceService.class);
+        when(resourceServiceInterfaceMock.save(newFilename, uuidNumber, contentType, accessToken)).thenReturn(new Resource());
         ReflectionTestUtils.setField(itemController, "resourceServiceInterface", resourceServiceInterfaceMock);
 
-        Object resourceReferenceCode = itemController.uploadContent(contentType, response, assessToken, mockMultipartFile);
+        Object resourceReferenceCode = itemController.uploadContent(contentType, response, accessToken, mockMultipartFile);
         assertThat(resourceReferenceCode, instanceOf(ContentUploadResourceResult.class));
     }
+
+
 
 }

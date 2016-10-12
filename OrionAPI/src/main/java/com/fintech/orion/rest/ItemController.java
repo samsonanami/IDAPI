@@ -4,7 +4,6 @@ import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
-import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import com.fintech.orion.helper.*;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.model.ContentUploadResourceResult;
@@ -21,11 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ItemController {
 
-    private static final String TAG = "ItemController";
+    private static final String TAG = "ItemController: ";
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
 
     private static final String THE_SUBMITTED_FILE_IS_NOT_IN_CORRECT_FORMAT = "The submitted file is not in correct format";
-    private static final String FILE_UPLOAD_ERROR = "File Upload Error";
+    private static final String FILE_SIZE_ERROR = "The file exceeds the maximum file size";
     private static final String JSON_NOT_IN_CORRECT_FORMAT = "Json not in correct format";
 
     @Autowired
@@ -49,8 +48,9 @@ public class ItemController {
                                 HttpServletResponse response,
                                 @RequestParam("access_token") String accessToken,
                                 @RequestParam("file") final MultipartFile multiPart) {
-        LOGGER.debug("UploadContent: (v1/content/" + contentType + "?" + "access_token+" + accessToken + ")" + "called." + " with" + multiPart.getOriginalFilename());
         try {
+            processingRequestHandlerInterface.isValidClient(accessToken);
+
             Resource resource;
             String fileName = multiPart.getOriginalFilename();
             String extension = fileName.split("\\.")[1];
@@ -60,16 +60,15 @@ public class ItemController {
                 return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, THE_SUBMITTED_FILE_IS_NOT_IN_CORRECT_FORMAT, response);
             }
 
-            boolean isSaved = fileUploadHandlerInterface.upload(multiPart, newFilename);
+            boolean isUploaded = fileUploadHandlerInterface.upload(multiPart, newFilename);
 
-            if(isSaved) {
+            if(isUploaded) {
                 resource = resourceServiceInterface.save(newFilename, uuidNumber, contentType, accessToken);
             } else {
-                return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, FILE_UPLOAD_ERROR, response);
+                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, FILE_SIZE_ERROR, response);
             }
             ContentUploadResourceResult result = new ContentUploadResourceResult();
             result.setResourceReferenceCode(resource.getResourceIdentificationCode());
-            LOGGER.debug("UploadContent: (v1/content/" + contentType + "?" + "access_token+" + accessToken + ")" + "end.");
             return result;
         } catch (ItemNotFoundException ex) {
             LOGGER.error(TAG, ex);
@@ -83,8 +82,9 @@ public class ItemController {
                                HttpServletResponse response,
                                @RequestParam("access_token") String accessToken,
                                @RequestBody ProcessingRequest data) {
-        LOGGER.debug("Verification: (v1/verification?integrationRequest=" + integrationRequest + "&access_token+" + accessToken + ")" + "called." + " with" + data);
         try {
+            processingRequestHandlerInterface.isValidClient(accessToken);
+
             if(!jsonValidatorInterface.jsonValidate(data.getVerificationProcesses())){
                 return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, JSON_NOT_IN_CORRECT_FORMAT, response);
             }
@@ -93,7 +93,6 @@ public class ItemController {
 
             VerificationResponseMessage result = new VerificationResponseMessage();
             result.setProcessingRequestId(processingRequestId);
-            LOGGER.debug("Verification: (v1/verification?integrationRequest=" + integrationRequest + "&access_token+" + accessToken + ")" + "end.");
             return result;
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
@@ -106,11 +105,10 @@ public class ItemController {
     public Object verificationResults(@PathVariable String verificationRequestId,
                                 HttpServletResponse response,
                                 @RequestParam("access_token") String accessToken) {
-        LOGGER.debug("Verification: (v1/verification/" + verificationRequestId + "?access_token+" + accessToken + ")" + "called.");
         try {
-            VerificationRequest verificationRequest = processingRequestHandlerInterface.getData(accessToken, verificationRequestId);
-            LOGGER.debug("Verification: (v1/verification/" + verificationRequestId + "?access_token+" + accessToken + ")" + "end.");
-            return verificationRequest;
+            processingRequestHandlerInterface.isValidClient(accessToken);
+
+            return processingRequestHandlerInterface.getData(accessToken, verificationRequestId);
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
@@ -124,11 +122,9 @@ public class ItemController {
                                HttpServletResponse response,
                                @RequestParam("access_token") String accessToken) {
         try {
-            LOGGER.debug("Verification: (v1/verification/" + verificationProcessId + "/resource/" + id + "?access_token+" + accessToken + ")" + "called.");
+            processingRequestHandlerInterface.isValidClient(accessToken);
             // TODO
-            Object object = processingRequestHandlerInterface.getImageData(accessToken, verificationProcessId, id);
-            LOGGER.debug("Verification: (v1/verification/" + verificationProcessId + "/resource/" + id + "?access_token+" + accessToken + ")" + "end.");
-            return object;
+            return processingRequestHandlerInterface.getImageData(accessToken, verificationProcessId, id);
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);

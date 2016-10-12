@@ -41,7 +41,7 @@ public class FileUploadHandler implements FileUploadHandlerInterface {
                     return false;
                 }
             } else {
-                LOGGER.info("File Size Not Allowed.");
+                LOGGER.info("The image exceeds the maximum image file size.");
                 return false;
             }
         } catch (IOException e) {
