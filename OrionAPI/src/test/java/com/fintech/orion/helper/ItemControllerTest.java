@@ -3,7 +3,6 @@ package com.fintech.orion.helper;
 import com.fintech.orion.coreservices.ResourceService;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.helper.*;
 import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.rest.ItemController;
 import org.junit.Test;

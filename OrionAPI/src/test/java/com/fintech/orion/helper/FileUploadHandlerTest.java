@@ -13,10 +13,9 @@ public class FileUploadHandlerTest {
 
     @Test
     public void shouldUploadFileToServerWhenUploadCalled() {
-        Configuration configuration = new Configuration("10.101.15.212", 22, "root", "zone@123");
+        Configuration configuration = new Configuration("localhost", 22, "root", "zone@123");
         String testFileContents = "Some file contents";
         String uploadFileName = "uploadFile";
-        String downloadFileName = "downloadFile";
         String workingDir = "//opt//orion//data/test";
 
         final String filename = "image.jpg";
