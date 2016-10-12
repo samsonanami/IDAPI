@@ -16,13 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 
 @Controller
 public class ItemController {
 
+    private static final String TAG = "ItemController";
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
 
     private static final String THE_SUBMITTED_FILE_IS_NOT_IN_CORRECT_FORMAT = "The submitted file is not in correct format";
@@ -73,8 +72,7 @@ public class ItemController {
             LOGGER.debug("UploadContent: (v1/content/" + contentType + "?" + "access_token+" + accessToken + ")" + "end.");
             return result;
         } catch (ItemNotFoundException ex) {
-            LOGGER.error(ex.toString());
-            LOGGER.error(ex.getMessage());
+            LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
         }
     }
@@ -98,8 +96,7 @@ public class ItemController {
             LOGGER.debug("Verification: (v1/verification?integrationRequest=" + integrationRequest + "&access_token+" + accessToken + ")" + "end.");
             return result;
         } catch (Exception ex){
-            LOGGER.error(ex.toString());
-            LOGGER.error(ex.getMessage());
+            LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
         }
     }
@@ -115,8 +112,7 @@ public class ItemController {
             LOGGER.debug("Verification: (v1/verification/" + verificationRequestId + "?access_token+" + accessToken + ")" + "end.");
             return verificationRequest;
         } catch (Exception ex){
-            LOGGER.error(ex.toString());
-            LOGGER.error(ex.getMessage());
+            LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
         }
     }
@@ -130,14 +126,11 @@ public class ItemController {
         try {
             LOGGER.debug("Verification: (v1/verification/" + verificationProcessId + "/resource/" + id + "?access_token+" + accessToken + ")" + "called.");
             // TODO
-            BufferedImage bufferedImage = processingRequestHandlerInterface.getImageData(accessToken, verificationProcessId, id);
-            response.setContentType("image/jpg");
-            ImageIO.write(bufferedImage, "jpeg", response.getOutputStream());
+            Object object = processingRequestHandlerInterface.getImageData(accessToken, verificationProcessId, id);
             LOGGER.debug("Verification: (v1/verification/" + verificationProcessId + "/resource/" + id + "?access_token+" + accessToken + ")" + "end.");
-            return null;
+            return object;
         } catch (Exception ex){
-            LOGGER.error(ex.toString());
-            LOGGER.error(ex.getMessage());
+            LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
         }
     }
