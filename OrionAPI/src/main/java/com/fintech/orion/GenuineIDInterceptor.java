@@ -11,11 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Component
 public class GenuineIDInterceptor implements HandlerInterceptor {
 
-
+    private static final String TAG = "GenuineIDInterceptor: ";
     private static final String APPLICATION_JSON = "application/json";
     private static final String CONTENT_TYPE = "content-type";
     private static final String ATTEMPTED_TO_LOG_WITHOUT_AUTHENTICATION = "Attempted to log without authentication";
@@ -67,8 +68,8 @@ public class GenuineIDInterceptor implements HandlerInterceptor {
                 response.getWriter().write(errorMessageToBeReturned);
                 return false;
             }
-        } catch (Exception e) {
-            LOGGER.error(e.toString());
+        } catch (IOException e) {
+            LOGGER.error(TAG, e);
             return false;
         }
         return true;

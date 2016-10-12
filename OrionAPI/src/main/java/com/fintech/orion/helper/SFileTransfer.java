@@ -51,7 +51,7 @@ public class SFileTransfer {
             return true;
 
         } catch (IOException | JSchException | SftpException e) {
-            LOGGER.error(e.toString());
+            LOGGER.error(TAG, e);
             LOGGER.info(TAG + e.getMessage());
             return false;
         }

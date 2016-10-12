@@ -4,7 +4,7 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 
-import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 
 public interface ProcessingRequestHandlerInterface {
@@ -13,5 +13,5 @@ public interface ProcessingRequestHandlerInterface {
 
     VerificationRequest getData(String accessToken, String verificationRequestId) throws ItemNotFoundException;
 
-    BufferedImage getImageData(String accessToken, String verificationProcessId, int id);
+    Object getImageData(String accessToken, String verificationProcessId, int id) throws IOException;
 }

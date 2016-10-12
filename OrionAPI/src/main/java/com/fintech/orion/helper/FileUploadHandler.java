@@ -45,8 +45,7 @@ public class FileUploadHandler implements FileUploadHandlerInterface {
                 return false;
             }
         } catch (IOException e) {
-            LOGGER.error(e.toString());
-            LOGGER.error("File Not Found." + e.getMessage());
+            LOGGER.error("File Not Found." + e);
             return false;
         }
     }

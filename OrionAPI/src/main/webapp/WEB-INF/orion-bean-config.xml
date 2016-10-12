@@ -6,7 +6,7 @@
 
     <bean id="clientLicenseServiceInterface" class="com.fintech.orion.coreservices.ClientLicenseService"/>
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
-    <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseServiceInterface"/>
+    <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
     <bean id="processingRequestServiceInterface" class="com.fintech.orion.coreservices.ProcessingRequestService"/>
     <bean id="processResourceServiceInterface" class="com.fintech.orion.coreservices.ProcessResourceService"/>
     <bean id="processServiceInterface" class="com.fintech.orion.coreservices.ProcessService"/>
