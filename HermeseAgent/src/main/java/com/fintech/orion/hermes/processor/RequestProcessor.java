@@ -6,7 +6,4 @@ package com.fintech.orion.hermes.processor;
  */
 public class RequestProcessor {
 
-    public void getProcesses() {
-
-    }
 }
