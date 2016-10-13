@@ -5,6 +5,9 @@ import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Verity client is valid using token
+ */
 public class ClientValidator implements ClientValidatorInterface {
 
     @Autowired
