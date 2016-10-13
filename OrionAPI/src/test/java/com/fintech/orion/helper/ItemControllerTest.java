@@ -104,8 +104,7 @@ public class ItemControllerTest {
         when(processingRequestHandlerInterfaceMock.getResourceData(ACCESS_TOKEN, verificationProcessId, id)).thenReturn(object);
         ReflectionTestUtils.setField(itemController, PROCESSING_REQUEST_HANDLER_INTERFACE, processingRequestHandlerInterfaceMock);
 
-        // TODO
-        Object found = itemController.processedResources(verificationProcessId, id, response, ACCESS_TOKEN);
+        itemController.processedResources(verificationProcessId, id, response, ACCESS_TOKEN);
     }
 
 }

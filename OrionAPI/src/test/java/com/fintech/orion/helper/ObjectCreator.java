@@ -37,8 +37,7 @@ public class ObjectCreator {
     }
 
     public static VerificationRequest aVerificationRequest() {
-        VerificationRequest verificationRequest = new VerificationRequest();
-        return verificationRequest;
+        return new VerificationRequest();
     }
 
 }
