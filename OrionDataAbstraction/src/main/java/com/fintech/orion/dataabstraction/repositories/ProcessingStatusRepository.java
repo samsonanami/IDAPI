@@ -9,4 +9,8 @@ public class ProcessingStatusRepository extends AbstractDAO<ProcessingStatus, In
         super(ProcessingStatus.class);
     }
 
+    @Override
+    public ProcessingStatus findByStatus(String status) {
+        return null;
+    }
 }

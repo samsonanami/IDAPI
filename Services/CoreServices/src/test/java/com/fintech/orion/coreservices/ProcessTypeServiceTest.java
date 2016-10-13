@@ -10,7 +10,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.*;
 
-public class ProcessTypeServiceTest extends ObjectCreator {
+public class ProcessTypeServiceTest {
 
     private final String REPOSITORY_INTERFACE = "processTypeRepositoryInterface";
 
@@ -18,7 +18,7 @@ public class ProcessTypeServiceTest extends ObjectCreator {
     public void shouldReturnClientObjectWhenFindByAuthTokenCalled() throws ItemNotFoundException {
         ProcessTypeServiceInterface serviceInterface = new ProcessTypeService();
         ProcessTypeRepositoryInterface repositoryInterfaceMock = mock(ProcessTypeRepository.class);
-        ProcessType processType = createProcessTypeObject();
+        ProcessType processType = ObjectCreator.createProcessTypeObject();
         when(repositoryInterfaceMock.findByType("type")).thenReturn(processType);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 

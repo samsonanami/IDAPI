@@ -9,7 +9,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ResourceTypeServiceTest extends ObjectCreator {
+public class ResourceTypeServiceTest {
 
     private final String REPOSITORY_INTERFACE = "resourceTypeRepositoryInterface";
 
@@ -18,7 +18,7 @@ public class ResourceTypeServiceTest extends ObjectCreator {
         ResourceTypeServiceInterface serviceInterface = new ResourceTypeService();
         ResourceTypeRepositoryInterface repositoryInterfaceMock = mock(ResourceTypeRepository.class);
 
-        ResourceType resource = new ResourceType();
+        ResourceType resource = ObjectCreator.createResourceTypeObject();
 
         when(repositoryInterfaceMock.findByType("type")).thenReturn(resource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);

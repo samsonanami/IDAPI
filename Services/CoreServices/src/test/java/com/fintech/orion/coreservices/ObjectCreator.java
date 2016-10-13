@@ -5,49 +5,51 @@ import com.fintech.orion.dataabstraction.entities.orion.Process;
 
 public class ObjectCreator {
 
-    public Client createClientObject() {
+    private ObjectCreator() {}
+
+    public static Client createClientObject() {
         return new Client();
     }
 
-    public ClientLicense createClientLicenseObject() {
+    public static ClientLicense createClientLicenseObject() {
         return new ClientLicense();
     }
 
-    public License createLicenseObject() {
+    public static License createLicenseObject() {
         return new License();
     }
 
-    public Process createProcessObject() {
+    public static Process createProcessObject() {
         return new Process();
     }
 
-    public ProcessingRequest createProcessingRequestObject() {
+    public static ProcessingRequest createProcessingRequestObject() {
         return new ProcessingRequest();
     }
 
-    public ProcessType createProcessTypeObject() {
+    public static ProcessType createProcessTypeObject() {
         return new ProcessType();
     }
 
-    public ProcessResource createProcessResourceObject(){
+    public static ProcessResource createProcessResourceObject(){
         return new ProcessResource();
     }
 
-    public ProcessTypeLicense createProcessTypeLicenseObject(){
+    public static ProcessTypeLicense createProcessTypeLicenseObject(){
         return new ProcessTypeLicense();
     }
 
-    public Resource createResourceObject(){
+    public static Resource createResourceObject(){
         return new Resource();
     }
 
-    public ResourceType createResourceTypeObject(){
+    public static ResourceType createResourceTypeObject(){
         return new ResourceType();
     }
 
-    public Response createResponseObject() {
+    public static Response createResponseObject() {
         return new Response();
     }
 
-    public ProcessingStatus createProcessingStatusObject() { return new ProcessingStatus(); }
+    public static ProcessingStatus createProcessingStatusObject() { return new ProcessingStatus(); }
 }

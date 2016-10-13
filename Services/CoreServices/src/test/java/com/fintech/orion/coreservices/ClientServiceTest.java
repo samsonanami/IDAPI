@@ -10,7 +10,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ClientServiceTest extends ObjectCreator {
+public class ClientServiceTest {
 
     private final String REPOSITORY_INTERFACE = "clientRepositoryInterface";
 
@@ -18,7 +18,7 @@ public class ClientServiceTest extends ObjectCreator {
     public void shouldReturnClientObjectWhenFindByAuthTokenCalled() throws ItemNotFoundException {
         ClientServiceInterface serviceInterface = new ClientService();
         ClientRepositoryInterface repositoryInterfaceMock = mock(ClientRepository.class);
-        Client client = createClientObject();
+        Client client = ObjectCreator.createClientObject();
         when(repositoryInterfaceMock.findByAuthToken("token")).thenReturn(client);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 

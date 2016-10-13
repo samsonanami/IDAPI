@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import static org.mockito.Mockito.*;
 
-public class ProcessResourceServiceTest extends ObjectCreator {
+public class ProcessResourceServiceTest  {
 
     private final String REPOSITORY_INTERFACE = "processResourceRepositoryInterface";
 
@@ -16,7 +16,7 @@ public class ProcessResourceServiceTest extends ObjectCreator {
         ProcessResourceServiceInterface serviceInterface = new ProcessResourceService();
         ProcessResourceRepositoryInterface repositoryInterfaceMock = mock(ProcessResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        ProcessResource processResource = serviceInterface.save(createProcessObject(), createResourceObject(), "resourceName");
+        ProcessResource processResource = serviceInterface.save(ObjectCreator.createProcessObject(), ObjectCreator.createResourceObject(), "resourceName");
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processResource);
     }
 

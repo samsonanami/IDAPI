@@ -10,7 +10,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ProcessingRequestServiceTest extends ObjectCreator {
+public class ProcessingRequestServiceTest {
 
     private final String REPOSITORY_INTERFACE = "processingRequestRepositoryInterface";
 
@@ -18,7 +18,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
     public void shouldReturnClientObjectWhenFindByAuthTokenCalled() throws ItemNotFoundException {
         ProcessingRequestServiceInterface serviceInterface = new ProcessingRequestService();
         ProcessingRequestRepositoryInterface repositoryInterfaceMock = mock(ProcessingRequestRepository.class);
-        ProcessingRequest processingRequest = createProcessingRequestObject();
+        ProcessingRequest processingRequest = ObjectCreator.createProcessingRequestObject();
         when(repositoryInterfaceMock.findByIdIdentificationCode("123456")).thenReturn(processingRequest);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
@@ -31,7 +31,7 @@ public class ProcessingRequestServiceTest extends ObjectCreator {
         ProcessingRequestServiceInterface serviceInterface = new ProcessingRequestService();
         ProcessingRequestRepositoryInterface repositoryInterfaceMock = mock(ProcessingRequestRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
-        ProcessingRequest processingRequest = serviceInterface.save(createClientObject());
+        ProcessingRequest processingRequest = serviceInterface.save(ObjectCreator.createClientObject());
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(processingRequest);
     }
 

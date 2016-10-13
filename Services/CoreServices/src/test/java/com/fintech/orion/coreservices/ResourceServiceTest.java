@@ -12,7 +12,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ResourceServiceTest extends ObjectCreator {
+public class ResourceServiceTest {
 
     private final String REPOSITORY_INTERFACE = "resourceRepositoryInterface";
 
@@ -21,7 +21,7 @@ public class ResourceServiceTest extends ObjectCreator {
         ResourceServiceInterface serviceInterface = new ResourceService();
         ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
 
-        Resource resource = new Resource();
+        Resource resource = ObjectCreator.createResourceObject();
 
         when(repositoryInterfaceMock.findByIdentificationCode("code")).thenReturn(resource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
@@ -34,8 +34,8 @@ public class ResourceServiceTest extends ObjectCreator {
     public void shouldSaveObjectWhenSaveCalled() throws ItemNotFoundException {
         ResourceServiceInterface serviceInterface = new ResourceService();
 
-        Client client = createClientObject();
-        ResourceType resourceType = createResourceTypeObject();
+        Client client = ObjectCreator.createClientObject();
+        ResourceType resourceType = ObjectCreator.createResourceTypeObject();
 
         ClientServiceInterface clientService = mock(ClientService.class);
         when(clientService.findByAuthToken("123456")).thenReturn(client);
