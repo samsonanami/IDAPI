@@ -14,7 +14,7 @@ import java.util.List;
  * Class for Managing the Job. this includes processing the message,
  * delegating the message to validations and other job related tasks.
  */
-public class JobManager {
+public class JobManager implements JobManagerInterface {
 
     @Autowired
     private MessageProcessorInterface messageProcessor;
@@ -22,6 +22,7 @@ public class JobManager {
     @Autowired
     private ProcessProviderInterface processProvider;
 
+    @Override
     public void delegateJob(Message message) throws Exception {
 
         //get processed DTO

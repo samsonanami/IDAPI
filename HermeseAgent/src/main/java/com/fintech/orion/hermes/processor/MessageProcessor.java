@@ -21,11 +21,11 @@ public class MessageProcessor implements MessageProcessorInterface {
     @Override
     public GenericMapMessage processMessage(Message message) throws MessageProcessorException {
         try {
-            if (message instanceof MapMessage) {
+            if (message != null && message instanceof MapMessage) {
                 MapMessage mapMessage = (MapMessage) message;
                 return jobHandler.createMapMessageToGenericMapMessage(mapMessage);
             } else {
-                throw new MessageProcessorException("Sent message is not of a MapMessage type");
+                throw new MessageProcessorException("Sent message is not of a MapMessage type or message is null");
             }
         } catch (JobHandlerException e) {
             throw new MessageProcessorException(e);
