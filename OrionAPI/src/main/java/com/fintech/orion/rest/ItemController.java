@@ -23,9 +23,14 @@ public class ItemController {
     private static final String TAG = "ItemController: ";
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
 
-    private static final String THE_SUBMITTED_FILE_IS_NOT_IN_CORRECT_FORMAT = "The submitted file is not in correct format";
-    private static final String FILE_SIZE_ERROR = "The file exceeds the maximum file size";
-    private static final String JSON_NOT_IN_CORRECT_FORMAT = "Json not in correct format";
+    @Autowired
+    private String fileNotInCorrectFormatMessage;
+
+    @Autowired
+    private String maximumFileSizeMessage;
+
+    @Autowired
+    private String jsonNotInCorrectFormatMessage;
 
     @Autowired
     private ResourceServiceInterface resourceServiceInterface;
@@ -60,7 +65,7 @@ public class ItemController {
             String uuidNumber = GenerateUUID.uuidNumber();
             String newFilename = uuidNumber + "." + extension;
             if (!fileExtensionValidatorInterface.validate(extension)) {
-                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, THE_SUBMITTED_FILE_IS_NOT_IN_CORRECT_FORMAT, response);
+                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, fileNotInCorrectFormatMessage, response);
             }
 
             boolean isUploaded = fileUploadHandlerInterface.upload(multiPart, newFilename);
@@ -68,7 +73,7 @@ public class ItemController {
             if(isUploaded) {
                 resource = resourceServiceInterface.save(newFilename, uuidNumber, contentType, accessToken);
             } else {
-                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, FILE_SIZE_ERROR, response);
+                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, maximumFileSizeMessage, response);
             }
             ContentUploadResourceResult result = new ContentUploadResourceResult();
             result.setResourceReferenceCode(resource.getResourceIdentificationCode());
@@ -89,7 +94,7 @@ public class ItemController {
             clientValidatorInterface.checkClientValidity(accessToken);
 
             if(!jsonValidatorInterface.jsonValidate(data.getVerificationProcesses())){
-                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, JSON_NOT_IN_CORRECT_FORMAT, response);
+                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, jsonNotInCorrectFormatMessage, response);
             }
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(accessToken, data.getVerificationProcesses());

@@ -13,6 +13,9 @@ public class FileUploadHandler implements FileUploadHandlerInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(SFileTransfer.class);
 
     @Autowired
+    private String maximumFileSizeMessage;
+
+    @Autowired
     private Configuration configuration;
 
     @Autowired
@@ -31,21 +34,21 @@ public class FileUploadHandler implements FileUploadHandlerInterface {
 
                 SFileTransfer sFileTransfer = new SFileTransfer(configuration);
 
-                LOGGER.info("Uploading File.");
+                LOGGER.info("Uploading File");
 
                 if (sFileTransfer.transferFile(file.getPath(), workingDir)) {
-                    LOGGER.info("Uploading File Complete.");
+                    LOGGER.info("Uploading File Complete");
                     return true;
                 } else {
-                    LOGGER.info("Uploading File Failed.");
+                    LOGGER.info("Uploading File Failed");
                     return false;
                 }
             } else {
-                LOGGER.info("The image exceeds the maximum image file size.");
+                LOGGER.info(maximumFileSizeMessage);
                 return false;
             }
         } catch (IOException e) {
-            LOGGER.error("File Not Found." + e);
+            LOGGER.error("File Not Found" + e);
             return false;
         }
     }

@@ -32,6 +32,7 @@
     <import resource="dbSession-config.xml"/>
     <import resource="orion-bean-config.xml"/>
     <import resource="process-type-config.xml"/>
+    <import resource="messages-config.xml"/>
 
     <bean id="developerKey" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="RmludGVjaDp4R0gyMjk3OUhvczJ3eDRL"/>
