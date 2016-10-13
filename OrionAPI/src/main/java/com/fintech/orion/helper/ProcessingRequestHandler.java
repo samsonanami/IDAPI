@@ -8,6 +8,7 @@ import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
@@ -45,12 +46,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     private String imageItemResourceUrl;
 
     @Override
-    public Client isValidClient(String accessToken) throws ItemNotFoundException {
-        return clientServiceInterface.findByAuthToken(accessToken);
-    }
-
-    @Override
-    public String saveData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
+    public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
         Client client = clientServiceInterface.findByAuthToken(accessToken);
 
         ProcessingRequest processingRequest = processingRequestServiceInterface.save(client);
@@ -69,7 +65,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     }
 
     @Override
-    public VerificationRequest getData(String accessToken, String verificationRequestId) throws ItemNotFoundException {
+    public VerificationRequest getVerificationRequestData(String accessToken, String verificationRequestId) throws ItemNotFoundException {
         ProcessingRequest processingRequest = processingRequestServiceInterface.findByIdIdentificationCode(verificationRequestId);
 
         VerificationRequest verificationRequest = new VerificationRequest();
@@ -88,7 +84,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     }
 
     @Override
-    public Object getImageData(String accessToken, String verificationProcessId, int id) throws IOException {
+    public Object getResourceData(String accessToken, String verificationProcessId, int id) throws IOException {
         return sendGet(imageItemResourceUrl);
     }
 
@@ -97,6 +93,8 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         con.setRequestMethod("GET");
+        byte[] bytesEncoded = Base64.encodeBase64(("Fintech" + ":" + "xGH22979Hos2wx4K").getBytes());
+        con.setRequestProperty("Authorization", "Basic " + new String(bytesEncoded));
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));

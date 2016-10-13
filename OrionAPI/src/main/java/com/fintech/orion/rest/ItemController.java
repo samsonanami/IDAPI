@@ -42,6 +42,9 @@ public class ItemController {
     @Autowired
     private ProcessingRequestHandlerInterface processingRequestHandlerInterface;
 
+    @Autowired
+    private ClientValidatorInterface clientValidatorInterface;
+
     @RequestMapping(value = "v1/content/{contentType}", method = RequestMethod.POST)
     @ResponseBody
     public Object uploadContent(@PathVariable String contentType,
@@ -49,7 +52,7 @@ public class ItemController {
                                 @RequestParam("access_token") String accessToken,
                                 @RequestParam("file") final MultipartFile multiPart) {
         try {
-            processingRequestHandlerInterface.isValidClient(accessToken);
+            clientValidatorInterface.checkClientValidity(accessToken);
 
             Resource resource;
             String fileName = multiPart.getOriginalFilename();
@@ -83,13 +86,13 @@ public class ItemController {
                                @RequestParam("access_token") String accessToken,
                                @RequestBody ProcessingRequest data) {
         try {
-            processingRequestHandlerInterface.isValidClient(accessToken);
+            clientValidatorInterface.checkClientValidity(accessToken);
 
             if(!jsonValidatorInterface.jsonValidate(data.getVerificationProcesses())){
                 return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, JSON_NOT_IN_CORRECT_FORMAT, response);
             }
 
-            String processingRequestId = processingRequestHandlerInterface.saveData(accessToken, data.getVerificationProcesses());
+            String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(accessToken, data.getVerificationProcesses());
 
             VerificationResponseMessage result = new VerificationResponseMessage();
             result.setProcessingRequestId(processingRequestId);
@@ -106,9 +109,9 @@ public class ItemController {
                                 HttpServletResponse response,
                                 @RequestParam("access_token") String accessToken) {
         try {
-            processingRequestHandlerInterface.isValidClient(accessToken);
+            clientValidatorInterface.checkClientValidity(accessToken);
 
-            return processingRequestHandlerInterface.getData(accessToken, verificationRequestId);
+            return processingRequestHandlerInterface.getVerificationRequestData(accessToken, verificationRequestId);
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
@@ -122,9 +125,9 @@ public class ItemController {
                                HttpServletResponse response,
                                @RequestParam("access_token") String accessToken) {
         try {
-            processingRequestHandlerInterface.isValidClient(accessToken);
+            clientValidatorInterface.checkClientValidity(accessToken);
             // TODO
-            return processingRequestHandlerInterface.getImageData(accessToken, verificationProcessId, id);
+            return processingRequestHandlerInterface.getResourceData(accessToken, verificationProcessId, id);
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
