@@ -4,8 +4,10 @@ import com.fintech.orion.coreservices.*;
 import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.models.*;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import org.apache.commons.codec.binary.Base64;
@@ -50,8 +52,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
         Client client = clientServiceInterface.findByAuthToken(accessToken);
 
         ProcessingRequest processingRequest = processingRequestServiceInterface.save(client);
-        // TODO set correct processing status
-        ProcessingStatus processingStatus = processingStatusServiceInterface.findById(1);
+        ProcessingStatus processingStatus = processingStatusServiceInterface.findByStatus(Status.PROCESSING_REQUESTED);
 
         for (VerificationProcess v : verificationProcessList) {
             ProcessType processType = processTypeServiceInterface.findByType(v.getVerificationProcessType());
@@ -76,7 +77,9 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
                     new com.fintech.orion.dataabstraction.models.verificationresult.VerificationProcess();
             verificationProcess.setVerificationProcessId(p.getProcessIdentificationCode());
             verificationProcess.setStatus(p.getProcessingStatus().getStatus());
-            // TODO handle response according to status
+            if(p.getProcessingStatus().getStatus().equals(Status.PROCESSING_COMPLETE)){
+                verificationProcess.setData(p.getResponse().getExtractedJson());
+            }
             verificationProcessList.add(verificationProcess);
         }
         verificationRequest.setVerificationProcesses(verificationProcessList);
