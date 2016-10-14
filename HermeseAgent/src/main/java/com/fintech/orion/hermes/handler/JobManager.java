@@ -31,7 +31,9 @@ public class JobManager implements JobManagerInterface {
         //get process list allocated for the job
         List<Process> processList = processProvider.getProcesses(genericMapMessage.getIdentificationCode());
 
-        //delegate to the request processor
+        //createGenericRequest
+
+        //delegate to the request Handler
 
 
     }
