@@ -54,14 +54,6 @@
         <constructor-arg type="java.lang.String" value="https://www.checkid.online:15045/inspectionimage/"/>
     </bean>
 
-    <!--<bean id="genuineIdUsername">-->
-        <!--<constructor-arg type="java.lang.String" value="Fintech"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="genuineIdPassword">-->
-        <!--<constructor-arg type="java.lang.String" value="xGH22979Hos2wx4K"/>-->
-    <!--</bean>-->
-
     <bean id="sftpConfig" class="com.fintech.orion.model.Configuration">
         <constructor-arg type="java.lang.String" value="10.101.15.212"/>
         <constructor-arg type="int" value='22'/>
