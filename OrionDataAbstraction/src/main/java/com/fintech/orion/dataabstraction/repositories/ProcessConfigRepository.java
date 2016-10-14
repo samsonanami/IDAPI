@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ProcessConfigRepository extends AbstractDAO<ProcessConfig, Integer> implements ProcessConfigRepositoryInterface {
 
-    protected ProcessConfigRepository(Class<ProcessConfig> entityClass) {
-        super(entityClass);
+    protected ProcessConfigRepository() {
+        super(ProcessConfig.class);
     }
 
 }
