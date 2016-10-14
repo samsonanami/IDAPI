@@ -96,12 +96,12 @@ public class ItemControllerTest {
 
         String verificationProcessId = "987654321";
         MockHttpServletResponse response = new MockHttpServletResponse();
-        int id = 12345;
+        String id = "12345";
 
         Object object = new Object();
 
         ProcessingRequestHandlerInterface processingRequestHandlerInterfaceMock = mock(ProcessingRequestHandler.class);
-        when(processingRequestHandlerInterfaceMock.getResourceData(ACCESS_TOKEN, verificationProcessId, id)).thenReturn(object);
+        //when(processingRequestHandlerInterfaceMock.getResourceData(ACCESS_TOKEN, verificationProcessId, id)).thenReturn(object);
         ReflectionTestUtils.setField(itemController, PROCESSING_REQUEST_HANDLER_INTERFACE, processingRequestHandlerInterfaceMock);
 
         itemController.processedResources(verificationProcessId, id, response, ACCESS_TOKEN);
