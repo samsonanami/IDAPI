@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 @Controller
 public class ItemController {
@@ -131,10 +132,10 @@ public class ItemController {
     public void processedResources(@PathVariable String verificationProcessId,
                                @PathVariable String id,
                                HttpServletResponse response,
-                               @RequestParam("access_token") String accessToken) {
-        ResponseMessage responseMessage = new ResponseMessage();
+                               @RequestParam("access_token") String accessToken) throws IOException {
+        ResponseMessage responseMessage;
         try {
-            //clientValidatorInterface.checkClientValidity(accessToken);
+            clientValidatorInterface.checkClientValidity(accessToken);
 
             BufferedImage bufferedImage = processingRequestHandlerInterface.getResourceData(accessToken, verificationProcessId, id);
             response.setContentType("image/jpg");
@@ -142,13 +143,8 @@ public class ItemController {
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
             responseMessage = ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
-        }
-        response.setContentType("application/json");
-        try {
+            response.setContentType("application/json");
             response.getWriter().write("{\"status\":" + responseMessage.getStatus() + ",\"message\":\"" + responseMessage.getMessage() + "\"}");
-        } catch (Exception e1) {
-            LOGGER.error(TAG, e1);
-            ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "internal server error", response);
         }
     }
 }
