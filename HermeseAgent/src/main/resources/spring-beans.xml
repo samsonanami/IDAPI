@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--MESSAGING CHANNEL HANDLER (MESSAGING QUEUE) RELATED BEANS-->
+
+    <bean id="connectionFactory" name="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://10.101.15.212:61616"/>
+        <property name="userName" value="admin"/>
+        <property name="password" value="admin"/>
+    </bean>
+
+    <bean id="sessionHandler" class="com.fintech.orion.messaging.connection.SessionHandler">
+        <constructor-arg ref="connectionFactory"/>
+    </bean>
+
+    <bean id="destinationHandler" class="com.fintech.orion.messaging.connection.DestinationHandler" />
+
+    <bean id="jobConsumer" class="com.fintech.orion.messaging.job.JobConsumer">
+        <constructor-arg name="queueName" value="MainQueue" />
+        <constructor-arg ref="destinationHandler" />
+        <constructor-arg ref="sessionHandler" />
+    </bean>
+
+    <bean id="jobListener" class="com.fintech.orion.hermes.listener.HermesListener" />
+
+    <!--DTO RELATED BEANS-->
+
+    <bean id="validatorFactory" class="com.fintech.orion.dto.validator.ValidatorFactory" />
+
+    <!--ORION REPOSITORIES-->
+
+    <bean id="processingRequestRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepository" />
+
+    <!--ORION SERVICE RELATED BEANS-->
+
+    <bean id="processingRequestService" class="com.fintech.orion.coreservices.ProcessingRequestService" />
+
+    <!--HERMES RELATED BEANS-->
+
+    <bean id="jobHandler" class="com.fintech.orion.messaging.job.JobHandler" />
+    <bean id="messageProcessor" class="com.fintech.orion.hermes.processor.MessageProcessor" />
+    <bean id="processProvider" class="com.fintech.orion.hermes.provider.ProcessProvider" />
+    <bean id="jobManagerInterface" class="com.fintech.orion.hermes.handler.JobManager" />
+
+
+    <!--REQUEST FACTORY-->
+    <bean id="jenId" class="com.fintech.orion.hermesagentservices.transmission.request.type.JenID" scope="prototype" />
+
+
+    <!-- ALIAS MATCHING PROCESS TYPE IN DATASOURCE-->
+    <alias name="jenId" alias="0" />
+
+
+    <bean id="requestFactoryService" class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
+        <property name="serviceLocatorInterface" value="com.fintech.orion.hermesagentservices.transmission.request.RequestFactoryServiceInterface" />
+    </bean>
+
+
+</beans>

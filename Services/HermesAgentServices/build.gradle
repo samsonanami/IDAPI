@@ -2,7 +2,6 @@
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile project (':OrionDataAbstraction')
-    compile project (':OrionRepositories')
     compile project (':Services:CoreServices')
+    compile project (':DataTransferObjects')
 }
