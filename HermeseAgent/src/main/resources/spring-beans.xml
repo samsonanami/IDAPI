@@ -44,4 +44,18 @@
     <bean id="processProvider" class="com.fintech.orion.hermes.provider.ProcessProvider" />
     <bean id="jobManagerInterface" class="com.fintech.orion.hermes.handler.JobManager" />
 
+
+    <!--REQUEST FACTORY-->
+    <bean id="jenId" class="com.fintech.orion.hermesagentservices.transmission.request.type.JenID" scope="prototype" />
+
+
+    <!-- ALIAS MATCHING PROCESS TYPE IN DATASOURCE-->
+    <alias name="jenId" alias="0" />
+
+
+    <bean id="requestFactoryService" class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
+        <property name="serviceLocatorInterface" value="com.fintech.orion.hermesagentservices.transmission.request.RequestFactoryServiceInterface" />
+    </bean>
+
+
 </beans>

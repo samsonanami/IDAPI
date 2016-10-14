@@ -34,7 +34,5 @@ public class JobManager implements JobManagerInterface {
         //delegate to the request processor
 
 
-
-
     }
 }
