@@ -1,6 +1,7 @@
 package com.fintech.orion.dto.validator.validations;
 
 import com.fintech.orion.dto.validator.ValidatorException;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by TharinduMP on 10/12/2016.
@@ -8,15 +9,22 @@ import com.fintech.orion.dto.validator.ValidatorException;
  */
 public class CommonValidations {
 
-    private static final String DEFAULT_IS_NULL_EX_MESSAGE = " object is null";
+    private static final String DEFAULT_IS_NULL_EX_MESSAGE = " is null";
+    private static final String DEFAULT_IS_EMPTY_EX_MESSAGE = " is empty";
 
     private CommonValidations() {
     }
 
-    public static <T> T notNull(final T object, final String objectName) throws ValidatorException {
+    public static void notNull(final Object object, final String objectName) throws ValidatorException {
         if (object == null) {
             throw new ValidatorException(objectName + DEFAULT_IS_NULL_EX_MESSAGE);
         }
-        return object;
+    }
+
+    public static void notBlank(final String chars, final String objectName) throws ValidatorException {
+        notNull(chars,objectName);
+        if(StringUtils.isBlank(chars)) {
+            throw new ValidatorException(objectName + DEFAULT_IS_EMPTY_EX_MESSAGE);
+        }
     }
 }

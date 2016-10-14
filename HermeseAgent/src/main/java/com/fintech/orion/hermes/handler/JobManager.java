@@ -29,7 +29,7 @@ public class JobManager implements JobManagerInterface {
         GenericMapMessage genericMapMessage = messageProcessor.processMessage(message);
 
         //get process list allocated for the job
-        List<Process> processList = processProvider.getProcesses(genericMapMessage.getProcessingRequestId());
+        List<Process> processList = processProvider.getProcesses(genericMapMessage.getIdentificationCode());
 
         //delegate to the request processor
 

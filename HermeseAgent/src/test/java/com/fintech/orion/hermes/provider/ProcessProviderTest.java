@@ -44,13 +44,23 @@ public class ProcessProviderTest {
 
     @Test(expected = ProcessProviderException.class)
     public void shouldThrowExceptionWhenProcessingRequestIdIsNotFound() throws Exception {
-        when(processingRequestService.getProcessingRequestById(1)).thenThrow(ItemNotFoundException.class);
-        processProvider.getProcesses(1);
+        when(processingRequestService.findByIdIdentificationCode("1")).thenThrow(ItemNotFoundException.class);
+        processProvider.getProcesses("1");
     }
 
     @Test
     public void shouldReturnValidProcessesGivenValidId() throws Exception {
-        when(processingRequestService.getProcessingRequestById(1)).thenReturn(processingRequest);
-        assertTrue(processProvider.getProcesses(1).size() == 1);
+        when(processingRequestService.findByIdIdentificationCode("1")).thenReturn(processingRequest);
+        assertTrue(processProvider.getProcesses("1").size() == 1);
+    }
+
+    @Test(expected = ProcessProviderException.class)
+    public void shouldThrowExceptionWhenIdentificationIsNull() throws Exception {
+        processProvider.getProcesses(null);
+    }
+
+    @Test(expected = ProcessProviderException.class)
+    public void shouldThrowExceptionWhenIdentificationIsWhiteSpace() throws Exception {
+        processProvider.getProcesses("   ");
     }
 }

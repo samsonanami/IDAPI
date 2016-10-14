@@ -9,5 +9,5 @@ import java.util.List;
  * Created by TharinduMP on 10/13/2016.
  */
 public interface ProcessProviderInterface {
-    List<Process> getProcesses(int processingRequestId) throws ProcessProviderException;
+    List<Process> getProcesses(String identificationCode) throws ProcessProviderException;
 }

@@ -1,8 +1,9 @@
 package com.fintech.orion.hermesagentservices.transmission.request.type;
 
+import com.fintech.orion.coreservices.ProcessConfigServiceInterface;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessConfig;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
-import com.fintech.orion.dto.ProcessConfiguration;
 import com.fintech.orion.dto.request.GenericRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,8 +17,11 @@ public abstract class AbstractRequest {
     @Autowired
     private ResourceServiceInterface resourceService;
 
+    @Autowired
+    private ProcessConfigServiceInterface processConfigService;
+
     private List<Resource> resourceList;
-    private List<ProcessConfiguration> processConfigurationList;
+    private List<ProcessConfig> processConfigurationList;
 
     public void initialize(GenericRequest genericRequest) {
         this.resourceList = this.getProcessResources(genericRequest);
@@ -28,7 +32,7 @@ public abstract class AbstractRequest {
         return null;
     }
 
-    private List<ProcessConfiguration> getProcessConfigurations(GenericRequest genericRequest) {
+    private List<ProcessConfig> getProcessConfigurations(GenericRequest genericRequest) {
         return null;
     }
 

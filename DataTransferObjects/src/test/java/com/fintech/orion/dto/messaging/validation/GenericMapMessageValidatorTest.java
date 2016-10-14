@@ -37,13 +37,13 @@ public class GenericMapMessageValidatorTest {
 
     @Test(expected = ValidatorException.class)
     public void shouldThrowExceptionWhenClientIdIsNull() throws ValidatorException {
-        genericMapMessage.setProcessingRequestId(457345);
+        genericMapMessage.setIdentificationCode("123123");
         genericMapMessageValidator.validate(genericMapMessage);
     }
 
     @Test(expected = ValidatorException.class)
     public void shouldThrowExceptionWhenProcessingRequestIsNull() throws ValidatorException {
-        genericMapMessage.setProcessingRequestId(null);
+        genericMapMessage.setIdentificationCode("45636");
         genericMapMessage.setClientId(425624);
         genericMapMessageValidator.validate(genericMapMessage);
     }
@@ -51,7 +51,7 @@ public class GenericMapMessageValidatorTest {
     @Test
     public void shouldReturnResultWhenAllDetailsAreCorrect() throws ValidatorException {
         genericMapMessage.setClientId(4243562);
-        genericMapMessage.setProcessingRequestId(2234523);
+        genericMapMessage.setIdentificationCode("567484568");
         ValidatorResult result = genericMapMessageValidator.validate(genericMapMessage);
         assertFalse("Has No Errors",result.hasErrors());
     }

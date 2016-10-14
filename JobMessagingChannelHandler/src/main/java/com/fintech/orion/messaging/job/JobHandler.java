@@ -26,7 +26,7 @@ public class JobHandler implements JobHandlerInterface {
             validatorFactory.getValidator(genericMapMessage).validate(genericMapMessage);
             MapMessage mapMessage = session.createMapMessage();
             mapMessage.setInt("ClientId", genericMapMessage.getClientId());
-            mapMessage.setInt("processingRequestId", genericMapMessage.getProcessingRequestId());
+            mapMessage.setString("identificationCode", genericMapMessage.getIdentificationCode());
             return mapMessage;
         } catch (ValidatorException | JMSException e) {
             throw new JobHandlerException(e);
@@ -37,7 +37,7 @@ public class JobHandler implements JobHandlerInterface {
     public GenericMapMessage createMapMessageToGenericMapMessage(MapMessage mapMessage) throws JobHandlerException {
         try {
             GenericMapMessage genericMapMessage = new GenericMapMessage();
-            genericMapMessage.setProcessingRequestId(mapMessage.getInt("processingRequestId"));
+            genericMapMessage.setIdentificationCode(mapMessage.getString("identificationCode"));
             genericMapMessage.setClientId(mapMessage.getInt("ClientId"));
             validatorFactory.getValidator(genericMapMessage).validate(genericMapMessage);
             return genericMapMessage;
