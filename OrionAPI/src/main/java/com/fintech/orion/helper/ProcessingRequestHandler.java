@@ -11,9 +11,16 @@ import com.fintech.orion.dataabstraction.models.*;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import org.apache.commons.codec.binary.Base64;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -45,7 +52,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     private ProcessingStatusServiceInterface processingStatusServiceInterface;
 
     @Autowired
-    private String imageItemResourceUrl;
+    private String inspectionImageUrl;
 
     @Override
     public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
@@ -87,27 +94,44 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     }
 
     @Override
-    public Object getResourceData(String accessToken, String verificationProcessId, int id) throws IOException {
-        return sendGet(imageItemResourceUrl);
+    public BufferedImage getResourceData(String accessToken, String verificationProcessId, String id) throws IOException, ParseException {
+        String url = inspectionImageUrl + id;
+        String responseString = sendGet(url);
+        JSONObject json = (JSONObject)new JSONParser().parse(responseString);
+        return getBufferedImageFromString(json.get("base64Content").toString());
     }
 
-    private String sendGet(String url) throws IOException {
+    private String sendGet(String url) throws IOException, ParseException {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         con.setRequestMethod("GET");
         byte[] bytesEncoded = Base64.encodeBase64(("Fintech" + ":" + "xGH22979Hos2wx4K").getBytes());
-        con.setRequestProperty("Authorization", "Basic " + new String(bytesEncoded));
+        String test = "Basic " + new String(bytesEncoded);
+        con.setRequestProperty("Authorization", test);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuilder response = new StringBuilder();
+        StringBuffer response = new StringBuffer();
 
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
         in.close();
+
         return response.toString();
+    }
+
+    private BufferedImage getBufferedImageFromString(String base64String) throws IOException {
+        BufferedImage image = null;
+        byte[] imageByte;
+
+        BASE64Decoder decoder = new BASE64Decoder();
+        imageByte = decoder.decodeBuffer(base64String);
+        ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+        image = ImageIO.read(bis);
+        bis.close();
+        return image;
     }
 }

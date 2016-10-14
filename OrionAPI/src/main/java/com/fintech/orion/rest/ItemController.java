@@ -7,6 +7,7 @@ import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRe
 import com.fintech.orion.helper.*;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.model.ContentUploadResourceResult;
+import com.fintech.orion.model.ResponseMessage;
 import com.fintech.orion.model.VerificationResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 @Controller
 public class ItemController {
@@ -125,17 +129,22 @@ public class ItemController {
 
     @RequestMapping(value = "v1/verification/{verificationProcessId}/resource/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Object processedResources(@PathVariable String verificationProcessId,
-                               @PathVariable int id,
+    public void processedResources(@PathVariable String verificationProcessId,
+                               @PathVariable String id,
                                HttpServletResponse response,
-                               @RequestParam("access_token") String accessToken) {
+                               @RequestParam("access_token") String accessToken) throws IOException {
+        ResponseMessage responseMessage;
         try {
             clientValidatorInterface.checkClientValidity(accessToken);
-            // TODO
-            return processingRequestHandlerInterface.getResourceData(accessToken, verificationProcessId, id);
+
+            BufferedImage bufferedImage = processingRequestHandlerInterface.getResourceData(accessToken, verificationProcessId, id);
+            response.setContentType("image/jpg");
+            ImageIO.write(bufferedImage, "jpg", response.getOutputStream());
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
-            return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
+            responseMessage = ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"status\":" + responseMessage.getStatus() + ",\"message\":\"" + responseMessage.getMessage() + "\"}");
         }
     }
 }

@@ -50,8 +50,8 @@
         <constructor-arg type="java.lang.String" value="//opt//orion//data"/>
     </bean>
 
-    <bean id="imageItemResourceUrl" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="https://www.checkid.online:15045/inspectionimage/57fe0eb89cd5b51ef819b979"/>
+    <bean id="inspectionImageUrl" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="https://www.checkid.online:15045/inspectionimage/"/>
     </bean>
 
     <bean id="sftpConfig" class="com.fintech.orion.model.Configuration">
