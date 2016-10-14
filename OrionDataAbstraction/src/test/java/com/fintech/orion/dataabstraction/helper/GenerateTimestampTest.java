@@ -1,12 +1,13 @@
 package com.fintech.orion.dataabstraction.helper;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
 import static junit.framework.TestCase.assertEquals;
-
+@Ignore
 public class GenerateTimestampTest {
 
     @Test

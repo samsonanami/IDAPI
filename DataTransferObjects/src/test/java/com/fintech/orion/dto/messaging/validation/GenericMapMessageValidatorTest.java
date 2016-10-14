@@ -42,8 +42,7 @@ public class GenericMapMessageValidatorTest {
     }
 
     @Test(expected = ValidatorException.class)
-    public void shouldThrowExceptionWhenProcessingRequestIsNull() throws ValidatorException {
-        genericMapMessage.setIdentificationCode("45636");
+    public void shouldThrowExceptionWhenIdentificationIsNull() throws ValidatorException {
         genericMapMessage.setClientId(425624);
         genericMapMessageValidator.validate(genericMapMessage);
     }
