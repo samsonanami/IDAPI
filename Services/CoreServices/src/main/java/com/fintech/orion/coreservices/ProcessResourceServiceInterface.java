@@ -1,20 +1,11 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.ServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessResource;
-import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.entities.orion.Resource;
 
-import java.util.List;
+public interface ProcessResourceServiceInterface extends ServiceInterface<ProcessResource, Integer> {
 
-public interface ProcessResourceServiceInterface {
-    List<ProcessResource> getProcessResourceList();
-
-    ProcessResource getProcessResourceById(int id) throws ItemNotFoundException;
-
-    void saveProcessResource(ProcessResource processResource);
-
-    boolean deleteProcessResourceById(int id) throws ItemNotFoundException;
-
-    void updateProcessResource(ProcessResource processResource);
-
-    void deleteProcessResource(ProcessResource processResource);
+    ProcessResource save(Process process, Resource resource, String resourceName);
 }
