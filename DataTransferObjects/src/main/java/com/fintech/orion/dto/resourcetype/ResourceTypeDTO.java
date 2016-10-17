@@ -12,7 +12,7 @@ public class ResourceTypeDTO {
 
     private int id;
     private String type;
-    private Set<ResourceDTO> resources = new HashSet<ResourceDTO>(0);
+    private Set<ResourceDTO> resourceDTOs = new HashSet<ResourceDTO>(0);
 
     public int getId() {
         return id;
@@ -30,11 +30,11 @@ public class ResourceTypeDTO {
         this.type = type;
     }
 
-    public Set<ResourceDTO> getResources() {
-        return resources;
+    public Set<ResourceDTO> getResourceDTOs() {
+        return resourceDTOs;
     }
 
-    public void setResources(Set<ResourceDTO> resources) {
-        this.resources = resources;
+    public void setResourceDTOs(Set<ResourceDTO> resourceDTOs) {
+        this.resourceDTOs = resourceDTOs;
     }
 }
