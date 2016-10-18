@@ -33,6 +33,8 @@ public class RequestWorker implements Callable {
 
     public void init(RequestInterface request, GenericRequest genericRequest) throws RequestWorkerException {
         try {
+            LOGGER.info("Initializing a worker with request IdentificationCode {}.", genericRequest.getIdentificationCode());
+
             //validations
             CommonValidations.notNull(request,"request object");
             validatorFactory.getValidator(genericRequest).validate(validatorFactory);
@@ -40,6 +42,7 @@ public class RequestWorker implements Callable {
             this.request = request;
             this.genericRequest = genericRequest;
             this.initialized = true;
+            LOGGER.trace("Initializing a worker with request IdentificationCode {} is completed.", genericRequest.getIdentificationCode());
         } catch (ValidatorException e) {
             throw new RequestWorkerException(e);
         }
@@ -48,6 +51,7 @@ public class RequestWorker implements Callable {
     @Override
     public Object call() throws Exception {
         if (initialized) {
+            LOGGER.debug("worker processing started.");
             request.process(genericRequest);
             return null;
         } else {

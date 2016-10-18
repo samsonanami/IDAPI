@@ -4,25 +4,26 @@ import com.fintech.orion.dto.messaging.GenericMapMessage;
 
 /**
  * Created by TharinduMP on 10/13/2016.
+ * GenericRequest
  */
 public class GenericRequest extends GenericMapMessage {
 
-    private int processId;
-    private int processType;
+    private Integer processId;
+    private Integer processType;
 
-    public int getProcessId() {
+    public Integer getProcessId() {
         return processId;
     }
 
-    public void setProcessId(int processId) {
+    public void setProcessId(Integer processId) {
         this.processId = processId;
     }
 
-    public int getProcessType() {
+    public Integer getProcessType() {
         return processType;
     }
 
-    public void setProcessType(int processType) {
+    public void setProcessType(Integer processType) {
         this.processType = processType;
     }
 }
