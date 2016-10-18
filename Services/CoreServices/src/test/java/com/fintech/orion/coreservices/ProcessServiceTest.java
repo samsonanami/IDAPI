@@ -11,6 +11,9 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
+/**
+ * Process entity service tests
+ */
 public class ProcessServiceTest {
 
     private final String REPOSITORY_INTERFACE = "processRepositoryInterface";

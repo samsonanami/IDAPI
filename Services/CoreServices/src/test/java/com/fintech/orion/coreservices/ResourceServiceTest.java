@@ -1,17 +1,20 @@
 package com.fintech.orion.coreservices;
 
-import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepository;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepositoryInterface;
+import com.fintech.orion.dto.client.ClientDTO;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Resource entity service tests
+ */
 public class ResourceServiceTest {
 
     private final String REPOSITORY_INTERFACE = "resourceRepositoryInterface";
@@ -34,11 +37,11 @@ public class ResourceServiceTest {
     public void shouldSaveObjectWhenSaveCalled() throws ItemNotFoundException {
         ResourceServiceInterface serviceInterface = new ResourceService();
 
-        Client client = ObjectCreator.createClientObject();
+        ClientDTO clientDTO = ObjectCreator.createClientDTOObject();
         ResourceType resourceType = ObjectCreator.createResourceTypeObject();
 
         ClientServiceInterface clientService = mock(ClientService.class);
-        when(clientService.findByAuthToken("123456")).thenReturn(client);
+        when(clientService.findByAuthToken("123456")).thenReturn(clientDTO);
         ReflectionTestUtils.setField(serviceInterface, "clientServiceInterface", clientService);
 
         ResourceTypeServiceInterface resourceTypeService = mock(ResourceTypeService.class);

@@ -9,6 +9,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * ResourceType entity service tests
+ */
 public class ResourceTypeServiceTest {
 
     private final String REPOSITORY_INTERFACE = "resourceTypeRepositoryInterface";

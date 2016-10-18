@@ -2,7 +2,11 @@ package com.fintech.orion.coreservices;
 
 import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
+import com.fintech.orion.dto.client.ClientDTO;
 
+/**
+ * Object creator for service classes
+ */
 public class ObjectCreator {
 
     private ObjectCreator() {}
@@ -52,4 +56,8 @@ public class ObjectCreator {
     }
 
     public static ProcessingStatus createProcessingStatusObject() { return new ProcessingStatus(); }
+
+    public static ClientDTO createClientDTOObject() {
+        return new ClientDTO();
+    }
 }

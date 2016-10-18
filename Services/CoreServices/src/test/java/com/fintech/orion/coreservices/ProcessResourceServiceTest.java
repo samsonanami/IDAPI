@@ -7,6 +7,9 @@ import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import static org.mockito.Mockito.*;
 
+/**
+ * ProcessResource entity service tests
+ */
 public class ProcessResourceServiceTest  {
 
     private final String REPOSITORY_INTERFACE = "processResourceRepositoryInterface";

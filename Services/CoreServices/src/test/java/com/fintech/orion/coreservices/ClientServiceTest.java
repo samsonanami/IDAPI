@@ -12,6 +12,9 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Client entity service tests
+ */
 public class ClientServiceTest {
 
     private final String REPOSITORY_INTERFACE = "clientRepositoryInterface";
