@@ -8,6 +8,9 @@ import com.fintech.orion.dto.processconfig.ProcessConfigDTO;
 
 import java.util.List;
 
+/**
+ * ProcessConfig entity service interface
+ */
 public interface ProcessConfigServiceInterface extends ServiceInterface<ProcessConfig, ProcessConfigId> {
 
     List<ProcessConfigDTO> findById(int processType) throws ItemNotFoundException;

@@ -7,6 +7,9 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 
 import java.util.List;
 
+/**
+ * ProcessingRequest entity service interface
+ */
 public interface ProcessingRequestServiceInterface extends ServiceInterface<ProcessingRequest, Integer> {
 
     ProcessingRequest save(Client client);

@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * ProcessConfig entity service class
+ */
 @Service
 public class ProcessConfigService extends AbstractService<ProcessConfig, ProcessConfigId> implements ProcessConfigServiceInterface {
 

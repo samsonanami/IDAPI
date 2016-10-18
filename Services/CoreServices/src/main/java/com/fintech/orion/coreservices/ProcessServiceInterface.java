@@ -7,6 +7,9 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 
+/**
+ * Process entity service interface
+ */
 public interface ProcessServiceInterface extends ServiceInterface<Process, Integer> {
 
     Process save(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus);

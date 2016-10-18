@@ -9,7 +9,7 @@ import org.mapstruct.Mappings;
 import java.util.List;
 
 /**
- * Created by ChathurangaRW on 10/18/2016.
+ * ProcessConfig entity mappings
  */
 @Mapper(componentModel = "spring")
 public interface ProcessConfigMapper {

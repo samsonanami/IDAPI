@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * ProcessResource entity service class
+ */
 @Service
 public class ProcessResourceService extends AbstractService<ProcessResource, Integer> implements ProcessResourceServiceInterface {
 

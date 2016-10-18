@@ -5,7 +5,7 @@ import com.fintech.orion.dto.processtype.ProcessTypeDTO;
 import org.mapstruct.Mapper;
 
 /**
- * Created by ChathurangaRW on 10/17/2016.
+ * ProcessType entity mappings
  */
 @Mapper(componentModel = "spring")
 public interface ProcessTypeMapper {

@@ -8,6 +8,9 @@ import com.fintech.orion.dataabstraction.repositories.ProcessingStatusRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * ProcessingStatus entity service class
+ */
 public class ProcessingStatusService extends AbstractService<ProcessingStatus, Integer> implements ProcessingStatusServiceInterface {
 
     @Autowired
