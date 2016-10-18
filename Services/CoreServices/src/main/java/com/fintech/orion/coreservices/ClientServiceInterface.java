@@ -16,9 +16,9 @@ public interface ClientServiceInterface extends ServiceInterface<Client, Integer
 
     ClientDTO findById(int id) throws ItemNotFoundException;
 
-    void saveOrUpdate(ClientDTO e);
+    void saveOrUpdate(ClientDTO clientDTO);
 
-    void delete(ClientDTO e);
+    void delete(ClientDTO clientDTO);
 
     ClientDTO findByAuthToken(String authToken) throws ItemNotFoundException;
 
