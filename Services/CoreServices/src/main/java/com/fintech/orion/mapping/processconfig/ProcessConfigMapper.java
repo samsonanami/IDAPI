@@ -9,7 +9,7 @@ import org.mapstruct.Mappings;
 import java.util.List;
 
 /**
- * Created by ChathurangaRW on 10/18/2016.
+ * ProcessConfig entity mappings
  */
 @Mapper(componentModel = "spring")
 public interface ProcessConfigMapper {
@@ -19,6 +19,8 @@ public interface ProcessConfigMapper {
             @Mapping(source = "processConfig.id.key", target = "key"),
     })
     ProcessConfigDTO processConfigToProcessConfigDTO(ProcessConfig processConfig);
+
+    ProcessConfig processConfigDTOToProcessConfig(ProcessConfigDTO processConfigDTO);
 
     List<ProcessConfigDTO> processConfigsToProcessConfigDTOs(List<ProcessConfig> processConfigs);
 

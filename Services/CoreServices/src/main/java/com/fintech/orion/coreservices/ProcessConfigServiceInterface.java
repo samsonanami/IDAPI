@@ -4,11 +4,21 @@ import com.fintech.orion.common.ServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessConfig;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessConfigId;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.processconfig.ProcessConfigDTO;
 
 import java.util.List;
 
+/**
+ * ProcessConfig entity service interface
+ */
 public interface ProcessConfigServiceInterface extends ServiceInterface<ProcessConfig, ProcessConfigId> {
 
-    List<ProcessConfig> findById(int processType) throws ItemNotFoundException;
+    List<ProcessConfigDTO> getAllDTOs();
+
+    void saveOrUpdate(ProcessConfigDTO processConfigDTO);
+
+    void delete(ProcessConfigDTO processConfigDTO);
+
+    List<ProcessConfigDTO> findById(int processType) throws ItemNotFoundException;
 
 }

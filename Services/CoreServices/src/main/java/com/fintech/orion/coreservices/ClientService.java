@@ -6,10 +6,11 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ClientRepositoryInterface;
 import com.fintech.orion.dto.client.ClientDTO;
 import com.fintech.orion.mapping.client.ClientMapper;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Client entity service class
@@ -20,7 +21,32 @@ public class ClientService extends AbstractService<Client, Integer> implements C
     @Autowired
     private ClientRepositoryInterface clientRepositoryInterface;
 
-    ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
+    @Autowired
+    private ClientMapper clientMapper;
+
+    @Transactional
+    @Override
+    public List<ClientDTO> getAllDTOs() {
+        return clientMapper.clientsToClientDTOs(getAll());
+    }
+
+    @Transactional
+    @Override
+    public ClientDTO findById(int id) throws ItemNotFoundException {
+        return clientMapper.clientToClientDTO(findById(new Integer(id)));
+    }
+
+    @Transactional
+    @Override
+    public void saveOrUpdate(ClientDTO clientDTO) {
+        saveOrUpdate(clientMapper.clientDTOToClient(clientDTO));
+    }
+
+    @Transactional
+    @Override
+    public void delete(ClientDTO clientDTO) {
+        delete(clientMapper.clientDTOToClient(clientDTO));
+    }
 
     @Transactional
     @Override

@@ -4,8 +4,10 @@ import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dto.process.ProcessDTO;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 /**
- * Created by TharinduMP on 10/14/2016.
+ * Process entity mappings
  */
 @Mapper(componentModel = "spring")
 public interface ProcessMapper {
@@ -13,4 +15,6 @@ public interface ProcessMapper {
     ProcessDTO processToProcessDTO(Process process);
 
     Process processDTOToProcess(ProcessDTO processDTO);
+
+    List<ProcessDTO> processesToProcessDTOs(List<Process> processes);
 }

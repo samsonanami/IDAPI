@@ -8,7 +8,18 @@ import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 
 import java.util.List;
 
+/**
+ * ProcessingRequest entity service interface
+ */
 public interface ProcessingRequestServiceInterface extends ServiceInterface<ProcessingRequest, Integer> {
+
+    List<ProcessingRequestDTO> getAllDTOs();
+
+    ProcessingRequestDTO findById(int id) throws ItemNotFoundException;
+
+    void saveOrUpdate(ProcessingRequestDTO processingRequestDTO);
+
+    void delete(ProcessingRequestDTO processingRequestDTO);
 
     ProcessingRequest save(Client client);
 

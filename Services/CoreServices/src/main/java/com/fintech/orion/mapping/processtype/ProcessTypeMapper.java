@@ -4,8 +4,10 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dto.processtype.ProcessTypeDTO;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 /**
- * Created by ChathurangaRW on 10/17/2016.
+ * ProcessType entity mappings
  */
 @Mapper(componentModel = "spring")
 public interface ProcessTypeMapper {
@@ -13,5 +15,7 @@ public interface ProcessTypeMapper {
     ProcessTypeDTO processTypeToProcessTypeDTO(ProcessType processType);
 
     ProcessType processTypeDTOToProcessType(ProcessTypeDTO processTypeDTO);
+
+    List<ProcessTypeDTO> processTypesToProcessTypeDTOs(List<ProcessType> processTypes);
 
 }
