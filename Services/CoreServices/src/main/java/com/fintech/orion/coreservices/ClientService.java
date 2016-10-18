@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Client entity service class
  */
@@ -21,6 +23,26 @@ public class ClientService extends AbstractService<Client, Integer> implements C
 
     @Autowired
     private ClientMapper clientMapper;
+
+    @Override
+    public List<ClientDTO> getAllDTOs() {
+        return clientMapper.clientsToClientDTOs(getAll());
+    }
+
+    @Override
+    public ClientDTO findById(int id) throws ItemNotFoundException {
+        return clientMapper.clientToClientDTO(findById(new Integer(id)));
+    }
+
+    @Override
+    public void saveOrUpdate(ClientDTO clientDTO) {
+        saveOrUpdate(clientMapper.clientDTOToClient(clientDTO));
+    }
+
+    @Override
+    public void delete(ClientDTO clientDTO) {
+        delete(clientMapper.clientDTOToClient(clientDTO));
+    }
 
     @Transactional
     @Override
