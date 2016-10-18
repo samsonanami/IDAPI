@@ -12,9 +12,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ClientLicenseMapper {
 
-    ClientLicenseDTO clientToClientDTO(ClientLicense client);
+    ClientLicenseDTO clientToClientDTO(ClientLicense clientLicense);
 
-    ClientLicense clientDTOToClient(ClientLicenseDTO clientDTO);
+    ClientLicense clientDTOToClient(ClientLicenseDTO clientLicenseDTO);
 
-    List<ClientLicenseDTO> clientsToClientDTOs(List<ClientLicense> clients);
+    List<ClientLicenseDTO> clientsToClientDTOs(List<ClientLicense> clientLicenses);
 }
