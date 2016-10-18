@@ -7,6 +7,8 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
+import com.fintech.orion.mapping.processrequest.ProcessRequestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,9 @@ public class ProcessingRequestService extends AbstractService<ProcessingRequest,
 
     @Autowired
     private ProcessingRequestRepositoryInterface processingRequestRepositoryInterface;
+
+    @Autowired
+    private ProcessRequestMapper processRequestMapper;
 
     @Transactional
     @Override
@@ -30,7 +35,7 @@ public class ProcessingRequestService extends AbstractService<ProcessingRequest,
 
     @Transactional
     @Override
-    public ProcessingRequest findByIdIdentificationCode(String identificationCode) throws ItemNotFoundException {
-        return processingRequestRepositoryInterface.findByIdIdentificationCode(identificationCode);
+    public ProcessingRequestDTO findByIdIdentificationCode(String identificationCode) throws ItemNotFoundException {
+        return processRequestMapper.processingRequestToProcessingRequestDTO(processingRequestRepositoryInterface.findByIdIdentificationCode(identificationCode));
     }
 }

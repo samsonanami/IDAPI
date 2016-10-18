@@ -5,6 +5,8 @@ import com.fintech.orion.coreservices.ProcessingRequestServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.process.ProcessDTO;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -31,14 +35,14 @@ public class ProcessProviderTest {
     @InjectMocks
     private ProcessProvider processProvider;
 
-    private ProcessingRequest processingRequest;
+    private ProcessingRequestDTO processingRequest;
 
     @Before
     public void setUp() {
-        Process process = new Process();
-        Set<Process> processes = new HashSet<>();
+        ProcessDTO process = new ProcessDTO();
+        List<ProcessDTO> processes = new ArrayList<>();
         processes.add(process);
-        processingRequest = new ProcessingRequest();
+        processingRequest = new ProcessingRequestDTO();
         processingRequest.setProcesses(processes);
     }
 

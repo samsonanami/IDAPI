@@ -5,6 +5,8 @@ import com.fintech.orion.coreservices.ProcessingRequestServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.process.ProcessDTO;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import com.fintech.orion.dto.validator.ValidatorException;
 import com.fintech.orion.dto.validator.validations.CommonValidations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,11 @@ public class ProcessProvider implements ProcessProviderInterface {
     private ProcessingRequestServiceInterface processingRequestService;
 
     @Override
-    public List<Process> getProcesses(String identificationCode) throws ProcessProviderException {
+    public List<ProcessDTO> getProcesses(String identificationCode) throws ProcessProviderException {
         try {
             CommonValidations.notBlank(identificationCode,"identificationCode");
-            ProcessingRequest processingRequest = processingRequestService.findByIdIdentificationCode(identificationCode);
-            return new ArrayList<>(processingRequest.getProcesses());
+            ProcessingRequestDTO processingRequest = processingRequestService.findByIdIdentificationCode(identificationCode);
+            return processingRequest.getProcesses();
         } catch (ItemNotFoundException | ValidatorException e) {
             throw new ProcessProviderException(e);
         }

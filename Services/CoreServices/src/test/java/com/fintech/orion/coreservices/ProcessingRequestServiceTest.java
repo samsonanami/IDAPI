@@ -4,6 +4,7 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepository;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -25,7 +26,7 @@ public class ProcessingRequestServiceTest {
         when(repositoryInterfaceMock.findByIdIdentificationCode("123456")).thenReturn(processingRequest);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        ProcessingRequest found = serviceInterface.findByIdIdentificationCode("123456");
+        ProcessingRequestDTO found = serviceInterface.findByIdIdentificationCode("123456");
         assertTrue(processingRequest.equals(found));
     }
 

@@ -1,8 +1,10 @@
 package com.fintech.orion.dto.processingrequest;
 
 import com.fintech.orion.dto.client.ClientDTO;
+import com.fintech.orion.dto.process.ProcessDTO;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ChathurangaRW on 10/17/2016.
@@ -13,6 +15,7 @@ public class ProcessingRequestDTO {
     private ClientDTO clientDTO;
     private Date receivedOn;
     private String processingRequestIdentificationCode;
+    private List<ProcessDTO> processes;
 
     public Integer getId() {
         return id;
@@ -44,5 +47,13 @@ public class ProcessingRequestDTO {
 
     public void setProcessingRequestIdentificationCode(String processingRequestIdentificationCode) {
         this.processingRequestIdentificationCode = processingRequestIdentificationCode;
+    }
+
+    public List<ProcessDTO> getProcesses() {
+        return processes;
+    }
+
+    public void setProcesses(List<ProcessDTO> processes) {
+        this.processes = processes;
     }
 }
