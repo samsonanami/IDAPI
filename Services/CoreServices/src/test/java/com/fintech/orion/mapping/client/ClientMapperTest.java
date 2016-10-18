@@ -1,8 +1,8 @@
-package com.fintech.orion.mapping;
+package com.fintech.orion.mapping.client;
 
 import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dto.client.ClientDTO;
-import com.fintech.orion.mapping.client.ClientMapper;
+import com.fintech.orion.mapping.ObjectCreator;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 
