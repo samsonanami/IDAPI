@@ -13,6 +13,12 @@ import java.util.List;
  */
 public interface ProcessConfigServiceInterface extends ServiceInterface<ProcessConfig, ProcessConfigId> {
 
+    List<ProcessConfigDTO> getAllDTOs();
+
+    void saveOrUpdate(ProcessConfigDTO processConfigDTO);
+
+    void delete(ProcessConfigDTO processConfigDTO);
+
     List<ProcessConfigDTO> findById(int processType) throws ItemNotFoundException;
 
 }

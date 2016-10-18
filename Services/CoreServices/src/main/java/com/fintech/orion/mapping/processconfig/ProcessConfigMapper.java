@@ -20,6 +20,8 @@ public interface ProcessConfigMapper {
     })
     ProcessConfigDTO processConfigToProcessConfigDTO(ProcessConfig processConfig);
 
+    ProcessConfig processConfigDTOToProcessConfig(ProcessConfigDTO processConfigDTO);
+
     List<ProcessConfigDTO> processConfigsToProcessConfigDTOs(List<ProcessConfig> processConfigs);
 
 }

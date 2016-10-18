@@ -25,6 +25,21 @@ public class ProcessConfigService extends AbstractService<ProcessConfig, Process
     @Autowired
     private ProcessConfigMapper processConfigMapper;
 
+    @Override
+    public List<ProcessConfigDTO> getAllDTOs() {
+        return processConfigMapper.processConfigsToProcessConfigDTOs(getAll());
+    }
+
+    @Override
+    public void saveOrUpdate(ProcessConfigDTO processConfigDTO) {
+        saveOrUpdate(processConfigMapper.processConfigDTOToProcessConfig(processConfigDTO));
+    }
+
+    @Override
+    public void delete(ProcessConfigDTO processConfigDTO) {
+        delete(processConfigMapper.processConfigDTOToProcessConfig(processConfigDTO));
+    }
+
     @Transactional
     @Override
     public List<ProcessConfigDTO> findById(int processType) throws ItemNotFoundException {
