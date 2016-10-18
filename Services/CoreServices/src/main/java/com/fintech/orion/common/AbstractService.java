@@ -8,8 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Abstract service class
+ * @param <E>
+ * @param <I>
+ */
 @Service
-public abstract class AbstractService<E,I extends Serializable> implements ServiceInterface<E, I> {
+public abstract class AbstractService<E, I extends Serializable> implements ServiceInterface<E, I> {
 
     private AbstractDAO<E, I> abstractDAO;
 

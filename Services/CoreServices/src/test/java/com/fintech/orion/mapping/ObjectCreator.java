@@ -1,0 +1,40 @@
+package com.fintech.orion.mapping;
+
+import com.fintech.orion.dataabstraction.entities.orion.Client;
+import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
+import com.fintech.orion.dto.client.ClientDTO;
+
+/**
+ * Mapping object creations
+ */
+public class ObjectCreator {
+
+    private ObjectCreator() {
+    }
+
+    public static ClientDTO aClientDTO(){
+        ClientDTO clientDTO = new ClientDTO();
+        clientDTO.setId(1);
+        clientDTO.setEmail("test@test.com");
+        clientDTO.setAuthToken("12345");
+        clientDTO.setRegisteredOn(GenerateTimestamp.timestamp());
+        clientDTO.setUserName("test");
+        clientDTO.setPassword("test");
+        clientDTO.setRefreshToken("98765");
+        clientDTO.setEnnabled(false);
+        return clientDTO;
+    }
+
+    public static Client aClient() {
+        Client client = new Client();
+        client.setId(1);
+        client.setEmail("test@test.com");
+        client.setAuthToken("12345");
+        client.setRegisteredOn(GenerateTimestamp.timestamp());
+        client.setUserName("test");
+        client.setPassword("test");
+        client.setRefreshToken("98765");
+        client.setEnnabled(false);
+        return client;
+    }
+}

@@ -1,7 +1,11 @@
 package com.fintech.orion.rest;
 
 import com.fintech.orion.coreservices.ProcessConfigServiceInterface;
-import com.fintech.orion.dataabstraction.repositories.ProcessConfigRepositoryInterface;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessConfig;
+import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.models.configs.Config;
+import com.fintech.orion.dataabstraction.models.configs.ConfigResults;
+import com.fintech.orion.helper.ErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ConfigController {
@@ -19,14 +25,28 @@ public class ConfigController {
     @Autowired
     private ProcessConfigServiceInterface processConfigServiceInterface;
 
-    @Autowired
-    private ProcessConfigRepositoryInterface processConfigRepositoryInterface;
-
-    @RequestMapping(value = "v1/configs", method = RequestMethod.GET)
+    @RequestMapping(value = "v1/configs/{process_type}", method = RequestMethod.GET)
     @ResponseBody
-    public Object processConfigs(@PathVariable int processType,
+    public Object processConfigs(@PathVariable int process_type,
                                  HttpServletResponse response,
-                                 @RequestParam("access_token") String accessToken){
-        return null;
+                                 @RequestParam("access_token") String accessToken) throws ItemNotFoundException {
+        try {
+            List<ProcessConfig> processConfigs = processConfigServiceInterface.findById(process_type);
+            ConfigResults results = new ConfigResults();
+            results.setProcessType(String.valueOf(process_type));
+            List<Config> configs = new ArrayList<>();
+            for(ProcessConfig pc : processConfigs){
+                Config config = new Config();
+                config.setKey(pc.getId().getKey());
+                config.setValue(pc.getValue());
+                configs.add(config);
+            }
+            results.setConfigs(configs);
+            return results;
+        } catch (Exception ex){
+            LOGGER.error(TAG, ex);
+            return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
+        }
+
     }
 }

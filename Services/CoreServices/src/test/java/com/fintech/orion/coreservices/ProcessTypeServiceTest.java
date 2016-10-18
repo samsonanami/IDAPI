@@ -10,6 +10,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.*;
 
+/**
+ * ProcessType entity service tests
+ */
 public class ProcessTypeServiceTest {
 
     private final String REPOSITORY_INTERFACE = "processTypeRepositoryInterface";

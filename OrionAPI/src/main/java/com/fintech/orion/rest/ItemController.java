@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * Item controller endpoints
+ */
 @Controller
 public class ItemController {
 

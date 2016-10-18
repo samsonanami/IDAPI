@@ -10,6 +10,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * ProcessingRequest entity service tests
+ */
 public class ProcessingRequestServiceTest {
 
     private final String REPOSITORY_INTERFACE = "processingRequestRepositoryInterface";

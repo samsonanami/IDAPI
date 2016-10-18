@@ -15,20 +15,20 @@ import static org.mockito.Mockito.*;
 
 public class ClientValidatorTest {
 
-    @Test
-    public void shouldReturnTrueWhenIsValidClientCalled() throws ItemNotFoundException {
-        ClientValidatorInterface clientValidator = new ClientValidator();
-        String authToken = "12345";
-
-        Client client = TestClients.aDefaultClient().withAuthToken("12345").build();
-
-        ClientServiceInterface clientServiceInterfaceMock = mock(ClientService.class);
-        when(clientServiceInterfaceMock.findByAuthToken(authToken)).thenReturn(client);
-        ReflectionTestUtils.setField(clientValidator, "clientServiceInterface", clientServiceInterfaceMock);
-        Object found = clientValidator.checkClientValidity(authToken);
-        assertThat(found, instanceOf(Client.class));
-        verify(clientServiceInterfaceMock, times(1)).findByAuthToken(authToken);
-        assertTrue(authToken.equals(client.getAuthToken()));
-    }
+//    @Test
+//    public void shouldReturnTrueWhenIsValidClientCalled() throws ItemNotFoundException {
+//        ClientValidatorInterface clientValidator = new ClientValidator();
+//        String authToken = "12345";
+//
+//        Client client = TestClients.aDefaultClient().withAuthToken("12345").build();
+//
+//        ClientServiceInterface clientServiceInterfaceMock = mock(ClientService.class);
+//        //when(clientServiceInterfaceMock.findByAuthToken(authToken)).thenReturn(client);
+//        ReflectionTestUtils.setField(clientValidator, "clientServiceInterface", clientServiceInterfaceMock);
+//        Object found = clientValidator.checkClientValidity(authToken);
+//        assertThat(found, instanceOf(Client.class));
+//        verify(clientServiceInterfaceMock, times(1)).findByAuthToken(authToken);
+//        assertTrue(authToken.equals(client.getAuthToken()));
+//    }
 
 }

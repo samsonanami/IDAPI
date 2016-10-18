@@ -12,6 +12,9 @@ import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * ProcessingStatus entity service tests
+ */
 public class ProcessingStatusServiceTest {
 
     @Test
