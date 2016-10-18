@@ -1,0 +1,21 @@
+package com.fintech.orion.mapping.processingrequest;
+
+import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
+import org.mapstruct.Mapper;
+
+import java.util.List;
+
+/**
+ * ProcessingRequest entity mappings
+ */
+@Mapper(componentModel = "spring")
+public interface ProcessingRequestMapper {
+
+    ProcessingRequestDTO processingRequestToProcessingRequestDTO(ProcessingRequest processingRequest);
+
+    ProcessingRequest processingRequestDTOToProcessingRequest(ProcessingRequestDTO processingRequestDTO);
+
+    List<ProcessingRequestDTO> processingRequestsToProcessingRequestDTOs(List<ProcessingRequest> processingRequests);
+
+}

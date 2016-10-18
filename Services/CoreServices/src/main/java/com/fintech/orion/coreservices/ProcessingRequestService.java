@@ -7,9 +7,13 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
+import com.fintech.orion.mapping.processingrequest.ProcessingRequestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * ProcessingRequest entity service class
@@ -19,6 +23,29 @@ public class ProcessingRequestService extends AbstractService<ProcessingRequest,
 
     @Autowired
     private ProcessingRequestRepositoryInterface processingRequestRepositoryInterface;
+
+    @Autowired
+    private ProcessingRequestMapper processingRequestMapper;
+
+    @Override
+    public List<ProcessingRequestDTO> getAllDTOs() {
+        return processingRequestMapper.processingRequestsToProcessingRequestDTOs(getAll());
+    }
+
+    @Override
+    public ProcessingRequestDTO findById(int id) throws ItemNotFoundException {
+        return processingRequestMapper.processingRequestToProcessingRequestDTO(findById(new Integer(id)));
+    }
+
+    @Override
+    public void saveOrUpdate(ProcessingRequestDTO processingRequestDTO) {
+        saveOrUpdate(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
+    }
+
+    @Override
+    public void delete(ProcessingRequestDTO processingRequestDTO) {
+        delete(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
+    }
 
     @Transactional
     @Override
