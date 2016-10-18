@@ -1,10 +1,10 @@
 package com.fintech.orion.rest;
 
 import com.fintech.orion.coreservices.ProcessConfigServiceInterface;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessConfig;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.configs.Config;
 import com.fintech.orion.dataabstraction.models.configs.ConfigResults;
+import com.fintech.orion.dto.processconfig.ProcessConfigDTO;
 import com.fintech.orion.helper.ErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +31,14 @@ public class ConfigController {
                                  HttpServletResponse response,
                                  @RequestParam("access_token") String accessToken) throws ItemNotFoundException {
         try {
-            List<ProcessConfig> processConfigs = processConfigServiceInterface.findById(process_type);
+            List<ProcessConfigDTO> processConfigs = processConfigServiceInterface.findById(process_type);
             ConfigResults results = new ConfigResults();
             results.setProcessType(String.valueOf(process_type));
             List<Config> configs = new ArrayList<>();
-            for(ProcessConfig pc : processConfigs){
+            for(ProcessConfigDTO p : processConfigs){
                 Config config = new Config();
-                config.setKey(pc.getId().getKey());
-                config.setValue(pc.getValue());
+                config.setKey(p.getKey());
+                config.setValue(p.getValue());
                 configs.add(config);
             }
             results.setConfigs(configs);
