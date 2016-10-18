@@ -27,13 +27,13 @@ public class ConfigController {
 
     @RequestMapping(value = "v1/configs/{process_type}", method = RequestMethod.GET)
     @ResponseBody
-    public Object processConfigs(@PathVariable int process_type,
+    public Object processConfigs(@PathVariable int processType,
                                  HttpServletResponse response,
                                  @RequestParam("access_token") String accessToken) throws ItemNotFoundException {
         try {
-            List<ProcessConfigDTO> processConfigs = processConfigServiceInterface.findById(process_type);
+            List<ProcessConfigDTO> processConfigs = processConfigServiceInterface.findById(processType);
             ConfigResults results = new ConfigResults();
-            results.setProcessType(String.valueOf(process_type));
+            results.setProcessType(String.valueOf(processType));
             List<Config> configs = new ArrayList<>();
             for(ProcessConfigDTO p : processConfigs){
                 Config config = new Config();

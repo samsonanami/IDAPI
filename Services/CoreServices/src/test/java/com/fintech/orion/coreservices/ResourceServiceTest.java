@@ -6,7 +6,11 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepository;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepositoryInterface;
 import com.fintech.orion.dto.client.ClientDTO;
+import com.fintech.orion.mapping.client.ClientMapper;
+import com.sun.scenario.effect.Reflection;
 import org.junit.Test;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.Assert.*;
@@ -50,6 +54,9 @@ public class ResourceServiceTest {
 
         ResourceRepositoryInterface repositoryInterfaceMock = mock(ResourceRepository.class);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
+
+        ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
+        ReflectionTestUtils.setField(serviceInterface, "clientMapper", clientMapper);
 
         Resource resource = serviceInterface.save("12345abcde.jpg", "12345abcde", "image", "123456");
         verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);

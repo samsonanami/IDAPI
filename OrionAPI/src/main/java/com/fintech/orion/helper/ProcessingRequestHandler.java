@@ -15,7 +15,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import sun.misc.BASE64Decoder;
 
@@ -56,11 +55,12 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     @Autowired
     private String inspectionImageUrl;
 
-    ClientMapper INSTANCE = Mappers.getMapper(ClientMapper.class);
+    @Autowired
+    private ClientMapper clientMapper;
 
     @Override
     public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
-        Client client = INSTANCE.clientDTOToClient(clientServiceInterface.findByAuthToken(accessToken));
+        Client client = clientMapper.clientDTOToClient(clientServiceInterface.findByAuthToken(accessToken));
 
         ProcessingRequest processingRequest = processingRequestServiceInterface.save(client);
         ProcessingStatus processingStatus = processingStatusServiceInterface.findByStatus(Status.PROCESSING_REQUESTED);
@@ -117,7 +117,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
 
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);

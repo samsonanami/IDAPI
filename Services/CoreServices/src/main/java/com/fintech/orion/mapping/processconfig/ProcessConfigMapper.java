@@ -16,11 +16,9 @@ public interface ProcessConfigMapper {
 
     @Mappings({
             @Mapping(source = "processConfig.id.processType", target = "processType"),
-            @Mapping(source = "processConfig.id.key", target = "key"),
+            @Mapping(source = "processConfig.id.key", target = "key")
     })
     ProcessConfigDTO processConfigToProcessConfigDTO(ProcessConfig processConfig);
-
-    ProcessConfig processConfigDTOToProcessConfig(ProcessConfigDTO processConfigDTO);
 
     List<ProcessConfigDTO> processConfigsToProcessConfigDTOs(List<ProcessConfig> processConfigs);
 

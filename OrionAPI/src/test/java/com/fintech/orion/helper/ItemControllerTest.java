@@ -81,7 +81,7 @@ public class ItemControllerTest {
         ReflectionTestUtils.setField(itemController, "jsonValidatorInterface", jsonValidatorInterfaceMock);
 
         ClientValidatorInterface clientValidatorInterfaceMock = mock(ClientValidator.class);
-        when(clientValidatorInterfaceMock.checkClientValidity("token")).thenReturn(ObjectCreator.aClientDTO());
+        when(clientValidatorInterfaceMock.checkClientValidity(ACCESS_TOKEN)).thenReturn(ObjectCreator.aClientDTO());
         ReflectionTestUtils.setField(itemController, "clientValidatorInterface", clientValidatorInterfaceMock);
 
         Object found = itemController.verification(integrationRequest, response, ACCESS_TOKEN, data);
@@ -101,7 +101,7 @@ public class ItemControllerTest {
         ReflectionTestUtils.setField(itemController, PROCESSING_REQUEST_HANDLER_INTERFACE, processingRequestHandlerInterfaceMock);
 
         ClientValidatorInterface clientValidatorInterfaceMock = mock(ClientValidator.class);
-        when(clientValidatorInterfaceMock.checkClientValidity("token")).thenReturn(ObjectCreator.aClientDTO());
+        when(clientValidatorInterfaceMock.checkClientValidity(ACCESS_TOKEN)).thenReturn(ObjectCreator.aClientDTO());
         ReflectionTestUtils.setField(itemController, "clientValidatorInterface", clientValidatorInterfaceMock);
 
         Object found = itemController.verificationResults(verificationRequestId, response, ACCESS_TOKEN);
@@ -109,7 +109,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void shouldReturnProcessedResourcesObjectWhenProcessedResourcesCalled() throws ItemNotFoundException, IOException, ParseException {
+    public void shouldReturnProcessedResourcesObjectWhenProcessedResourcesCalled() throws Exception {
         ItemController itemController = new ItemController();
 
         String verificationProcessId = "987654321";
@@ -121,7 +121,7 @@ public class ItemControllerTest {
         ReflectionTestUtils.setField(itemController, PROCESSING_REQUEST_HANDLER_INTERFACE, processingRequestHandlerInterfaceMock);
 
         ClientValidatorInterface clientValidatorInterfaceMock = mock(ClientValidator.class);
-        when(clientValidatorInterfaceMock.checkClientValidity("token")).thenReturn(ObjectCreator.aClientDTO());
+        when(clientValidatorInterfaceMock.checkClientValidity(ACCESS_TOKEN)).thenReturn(ObjectCreator.aClientDTO());
         ReflectionTestUtils.setField(itemController, "clientValidatorInterface", clientValidatorInterfaceMock);
 
         itemController.processedResources(verificationProcessId, id, response, ACCESS_TOKEN);

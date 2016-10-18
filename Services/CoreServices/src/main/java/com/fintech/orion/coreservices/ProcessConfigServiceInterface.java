@@ -15,9 +15,9 @@ public interface ProcessConfigServiceInterface extends ServiceInterface<ProcessC
 
     List<ProcessConfigDTO> getAllDTOs();
 
-    void saveOrUpdate(ProcessConfigDTO processConfigDTO);
+    void saveOrUpdate(ProcessConfigDTO processConfigDTO) throws ItemNotFoundException;
 
-    void delete(ProcessConfigDTO processConfigDTO);
+    void delete(ProcessConfigDTO processConfigDTO) throws ItemNotFoundException;
 
     List<ProcessConfigDTO> findById(int processType) throws ItemNotFoundException;
 
