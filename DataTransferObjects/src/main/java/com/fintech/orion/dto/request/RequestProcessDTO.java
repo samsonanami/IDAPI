@@ -6,22 +6,22 @@ package com.fintech.orion.dto.request;
  */
 public class RequestProcessDTO {
 
-    private int processId;
-    private int processType;
+    private Integer processId;
+    private Integer processType;
 
-    public int getProcessId() {
+    public Integer getProcessId() {
         return processId;
     }
 
-    public void setProcessId(int processId) {
+    public void setProcessId(Integer processId) {
         this.processId = processId;
     }
 
-    public int getProcessType() {
+    public Integer getProcessType() {
         return processType;
     }
 
-    public void setProcessType(int processType) {
+    public void setProcessType(Integer processType) {
         this.processType = processType;
     }
 }

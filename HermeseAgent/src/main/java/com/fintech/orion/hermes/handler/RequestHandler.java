@@ -19,7 +19,7 @@ import java.util.List;
  * Created by TharinduMP on 10/14/2016.
  * Class Responsible for delegating Requests to perform request sending.
  */
-public class RequestHandler {
+public class RequestHandler implements RequestHandlerInterface {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestHandler.class);
 
@@ -32,6 +32,7 @@ public class RequestHandler {
     @Autowired
     private RequestDelegationInterface requestDelegation;
 
+    @Override
     public void handleRequests(List<GenericRequest> genericRequests) throws RequestHandlerException {
         if (genericRequests != null) {
             for (GenericRequest genericRequest : genericRequests) {

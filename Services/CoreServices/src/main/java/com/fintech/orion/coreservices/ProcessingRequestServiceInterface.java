@@ -23,5 +23,5 @@ public interface ProcessingRequestServiceInterface extends ServiceInterface<Proc
 
     ProcessingRequest save(Client client);
 
-    ProcessingRequest findByIdIdentificationCode(String identificationCode) throws ItemNotFoundException;
+    ProcessingRequestDTO findByIdIdentificationCode(String identificationCode) throws ItemNotFoundException;
 }
