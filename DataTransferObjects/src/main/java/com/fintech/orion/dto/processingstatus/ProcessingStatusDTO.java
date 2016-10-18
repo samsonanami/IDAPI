@@ -1,6 +1,5 @@
 package com.fintech.orion.dto.processingstatus;
 
-import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dto.process.ProcessDTO;
 
 import java.util.HashSet;

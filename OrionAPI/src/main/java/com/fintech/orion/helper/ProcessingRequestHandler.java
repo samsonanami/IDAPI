@@ -10,10 +10,12 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.*;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
+import com.fintech.orion.mapping.client.ClientMapper;
 import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import sun.misc.BASE64Decoder;
 
@@ -54,9 +56,11 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     @Autowired
     private String inspectionImageUrl;
 
+    ClientMapper INSTANCE = Mappers.getMapper(ClientMapper.class);
+
     @Override
     public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
-        Client client = clientServiceInterface.findByAuthToken(accessToken);
+        Client client = INSTANCE.clientDTOToClient(clientServiceInterface.findByAuthToken(accessToken));
 
         ProcessingRequest processingRequest = processingRequestServiceInterface.save(client);
         ProcessingStatus processingStatus = processingStatusServiceInterface.findByStatus(Status.PROCESSING_REQUESTED);

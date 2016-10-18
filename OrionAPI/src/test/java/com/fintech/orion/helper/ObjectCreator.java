@@ -4,6 +4,7 @@ import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRe
 import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
+import com.fintech.orion.dto.client.ClientDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,10 @@ public class ObjectCreator {
 
     public static VerificationRequest aVerificationRequest() {
         return new VerificationRequest();
+    }
+
+    public static ClientDTO aClientDTO(){
+        return new ClientDTO();
     }
 
 }

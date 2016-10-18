@@ -1,8 +1,5 @@
 package com.fintech.orion.dto.resource;
 
-import com.fintech.orion.dataabstraction.entities.orion.Client;
-import com.fintech.orion.dataabstraction.entities.orion.Process;
-import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
 import com.fintech.orion.dto.client.ClientDTO;
 import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.resourcetype.ResourceTypeDTO;

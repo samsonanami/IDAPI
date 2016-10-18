@@ -6,6 +6,8 @@ import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepositoryInterface;
+import com.fintech.orion.mapping.client.ClientMapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +24,13 @@ public class ResourceService extends AbstractService<Resource, Integer> implemen
     @Autowired
     private ClientServiceInterface clientServiceInterface;
 
+    ClientMapper INSTANCE = Mappers.getMapper(ClientMapper.class);
+
     @Transactional
     @Override
     public Resource save(String newFilename, String uuidNumber, String contentType, String accessToken) throws ItemNotFoundException {
         ResourceType resourceType = resourceTypeServiceInterface.findByType(contentType);
-        Client client = clientServiceInterface.findByAuthToken(accessToken);
+        Client client = INSTANCE.clientDTOToClient(clientServiceInterface.findByAuthToken(accessToken));
 
         Resource resource = new Resource();
         resource.setLocation(newFilename);
