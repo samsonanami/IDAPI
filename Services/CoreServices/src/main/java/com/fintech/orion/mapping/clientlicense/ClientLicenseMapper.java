@@ -2,19 +2,27 @@ package com.fintech.orion.mapping.clientlicense;
 
 import com.fintech.orion.dataabstraction.entities.orion.ClientLicense;
 import com.fintech.orion.dto.clientlicense.ClientLicenseDTO;
+import com.fintech.orion.mapping.client.ClientMapper;
+import com.fintech.orion.mapping.license.LicenseMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import java.util.List;
 
 /**
  * ClientLicense entity mapper
  */
-@Mapper(componentModel = "spring")
+@Mapper(uses = {ClientMapper.class, LicenseMapper.class}, componentModel = "spring")
 public interface ClientLicenseMapper {
 
-    ClientLicenseDTO clientToClientDTO(ClientLicense clientLicense);
+    @Mappings({
+            @Mapping(target = "clientDTO", source = "client"),
+            @Mapping(target = "licenseDTO", source = "license")
+    })
+    ClientLicenseDTO clientLicenseToClientLicenseDTO(ClientLicense clientLicense);
 
-    ClientLicense clientDTOToClient(ClientLicenseDTO clientLicenseDTO);
+    ClientLicense clientLicenseDTOToClientLicense(ClientLicenseDTO clientLicenseDTO);
 
-    List<ClientLicenseDTO> clientsToClientDTOs(List<ClientLicense> clientLicenses);
+    List<ClientLicenseDTO> clientLicensesToClientLicenseDTOs(List<ClientLicense> clientLicenses);
 }

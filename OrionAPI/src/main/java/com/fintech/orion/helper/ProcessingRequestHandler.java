@@ -10,6 +10,8 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.*;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
+import com.fintech.orion.dto.process.ProcessDTO;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import com.fintech.orion.mapping.client.ClientMapper;
 import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONObject;
@@ -78,18 +80,18 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
 
     @Override
     public VerificationRequest getVerificationRequestData(String accessToken, String verificationRequestId) throws ItemNotFoundException {
-        ProcessingRequest processingRequest = processingRequestServiceInterface.findByIdIdentificationCode(verificationRequestId);
+        ProcessingRequestDTO processingRequestDTO = processingRequestServiceInterface.findByIdIdentificationCode(verificationRequestId);
 
         VerificationRequest verificationRequest = new VerificationRequest();
         List<com.fintech.orion.dataabstraction.models.verificationresult.VerificationProcess> verificationProcessList = new ArrayList<>();
-        verificationRequest.setVerificationRequestId(processingRequest.getProcessingRequestIdentificationCode());
-        for (Process p : processingRequest.getProcesses()) {
+        verificationRequest.setVerificationRequestId(processingRequestDTO.getProcessingRequestIdentificationCode());
+        for (ProcessDTO p : processingRequestDTO.getProcesses()) {
             com.fintech.orion.dataabstraction.models.verificationresult.VerificationProcess verificationProcess =
                     new com.fintech.orion.dataabstraction.models.verificationresult.VerificationProcess();
             verificationProcess.setVerificationProcessId(p.getProcessIdentificationCode());
-            verificationProcess.setStatus(p.getProcessingStatus().getStatus());
-            if(p.getProcessingStatus().getStatus().equals(Status.PROCESSING_COMPLETE)){
-                verificationProcess.setData(p.getResponse().getExtractedJson());
+            verificationProcess.setStatus(p.getProcessingStatusDTO().getStatus());
+            if(p.getProcessingStatusDTO().getStatus().equals(Status.PROCESSING_COMPLETE)){
+                verificationProcess.setData(p.getResponseDTO().getExtractedJson());
             }
             verificationProcessList.add(verificationProcess);
         }

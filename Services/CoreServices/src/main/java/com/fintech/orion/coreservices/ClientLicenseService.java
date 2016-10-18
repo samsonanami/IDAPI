@@ -23,24 +23,24 @@ public class ClientLicenseService extends AbstractService<ClientLicense, Integer
     @Transactional
     @Override
     public List<ClientLicenseDTO> getAllDTOs() {
-        return clientLicenseMapper.clientsToClientDTOs(getAll());
+        return clientLicenseMapper.clientLicensesToClientLicenseDTOs(getAll());
     }
 
     @Transactional
     @Override
     public ClientLicenseDTO findById(int id) throws ItemNotFoundException {
-        return clientLicenseMapper.clientToClientDTO(findById(new Integer(id)));
+        return clientLicenseMapper.clientLicenseToClientLicenseDTO(findById(new Integer(id)));
     }
 
     @Transactional
     @Override
     public void saveOrUpdate(ClientLicenseDTO clientLicenseDTO) {
-        saveOrUpdate(clientLicenseMapper.clientDTOToClient(clientLicenseDTO));
+        saveOrUpdate(clientLicenseMapper.clientLicenseDTOToClientLicense(clientLicenseDTO));
     }
 
     @Transactional
     @Override
     public void delete(ClientLicenseDTO clientLicenseDTO) {
-        delete(clientLicenseMapper.clientDTOToClient(clientLicenseDTO));
+        delete(clientLicenseMapper.clientLicenseDTOToClientLicense(clientLicenseDTO));
     }
 }
