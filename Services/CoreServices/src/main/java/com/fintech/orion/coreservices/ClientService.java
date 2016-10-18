@@ -6,7 +6,6 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ClientRepositoryInterface;
 import com.fintech.orion.dto.client.ClientDTO;
 import com.fintech.orion.mapping.client.ClientMapper;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,8 @@ public class ClientService extends AbstractService<Client, Integer> implements C
     @Autowired
     private ClientRepositoryInterface clientRepositoryInterface;
 
-    ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
+    @Autowired
+    private ClientMapper clientMapper;
 
     @Transactional
     @Override
