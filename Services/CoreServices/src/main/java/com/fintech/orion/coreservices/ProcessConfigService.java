@@ -25,16 +25,19 @@ public class ProcessConfigService extends AbstractService<ProcessConfig, Process
     @Autowired
     private ProcessConfigMapper processConfigMapper;
 
+    @Transactional
     @Override
     public List<ProcessConfigDTO> getAllDTOs() {
         return processConfigMapper.processConfigsToProcessConfigDTOs(getAll());
     }
 
+    @Transactional
     @Override
     public void saveOrUpdate(ProcessConfigDTO processConfigDTO) {
         saveOrUpdate(processConfigMapper.processConfigDTOToProcessConfig(processConfigDTO));
     }
 
+    @Transactional
     @Override
     public void delete(ProcessConfigDTO processConfigDTO) {
         delete(processConfigMapper.processConfigDTOToProcessConfig(processConfigDTO));

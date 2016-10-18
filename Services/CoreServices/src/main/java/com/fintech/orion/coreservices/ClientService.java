@@ -24,21 +24,25 @@ public class ClientService extends AbstractService<Client, Integer> implements C
     @Autowired
     private ClientMapper clientMapper;
 
+    @Transactional
     @Override
     public List<ClientDTO> getAllDTOs() {
         return clientMapper.clientsToClientDTOs(getAll());
     }
 
+    @Transactional
     @Override
     public ClientDTO findById(int id) throws ItemNotFoundException {
         return clientMapper.clientToClientDTO(findById(new Integer(id)));
     }
 
+    @Transactional
     @Override
     public void saveOrUpdate(ClientDTO clientDTO) {
         saveOrUpdate(clientMapper.clientDTOToClient(clientDTO));
     }
 
+    @Transactional
     @Override
     public void delete(ClientDTO clientDTO) {
         delete(clientMapper.clientDTOToClient(clientDTO));

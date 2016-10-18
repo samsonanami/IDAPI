@@ -7,6 +7,7 @@ import com.fintech.orion.dto.clientlicense.ClientLicenseDTO;
 import com.fintech.orion.mapping.clientlicense.ClientLicenseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,21 +20,25 @@ public class ClientLicenseService extends AbstractService<ClientLicense, Integer
     @Autowired
     private ClientLicenseMapper clientLicenseMapper;
 
+    @Transactional
     @Override
     public List<ClientLicenseDTO> getAllDTOs() {
         return clientLicenseMapper.clientsToClientDTOs(getAll());
     }
 
+    @Transactional
     @Override
     public ClientLicenseDTO findById(int id) throws ItemNotFoundException {
         return clientLicenseMapper.clientToClientDTO(findById(new Integer(id)));
     }
 
+    @Transactional
     @Override
     public void saveOrUpdate(ClientLicenseDTO clientLicenseDTO) {
         saveOrUpdate(clientLicenseMapper.clientDTOToClient(clientLicenseDTO));
     }
 
+    @Transactional
     @Override
     public void delete(ClientLicenseDTO clientLicenseDTO) {
         delete(clientLicenseMapper.clientDTOToClient(clientLicenseDTO));

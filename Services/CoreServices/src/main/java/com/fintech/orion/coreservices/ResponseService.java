@@ -7,6 +7,7 @@ import com.fintech.orion.dto.response.ResponseDTO;
 import com.fintech.orion.mapping.response.ResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,21 +20,25 @@ public class ResponseService extends AbstractService<Response, Integer> implemen
     @Autowired
     private ResponseMapper responseMapper;
 
+    @Transactional
     @Override
     public List<ResponseDTO> getAllDTOs() {
         return responseMapper.responsesToResponseDTOs(getAll());
     }
 
+    @Transactional
     @Override
     public ResponseDTO findById(int id) throws ItemNotFoundException {
         return responseMapper.responseToResponseDTO(findById(new Integer(id)));
     }
 
+    @Transactional
     @Override
     public void saveOrUpdate(ResponseDTO responseDTO) {
         saveOrUpdate(responseMapper.responseDTOToResponse(responseDTO));
     }
 
+    @Transactional
     @Override
     public void delete(ResponseDTO responseDTO) {
         delete(responseMapper.responseDTOToResponse(responseDTO));

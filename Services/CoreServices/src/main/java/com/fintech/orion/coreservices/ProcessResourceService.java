@@ -26,21 +26,25 @@ public class ProcessResourceService extends AbstractService<ProcessResource, Int
     @Autowired
     private ProcessResourceMapper processResourceMapper;
 
+    @Transactional
     @Override
     public List<ProcessResourceDTO> getAllDTOs() {
         return processResourceMapper.processResourcesToProcessResourceDTOs(getAll());
     }
 
+    @Transactional
     @Override
     public ProcessResourceDTO findById(int id) throws ItemNotFoundException {
         return processResourceMapper.processResourceToProcessResourceDTO(findById(new Integer(id)));
     }
 
+    @Transactional
     @Override
     public void saveOrUpdate(ProcessResourceDTO processResourceDTO) {
         saveOrUpdate(processResourceMapper.processResourceDTOToProcessResource(processResourceDTO));
     }
 
+    @Transactional
     @Override
     public void delete(ProcessResourceDTO processResourceDTO) {
         delete(processResourceMapper.processResourceDTOToProcessResource(processResourceDTO));

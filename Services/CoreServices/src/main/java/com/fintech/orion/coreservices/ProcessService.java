@@ -29,21 +29,25 @@ public class ProcessService extends AbstractService<Process, Integer> implements
     @Autowired
     private ProcessMapper processMapper;
 
+    @Transactional
     @Override
     public List<ProcessDTO> getAllDTOs() {
         return processMapper.processesToProcessDTOs(getAll());
     }
 
+    @Transactional
     @Override
     public ProcessDTO findById(int id) throws ItemNotFoundException {
         return processMapper.processToProcessDTO(findById(new Integer(id)));
     }
 
+    @Transactional
     @Override
     public void saveOrUpdate(ProcessDTO processDTO) {
         saveOrUpdate(processMapper.processDTOToProcess(processDTO));
     }
 
+    @Transactional
     @Override
     public void delete(ProcessDTO processDTO) {
         delete(processMapper.processDTOToProcess(processDTO));

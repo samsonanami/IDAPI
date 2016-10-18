@@ -23,21 +23,25 @@ public class ProcessingStatusService extends AbstractService<ProcessingStatus, I
     @Autowired
     private ProcessingStatusMapper processingStatusMapper;
 
+    @Transactional
     @Override
     public List<ProcessingStatusDTO> getAllDTOs() {
         return processingStatusMapper.processingStatussToProcessingStatusDTOs(getAll());
     }
 
+    @Transactional
     @Override
     public ProcessingStatusDTO findById(int id) throws ItemNotFoundException {
         return processingStatusMapper.processingStatusToProcessingStatusDTO(findById(new Integer(id)));
     }
 
+    @Transactional
     @Override
     public void saveOrUpdate(ProcessingStatusDTO processingStatusDTO) {
         saveOrUpdate(processingStatusMapper.processingStatusDTOToProcessingStatus(processingStatusDTO));
     }
 
+    @Transactional
     @Override
     public void delete(ProcessingStatusDTO processingStatusDTO) {
         delete(processingStatusMapper.processingStatusDTOToProcessingStatus(processingStatusDTO));
