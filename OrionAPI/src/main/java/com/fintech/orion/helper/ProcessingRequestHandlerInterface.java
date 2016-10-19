@@ -15,5 +15,5 @@ public interface ProcessingRequestHandlerInterface {
 
     VerificationRequest getVerificationRequestData(String accessToken, String verificationRequestId) throws ItemNotFoundException;
 
-    BufferedImage getResourceData(String accessToken, String verificationProcessId, String id) throws IOException, ParseException;
+    BufferedImage getResourceData(String accessToken, String verificationProcessId, String id) throws IOException, ParseException, ItemNotFoundException;
 }

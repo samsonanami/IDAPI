@@ -1,12 +1,14 @@
 package com.fintech.orion.helper;
 
 import com.fintech.orion.coreservices.*;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.*;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import com.fintech.orion.dto.client.ClientDTO;
 import com.fintech.orion.dto.process.ProcessDTO;
+import com.fintech.orion.dto.processconfig.ProcessConfigDTO;
 import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
 import com.fintech.orion.dto.processtype.ProcessTypeDTO;
@@ -50,6 +52,9 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     @Autowired
     private String inspectionImageUrl;
 
+    @Autowired
+    private ProcessConfigServiceInterface processConfigServiceInterface;
+
     @Override
     public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
         ClientDTO clientDTO = clientServiceInterface.findByAuthToken(accessToken);
@@ -89,16 +94,23 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     }
 
     @Override
-    public BufferedImage getResourceData(String accessToken, String verificationProcessId, String id) throws IOException, ParseException {
+    public BufferedImage getResourceData(String accessToken, String verificationProcessId, String id) throws IOException, ParseException, ItemNotFoundException {
         String url = inspectionImageUrl + id;
-        String responseString = sendGet(url);
+
+        ProcessDTO processDTO = processServiceInterface.findByIdentificationCode(verificationProcessId);
+
+        ProcessTypeDTO processTypeDTO = processTypeServiceInterface.findById(processDTO.getProcessTypeDTO().getId());
+
+        String responseString = sendGet(url, processTypeDTO.getId());
         JSONObject json = (JSONObject)new JSONParser().parse(responseString);
         return getBufferedImageFromString(json.get("base64Content").toString());
     }
 
-    private String sendGet(String url) throws IOException, ParseException {
+    private String sendGet(String url, int processType) throws IOException, ParseException, ItemNotFoundException {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        List<ProcessConfigDTO> processConfigDTOs = processConfigServiceInterface.findById(processType);
 
         con.setRequestMethod("GET");
 //        byte[] bytesEncoded = Base64.encodeBase64(("Fintech" + ":" + "xGH22979Hos2wx4K").getBytes());
