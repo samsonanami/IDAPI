@@ -1,7 +1,6 @@
 package com.fintech.orion.helper;
 
 import com.fintech.orion.coreservices.*;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.*;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;

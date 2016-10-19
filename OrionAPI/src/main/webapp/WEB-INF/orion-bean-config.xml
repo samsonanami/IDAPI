@@ -36,4 +36,28 @@
     <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator"></bean>
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler"></bean>
     <bean id="clientValidatorInterface" class="com.fintech.orion.helper.ClientValidator"></bean>
+
+    <bean id="jobProducerInterface" class="com.fintech.orion.messaging.job.JobProducer">
+        <constructor-arg name="queueName" value="MainQueue" />
+        <constructor-arg ref="destinationHandler" />
+        <constructor-arg ref="sessionHandler" />
+    </bean>
+
+    <bean id="connectionFactory" name="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://10.101.15.212:61616"/>
+        <property name="userName" value="admin"/>
+        <property name="password" value="admin"/>
+    </bean>
+
+    <bean id="sessionHandler" class="com.fintech.orion.messaging.connection.SessionHandler">
+        <constructor-arg ref="connectionFactory"/>
+    </bean>
+
+    <bean id="destinationHandler" class="com.fintech.orion.messaging.connection.DestinationHandler" />
+
+    <bean id="jobHandlerInterface" class="com.fintech.orion.messaging.job.JobHandler"></bean>
+    <bean id="orionJobHandlerInterface" class="com.fintech.orion.handlers.OrionJobHandler"></bean>
+    <bean id="messageHandlerInterface" class="com.fintech.orion.handlers.MessageHandler"></bean>
+    <bean id="validatorFactory" class="com.fintech.orion.dto.validator.ValidatorFactory"></bean>
+
 </beans>
