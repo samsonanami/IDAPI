@@ -3,6 +3,11 @@ package com.fintech.orion.coreservices;
 import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dto.client.ClientDTO;
+import com.fintech.orion.dto.process.ProcessDTO;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
+import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
+import com.fintech.orion.dto.processtype.ProcessTypeDTO;
+import com.fintech.orion.dto.resource.ResourceDTO;
 
 /**
  * Object creator for service classes
@@ -59,5 +64,25 @@ public class ObjectCreator {
 
     public static ClientDTO createClientDTOObject() {
         return new ClientDTO();
+    }
+
+    public static ProcessDTO createProcessDTOObject() {
+        return new ProcessDTO();
+    }
+
+    public static ResourceDTO createResourceDTOObject() {
+        return new ResourceDTO();
+    }
+
+    public static ProcessTypeDTO createProcessTypeDTOObject() {
+        return new ProcessTypeDTO();
+    }
+
+    public static ProcessingRequestDTO createProcessingRequestDTOObject() {
+        return new ProcessingRequestDTO();
+    }
+
+    public static ProcessingStatusDTO createProcessingStatusDTOObject() {
+        return new ProcessingStatusDTO();
     }
 }

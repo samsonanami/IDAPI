@@ -2,15 +2,18 @@ package com.fintech.orion.coreservices;
 
 import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
 import com.fintech.orion.dto.process.ProcessDTO;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
+import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
+import com.fintech.orion.dto.processtype.ProcessTypeDTO;
 import com.fintech.orion.mapping.process.ProcessMapper;
+import com.fintech.orion.mapping.processingrequest.ProcessingRequestMapper;
+import com.fintech.orion.mapping.processingstatus.ProcessingStatusMapper;
+import com.fintech.orion.mapping.processtype.ProcessTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,15 @@ public class ProcessService extends AbstractService<Process, Integer> implements
 
     @Autowired
     private ProcessMapper processMapper;
+
+    @Autowired
+    private ProcessingRequestMapper processingRequestMapper;
+
+    @Autowired
+    private ProcessTypeMapper processTypeMapper;
+
+    @Autowired
+    private ProcessingStatusMapper processingStatusMapper;
 
     @Transactional
     @Override
@@ -55,20 +67,20 @@ public class ProcessService extends AbstractService<Process, Integer> implements
 
     @Transactional
     @Override
-    public Process save(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus) {
+    public ProcessDTO save(ProcessTypeDTO processTypeDTO, ProcessingRequestDTO processingRequestDTO, ProcessingStatusDTO processingStatusDTO) {
         Process process = new Process();
         process.setRequestSentOn(GenerateTimestamp.timestamp());
-        process.setProcessingRequest(processingRequest);
-        process.setProcessType(processType);
+        process.setProcessingRequest(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
+        process.setProcessType(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
         process.setProcessIdentificationCode(GenerateUUID.uuidNumber());
-        process.setProcessingStatus(processingStatus);
+        process.setProcessingStatus(processingStatusMapper.processingStatusDTOToProcessingStatus(processingStatusDTO));
         processRepositoryInterface.saveOrUpdate(process);
-        return process;
+        return processMapper.processToProcessDTO(process);
     }
 
     @Transactional
     @Override
-    public Process findByIdentificationCode(String identificationCode) throws ItemNotFoundException {
-        return processRepositoryInterface.findByIdentificationCode(identificationCode);
+    public ProcessDTO findByIdentificationCode(String identificationCode) throws ItemNotFoundException {
+        return processMapper.processToProcessDTO(processRepositoryInterface.findByIdentificationCode(identificationCode));
     }
 }

@@ -49,7 +49,7 @@ public class ProcessingStatusService extends AbstractService<ProcessingStatus, I
 
     @Transactional
     @Override
-    public ProcessingStatus findByStatus(Status status) throws ItemNotFoundException {
-        return processingStatusRepositoryInterface.findByStatus(status);
+    public ProcessingStatusDTO findByStatus(Status status) throws ItemNotFoundException {
+        return processingStatusMapper.processingStatusToProcessingStatusDTO(processingStatusRepositoryInterface.findByStatus(status));
     }
 }

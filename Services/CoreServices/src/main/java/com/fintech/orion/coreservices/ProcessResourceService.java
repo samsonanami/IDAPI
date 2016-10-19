@@ -1,13 +1,15 @@
 package com.fintech.orion.coreservices;
 
 import com.fintech.orion.common.AbstractService;
-import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessResource;
-import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ProcessResourceRepositoryInterface;
+import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.processresource.ProcessResourceDTO;
+import com.fintech.orion.dto.resource.ResourceDTO;
+import com.fintech.orion.mapping.process.ProcessMapper;
 import com.fintech.orion.mapping.processresource.ProcessResourceMapper;
+import com.fintech.orion.mapping.resource.ResourceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,12 @@ public class ProcessResourceService extends AbstractService<ProcessResource, Int
 
     @Autowired
     private ProcessResourceMapper processResourceMapper;
+
+    @Autowired
+    private ProcessMapper processMapper;
+
+    @Autowired
+    private ResourceMapper resourceMapper;
 
     @Transactional
     @Override
@@ -52,10 +60,10 @@ public class ProcessResourceService extends AbstractService<ProcessResource, Int
 
     @Transactional
     @Override
-    public ProcessResource save(Process process, Resource resource, String resourceName) {
+    public ProcessResource save(ProcessDTO processDTO, ResourceDTO resourceDTO, String resourceName) {
         ProcessResource processResource = new ProcessResource();
-        processResource.setProcess(process);
-        processResource.setResource(resource);
+        processResource.setProcess(processMapper.processDTOToProcess(processDTO));
+        processResource.setResource(resourceMapper.resourceDTOToResource(resourceDTO));
         processResource.setResourceName(resourceName);
         processResourceRepositoryInterface.saveOrUpdate(processResource);
         return processResource;

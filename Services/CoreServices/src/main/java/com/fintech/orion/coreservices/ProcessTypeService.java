@@ -51,8 +51,8 @@ public class ProcessTypeService extends AbstractService<ProcessType, Integer> im
 
     @Transactional
     @Override
-    public ProcessType findByType(String type) throws ItemNotFoundException {
-        return processTypeRepositoryInterface.findByType(type);
+    public ProcessTypeDTO findByType(String type) throws ItemNotFoundException {
+        return processTypeMapper.processTypeToProcessTypeDTO(processTypeRepositoryInterface.findByType(type));
     }
 
 }

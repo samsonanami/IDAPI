@@ -2,14 +2,12 @@ package com.fintech.orion.helper;
 
 import com.fintech.orion.coreservices.ResourceService;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
-import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.model.VerificationResponseMessage;
 import com.fintech.orion.rest.ItemController;
-import org.json.simple.parser.ParseException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -17,7 +15,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
@@ -57,7 +54,7 @@ public class ItemControllerTest {
         ReflectionTestUtils.setField(itemController, "fileUploadHandlerInterface", fileUploadHandlerInterfaceMock);
 
         ResourceServiceInterface resourceServiceInterfaceMock = mock(ResourceService.class);
-        when(resourceServiceInterfaceMock.save(newFilename, uuidNumber, contentType, ACCESS_TOKEN)).thenReturn(new Resource());
+        when(resourceServiceInterfaceMock.save(newFilename, uuidNumber, contentType, ACCESS_TOKEN)).thenReturn(ObjectCreator.aResourceDTO());
         ReflectionTestUtils.setField(itemController, "resourceServiceInterface", resourceServiceInterfaceMock);
 
         Object found = itemController.uploadContent(contentType, response, ACCESS_TOKEN, mockMultipartFile);

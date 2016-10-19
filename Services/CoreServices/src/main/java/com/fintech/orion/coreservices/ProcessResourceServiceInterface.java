@@ -1,11 +1,11 @@
 package com.fintech.orion.coreservices;
 
 import com.fintech.orion.common.ServiceInterface;
-import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessResource;
-import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.processresource.ProcessResourceDTO;
+import com.fintech.orion.dto.resource.ResourceDTO;
 
 import java.util.List;
 
@@ -22,5 +22,5 @@ public interface ProcessResourceServiceInterface extends ServiceInterface<Proces
 
     void delete(ProcessResourceDTO processResourceDTO);
 
-    ProcessResource save(Process process, Resource resource, String resourceName);
+    ProcessResource save(ProcessDTO process, ResourceDTO resource, String resourceName);
 }

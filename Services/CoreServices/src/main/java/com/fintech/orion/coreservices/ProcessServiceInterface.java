@@ -2,11 +2,11 @@ package com.fintech.orion.coreservices;
 
 import com.fintech.orion.common.ServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.process.ProcessDTO;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
+import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
+import com.fintech.orion.dto.processtype.ProcessTypeDTO;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public interface ProcessServiceInterface extends ServiceInterface<Process, Integ
 
     void delete(ProcessDTO processDTO);
 
-    Process save(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus);
+    ProcessDTO save(ProcessTypeDTO processTypeDTO, ProcessingRequestDTO processingRequestDTO, ProcessingStatusDTO processingStatusDTO);
 
-    Process findByIdentificationCode(String identificationCode) throws ItemNotFoundException;
+    ProcessDTO findByIdentificationCode(String identificationCode) throws ItemNotFoundException;
 }

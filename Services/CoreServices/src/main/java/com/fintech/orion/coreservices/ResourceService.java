@@ -62,7 +62,7 @@ public class ResourceService extends AbstractService<Resource, Integer> implemen
 
     @Transactional
     @Override
-    public Resource save(String newFilename, String uuidNumber, String contentType, String accessToken) throws ItemNotFoundException {
+    public ResourceDTO save(String newFilename, String uuidNumber, String contentType, String accessToken) throws ItemNotFoundException {
         ResourceType resourceType = resourceTypeServiceInterface.findByType(contentType);
         Client client = clientMapper.clientDTOToClient(clientServiceInterface.findByAuthToken(accessToken));
 
@@ -73,12 +73,12 @@ public class ResourceService extends AbstractService<Resource, Integer> implemen
         resource.setResourceIdentificationCode(uuidNumber);
 
         resourceRepositoryInterface.saveOrUpdate(resource);
-        return resource;
+        return resourceMapper.resourceToResourceDTO(resource);
     }
 
     @Transactional
     @Override
-    public Resource findByIdentificationCode(String resourceIdentificationCode) throws ItemNotFoundException {
-        return resourceRepositoryInterface.findByIdentificationCode(resourceIdentificationCode);
+    public ResourceDTO findByIdentificationCode(String resourceIdentificationCode) throws ItemNotFoundException {
+        return resourceMapper.resourceToResourceDTO(resourceRepositoryInterface.findByIdentificationCode(resourceIdentificationCode));
     }
 }

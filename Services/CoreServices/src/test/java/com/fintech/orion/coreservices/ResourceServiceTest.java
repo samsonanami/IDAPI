@@ -6,13 +6,14 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepository;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepositoryInterface;
 import com.fintech.orion.dto.client.ClientDTO;
+import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.mapping.client.ClientMapper;
-import com.sun.scenario.effect.Reflection;
+import com.fintech.orion.mapping.resource.ResourceMapper;
 import org.junit.Test;
-import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -33,8 +34,11 @@ public class ResourceServiceTest {
         when(repositoryInterfaceMock.findByIdentificationCode("code")).thenReturn(resource);
         ReflectionTestUtils.setField(serviceInterface, REPOSITORY_INTERFACE, repositoryInterfaceMock);
 
-        Resource found = serviceInterface.findByIdentificationCode("code");
-        assertTrue(resource.equals(found));
+        ResourceMapper resourceMapper = Mappers.getMapper(ResourceMapper.class);
+        ReflectionTestUtils.setField(serviceInterface, "resourceMapper", resourceMapper);
+
+        Object found = serviceInterface.findByIdentificationCode("code");
+        assertThat(found, instanceOf(ResourceDTO.class));
     }
 
     @Test
@@ -58,8 +62,11 @@ public class ResourceServiceTest {
         ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
         ReflectionTestUtils.setField(serviceInterface, "clientMapper", clientMapper);
 
-        Resource resource = serviceInterface.save("12345abcde.jpg", "12345abcde", "image", "123456");
-        verify(repositoryInterfaceMock, times(1)).saveOrUpdate(resource);
+        ResourceMapper resourceMapper = Mappers.getMapper(ResourceMapper.class);
+        ReflectionTestUtils.setField(serviceInterface, "resourceMapper", resourceMapper);
+
+        Object found = serviceInterface.save("12345abcde.jpg", "12345abcde", "image", "123456");
+        assertThat(found, instanceOf(ResourceDTO.class));
     }
 
 }

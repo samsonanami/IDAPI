@@ -6,6 +6,7 @@ import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import com.fintech.orion.dto.client.ClientDTO;
+import com.fintech.orion.dto.resource.ResourceDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,4 +49,7 @@ public class ObjectCreator {
 
     public static Client aClient() { return new Client(); }
 
+    public static ResourceDTO aResourceDTO() {
+        return new ResourceDTO();
+    }
 }

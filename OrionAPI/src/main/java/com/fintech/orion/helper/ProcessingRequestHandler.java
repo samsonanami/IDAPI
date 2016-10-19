@@ -1,26 +1,23 @@
 package com.fintech.orion.helper;
 
 import com.fintech.orion.coreservices.*;
-import com.fintech.orion.dataabstraction.entities.orion.*;
-import com.fintech.orion.dataabstraction.entities.orion.Process;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
-import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.*;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
+import com.fintech.orion.dto.client.ClientDTO;
 import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
-import com.fintech.orion.mapping.client.ClientMapper;
-import org.apache.commons.codec.binary.Base64;
+import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
+import com.fintech.orion.dto.processtype.ProcessTypeDTO;
+import com.fintech.orion.dto.resource.ResourceDTO;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -57,25 +54,22 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     @Autowired
     private String inspectionImageUrl;
 
-    @Autowired
-    private ClientMapper clientMapper;
-
     @Override
     public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
-        Client client = clientMapper.clientDTOToClient(clientServiceInterface.findByAuthToken(accessToken));
+        ClientDTO clientDTO = clientServiceInterface.findByAuthToken(accessToken);
 
-        ProcessingRequest processingRequest = processingRequestServiceInterface.save(client);
-        ProcessingStatus processingStatus = processingStatusServiceInterface.findByStatus(Status.PROCESSING_REQUESTED);
+        ProcessingRequestDTO processingRequestDTO = processingRequestServiceInterface.save(clientDTO);
+        ProcessingStatusDTO processingStatusDTO = processingStatusServiceInterface.findByStatus(Status.PROCESSING_REQUESTED);
 
         for (VerificationProcess v : verificationProcessList) {
-            ProcessType processType = processTypeServiceInterface.findByType(v.getVerificationProcessType());
-            Process process = processServiceInterface.save(processType, processingRequest, processingStatus);
+            ProcessTypeDTO processTypeDTO = processTypeServiceInterface.findByType(v.getVerificationProcessType());
+            ProcessDTO processDTO = processServiceInterface.save(processTypeDTO, processingRequestDTO, processingStatusDTO);
             for (com.fintech.orion.dataabstraction.models.verificationprocess.Resource r : v.getResources()) {
-                Resource resource = resourceServiceInterface.findByIdentificationCode(r.getResourceId());
-                processResourceServiceInterface.save(process, resource, r.getResourceName());
+                ResourceDTO resourceDTO = resourceServiceInterface.findByIdentificationCode(r.getResourceId());
+                processResourceServiceInterface.save(processDTO, resourceDTO, r.getResourceName());
             }
         }
-        return processingRequest.getProcessingRequestIdentificationCode();
+        return processingRequestDTO.getProcessingRequestIdentificationCode();
     }
 
     @Override
@@ -112,7 +106,8 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         con.setRequestMethod("GET");
-        byte[] bytesEncoded = Base64.encodeBase64(("Fintech" + ":" + "xGH22979Hos2wx4K").getBytes());
+//        byte[] bytesEncoded = Base64.encodeBase64(("Fintech" + ":" + "xGH22979Hos2wx4K").getBytes());
+        byte[] bytesEncoded = DatatypeConverter.parseBase64Binary(String.valueOf(("Fintech" + ":" + "xGH22979Hos2wx4K").getBytes()));
         String test = "Basic " + new String(bytesEncoded);
         con.setRequestProperty("Authorization", test);
 
@@ -133,8 +128,12 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
         BufferedImage image = null;
         byte[] imageByte;
 
-        BASE64Decoder decoder = new BASE64Decoder();
-        imageByte = decoder.decodeBuffer(base64String);
+//        BASE64Decoder decoder = new BASE64Decoder();
+//        imageByte = decoder.decodeBuffer(base64String);
+
+        String str = DatatypeConverter.printBase64Binary(base64String.getBytes());
+        imageByte = DatatypeConverter.parseBase64Binary(str);
+
         ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
         image = ImageIO.read(bis);
         bis.close();
