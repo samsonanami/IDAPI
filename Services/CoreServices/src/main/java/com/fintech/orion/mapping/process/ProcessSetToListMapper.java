@@ -16,4 +16,8 @@ public class ProcessSetToListMapper {
     public List<ProcessDTO> map(Set<Process> processes) {
         return null;
     }
+
+    public Set<Process> map(List<ProcessDTO> processes) {
+        return null;
+    }
 }

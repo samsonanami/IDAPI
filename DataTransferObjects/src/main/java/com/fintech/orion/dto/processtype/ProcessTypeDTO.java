@@ -1,7 +1,7 @@
 package com.fintech.orion.dto.processtype;
 
 /**
- * Created by ChathurangaRW on 10/17/2016.
+ * ProcessType dto
  */
 public class ProcessTypeDTO {
 

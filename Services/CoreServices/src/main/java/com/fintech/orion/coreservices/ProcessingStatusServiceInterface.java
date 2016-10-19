@@ -4,7 +4,6 @@ import com.fintech.orion.common.ServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.Status;
-import com.fintech.orion.dto.client.ClientDTO;
 import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
 
 import java.util.List;
@@ -22,5 +21,5 @@ public interface ProcessingStatusServiceInterface extends ServiceInterface<Proce
 
     void delete(ProcessingStatusDTO processingStatusDTO);
 
-    ProcessingStatus findByStatus(Status status) throws ItemNotFoundException;
+    ProcessingStatusDTO findByStatus(Status status) throws ItemNotFoundException;
 }

@@ -8,7 +8,6 @@
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
     <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
     <bean id="processingRequestServiceInterface" class="com.fintech.orion.coreservices.ProcessingRequestService"/>
-    <bean id="processResourceServiceInterface" class="com.fintech.orion.coreservices.ProcessResourceService"/>
     <bean id="processServiceInterface" class="com.fintech.orion.coreservices.ProcessService"/>
     <bean id="processTypeLicenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
     <bean id="processTypeServiceInterface" class="com.fintech.orion.coreservices.ProcessTypeService"/>
@@ -22,7 +21,6 @@
     <bean id="clientRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientRepository"/>
     <bean id="licenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.LicenseRepository"/>
     <bean id="processingRequestRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepository"/>
-    <bean id="processResourceRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessResourceRepository"/>
     <bean id="processRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessRepository"/>
     <bean id="processTypeLicenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessTypeLicenseRepository"/>
     <bean id="processTypeRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessTypeRepository"/>

@@ -5,10 +5,14 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.Status;
 import com.fintech.orion.dataabstraction.repositories.ProcessingStatusRepository;
 import com.fintech.orion.dataabstraction.repositories.ProcessingStatusRepositoryInterface;
+import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
+import com.fintech.orion.mapping.processingstatus.ProcessingStatusMapper;
 import org.junit.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,8 +29,11 @@ public class ProcessingStatusServiceTest {
         when(repositoryInterfaceMock.findByStatus(Status.PROCESSING_COMPLETE)).thenReturn(processingStatus);
         ReflectionTestUtils.setField(serviceInterface, "processingStatusRepositoryInterface", repositoryInterfaceMock);
 
-        ProcessingStatus found = serviceInterface.findByStatus(Status.PROCESSING_COMPLETE);
-        assertTrue(processingStatus.equals(found));
+        ProcessingStatusMapper processingStatusMapper = Mappers.getMapper(ProcessingStatusMapper.class);
+        ReflectionTestUtils.setField(serviceInterface, "processingStatusMapper", processingStatusMapper);
+
+        ProcessingStatusDTO found = serviceInterface.findByStatus(Status.PROCESSING_COMPLETE);
+        assertThat(found, instanceOf(ProcessingStatusDTO.class));
     }
 
 }

@@ -20,6 +20,6 @@ public interface ProcessTypeServiceInterface extends ServiceInterface<ProcessTyp
 
     void delete(ProcessTypeDTO processTypeDTO);
 
-    ProcessType findByType(String type) throws ItemNotFoundException;
+    ProcessTypeDTO findByType(String type) throws ItemNotFoundException;
 
 }

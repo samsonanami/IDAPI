@@ -1,9 +1,9 @@
 package com.fintech.orion.rest;
 
 import com.fintech.orion.coreservices.ResourceServiceInterface;
-import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
+import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.helper.*;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.model.ContentUploadResourceResult;
@@ -66,7 +66,7 @@ public class ItemController {
         try {
             clientValidatorInterface.checkClientValidity(accessToken);
 
-            Resource resource;
+            ResourceDTO resourceDTO;
             String fileName = multiPart.getOriginalFilename();
             String extension = fileName.split("\\.")[1];
             String uuidNumber = GenerateUUID.uuidNumber();
@@ -78,12 +78,12 @@ public class ItemController {
             boolean isUploaded = fileUploadHandlerInterface.upload(multiPart, newFilename);
 
             if(isUploaded) {
-                resource = resourceServiceInterface.save(newFilename, uuidNumber, contentType, accessToken);
+                resourceDTO = resourceServiceInterface.save(newFilename, uuidNumber, contentType, accessToken);
             } else {
                 return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, maximumFileSizeMessage, response);
             }
             ContentUploadResourceResult result = new ContentUploadResourceResult();
-            result.setResourceReferenceCode(resource.getResourceIdentificationCode());
+            result.setResourceReferenceCode(resourceDTO.getResourceIdentificationCode());
             return result;
         } catch (ItemNotFoundException ex) {
             LOGGER.error(TAG, ex);
