@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
+// Generated Oct 19, 2016 6:19:33 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -34,9 +34,9 @@ public class Client  implements java.io.Serializable {
      private String password;
      private String refreshToken;
      private boolean ennabled;
-     private Set<ClientLicense> clientLicenses = new HashSet<ClientLicense>(0);
      private Set<ProcessingRequest> processingRequests = new HashSet<ProcessingRequest>(0);
      private Set<Resource> resources = new HashSet<Resource>(0);
+     private Set<License> licenses = new HashSet<License>(0);
 
     public Client() {
     }
@@ -51,7 +51,7 @@ public class Client  implements java.io.Serializable {
         this.refreshToken = refreshToken;
         this.ennabled = ennabled;
     }
-    public Client(String email, String authToken, Date registeredOn, String userName, String password, String refreshToken, boolean ennabled, Set<ClientLicense> clientLicenses, Set<ProcessingRequest> processingRequests, Set<Resource> resources) {
+    public Client(String email, String authToken, Date registeredOn, String userName, String password, String refreshToken, boolean ennabled, Set<ProcessingRequest> processingRequests, Set<Resource> resources, Set<License> licenses) {
        this.email = email;
        this.authToken = authToken;
        this.registeredOn = registeredOn;
@@ -59,9 +59,9 @@ public class Client  implements java.io.Serializable {
        this.password = password;
        this.refreshToken = refreshToken;
        this.ennabled = ennabled;
-       this.clientLicenses = clientLicenses;
        this.processingRequests = processingRequests;
        this.resources = resources;
+       this.licenses = licenses;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -147,15 +147,6 @@ public class Client  implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="client")
-    public Set<ClientLicense> getClientLicenses() {
-        return this.clientLicenses;
-    }
-    
-    public void setClientLicenses(Set<ClientLicense> clientLicenses) {
-        this.clientLicenses = clientLicenses;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
     public Set<ProcessingRequest> getProcessingRequests() {
         return this.processingRequests;
     }
@@ -171,6 +162,15 @@ public class Client  implements java.io.Serializable {
     
     public void setResources(Set<Resource> resources) {
         this.resources = resources;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
+    public Set<License> getLicenses() {
+        return this.licenses;
+    }
+    
+    public void setLicenses(Set<License> licenses) {
+        this.licenses = licenses;
     }
 
 
