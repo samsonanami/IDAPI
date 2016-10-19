@@ -1,61 +1,47 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessTypeLicense;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dataabstraction.repositories.ProcessTypeLicenseRepositoryInterface;
+import com.fintech.orion.dto.processtypelicense.ProcessTypeLicenseDTO;
+import com.fintech.orion.mapping.processtypelicense.ProcessTypeLicenseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * ProcessTypeLicense entity service class
+ */
 @Service
-public class ProcessTypeLicenseService implements ProcessTypeLicenseServiceInterface {
+public class ProcessTypeLicenseService extends AbstractService<ProcessTypeLicense, Integer> implements ProcessTypeLicenseServiceInterface {
 
     @Autowired
-    private ProcessTypeLicenseRepositoryInterface processTypeLicenseRepositoryInterface;
+    private ProcessTypeLicenseMapper processTypeLicenseMapper;
 
     @Transactional
     @Override
-    public List<ProcessTypeLicense> getProcessTypeLicenseList() {
-        return processTypeLicenseRepositoryInterface.getAll();
+    public List<ProcessTypeLicenseDTO> getAllDTOs() {
+        return processTypeLicenseMapper.processTypeLicensesToProcessTypeLicenseDTOs(getAll());
     }
 
     @Transactional
     @Override
-    public ProcessTypeLicense getProcessTypeLicenseById(int id) throws ItemNotFoundException {
-        ProcessTypeLicense processTypeLicense = processTypeLicenseRepositoryInterface.findById(id);
-        if (processTypeLicense != null) {
-            return processTypeLicense;
-        } else { throw new ItemNotFoundException("Item Not Found"); }
+    public ProcessTypeLicenseDTO findById(int id) throws ItemNotFoundException {
+        return processTypeLicenseMapper.processTypeLicenseToProcessTypeLicenseDTO(findById(new Integer(id)));
     }
 
     @Transactional
     @Override
-    public void saveProcessTypeLicense(ProcessTypeLicense processTypeLicense) {
-        processTypeLicenseRepositoryInterface.saveOrUpdate(processTypeLicense);
+    public void saveOrUpdate(ProcessTypeLicenseDTO processTypeLicenseDTO) {
+        saveOrUpdate(processTypeLicenseMapper.processTypeLicenseDTOToProcessTypeLicense(processTypeLicenseDTO));
     }
 
     @Transactional
     @Override
-    public void updateProcessTypeLicense(ProcessTypeLicense processTypeLicense) {
-        processTypeLicenseRepositoryInterface.saveOrUpdate(processTypeLicense);
+    public void delete(ProcessTypeLicenseDTO processTypeLicenseDTO) {
+        delete(processTypeLicenseMapper.processTypeLicenseDTOToProcessTypeLicense(processTypeLicenseDTO));
     }
 
-    @Transactional
-    @Override
-    public boolean deleteProcessTypeLicenseById(int id) throws ItemNotFoundException {
-        ProcessTypeLicense processTypeLicense = processTypeLicenseRepositoryInterface.findById(id);
-        if(processTypeLicense != null){
-            processTypeLicenseRepositoryInterface.delete(processTypeLicense);
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
-    @Override
-    public void deleteProcessTypeLicense(ProcessTypeLicense processTypeLicense) {
-        processTypeLicenseRepositoryInterface.delete(processTypeLicense);
-    }
 }

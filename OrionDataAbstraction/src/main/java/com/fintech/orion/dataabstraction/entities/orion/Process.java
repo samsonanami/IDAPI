@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="process"
+    ,catalog="orion"
 )
 public class Process  implements java.io.Serializable {
 
@@ -30,26 +31,32 @@ public class Process  implements java.io.Serializable {
      private Integer id;
      private ProcessType processType;
      private ProcessingRequest processingRequest;
+     private ProcessingStatus processingStatus;
+     private Response response;
      private Date requestSentOn;
      private Date responseReceivedOn;
-     private Set<Response> responses = new HashSet<Response>(0);
-     private Set<ProcessResource> processResources = new HashSet<ProcessResource>(0);
+     private String processIdentificationCode;
+     private Set<Resource> resources = new HashSet<Resource>(0);
 
     public Process() {
     }
 
 	
-    public Process(ProcessType processType, ProcessingRequest processingRequest) {
+    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, String processIdentificationCode) {
         this.processType = processType;
         this.processingRequest = processingRequest;
+        this.processingStatus = processingStatus;
+        this.processIdentificationCode = processIdentificationCode;
     }
-    public Process(ProcessType processType, ProcessingRequest processingRequest, Date requestSentOn, Date responseReceivedOn, Set<Response> responses, Set<ProcessResource> processResources) {
+    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, Response response, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Set<Resource> resources) {
        this.processType = processType;
        this.processingRequest = processingRequest;
+       this.processingStatus = processingStatus;
+       this.response = response;
        this.requestSentOn = requestSentOn;
        this.responseReceivedOn = responseReceivedOn;
-       this.responses = responses;
-       this.processResources = processResources;
+       this.processIdentificationCode = processIdentificationCode;
+       this.resources = resources;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -84,6 +91,26 @@ public class Process  implements java.io.Serializable {
         this.processingRequest = processingRequest;
     }
 
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PROCESSING_STATUS", nullable=false)
+    public ProcessingStatus getProcessingStatus() {
+        return this.processingStatus;
+    }
+    
+    public void setProcessingStatus(ProcessingStatus processingStatus) {
+        this.processingStatus = processingStatus;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="RESPONSE")
+    public Response getResponse() {
+        return this.response;
+    }
+    
+    public void setResponse(Response response) {
+        this.response = response;
+    }
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="REQUEST_SENT_ON", length=19)
     public Date getRequestSentOn() {
@@ -104,22 +131,23 @@ public class Process  implements java.io.Serializable {
         this.responseReceivedOn = responseReceivedOn;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="process")
-    public Set<Response> getResponses() {
-        return this.responses;
+    
+    @Column(name="PROCESS_IDENTIFICATION_CODE", nullable=false, length=40)
+    public String getProcessIdentificationCode() {
+        return this.processIdentificationCode;
     }
     
-    public void setResponses(Set<Response> responses) {
-        this.responses = responses;
+    public void setProcessIdentificationCode(String processIdentificationCode) {
+        this.processIdentificationCode = processIdentificationCode;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="process")
-    public Set<ProcessResource> getProcessResources() {
-        return this.processResources;
+    public Set<Resource> getResources() {
+        return this.resources;
     }
     
-    public void setProcessResources(Set<ProcessResource> processResources) {
-        this.processResources = processResources;
+    public void setResources(Set<Resource> resources) {
+        this.resources = resources;
     }
 
 

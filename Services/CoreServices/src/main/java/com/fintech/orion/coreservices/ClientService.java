@@ -1,61 +1,57 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ClientRepositoryInterface;
+import com.fintech.orion.dto.client.ClientDTO;
+import com.fintech.orion.mapping.client.ClientMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Client entity service class
+ */
 @Service
-public class ClientService implements ClientServiceInterface {
+public class ClientService extends AbstractService<Client, Integer> implements ClientServiceInterface {
 
     @Autowired
     private ClientRepositoryInterface clientRepositoryInterface;
 
+    @Autowired
+    private ClientMapper clientMapper;
+
     @Transactional
     @Override
-    public List<Client> getClientList() {
-        return clientRepositoryInterface.getAll();
+    public List<ClientDTO> getAllDTOs() {
+        return clientMapper.clientsToClientDTOs(getAll());
     }
 
     @Transactional
     @Override
-    public Client getClientById(int id) throws ItemNotFoundException {
-            Client client = clientRepositoryInterface.findById(id);
-            if (client != null) {
-                return client;
-            } else { throw new ItemNotFoundException("Item Not Found"); }
+    public ClientDTO findById(int id) throws ItemNotFoundException {
+        return clientMapper.clientToClientDTO(findById(new Integer(id)));
     }
 
     @Transactional
     @Override
-    public void saveClient(Client client) {
-        clientRepositoryInterface.saveOrUpdate(client);
+    public void saveOrUpdate(ClientDTO clientDTO) {
+        saveOrUpdate(clientMapper.clientDTOToClient(clientDTO));
     }
 
     @Transactional
     @Override
-    public void updateClient(Client client) {
-        clientRepositoryInterface.saveOrUpdate(client);
+    public void delete(ClientDTO clientDTO) {
+        delete(clientMapper.clientDTOToClient(clientDTO));
     }
 
     @Transactional
     @Override
-    public boolean deleteClientById(int id) throws ItemNotFoundException {
-        Client client = clientRepositoryInterface.findById(id);
-        if(client != null){
-            clientRepositoryInterface.delete(client);
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
-    @Override
-    public void deleteClient(Client client) {
-        clientRepositoryInterface.delete(client);
+    public ClientDTO findByAuthToken(String authToken) throws ItemNotFoundException {
+        Client client = clientRepositoryInterface.findByAuthToken(authToken);
+        return clientMapper.clientToClientDTO(client);
     }
 }

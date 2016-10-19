@@ -1,21 +1,25 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.ServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.resourcetype.ResourceTypeDTO;
 
 import java.util.List;
 
-public interface ResourceTypeServiceInterface {
+/**
+ * ResourceType entity service interface
+ */
+public interface ResourceTypeServiceInterface extends ServiceInterface<ResourceType, Integer> {
 
-    List<ResourceType> getResourceTypeList();
+    List<ResourceTypeDTO> getAllDTOs();
 
-    ResourceType getResourceTypeById(int id) throws ItemNotFoundException;
+    ResourceTypeDTO findById(int id) throws ItemNotFoundException;
 
-    void saveResourceType(ResourceType resourceType);
+    void saveOrUpdate(ResourceTypeDTO resourceTypeDTO);
 
-    void updateResourceType(ResourceType resourceType);
+    void delete(ResourceTypeDTO resourceTypeDTO);
 
-    boolean deleteResourceTypeById(int id) throws ItemNotFoundException;
+    ResourceType findByType(String type) throws ItemNotFoundException;
 
-    void deleteResourceType(ResourceType resourceType);
 }

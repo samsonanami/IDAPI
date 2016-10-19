@@ -6,16 +6,15 @@ package com.fintech.orion.dto.messaging;
  */
 public class GenericMapMessage {
 
-    private Integer processingRequestId;
-
+    private String identificationCode;
     private Integer clientId;
 
-    public Integer getProcessingRequestId() {
-        return processingRequestId;
+    public String getIdentificationCode() {
+        return identificationCode;
     }
 
-    public void setProcessingRequestId(Integer processingRequestId) {
-        this.processingRequestId = processingRequestId;
+    public void setIdentificationCode(String identificationCode) {
+        this.identificationCode = identificationCode;
     }
 
     public Integer getClientId() {

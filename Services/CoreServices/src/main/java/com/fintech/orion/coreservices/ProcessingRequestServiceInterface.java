@@ -1,23 +1,27 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.ServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.client.ClientDTO;
+import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 
 import java.util.List;
 
 /**
- * Created by ChathurangaRW on 9/14/2016.
+ * ProcessingRequest entity service interface
  */
-public interface ProcessingRequestServiceInterface {
-    List<ProcessingRequest> getProcessingRequestList();
+public interface ProcessingRequestServiceInterface extends ServiceInterface<ProcessingRequest, Integer> {
 
-    ProcessingRequest getProcessingRequestById(int id) throws ItemNotFoundException;
+    List<ProcessingRequestDTO> getAllDTOs();
 
-    void saveProcessingRequest(ProcessingRequest processingRequest);
+    ProcessingRequestDTO findById(int id) throws ItemNotFoundException;
 
-    void updateProcessingRequest(ProcessingRequest processingRequest);
+    void saveOrUpdate(ProcessingRequestDTO processingRequestDTO);
 
-    boolean deleteProcessingRequestById(int id) throws ItemNotFoundException;
+    void delete(ProcessingRequestDTO processingRequestDTO);
 
-    void deleteProcessingRequest(ProcessingRequest processingRequest);
+    ProcessingRequestDTO save(ClientDTO clientDTO);
+
+    ProcessingRequestDTO findByIdIdentificationCode(String identificationCode) throws ItemNotFoundException;
 }

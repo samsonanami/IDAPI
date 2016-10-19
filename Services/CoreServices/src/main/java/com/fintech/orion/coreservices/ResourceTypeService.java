@@ -1,61 +1,57 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ResourceTypeRepositoryInterface;
+import com.fintech.orion.dto.resourcetype.ResourceTypeDTO;
+import com.fintech.orion.mapping.resourcetype.ResourceTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * ResourceType entity service class
+ */
 @Service
-public class ResourceTypeService implements ResourceTypeServiceInterface {
+public class ResourceTypeService extends AbstractService<ResourceType, Integer> implements ResourceTypeServiceInterface {
 
     @Autowired
     private ResourceTypeRepositoryInterface resourceTypeRepositoryInterface;
 
+    @Autowired
+    private ResourceTypeMapper resourceTypeMapper;
+
     @Transactional
     @Override
-    public List<ResourceType> getResourceTypeList() {
-        return resourceTypeRepositoryInterface.getAll();
+    public List<ResourceTypeDTO> getAllDTOs() {
+        return resourceTypeMapper.resourceTypesToResourceTypeDTOs(getAll());
     }
 
     @Transactional
     @Override
-    public ResourceType getResourceTypeById(int id) throws ItemNotFoundException {
-        ResourceType resourceType = resourceTypeRepositoryInterface.findById(id);
-        if (resourceType != null) {
-            return resourceType;
-        } else { throw new ItemNotFoundException("Item Not Found"); }
+    public ResourceTypeDTO findById(int id) throws ItemNotFoundException {
+        return resourceTypeMapper.resourceTypeToResourceTypeDTO(findById(new Integer(id)));
     }
 
     @Transactional
     @Override
-    public void saveResourceType(ResourceType resourceType) {
-        resourceTypeRepositoryInterface.saveOrUpdate(resourceType);
+    public void saveOrUpdate(ResourceTypeDTO resourceTypeDTO) {
+        saveOrUpdate(resourceTypeMapper.resourceTypeDTOToResourceType(resourceTypeDTO));
     }
 
     @Transactional
     @Override
-    public void updateResourceType(ResourceType resourceType) {
-        resourceTypeRepositoryInterface.saveOrUpdate(resourceType);
+    public void delete(ResourceTypeDTO resourceTypeDTO) {
+        delete(resourceTypeMapper.resourceTypeDTOToResourceType(resourceTypeDTO));
     }
 
     @Transactional
     @Override
-    public boolean deleteResourceTypeById(int id) throws ItemNotFoundException {
-        ResourceType resourceType = resourceTypeRepositoryInterface.findById(id);
-        if(resourceType != null){
-            resourceTypeRepositoryInterface.delete(resourceType);
-            return true;
-        }
-        return false;
+    public ResourceType findByType(String type) throws ItemNotFoundException {
+        return resourceTypeRepositoryInterface.findByType(type);
     }
 
-    @Transactional
-    @Override
-    public void deleteResourceType(ResourceType resourceType) {
-        resourceTypeRepositoryInterface.delete(resourceType);
-    }
 }

@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="license"
+    ,catalog="orion"
 )
 public class License  implements java.io.Serializable {
 
@@ -27,8 +28,8 @@ public class License  implements java.io.Serializable {
      private Date startDate;
      private Date endDate;
      private Integer requestCount;
-     private Set<ProcessTypeLicense> processTypeLicenses = new HashSet<ProcessTypeLicense>(0);
      private Set<ClientLicense> clientLicenses = new HashSet<ClientLicense>(0);
+     private Set<ProcessTypeLicense> processTypeLicenses = new HashSet<ProcessTypeLicense>(0);
 
     public License() {
     }
@@ -37,13 +38,13 @@ public class License  implements java.io.Serializable {
     public License(int id) {
         this.id = id;
     }
-    public License(int id, Date startDate, Date endDate, Integer requestCount, Set<ProcessTypeLicense> processTypeLicenses, Set<ClientLicense> clientLicenses) {
+    public License(int id, Date startDate, Date endDate, Integer requestCount, Set<ClientLicense> clientLicenses, Set<ProcessTypeLicense> processTypeLicenses) {
        this.id = id;
        this.startDate = startDate;
        this.endDate = endDate;
        this.requestCount = requestCount;
-       this.processTypeLicenses = processTypeLicenses;
        this.clientLicenses = clientLicenses;
+       this.processTypeLicenses = processTypeLicenses;
     }
    
      @Id 
@@ -89,21 +90,21 @@ public class License  implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="license")
-    public Set<ProcessTypeLicense> getProcessTypeLicenses() {
-        return this.processTypeLicenses;
-    }
-    
-    public void setProcessTypeLicenses(Set<ProcessTypeLicense> processTypeLicenses) {
-        this.processTypeLicenses = processTypeLicenses;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="license")
     public Set<ClientLicense> getClientLicenses() {
         return this.clientLicenses;
     }
     
     public void setClientLicenses(Set<ClientLicense> clientLicenses) {
         this.clientLicenses = clientLicenses;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="license")
+    public Set<ProcessTypeLicense> getProcessTypeLicenses() {
+        return this.processTypeLicenses;
+    }
+    
+    public void setProcessTypeLicenses(Set<ProcessTypeLicense> processTypeLicenses) {
+        this.processTypeLicenses = processTypeLicenses;
     }
 
 

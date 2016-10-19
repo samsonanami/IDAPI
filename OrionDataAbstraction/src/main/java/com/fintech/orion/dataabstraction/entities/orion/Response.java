@@ -1,13 +1,14 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
 
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -15,28 +16,28 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="response"
+    ,catalog="orion"
 )
 public class Response  implements java.io.Serializable {
 
 
      private int id;
-     private Process process;
      private String rawJson;
      private String extractedJson;
+     private Set<Process> processes = new HashSet<Process>(0);
 
     public Response() {
     }
 
 	
-    public Response(int id, Process process) {
+    public Response(int id) {
         this.id = id;
-        this.process = process;
     }
-    public Response(int id, Process process, String rawJson, String extractedJson) {
+    public Response(int id, String rawJson, String extractedJson, Set<Process> processes) {
        this.id = id;
-       this.process = process;
        this.rawJson = rawJson;
        this.extractedJson = extractedJson;
+       this.processes = processes;
     }
    
      @Id 
@@ -49,16 +50,6 @@ public class Response  implements java.io.Serializable {
     
     public void setId(int id) {
         this.id = id;
-    }
-
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PROCESS", nullable=false)
-    public Process getProcess() {
-        return this.process;
-    }
-    
-    public void setProcess(Process process) {
-        this.process = process;
     }
 
     
@@ -79,6 +70,15 @@ public class Response  implements java.io.Serializable {
     
     public void setExtractedJson(String extractedJson) {
         this.extractedJson = extractedJson;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="response")
+    public Set<Process> getProcesses() {
+        return this.processes;
+    }
+    
+    public void setProcesses(Set<Process> processes) {
+        this.processes = processes;
     }
 
 

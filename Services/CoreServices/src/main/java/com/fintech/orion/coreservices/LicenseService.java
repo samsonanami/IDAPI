@@ -1,61 +1,46 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.License;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dataabstraction.repositories.LicenseRepositoryInterface;
+import com.fintech.orion.dto.license.LicenseDTO;
+import com.fintech.orion.mapping.license.LicenseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * License entity service class
+ */
 @Service
-public class LicenseService implements LicenseServiceInterface {
+public class LicenseService extends AbstractService<License, Integer> implements LicenseServiceInterface {
 
     @Autowired
-    private LicenseRepositoryInterface licenseRepositoryInterface;
+    private LicenseMapper licenseMapper;
 
     @Transactional
     @Override
-    public List<License> getLicenseList() {
-        return licenseRepositoryInterface.getAll();
+    public List<LicenseDTO> getAllDTOs() {
+        return licenseMapper.licensesToLicenseDTOs(getAll());
     }
 
     @Transactional
     @Override
-    public License getLicenseById(int id) throws ItemNotFoundException {
-        License license = licenseRepositoryInterface.findById(id);
-        if (license != null) {
-            return license;
-        } else { throw new ItemNotFoundException("Item Not Found"); }
+    public LicenseDTO findById(int id) throws ItemNotFoundException {
+        return licenseMapper.licenseToLicenseDTO(findById(new Integer(id)));
     }
 
     @Transactional
     @Override
-    public void saveLicense(License license) {
-        licenseRepositoryInterface.saveOrUpdate(license);
+    public void saveOrUpdate(LicenseDTO licenseDTO) {
+        saveOrUpdate(licenseMapper.licenseDTOToLicense(licenseDTO));
     }
 
     @Transactional
     @Override
-    public void updateLicense(License license) {
-        licenseRepositoryInterface.saveOrUpdate(license);
-    }
-
-    @Transactional
-    @Override
-    public boolean deleteLicenseById(int id) throws ItemNotFoundException {
-        License license = licenseRepositoryInterface.findById(id);
-        if(license != null){
-            licenseRepositoryInterface.delete(license);
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
-    @Override
-    public void deleteLicense(License license) {
-        licenseRepositoryInterface.delete(license);
+    public void delete(LicenseDTO licenseDTO) {
+        delete(licenseMapper.licenseDTOToLicense(licenseDTO));
     }
 }

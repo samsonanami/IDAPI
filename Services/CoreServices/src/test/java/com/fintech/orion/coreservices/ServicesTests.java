@@ -3,18 +3,16 @@ package com.fintech.orion.coreservices;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+/**
+ * Run service tests
+ */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        ClientLicenseServiceTest.class,
         ClientServiceTest.class,
-        LicenseServiceTest.class,
         ProcessingRequestServiceTest.class,
-        ProcessResourceServiceTest.class,
         ProcessServiceTest.class,
-        ProcessTypeLicenseServiceTest.class,
         ProcessTypeServiceTest.class,
         ResourceServiceTest.class,
-        ResourceTypeServiceTest.class,
-        ResponseServiceTest.class })
+        ResourceTypeServiceTest.class })
 public class ServicesTests {
 }

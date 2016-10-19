@@ -1,20 +1,25 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.ServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.client.ClientDTO;
 
 import java.util.List;
 
-public interface ClientServiceInterface {
-    List<Client> getClientList();
+/**
+ * Client entity service interface
+ */
+public interface ClientServiceInterface extends ServiceInterface<Client, Integer> {
 
-    Client getClientById(int id) throws ItemNotFoundException;
+    List<ClientDTO> getAllDTOs();
 
-    void saveClient(Client client);
+    ClientDTO findById(int id) throws ItemNotFoundException;
 
-    void updateClient(Client client);
+    void saveOrUpdate(ClientDTO clientDTO);
 
-    boolean deleteClientById(int id) throws ItemNotFoundException;
+    void delete(ClientDTO clientDTO);
 
-    void deleteClient(Client client);
+    ClientDTO findByAuthToken(String authToken) throws ItemNotFoundException;
+
 }

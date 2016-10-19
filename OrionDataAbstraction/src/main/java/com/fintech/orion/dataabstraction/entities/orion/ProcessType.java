@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -16,6 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="process_type"
+    ,catalog="orion"
 )
 public class ProcessType  implements java.io.Serializable {
 
@@ -23,6 +24,7 @@ public class ProcessType  implements java.io.Serializable {
      private int id;
      private String type;
      private Set<ProcessTypeLicense> processTypeLicenses = new HashSet<ProcessTypeLicense>(0);
+     private Set<ProcessConfig> processConfigs = new HashSet<ProcessConfig>(0);
      private Set<Process> processes = new HashSet<Process>(0);
 
     public ProcessType() {
@@ -32,10 +34,11 @@ public class ProcessType  implements java.io.Serializable {
     public ProcessType(int id) {
         this.id = id;
     }
-    public ProcessType(int id, String type, Set<ProcessTypeLicense> processTypeLicenses, Set<Process> processes) {
+    public ProcessType(int id, String type, Set<ProcessTypeLicense> processTypeLicenses, Set<ProcessConfig> processConfigs, Set<Process> processes) {
        this.id = id;
        this.type = type;
        this.processTypeLicenses = processTypeLicenses;
+       this.processConfigs = processConfigs;
        this.processes = processes;
     }
    
@@ -68,6 +71,15 @@ public class ProcessType  implements java.io.Serializable {
     
     public void setProcessTypeLicenses(Set<ProcessTypeLicense> processTypeLicenses) {
         this.processTypeLicenses = processTypeLicenses;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="processType")
+    public Set<ProcessConfig> getProcessConfigs() {
+        return this.processConfigs;
+    }
+    
+    public void setProcessConfigs(Set<ProcessConfig> processConfigs) {
+        this.processConfigs = processConfigs;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="processType")

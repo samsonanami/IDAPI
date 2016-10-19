@@ -1,22 +1,23 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.ServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.ClientLicense;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.clientlicense.ClientLicenseDTO;
 
 import java.util.List;
 
-public interface ClientLicenseServiceInterface {
+/**
+ * ClientLicense entity service interface
+ */
+public interface ClientLicenseServiceInterface extends ServiceInterface<ClientLicense, Integer> {
 
-    List<ClientLicense> getClientLicenseList();
+    List<ClientLicenseDTO> getAllDTOs();
 
-    ClientLicense getClientLicenseById(int id) throws ItemNotFoundException;
+    ClientLicenseDTO findById(int id) throws ItemNotFoundException;
 
-    void saveClientLicense(ClientLicense clientLicense);
+    void saveOrUpdate(ClientLicenseDTO clientLicenseDTO);
 
-    void updateClientLicense(ClientLicense clientLicense);
-
-    boolean deleteClientLicenseById(int id) throws ItemNotFoundException;
-
-    void deleteClientLicense(ClientLicense clientLicense);
+    void delete(ClientLicenseDTO clientLicenseDTO);
 
 }

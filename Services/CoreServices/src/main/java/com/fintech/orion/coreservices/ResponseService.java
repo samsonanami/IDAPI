@@ -1,61 +1,47 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.Response;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dataabstraction.repositories.ResponseRepositoryInterface;
+import com.fintech.orion.dto.response.ResponseDTO;
+import com.fintech.orion.mapping.response.ResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Response entity service class
+ */
 @Service
-public class ResponseService implements ResponseServiceInterface {
+public class ResponseService extends AbstractService<Response, Integer> implements ResponseServiceInterface {
 
     @Autowired
-    private ResponseRepositoryInterface responseRepositoryInterface;
+    private ResponseMapper responseMapper;
 
     @Transactional
     @Override
-    public List<Response> getResponseList() {
-        return responseRepositoryInterface.getAll();
+    public List<ResponseDTO> getAllDTOs() {
+        return responseMapper.responsesToResponseDTOs(getAll());
     }
 
     @Transactional
     @Override
-    public Response getResponseById(int id) throws ItemNotFoundException {
-        Response response = responseRepositoryInterface.findById(id);
-        if (response != null) {
-            return response;
-        } else { throw new ItemNotFoundException("Item Not Found"); }
+    public ResponseDTO findById(int id) throws ItemNotFoundException {
+        return responseMapper.responseToResponseDTO(findById(new Integer(id)));
     }
 
     @Transactional
     @Override
-    public void saveResponse(Response response) {
-        responseRepositoryInterface.saveOrUpdate(response);
+    public void saveOrUpdate(ResponseDTO responseDTO) {
+        saveOrUpdate(responseMapper.responseDTOToResponse(responseDTO));
     }
 
     @Transactional
     @Override
-    public void updateResponse(Response response) {
-        responseRepositoryInterface.saveOrUpdate(response);
+    public void delete(ResponseDTO responseDTO) {
+        delete(responseMapper.responseDTOToResponse(responseDTO));
     }
 
-    @Transactional
-    @Override
-    public boolean deleteResponseById(int id) throws ItemNotFoundException {
-        Response response = responseRepositoryInterface.findById(id);
-        if(response != null){
-            responseRepositoryInterface.delete(response);
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
-    @Override
-    public void deleteResponse(Response response) {
-        responseRepositoryInterface.delete(response);
-    }
 }

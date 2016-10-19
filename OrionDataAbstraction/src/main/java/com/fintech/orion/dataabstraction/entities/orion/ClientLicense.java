@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -17,6 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="client_license"
+    ,catalog="orion"
 )
 public class ClientLicense  implements java.io.Serializable {
 

@@ -1,16 +1,15 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Sep 12, 2016 10:49:51 AM by Hibernate Tools 4.3.1
+// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
 
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -18,42 +17,45 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="resource"
+    ,catalog="orion"
 )
 public class Resource  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private Client client;
+     private Process process;
      private ResourceType resourceType;
      private String location;
-     private Set<ProcessResource> processResources = new HashSet<ProcessResource>(0);
+     private String resourceIdentificationCode;
 
     public Resource() {
     }
 
 	
-    public Resource(int id, Client client, ResourceType resourceType) {
-        this.id = id;
+    public Resource(Client client, ResourceType resourceType, String location, String resourceIdentificationCode) {
         this.client = client;
         this.resourceType = resourceType;
+        this.location = location;
+        this.resourceIdentificationCode = resourceIdentificationCode;
     }
-    public Resource(int id, Client client, ResourceType resourceType, String location, Set<ProcessResource> processResources) {
-       this.id = id;
+    public Resource(Client client, Process process, ResourceType resourceType, String location, String resourceIdentificationCode) {
        this.client = client;
+       this.process = process;
        this.resourceType = resourceType;
        this.location = location;
-       this.processResources = processResources;
+       this.resourceIdentificationCode = resourceIdentificationCode;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
 
     
     @Column(name="ID", unique=true, nullable=false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -68,6 +70,16 @@ public class Resource  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PROCESS")
+    public Process getProcess() {
+        return this.process;
+    }
+    
+    public void setProcess(Process process) {
+        this.process = process;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="RESOURCE_TYPE", nullable=false)
     public ResourceType getResourceType() {
         return this.resourceType;
@@ -78,7 +90,7 @@ public class Resource  implements java.io.Serializable {
     }
 
     
-    @Column(name="LOCATION", length=128)
+    @Column(name="LOCATION", nullable=false, length=128)
     public String getLocation() {
         return this.location;
     }
@@ -87,13 +99,14 @@ public class Resource  implements java.io.Serializable {
         this.location = location;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="resource")
-    public Set<ProcessResource> getProcessResources() {
-        return this.processResources;
+    
+    @Column(name="RESOURCE_IDENTIFICATION_CODE", nullable=false, length=40)
+    public String getResourceIdentificationCode() {
+        return this.resourceIdentificationCode;
     }
     
-    public void setProcessResources(Set<ProcessResource> processResources) {
-        this.processResources = processResources;
+    public void setResourceIdentificationCode(String resourceIdentificationCode) {
+        this.resourceIdentificationCode = resourceIdentificationCode;
     }
 
 

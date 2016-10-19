@@ -4,18 +4,36 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="clientLicenseServiceInterface" class="com.fintech.orion.coreservices.ClientLicenseService"/>
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
+    <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
+    <bean id="processingRequestServiceInterface" class="com.fintech.orion.coreservices.ProcessingRequestService"/>
+    <bean id="processServiceInterface" class="com.fintech.orion.coreservices.ProcessService"/>
+    <bean id="processTypeLicenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
+    <bean id="processTypeServiceInterface" class="com.fintech.orion.coreservices.ProcessTypeService"/>
+    <bean id="resourceServiceInterface" class="com.fintech.orion.coreservices.ResourceService"/>
+    <bean id="resourceTypeServiceInterface" class="com.fintech.orion.coreservices.ResourceTypeService"/>
+    <bean id="responseServiceInterface" class="com.fintech.orion.coreservices.ResponseService"/>
+    <bean id="processingStatusServiceInterface" class="com.fintech.orion.coreservices.ProcessingStatusService"/>
+    <bean id="processConfigServiceInterface" class="com.fintech.orion.coreservices.ProcessConfigService"/>
 
     <bean id="clientLicenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientLicenseRepository"/>
     <bean id="clientRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientRepository"/>
     <bean id="licenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.LicenseRepository"/>
     <bean id="processingRequestRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepository"/>
-    <bean id="processResourceRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessResourceRepository"/>
     <bean id="processRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessRepository"/>
     <bean id="processTypeLicenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessTypeLicenseRepository"/>
     <bean id="processTypeRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessTypeRepository"/>
     <bean id="resourceRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResourceRepository"/>
     <bean id="resourceTypeRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResourceTypeRepository"/>
     <bean id="responseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ResponseRepository"/>
+    <bean id="processingStatusRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingStatusRepository"/>
+    <bean id="processConfigRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessConfigRepository"/>
 
+    <bean id="fileExtensionValidatorInterface" class="com.fintech.orion.helper.FileExtensionValidator"></bean>
+    <bean id="fileUploadHandlerInterface" class="com.fintech.orion.helper.FileUploadHandler"></bean>
+    <bean id="fileSizeCheckerInterface" class="com.fintech.orion.helper.FileSizeChecker"></bean>
+    <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator"></bean>
+    <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler"></bean>
+    <bean id="clientValidatorInterface" class="com.fintech.orion.helper.ClientValidator"></bean>
 </beans>

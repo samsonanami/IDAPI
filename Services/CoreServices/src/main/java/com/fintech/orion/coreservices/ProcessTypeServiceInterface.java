@@ -1,20 +1,25 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.common.ServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.processtype.ProcessTypeDTO;
 
 import java.util.List;
 
-public interface ProcessTypeServiceInterface {
-    List<ProcessType> getProcessTypeList();
+/**
+ * ProcessType entity service interface
+ */
+public interface ProcessTypeServiceInterface extends ServiceInterface<ProcessType, Integer> {
 
-    ProcessType getProcessTypeById(int id) throws ItemNotFoundException;
+    List<ProcessTypeDTO> getAllDTOs();
 
-    void saveProcessType(ProcessType processType);
+    ProcessTypeDTO findById(int id) throws ItemNotFoundException;
 
-    void updateProcessType(ProcessType processType);
+    void saveOrUpdate(ProcessTypeDTO processTypeDTO);
 
-    boolean deleteProcessTypeById(int id) throws ItemNotFoundException;
+    void delete(ProcessTypeDTO processTypeDTO);
 
-    void deleteProcessType(ProcessType processType);
+    ProcessTypeDTO findByType(String type) throws ItemNotFoundException;
+
 }
