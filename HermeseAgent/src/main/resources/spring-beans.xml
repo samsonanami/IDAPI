@@ -57,6 +57,11 @@
         <property name="serviceLocatorInterface" value="com.fintech.orion.hermesagentservices.transmission.request.RequestFactoryServiceInterface" />
     </bean>
 
+    <!--VALIDATOR FACTORY BEANS-->
+
+
+
+    <!--TASK EXECUTOR SERVICE-->
     <bean id="taskExecutor"
           class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <property name="corePoolSize" value="5" />
