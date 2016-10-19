@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
 /**
  * Process entity service tests
  */
+@Ignore
 public class ProcessServiceTest {
 
     private final String REPOSITORY_INTERFACE = "processRepositoryInterface";

@@ -56,6 +56,12 @@ public class ResourceService extends AbstractService<Resource, Integer> implemen
 
     @Transactional
     @Override
+    public void saveOrUpdate(String resourceId, int processId) throws ItemNotFoundException {
+        resourceRepositoryInterface.saveOrUpdate(resourceId, processId);
+    }
+
+    @Transactional
+    @Override
     public void delete(ResourceDTO resourceDTO) {
         delete(resourceMapper.resourceDTOToResource(resourceDTO));
     }

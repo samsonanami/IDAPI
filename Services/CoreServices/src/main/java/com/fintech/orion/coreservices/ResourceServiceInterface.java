@@ -18,6 +18,8 @@ public interface ResourceServiceInterface extends ServiceInterface<Resource, Int
 
     void saveOrUpdate(ResourceDTO resourceDTO);
 
+    void saveOrUpdate(String resourceId, int processId) throws ItemNotFoundException;
+
     void delete(ResourceDTO resourceDTO);
 
     ResourceDTO save(String newFilename, String uuidNumber, String contentType, String accessToken) throws ItemNotFoundException;

@@ -30,6 +30,12 @@ public interface ProcessMapper {
     })
     ProcessDTO processToProcessDTO(Process process);
 
+    @Mappings({
+            @Mapping(target = "processType", source = "processTypeDTO"),
+            @Mapping(target = "processingRequest", source = "processingRequestDTO"),
+            @Mapping(target = "processingStatus", source = "processingStatusDTO"),
+            @Mapping(target = "response", source = "responseDTO")
+    })
     Process processDTOToProcess(ProcessDTO processDTO);
 
     List<ProcessDTO> processesToProcessDTOs(List<Process> processes);

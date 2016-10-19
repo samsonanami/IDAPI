@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
 /**
  * ProcessingRequest entity service tests
  */
+@Ignore
 public class ProcessingRequestServiceTest {
 
     private final String REPOSITORY_INTERFACE = "processingRequestRepositoryInterface";

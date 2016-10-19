@@ -7,6 +7,7 @@ import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
 import com.fintech.orion.dto.processtype.ProcessTypeDTO;
+import com.fintech.orion.dto.resource.ResourceDTO;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface ProcessServiceInterface extends ServiceInterface<Process, Integ
     ProcessDTO save(ProcessTypeDTO processTypeDTO, ProcessingRequestDTO processingRequestDTO, ProcessingStatusDTO processingStatusDTO);
 
     ProcessDTO findByIdentificationCode(String identificationCode) throws ItemNotFoundException;
+
+    List<ResourceDTO> resourceDTOsForProcess(int id) throws ItemNotFoundException;
 }

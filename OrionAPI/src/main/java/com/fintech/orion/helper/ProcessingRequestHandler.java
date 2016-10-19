@@ -10,7 +10,6 @@ import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
 import com.fintech.orion.dto.processtype.ProcessTypeDTO;
-import com.fintech.orion.dto.resource.ResourceDTO;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -62,9 +61,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
             ProcessTypeDTO processTypeDTO = processTypeServiceInterface.findByType(v.getVerificationProcessType());
             ProcessDTO processDTO = processServiceInterface.save(processTypeDTO, processingRequestDTO, processingStatusDTO);
             for (com.fintech.orion.dataabstraction.models.verificationprocess.Resource r : v.getResources()) {
-                ResourceDTO resourceDTO = resourceServiceInterface.findByIdentificationCode(r.getResourceId());
-                resourceDTO.setProcessDTO(processDTO);
-                resourceServiceInterface.saveOrUpdate(resourceDTO);
+                resourceServiceInterface.saveOrUpdate(r.getResourceId(), processDTO.getId());
             }
         }
         return processingRequestDTO.getProcessingRequestIdentificationCode();
