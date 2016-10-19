@@ -43,9 +43,6 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     private ProcessTypeServiceInterface processTypeServiceInterface;
 
     @Autowired
-    private ProcessResourceServiceInterface processResourceServiceInterface;
-
-    @Autowired
     private ResourceServiceInterface resourceServiceInterface;
 
     @Autowired
@@ -66,7 +63,8 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
             ProcessDTO processDTO = processServiceInterface.save(processTypeDTO, processingRequestDTO, processingStatusDTO);
             for (com.fintech.orion.dataabstraction.models.verificationprocess.Resource r : v.getResources()) {
                 ResourceDTO resourceDTO = resourceServiceInterface.findByIdentificationCode(r.getResourceId());
-                processResourceServiceInterface.save(processDTO, resourceDTO, r.getResourceName());
+                resourceDTO.setProcessDTO(processDTO);
+                resourceServiceInterface.saveOrUpdate(resourceDTO);
             }
         }
         return processingRequestDTO.getProcessingRequestIdentificationCode();

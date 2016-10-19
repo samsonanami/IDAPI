@@ -10,7 +10,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         ClientServiceTest.class,
         ProcessingRequestServiceTest.class,
-        ProcessResourceServiceTest.class,
         ProcessServiceTest.class,
         ProcessTypeServiceTest.class,
         ResourceServiceTest.class,

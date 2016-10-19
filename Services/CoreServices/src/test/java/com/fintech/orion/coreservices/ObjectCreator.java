@@ -40,10 +40,6 @@ public class ObjectCreator {
         return new ProcessType();
     }
 
-    public static ProcessResource createProcessResourceObject(){
-        return new ProcessResource();
-    }
-
     public static ProcessTypeLicense createProcessTypeLicenseObject(){
         return new ProcessTypeLicense();
     }
