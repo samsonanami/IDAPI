@@ -42,9 +42,9 @@
     </bean>
 
     <bean id="connectionFactory" name="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://10.101.15.212:61616"/>
-        <property name="userName" value="admin"/>
-        <property name="password" value="admin"/>
+        <property name="brokerURL" value="#{systemProperties['MESSAGE_BROKER_URL']}"/>
+        <property name="userName" value="#{systemProperties['MESSAGING_USERNAME']}"/>
+        <property name="password" value="#{systemProperties['MESSAGING_PASSWORD']}"/>
     </bean>
 
     <bean id="sessionHandler" class="com.fintech.orion.messaging.connection.SessionHandler">
