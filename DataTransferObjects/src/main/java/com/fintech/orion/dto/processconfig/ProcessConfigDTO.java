@@ -1,5 +1,7 @@
 package com.fintech.orion.dto.processconfig;
 
+import com.fintech.orion.dto.processtype.ProcessTypeDTO;
+
 /**
  * Created by ChathurangaRW on 10/18/2016.
  */
@@ -7,6 +9,7 @@ public class ProcessConfigDTO {
 
     private int processType;
     private String key;
+    private ProcessTypeDTO processTypeDTO;
     private String value;
 
     public int getProcessType() {
@@ -31,5 +34,13 @@ public class ProcessConfigDTO {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public ProcessTypeDTO getProcessTypeDTO() {
+        return processTypeDTO;
+    }
+
+    public void setProcessTypeDTO(ProcessTypeDTO processTypeDTO) {
+        this.processTypeDTO = processTypeDTO;
     }
 }

@@ -16,8 +16,8 @@ public interface LicenseServiceInterface extends ServiceInterface<License, Integ
 
     LicenseDTO findById(int id) throws ItemNotFoundException;
 
-    void saveOrUpdate(LicenseDTO clientLicenseDTO);
+    void saveOrUpdate(LicenseDTO licenseDTO);
 
-    void delete(LicenseDTO clientLicenseDTO);
+    void delete(LicenseDTO licenseDTO);
 
 }

@@ -4,7 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="clientLicenseServiceInterface" class="com.fintech.orion.coreservices.ClientLicenseService"/>
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
     <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
     <bean id="processingRequestServiceInterface" class="com.fintech.orion.coreservices.ProcessingRequestService"/>
@@ -17,7 +16,6 @@
     <bean id="processingStatusServiceInterface" class="com.fintech.orion.coreservices.ProcessingStatusService"/>
     <bean id="processConfigServiceInterface" class="com.fintech.orion.coreservices.ProcessConfigService"/>
 
-    <bean id="clientLicenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientLicenseRepository"/>
     <bean id="clientRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientRepository"/>
     <bean id="licenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.LicenseRepository"/>
     <bean id="processingRequestRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepository"/>
@@ -36,4 +34,28 @@
     <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator"></bean>
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler"></bean>
     <bean id="clientValidatorInterface" class="com.fintech.orion.helper.ClientValidator"></bean>
+
+    <bean id="jobProducerInterface" class="com.fintech.orion.messaging.job.JobProducer">
+        <constructor-arg name="queueName" value="MainQueue" />
+        <constructor-arg ref="destinationHandler" />
+        <constructor-arg ref="sessionHandler" />
+    </bean>
+
+    <bean id="connectionFactory" name="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="#{systemProperties['MESSAGE_BROKER_URL']}"/>
+        <property name="userName" value="#{systemProperties['MESSAGING_USERNAME']}"/>
+        <property name="password" value="#{systemProperties['MESSAGING_PASSWORD']}"/>
+    </bean>
+
+    <bean id="sessionHandler" class="com.fintech.orion.messaging.connection.SessionHandler">
+        <constructor-arg ref="connectionFactory"/>
+    </bean>
+
+    <bean id="destinationHandler" class="com.fintech.orion.messaging.connection.DestinationHandler" />
+
+    <bean id="jobHandlerInterface" class="com.fintech.orion.messaging.job.JobHandler"></bean>
+    <bean id="orionJobHandlerInterface" class="com.fintech.orion.handlers.OrionJobHandler"></bean>
+    <bean id="messageHandlerInterface" class="com.fintech.orion.handlers.MessageHandler"></bean>
+    <bean id="validatorFactory" class="com.fintech.orion.dto.validator.ValidatorFactory"></bean>
+
 </beans>

@@ -5,6 +5,8 @@ import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
+import com.fintech.orion.handlers.OrionJobHandler;
+import com.fintech.orion.handlers.OrionJobHandlerInterface;
 import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.model.VerificationResponseMessage;
 import com.fintech.orion.rest.ItemController;
@@ -80,6 +82,9 @@ public class ItemControllerTest {
         ClientValidatorInterface clientValidatorInterfaceMock = mock(ClientValidator.class);
         when(clientValidatorInterfaceMock.checkClientValidity(ACCESS_TOKEN)).thenReturn(ObjectCreator.aClientDTO());
         ReflectionTestUtils.setField(itemController, "clientValidatorInterface", clientValidatorInterfaceMock);
+
+        OrionJobHandlerInterface orionJobHandlerInterfaceMock = mock(OrionJobHandler.class);
+        ReflectionTestUtils.setField(itemController, "orionJobHandlerInterface", orionJobHandlerInterfaceMock);
 
         Object found = itemController.verification(integrationRequest, response, ACCESS_TOKEN, data);
         assertThat(found, instanceOf(VerificationResponseMessage.class));

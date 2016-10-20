@@ -27,31 +27,30 @@ public class ClientService extends AbstractService<Client, Integer> implements C
     @Transactional
     @Override
     public List<ClientDTO> getAllDTOs() {
-        return clientMapper.clientsToClientDTOs(getAll());
+        return clientMapper.clientsToClientDTOs(clientRepositoryInterface.getAll());
     }
 
     @Transactional
     @Override
     public ClientDTO findById(int id) throws ItemNotFoundException {
-        return clientMapper.clientToClientDTO(findById(new Integer(id)));
+        return clientMapper.clientToClientDTO(clientRepositoryInterface.findById(id));
     }
 
     @Transactional
     @Override
     public void saveOrUpdate(ClientDTO clientDTO) {
-        saveOrUpdate(clientMapper.clientDTOToClient(clientDTO));
+        clientRepositoryInterface.saveOrUpdate(clientMapper.clientDTOToClient(clientDTO));
     }
 
     @Transactional
     @Override
     public void delete(ClientDTO clientDTO) {
-        delete(clientMapper.clientDTOToClient(clientDTO));
+        clientRepositoryInterface.delete(clientMapper.clientDTOToClient(clientDTO));
     }
 
     @Transactional
     @Override
     public ClientDTO findByAuthToken(String authToken) throws ItemNotFoundException {
-        Client client = clientRepositoryInterface.findByAuthToken(authToken);
-        return clientMapper.clientToClientDTO(client);
+        return clientMapper.clientToClientDTO(clientRepositoryInterface.findByAuthToken(authToken));
     }
 }
