@@ -27,25 +27,25 @@ public class ResourceTypeService extends AbstractService<ResourceType, Integer> 
     @Transactional
     @Override
     public List<ResourceTypeDTO> getAllDTOs() {
-        return resourceTypeMapper.resourceTypesToResourceTypeDTOs(getAll());
+        return resourceTypeMapper.resourceTypesToResourceTypeDTOs(resourceTypeRepositoryInterface.getAll());
     }
 
     @Transactional
     @Override
     public ResourceTypeDTO findById(int id) throws ItemNotFoundException {
-        return resourceTypeMapper.resourceTypeToResourceTypeDTO(findById(new Integer(id)));
+        return resourceTypeMapper.resourceTypeToResourceTypeDTO(resourceTypeRepositoryInterface.findById(id));
     }
 
     @Transactional
     @Override
     public void saveOrUpdate(ResourceTypeDTO resourceTypeDTO) {
-        saveOrUpdate(resourceTypeMapper.resourceTypeDTOToResourceType(resourceTypeDTO));
+        resourceTypeRepositoryInterface.saveOrUpdate(resourceTypeMapper.resourceTypeDTOToResourceType(resourceTypeDTO));
     }
 
     @Transactional
     @Override
     public void delete(ResourceTypeDTO resourceTypeDTO) {
-        delete(resourceTypeMapper.resourceTypeDTOToResourceType(resourceTypeDTO));
+        resourceTypeRepositoryInterface.delete(resourceTypeMapper.resourceTypeDTOToResourceType(resourceTypeDTO));
     }
 
     @Transactional

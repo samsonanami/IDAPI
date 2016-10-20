@@ -39,19 +39,19 @@ public class ResourceService extends AbstractService<Resource, Integer> implemen
     @Transactional
     @Override
     public List<ResourceDTO> getAllDTOs() {
-        return resourceMapper.resourcesToResourceDTOs(getAll());
+        return resourceMapper.resourcesToResourceDTOs(resourceRepositoryInterface.getAll());
     }
 
     @Transactional
     @Override
     public ResourceDTO findById(int id) throws ItemNotFoundException {
-        return resourceMapper.resourceToResourceDTO(findById(new Integer(id)));
+        return resourceMapper.resourceToResourceDTO(resourceRepositoryInterface.findById(id));
     }
 
     @Transactional
     @Override
     public void saveOrUpdate(ResourceDTO resourceDTO) {
-        saveOrUpdate(resourceMapper.resourceDTOToResource(resourceDTO));
+        resourceRepositoryInterface.saveOrUpdate(resourceMapper.resourceDTOToResource(resourceDTO));
     }
 
     @Transactional
@@ -63,7 +63,7 @@ public class ResourceService extends AbstractService<Resource, Integer> implemen
     @Transactional
     @Override
     public void delete(ResourceDTO resourceDTO) {
-        delete(resourceMapper.resourceDTOToResource(resourceDTO));
+        resourceRepositoryInterface.delete(resourceMapper.resourceDTOToResource(resourceDTO));
     }
 
     @Transactional

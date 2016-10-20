@@ -34,25 +34,25 @@ public class ProcessingRequestService extends AbstractService<ProcessingRequest,
     @Transactional
     @Override
     public List<ProcessingRequestDTO> getAllDTOs() {
-        return processingRequestMapper.processingRequestsToProcessingRequestDTOs(getAll());
+        return processingRequestMapper.processingRequestsToProcessingRequestDTOs(processingRequestRepositoryInterface.getAll());
     }
 
     @Transactional
     @Override
     public ProcessingRequestDTO findById(int id) throws ItemNotFoundException {
-        return processingRequestMapper.processingRequestToProcessingRequestDTO(findById(new Integer(id)));
+        return processingRequestMapper.processingRequestToProcessingRequestDTO(processingRequestRepositoryInterface.findById(id));
     }
 
     @Transactional
     @Override
     public void saveOrUpdate(ProcessingRequestDTO processingRequestDTO) {
-        saveOrUpdate(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
+        processingRequestRepositoryInterface.saveOrUpdate(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
     }
 
     @Transactional
     @Override
     public void delete(ProcessingRequestDTO processingRequestDTO) {
-        delete(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
+        processingRequestRepositoryInterface.delete(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
     }
 
     @Transactional

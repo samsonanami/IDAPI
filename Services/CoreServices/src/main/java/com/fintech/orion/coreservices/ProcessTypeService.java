@@ -27,7 +27,7 @@ public class ProcessTypeService extends AbstractService<ProcessType, Integer> im
     @Transactional
     @Override
     public List<ProcessTypeDTO> getAllDTOs() {
-        return processTypeMapper.processTypesToProcessTypeDTOs(getAll());
+        return processTypeMapper.processTypesToProcessTypeDTOs(processTypeRepositoryInterface.getAll());
     }
 
     @Transactional
@@ -39,13 +39,13 @@ public class ProcessTypeService extends AbstractService<ProcessType, Integer> im
     @Transactional
     @Override
     public void saveOrUpdate(ProcessTypeDTO processTypeDTO) {
-        saveOrUpdate(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
+        processTypeRepositoryInterface.saveOrUpdate(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
     }
 
     @Transactional
     @Override
     public void delete(ProcessTypeDTO processTypeDTO) {
-        delete(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
+        processTypeRepositoryInterface.delete(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
     }
 
     @Transactional
