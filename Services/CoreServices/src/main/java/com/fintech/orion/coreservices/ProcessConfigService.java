@@ -3,7 +3,6 @@ package com.fintech.orion.coreservices;
 import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessConfig;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessConfigId;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ProcessConfigRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ProcessTypeRepositoryInterface;
@@ -39,35 +38,13 @@ public class ProcessConfigService extends AbstractService<ProcessConfig, Process
     @Transactional
     @Override
     public void saveOrUpdate(ProcessConfigDTO processConfigDTO) throws ItemNotFoundException {
-        ProcessType processType = processTypeRepositoryInterface.findById(processConfigDTO.getProcessType());
-
-        ProcessConfigId processConfigId = new ProcessConfigId();
-        processConfigId.setKey(processConfigDTO.getKey());
-        processConfigId.setProcessType(processConfigDTO.getProcessType());
-
-        ProcessConfig processConfig = new ProcessConfig();
-        processConfig.setId(processConfigId);
-        processConfig.setProcessType(processType);
-        processConfig.setValue(processConfigDTO.getValue());
-
-        saveOrUpdate(processConfig);
+        processConfigRepositoryInterface.saveOrUpdate(processConfigMapper.processConfigDTOToProcessConfig(processConfigDTO));
     }
 
     @Transactional
     @Override
     public void delete(ProcessConfigDTO processConfigDTO) throws ItemNotFoundException {
-        ProcessType processType = processTypeRepositoryInterface.findById(processConfigDTO.getProcessType());
-
-        ProcessConfigId processConfigId = new ProcessConfigId();
-        processConfigId.setKey(processConfigDTO.getKey());
-        processConfigId.setProcessType(processConfigDTO.getProcessType());
-
-        ProcessConfig processConfig = new ProcessConfig();
-        processConfig.setId(processConfigId);
-        processConfig.setProcessType(processType);
-        processConfig.setValue(processConfigDTO.getValue());
-
-        delete(processConfig);
+        processConfigRepositoryInterface.delete(processConfigMapper.processConfigDTOToProcessConfig(processConfigDTO));
     }
 
     @Transactional

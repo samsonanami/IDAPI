@@ -25,7 +25,7 @@ public class ConfigController {
     @Autowired
     private ProcessConfigServiceInterface processConfigServiceInterface;
 
-    @RequestMapping(value = "v1/configs/{process_type}", method = RequestMethod.GET)
+    @RequestMapping(value = "v1/configs/{processType}", method = RequestMethod.GET)
     @ResponseBody
     public Object processConfigs(@PathVariable int processType,
                                  HttpServletResponse response,
