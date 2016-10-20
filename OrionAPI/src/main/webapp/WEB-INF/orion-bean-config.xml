@@ -4,7 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="clientLicenseServiceInterface" class="com.fintech.orion.coreservices.ClientLicenseService"/>
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
     <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
     <bean id="processingRequestServiceInterface" class="com.fintech.orion.coreservices.ProcessingRequestService"/>
@@ -17,7 +16,6 @@
     <bean id="processingStatusServiceInterface" class="com.fintech.orion.coreservices.ProcessingStatusService"/>
     <bean id="processConfigServiceInterface" class="com.fintech.orion.coreservices.ProcessConfigService"/>
 
-    <bean id="clientLicenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientLicenseRepository"/>
     <bean id="clientRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientRepository"/>
     <bean id="licenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.LicenseRepository"/>
     <bean id="processingRequestRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepository"/>
