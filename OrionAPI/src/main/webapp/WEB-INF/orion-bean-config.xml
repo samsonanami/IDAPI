@@ -41,7 +41,7 @@
     <bean id="fileSizeCheckerInterface" class="com.fintech.orion.helper.FileSizeChecker"></bean>
     <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator"></bean>
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler"></bean>
-    <bean id="clientValidatorInterface" class="com.fintech.orion.helper.ClientValidator"></bean>
+    <bean id="clientValidatorInterface" class="com.fintech.orion.validation.ClientValidator"></bean>
 
     <bean id="jobProducerInterface" class="com.fintech.orion.messaging.job.JobProducer">
         <constructor-arg name="queueName" value="MainQueue" />

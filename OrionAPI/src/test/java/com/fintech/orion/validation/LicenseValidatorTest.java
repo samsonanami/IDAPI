@@ -12,8 +12,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.text.ParseException;
 import java.util.List;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -36,7 +36,7 @@ public class LicenseValidatorTest {
     }
 
     @Test(expected = LicenseNotValidException.class)
-    public void shouldReturnForProcessTypesCalled() throws ParseException, ItemNotFoundException, LicenseNotValidException {
+    public void shouldReturnExceptionForProcessTypesCalled() throws ParseException, ItemNotFoundException, LicenseNotValidException {
         LicenseValidatorInterface licenseValidatorInterface = new LicenseValidator();
 
         List<ProcessTypeLicenseDTO> processTypeLicenseDTOs = ObjectCreator.processTypeLicenseDTOs();
@@ -47,6 +47,20 @@ public class LicenseValidatorTest {
 
         List<ProcessTypeDTO> processTypeDTOs = ObjectCreator.processTypeDTOs2();
         licenseValidatorInterface.checkLicenseForProcessTypes(processTypeDTOs, 1);
+    }
+
+    @Test(expected = LicenseNotValidException.class)
+    public void shouldReturnExceptionWhenLicenseNotFoundForProcessTypesCalled() throws ParseException, ItemNotFoundException, LicenseNotValidException {
+        LicenseValidatorInterface licenseValidatorInterface = new LicenseValidator();
+
+        List<ProcessTypeLicenseDTO> processTypeLicenseDTOs = ObjectCreator.processTypeLicenseDTOs();
+
+        ProcessTypeLicenseServiceInterface processTypeLicenseServiceInterfaceMock = mock(ProcessTypeLicenseService.class);
+        when(processTypeLicenseServiceInterfaceMock.getAllForLicenseId(2)).thenThrow(ItemNotFoundException.class);
+        ReflectionTestUtils.setField(licenseValidatorInterface, "processTypeLicenseServiceInterface", processTypeLicenseServiceInterfaceMock);
+
+        List<ProcessTypeDTO> processTypeDTOs = ObjectCreator.processTypeDTOs2();
+        licenseValidatorInterface.checkLicenseForProcessTypes(processTypeDTOs, 2);
     }
 
 }

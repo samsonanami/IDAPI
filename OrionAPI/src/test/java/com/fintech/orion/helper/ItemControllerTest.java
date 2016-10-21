@@ -10,6 +10,8 @@ import com.fintech.orion.handlers.OrionJobHandlerInterface;
 import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.model.VerificationResponseMessage;
 import com.fintech.orion.rest.ItemController;
+import com.fintech.orion.validation.ClientValidator;
+import com.fintech.orion.validation.ClientValidatorInterface;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;

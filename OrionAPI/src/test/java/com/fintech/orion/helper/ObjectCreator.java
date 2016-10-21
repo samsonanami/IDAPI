@@ -1,6 +1,5 @@
 package com.fintech.orion.helper;
 
-import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
@@ -43,13 +42,12 @@ public class ObjectCreator {
         return new VerificationRequest();
     }
 
+    public static ResourceDTO aResourceDTO() {
+        return new ResourceDTO();
+    }
+
     public static ClientDTO aClientDTO(){
         return new ClientDTO();
     }
 
-    public static Client aClient() { return new Client(); }
-
-    public static ResourceDTO aResourceDTO() {
-        return new ResourceDTO();
-    }
 }

@@ -1,6 +1,8 @@
 package com.fintech.orion.validation;
 
+import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
+import com.fintech.orion.dto.client.ClientDTO;
 import com.fintech.orion.dto.license.LicenseDTO;
 import com.fintech.orion.dto.processtype.ProcessTypeDTO;
 import com.fintech.orion.dto.processtypelicense.ProcessTypeLicenseDTO;
@@ -15,10 +17,14 @@ import java.util.List;
  */
 public class ObjectCreator {
 
+    private ObjectCreator() {}
+
+    private static final String ID_VERIFICATION = "idVerification";
+
     public static List<ProcessTypeLicenseDTO> processTypeLicenseDTOs() throws ParseException {
         LicenseDTO licenseDTO1 = createLicenseDTO(1, GenerateTimestamp.timestamp("2016-10-10"), GenerateTimestamp.timestamp("2016-12-10"), 100, 1000);
 
-        ProcessTypeDTO processTypeDTO1 = createProcessTypeDTO(1, "idVerification");
+        ProcessTypeDTO processTypeDTO1 = createProcessTypeDTO(1, ID_VERIFICATION);
         ProcessTypeDTO processTypeDTO2 = createProcessTypeDTO(2, "test");
 
         ProcessTypeLicenseDTO processTypeLicenseDTO1 = createProcessTypeLicenseDTO(1, licenseDTO1, processTypeDTO1);
@@ -34,7 +40,7 @@ public class ObjectCreator {
     public static List<ProcessTypeDTO> processTypeDTOs1(){
         List<ProcessTypeDTO> processTypeDTOs = new ArrayList<>();
 
-        ProcessTypeDTO processTypeDTO1 = createProcessTypeDTO(1, "idVerification");
+        ProcessTypeDTO processTypeDTO1 = createProcessTypeDTO(1, ID_VERIFICATION);
 
         processTypeDTOs.add(processTypeDTO1);
         return processTypeDTOs;
@@ -43,7 +49,7 @@ public class ObjectCreator {
     public static List<ProcessTypeDTO> processTypeDTOs2(){
         List<ProcessTypeDTO> processTypeDTOs = new ArrayList<>();
 
-        ProcessTypeDTO processTypeDTO1 = createProcessTypeDTO(1, "idVerification");
+        ProcessTypeDTO processTypeDTO1 = createProcessTypeDTO(1, ID_VERIFICATION);
         ProcessTypeDTO processTypeDTO2 = createProcessTypeDTO(2, "test");
         ProcessTypeDTO processTypeDTO3 = createProcessTypeDTO(3, "fail");
 
@@ -76,6 +82,12 @@ public class ObjectCreator {
         processTypeDTO.setId(id);
         processTypeDTO.setType(type);
         return processTypeDTO;
+    }
+
+    public static Client aClient() { return new Client(); }
+
+    public static ClientDTO aClientDTO(){
+        return new ClientDTO();
     }
 
 }

@@ -10,6 +10,7 @@ import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.model.ResponseMessage;
 import com.fintech.orion.model.VerificationResponseMessage;
+import com.fintech.orion.validation.ClientValidatorInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
