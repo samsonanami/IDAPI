@@ -10,10 +10,10 @@ import com.fintech.orion.dto.request.validation.RequestProcessDTOValidator;
 /**
  * Created by TharinduMP on 10/12/2016.
  * Main Validator provider factory class.
+ * TODO : Delete
  */
-public class ValidatorFactory implements ValidatorFactoryInterface {
+public class ValidatorFactory {
 
-    @Override
     public ValidatorInterface getValidator(Object dtoObject) throws ValidatorException {
         if (dtoObject.getClass().equals(GenericMapMessage.class)) {
             return new GenericMapMessageValidator();

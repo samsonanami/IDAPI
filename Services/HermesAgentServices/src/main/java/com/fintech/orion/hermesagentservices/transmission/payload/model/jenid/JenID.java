@@ -7,6 +7,7 @@ package com.fintech.orion.hermesagentservices.transmission.payload.model.jenid;
 public class JenID {
 
     private InputData inputData;
+    private OutputData outputData;
 
     public InputData getInputData() {
         return inputData;
@@ -14,5 +15,13 @@ public class JenID {
 
     public void setInputData(InputData inputData) {
         this.inputData = inputData;
+    }
+
+    public OutputData getOutputData() {
+        return outputData;
+    }
+
+    public void setOutputData(OutputData outputData) {
+        this.outputData = outputData;
     }
 }

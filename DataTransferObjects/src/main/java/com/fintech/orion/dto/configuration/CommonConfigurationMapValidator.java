@@ -20,6 +20,7 @@ public class CommonConfigurationMapValidator implements ValidatorInterface {
 
             //validations for the keys
             MapValidations.doesContainKeyWithNonEmptyValue(map,"url");
+            MapValidations.doesContainKeyWithNonEmptyValue(map,"header.contentType");
         }
         return new ValidatorResult();
     }

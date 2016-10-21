@@ -1,0 +1,11 @@
+package com.fintech.orion.hermesagentservices.resources;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * Created by TharinduMP on 10/21/2016.
+ */
+public interface Base64ServiceInterface {
+    String fileToBase64(InputStream stream) throws IOException;
+}

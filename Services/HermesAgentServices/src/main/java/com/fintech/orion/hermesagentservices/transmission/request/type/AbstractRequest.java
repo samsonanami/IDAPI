@@ -2,6 +2,7 @@ package com.fintech.orion.hermesagentservices.transmission.request.type;
 
 import com.fintech.orion.common.exceptions.RequestException;
 import com.fintech.orion.coreservices.ProcessConfigServiceInterface;
+import com.fintech.orion.coreservices.ProcessServiceInterface;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.processconfig.ProcessConfigDTO;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractRequest {
 
     @Autowired
-    private ResourceServiceInterface resourceService;
+    private ProcessServiceInterface processService;
 
     @Autowired
     private ProcessConfigServiceInterface processConfigService;
@@ -37,8 +38,8 @@ public abstract class AbstractRequest {
         }
     }
 
-    private List<ResourceDTO> getProcessResources(GenericRequest genericRequest) {
-        return null;
+    private List<ResourceDTO> getProcessResources(GenericRequest genericRequest) throws ItemNotFoundException {
+        return processService.resourceDTOsForProcess(genericRequest.getProcessId());
     }
 
     private Map<String, String> getProcessConfigurations(GenericRequest genericRequest) throws ItemNotFoundException {

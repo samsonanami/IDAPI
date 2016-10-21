@@ -1,6 +1,6 @@
 package com.fintech.orion.hermes.handler;
 
-import com.fintech.orion.RequestHandlerException;
+import com.fintech.orion.common.exceptions.RequestHandlerException;
 import com.fintech.orion.dto.request.GenericRequest;
 
 import java.util.List;

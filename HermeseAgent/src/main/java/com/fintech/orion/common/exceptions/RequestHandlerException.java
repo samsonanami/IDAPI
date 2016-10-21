@@ -1,4 +1,4 @@
-package com.fintech.orion;
+package com.fintech.orion.common.exceptions;
 
 /**
  * Created by TharinduMP on 10/6/2016.

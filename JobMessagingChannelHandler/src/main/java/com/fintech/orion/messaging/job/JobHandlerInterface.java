@@ -10,6 +10,7 @@ import javax.jms.Session;
 
 /**
  * Created by TharinduMP on 10/11/2016.
+ * JobHandlerInterface
  */
 public interface JobHandlerInterface {
 

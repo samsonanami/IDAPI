@@ -4,6 +4,7 @@ import com.fintech.orion.common.exceptions.job.JobHandlerException;
 import com.fintech.orion.dto.messaging.GenericMapMessage;
 import com.fintech.orion.dto.validator.ValidatorException;
 import com.fintech.orion.dto.validator.ValidatorFactory;
+import com.fintech.orion.dto.validator.ValidatorFactoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jms.JMSException;
@@ -18,12 +19,12 @@ import javax.jms.Session;
 public class JobHandler implements JobHandlerInterface {
 
     @Autowired
-    private ValidatorFactory validatorFactory;
+    private ValidatorFactoryInterface validatorFactory;
 
     @Override
     public Message createGenericMapMessageToMessage(Session session, GenericMapMessage genericMapMessage) throws JobHandlerException {
         try {
-            validatorFactory.getValidator(genericMapMessage).validate(genericMapMessage);
+            validatorFactory.getValidator("GenericMapMessage").validate(genericMapMessage);
             MapMessage mapMessage = session.createMapMessage();
             mapMessage.setInt("ClientId", genericMapMessage.getClientId());
             mapMessage.setString("identificationCode", genericMapMessage.getIdentificationCode());
@@ -39,7 +40,7 @@ public class JobHandler implements JobHandlerInterface {
             GenericMapMessage genericMapMessage = new GenericMapMessage();
             genericMapMessage.setIdentificationCode(mapMessage.getString("identificationCode"));
             genericMapMessage.setClientId(mapMessage.getInt("ClientId"));
-            validatorFactory.getValidator(genericMapMessage).validate(genericMapMessage);
+            validatorFactory.getValidator("GenericMapMessage").validate(genericMapMessage);
             return genericMapMessage;
         } catch (ValidatorException | JMSException e) {
             throw new JobHandlerException(e);

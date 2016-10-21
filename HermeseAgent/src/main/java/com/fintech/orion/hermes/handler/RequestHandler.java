@@ -1,6 +1,6 @@
 package com.fintech.orion.hermes.handler;
 
-import com.fintech.orion.RequestHandlerException;
+import com.fintech.orion.common.exceptions.RequestHandlerException;
 import com.fintech.orion.common.exceptions.RequestWorkerException;
 import com.fintech.orion.dto.request.GenericRequest;
 import com.fintech.orion.dto.validator.ValidatorException;
@@ -38,7 +38,7 @@ public class RequestHandler implements RequestHandlerInterface {
             for (GenericRequest genericRequest : genericRequests) {
                 try {
                     // validate each genericRequest
-                    validatorFactory.getValidator(genericRequest).validate(genericRequest);
+                    validatorFactory.getValidator("GenericRequest").validate(genericRequest);
 
                     //get each genericRequests a request
                     RequestInterface request = requestFactoryService.getRequest(String.valueOf(genericRequest.getProcessType()));

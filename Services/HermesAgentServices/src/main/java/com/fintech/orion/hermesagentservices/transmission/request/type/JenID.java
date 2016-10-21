@@ -1,14 +1,22 @@
 package com.fintech.orion.hermesagentservices.transmission.request.type;
 
+import com.fintech.orion.common.exceptions.BodyServiceException;
 import com.fintech.orion.common.exceptions.RequestException;
-import com.fintech.orion.dto.processconfig.ProcessConfigDTO;
+import com.fintech.orion.common.exceptions.RequestSubmitterException;
 import com.fintech.orion.dto.request.GenericRequest;
-import com.fintech.orion.dto.validator.ValidatorFactoryInterface;
+import com.fintech.orion.hermesagentservices.transmission.request.basetype.RequestCreatorInterface;
+import com.fintech.orion.hermesagentservices.transmission.request.body.BodyServiceInterface;
+import com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitterInterface;
+import com.fintech.orion.hermesagentservices.transmission.response.handler.ResponseHandlerInterface;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.request.BaseRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by TharinduMP on 10/13/2016.
@@ -18,19 +26,42 @@ import java.util.stream.Collectors;
 @Scope("prototype")
 public class JenID extends AbstractRequest implements RequestInterface {
 
+    @Autowired
+    private BodyServiceInterface jenIdBody;
+
+    @Autowired
+    private RequestCreatorInterface jenIdPostSyncRequest;
+
+    @Autowired
+    private RequestSubmitterInterface requestSubmitter;
+
+    @Autowired
+    private ResponseHandlerInterface jenIdResponseHandler;
+
     @Override
     public void process(GenericRequest genericRequest) throws RequestException {
 
         // initialize the resources and configurations
         super.process(genericRequest);
 
-        // validate if configuration map has all the necessary values
+        Map<String,Object> extras = new HashMap<>();
 
-        // resources to files creator : how resource deletion will work with this?
+        try {
+            // create jen id body
+            extras.put("body",jenIdBody.createJSONBody(processConfigurationMap, resourceList, null));
 
-        // create jen id body
+            // create request
+            BaseRequest request = jenIdPostSyncRequest.createRequest(processConfigurationMap,resourceList,extras);
 
-        // make jen id call
+            // make jen id call
+            HttpResponse<JsonNode> response = requestSubmitter.submitRequest(request);
+
+            // handle response
+            jenIdResponseHandler.handleResponse(response);
+
+        } catch (RequestSubmitterException | BodyServiceException e) {
+            throw new RequestException(e);
+        }
 
         // status update : call response handler
 
