@@ -10,7 +10,7 @@ import java.io.*;
 
 public class FileUploadHandler implements FileUploadHandlerInterface {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SFileTransfer.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SFileTransfer.class);
 
     @Autowired
     private String maximumFileSizeMessage;

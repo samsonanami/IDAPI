@@ -9,9 +9,9 @@ import java.io.*;
 
 public class SFileTransfer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SFileTransfer.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SFileTransfer.class);
 
-    private static final String TAG = "SFileTransfer: ";
+    private final String TAG = "SFileTransfer: ";
 
     private Configuration configuration;
 

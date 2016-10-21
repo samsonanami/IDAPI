@@ -16,12 +16,12 @@ import java.io.IOException;
 @Component
 public class GenuineIDInterceptor implements HandlerInterceptor {
 
-    private static final String TAG = "GenuineIDInterceptor: ";
-    private static final String APPLICATION_JSON = "application/json";
-    private static final String CONTENT_TYPE = "content-type";
-    private static final String ATTEMPTED_TO_LOG_WITHOUT_AUTHENTICATION = "Attempted to log without authentication";
-    private static final String AUTHENTICATION_HEADER_IS_NOT_PRESENT_OR_INVALID = "Authentication Headers not present or is invalid";
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenuineIDInterceptor.class);
+    private final String TAG = "GenuineIDInterceptor: ";
+    private final String APPLICATION_JSON = "application/json";
+    private final String CONTENT_TYPE = "content-type";
+    private final String ATTEMPTED_TO_LOG_WITHOUT_AUTHENTICATION = "Attempted to log without authentication";
+    private final String AUTHENTICATION_HEADER_IS_NOT_PRESENT_OR_INVALID = "Authentication Headers not present or is invalid";
+    private final Logger LOGGER = LoggerFactory.getLogger(GenuineIDInterceptor.class);
 
     /**
      * The developer key used for authentication.

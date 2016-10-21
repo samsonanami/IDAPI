@@ -12,7 +12,7 @@ public class FileProgressMonitor implements SftpProgressMonitor {
     long max = 0;
     private long percent = 1000;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileProgressMonitor.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(FileProgressMonitor.class);
 
     @Override
     public void init(int op, String src, String dest, long max) {

@@ -4,6 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="realm" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="ZONE_OAUTH_REALM"></constructor-arg>
+    </bean>
+
+    <bean id="resourceId" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="zone_rest_api"></constructor-arg>
+    </bean>
+
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
     <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
     <bean id="processingRequestServiceInterface" class="com.fintech.orion.coreservices.ProcessingRequestService"/>

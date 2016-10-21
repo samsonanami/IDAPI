@@ -5,8 +5,8 @@ package com.fintech.orion.helper;
  */
 public class FileExtensionValidator implements FileExtensionValidatorInterface {
 
-    private static final String JPEG_FILE_FORMAT = "jpeg";
-    private static final String MP4_FILE_FORMAT = "mp4";
+    private final String JPEG_FILE_FORMAT = "jpeg";
+    private final String MP4_FILE_FORMAT = "mp4";
 
     /**
      *
