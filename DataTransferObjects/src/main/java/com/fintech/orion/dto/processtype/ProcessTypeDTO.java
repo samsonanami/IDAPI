@@ -23,4 +23,15 @@ public class ProcessTypeDTO {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if ((o instanceof ProcessTypeDTO) && (((ProcessTypeDTO) o).getId() == this.id)
+                && (((ProcessTypeDTO) o).getType() == this.type)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

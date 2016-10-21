@@ -45,7 +45,7 @@ public class ObjectCreator {
         licenseDTO.setId(1);
         licenseDTO.setStartDate(GenerateTimestamp.timestamp());
         licenseDTO.setEndDate(GenerateTimestamp.timestamp());
-        licenseDTO.setRequestCount(100);
+        licenseDTO.setMaximumRequestCount(100);
         return licenseDTO;
     }
 

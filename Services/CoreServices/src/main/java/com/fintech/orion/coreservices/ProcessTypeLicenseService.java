@@ -48,4 +48,9 @@ public class ProcessTypeLicenseService extends AbstractService<ProcessTypeLicens
         processTypeLicenseRepositoryInterface.delete(processTypeLicenseMapper.processTypeLicenseDTOToProcessTypeLicense(processTypeLicenseDTO));
     }
 
+    @Override
+    public List<ProcessTypeLicenseDTO> getAllForLicenseId(int licenseId) throws ItemNotFoundException {
+        return processTypeLicenseMapper.processTypeLicensesToProcessTypeLicenseDTOs(processTypeLicenseRepositoryInterface.getAllForLicenseId(licenseId));
+    }
+
 }
