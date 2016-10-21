@@ -16,6 +16,8 @@ import org.springframework.security.oauth2.provider.request.DefaultOAuth2Request
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -24,10 +26,19 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private ClientDetailsService clientDetailsService;
 
     @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private String usersByUsernameQuery;
+
+    @Autowired
+    private String authoritiesByUsernameQuery;
+
+    @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("zoneadmin").password("zone@123").roles("ADMIN").and()
-                .withUser("zoneuser").password("zone@123").roles("USER");
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery(usersByUsernameQuery)
+                .authoritiesByUsernameQuery(authoritiesByUsernameQuery);
     }
 
     @Override
