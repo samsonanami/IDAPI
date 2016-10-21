@@ -11,15 +11,13 @@ import java.util.List;
 @Repository
 public class ProcessRepository extends AbstractDAO<Process, Integer> implements ProcessRepositoryInterface {
 
-    public static final String PROCESS_IDENTIFICATION_CODE = "processIdentificationCode";
-
     protected ProcessRepository() {
         super(Process.class);
     }
 
     @Override
     public Process findByIdentificationCode(String identificationCode) throws ItemNotFoundException {
-        List<Process> processes = findByCriteria(Restrictions.eq(PROCESS_IDENTIFICATION_CODE, identificationCode));
+        List<Process> processes = findByCriteria(Restrictions.eq("processIdentificationCode", identificationCode));
         if (processes != null && !processes.isEmpty()) {
             return processes.get(0);
         } else {

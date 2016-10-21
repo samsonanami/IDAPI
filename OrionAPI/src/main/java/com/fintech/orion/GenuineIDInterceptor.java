@@ -16,20 +16,27 @@ import java.io.IOException;
 @Component
 public class GenuineIDInterceptor implements HandlerInterceptor {
 
-    private final String TAG = "GenuineIDInterceptor: ";
-    private final String APPLICATION_JSON = "application/json";
-    private final String CONTENT_TYPE = "content-type";
-    private final String ATTEMPTED_TO_LOG_WITHOUT_AUTHENTICATION = "Attempted to log without authentication";
-    private final String AUTHENTICATION_HEADER_IS_NOT_PRESENT_OR_INVALID = "Authentication Headers not present or is invalid";
-    private final Logger LOGGER = LoggerFactory.getLogger(GenuineIDInterceptor.class);
+    private static final String TAG = "GenuineIDInterceptor: ";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenuineIDInterceptor.class);
+
+    @Autowired
+    private String contentType;
+
+    @Autowired
+    private String applicationJson;
+
+    @Autowired
+    private String attemptedToLogWithoutAuthentication;
+
+    @Autowired
+    private String authenticationHeaderIsNotPresentOrInvalid;
 
     /**
      * The developer key used for authentication.
      */
     @Autowired
     private String developerKey;
-
-
 
     /**
      * The Authentication header name.
@@ -52,18 +59,18 @@ public class GenuineIDInterceptor implements HandlerInterceptor {
         String securityHeader;
         try {
             securityHeader = request.getHeader(securityTokenHeaderName);
-            response.addHeader(CONTENT_TYPE, APPLICATION_JSON);
+            response.addHeader(contentType, applicationJson);
             Gson gson = new Gson();
             ResponseMessage responseMessage = new ResponseMessage();
             responseMessage.setStatus(HttpServletResponse.SC_FORBIDDEN);
             if (securityHeader == null || !securityHeader.equalsIgnoreCase(developerKey)) {
                 
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(ATTEMPTED_TO_LOG_WITHOUT_AUTHENTICATION);
+                    LOGGER.debug(attemptedToLogWithoutAuthentication);
                 }
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
-                responseMessage.setMessage(AUTHENTICATION_HEADER_IS_NOT_PRESENT_OR_INVALID);
+                responseMessage.setMessage(authenticationHeaderIsNotPresentOrInvalid);
                 String errorMessageToBeReturned = gson.toJson(responseMessage);
                 response.getWriter().write(errorMessageToBeReturned);
                 return false;

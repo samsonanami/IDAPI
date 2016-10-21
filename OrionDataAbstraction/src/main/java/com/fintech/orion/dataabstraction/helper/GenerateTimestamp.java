@@ -16,7 +16,6 @@ public class GenerateTimestamp {
     }
 
     public static Date timestamp(String date) throws ParseException {
-        // Example "2010-01-10";
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.parse(date);
     }

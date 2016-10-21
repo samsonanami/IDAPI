@@ -15,11 +15,9 @@ public class ProcessTypeLicenseRepository extends AbstractDAO<ProcessTypeLicense
         super(ProcessTypeLicense.class);
     }
 
-    public static final String LICENSE = "license";
-
     @Override
     public List<ProcessTypeLicense> getAllForLicenseId(int licenseId) throws ItemNotFoundException {
-        List<ProcessTypeLicense> processTypeLicenses = findByCriteria(Restrictions.eq(LICENSE, licenseId));
+        List<ProcessTypeLicense> processTypeLicenses = findByCriteria(Restrictions.eq("license", licenseId));
         if (processTypeLicenses != null && !processTypeLicenses.isEmpty()) {
             return processTypeLicenses;
         } else {

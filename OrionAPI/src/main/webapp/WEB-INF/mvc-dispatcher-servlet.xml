@@ -61,4 +61,12 @@
         <constructor-arg type="java.lang.String" value="zone@123"/>
     </bean>
 
+    <bean id="applicationJson" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="application/json"/>
+    </bean>
+
+    <bean id="contentType" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="content-type"/>
+    </bean>
+
 </beans>

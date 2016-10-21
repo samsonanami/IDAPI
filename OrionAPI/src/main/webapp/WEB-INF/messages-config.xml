@@ -16,4 +16,12 @@
         <constructor-arg type="java.lang.String" value="Json not in correct format"/>
     </bean>
 
+    <bean id="attemptedToLogWithoutAuthentication" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="Attempted to log without authentication"/>
+    </bean>
+
+    <bean id="authenticationHeaderIsNotPresentOrInvalid" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="Authentication Headers not present or is invalid"/>
+    </bean>
+
 </beans>
