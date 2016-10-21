@@ -19,8 +19,13 @@ public class LicenseValidator implements LicenseValidatorInterface{
     private ProcessTypeLicenseServiceInterface processTypeLicenseServiceInterface;
 
     @Override
-    public void checkLicenseForProcessTypes(List<ProcessTypeDTO> processTypeDTOs, int licenseId) throws ItemNotFoundException, LicenseNotValidException {
-        List<ProcessTypeLicenseDTO> processTypeLicenseDTOs = processTypeLicenseServiceInterface.getAllForLicenseId(licenseId);
+    public void checkLicenseForProcessTypes(List<ProcessTypeDTO> processTypeDTOs, int licenseId) throws LicenseNotValidException {
+        List<ProcessTypeLicenseDTO> processTypeLicenseDTOs = null;
+        try {
+            processTypeLicenseDTOs = processTypeLicenseServiceInterface.getAllForLicenseId(licenseId);
+        } catch (ItemNotFoundException e) {
+            throw new LicenseNotValidException("License not found:" + e);
+        }
 
         List<ProcessTypeDTO> processTypeDTOList = new ArrayList<>();
         for(ProcessTypeLicenseDTO p : processTypeLicenseDTOs){

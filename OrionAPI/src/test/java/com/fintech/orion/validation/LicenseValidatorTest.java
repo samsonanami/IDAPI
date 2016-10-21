@@ -12,7 +12,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.text.ParseException;
 import java.util.List;
 
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -21,15 +20,17 @@ import static org.mockito.Mockito.when;
  */
 public class LicenseValidatorTest {
 
+    private static String PROCESS_TYPE_LICENSE_SERVICE_INTERFACE = "processTypeLicenseServiceInterface";
+
     @Test
-    public void shouldValidWhenCheckLicenseForProcessTypesCalled() throws ParseException, ItemNotFoundException, LicenseNotValidException {
+    public void shouldValidWhenCheckLicenseForProcessTypesCalled() throws ParseException, LicenseNotValidException, ItemNotFoundException {
         LicenseValidatorInterface licenseValidatorInterface = new LicenseValidator();
 
         List<ProcessTypeLicenseDTO> processTypeLicenseDTOs = ObjectCreator.processTypeLicenseDTOs();
 
         ProcessTypeLicenseServiceInterface processTypeLicenseServiceInterfaceMock = mock(ProcessTypeLicenseService.class);
         when(processTypeLicenseServiceInterfaceMock.getAllForLicenseId(1)).thenReturn(processTypeLicenseDTOs);
-        ReflectionTestUtils.setField(licenseValidatorInterface, "processTypeLicenseServiceInterface", processTypeLicenseServiceInterfaceMock);
+        ReflectionTestUtils.setField(licenseValidatorInterface, PROCESS_TYPE_LICENSE_SERVICE_INTERFACE, processTypeLicenseServiceInterfaceMock);
 
         List<ProcessTypeDTO> processTypeDTOs = ObjectCreator.processTypeDTOs1();
         licenseValidatorInterface.checkLicenseForProcessTypes(processTypeDTOs, 1);
@@ -43,7 +44,7 @@ public class LicenseValidatorTest {
 
         ProcessTypeLicenseServiceInterface processTypeLicenseServiceInterfaceMock = mock(ProcessTypeLicenseService.class);
         when(processTypeLicenseServiceInterfaceMock.getAllForLicenseId(1)).thenReturn(processTypeLicenseDTOs);
-        ReflectionTestUtils.setField(licenseValidatorInterface, "processTypeLicenseServiceInterface", processTypeLicenseServiceInterfaceMock);
+        ReflectionTestUtils.setField(licenseValidatorInterface, PROCESS_TYPE_LICENSE_SERVICE_INTERFACE, processTypeLicenseServiceInterfaceMock);
 
         List<ProcessTypeDTO> processTypeDTOs = ObjectCreator.processTypeDTOs2();
         licenseValidatorInterface.checkLicenseForProcessTypes(processTypeDTOs, 1);
@@ -53,11 +54,9 @@ public class LicenseValidatorTest {
     public void shouldReturnExceptionWhenLicenseNotFoundForProcessTypesCalled() throws ParseException, ItemNotFoundException, LicenseNotValidException {
         LicenseValidatorInterface licenseValidatorInterface = new LicenseValidator();
 
-        List<ProcessTypeLicenseDTO> processTypeLicenseDTOs = ObjectCreator.processTypeLicenseDTOs();
-
         ProcessTypeLicenseServiceInterface processTypeLicenseServiceInterfaceMock = mock(ProcessTypeLicenseService.class);
         when(processTypeLicenseServiceInterfaceMock.getAllForLicenseId(2)).thenThrow(ItemNotFoundException.class);
-        ReflectionTestUtils.setField(licenseValidatorInterface, "processTypeLicenseServiceInterface", processTypeLicenseServiceInterfaceMock);
+        ReflectionTestUtils.setField(licenseValidatorInterface, PROCESS_TYPE_LICENSE_SERVICE_INTERFACE, processTypeLicenseServiceInterfaceMock);
 
         List<ProcessTypeDTO> processTypeDTOs = ObjectCreator.processTypeDTOs2();
         licenseValidatorInterface.checkLicenseForProcessTypes(processTypeDTOs, 2);

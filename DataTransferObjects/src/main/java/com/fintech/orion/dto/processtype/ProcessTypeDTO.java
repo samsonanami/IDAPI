@@ -26,12 +26,20 @@ public class ProcessTypeDTO {
 
     @Override
     public boolean equals(Object o) {
-        if ((o instanceof ProcessTypeDTO) && (((ProcessTypeDTO) o).getId() == this.id)
-                && (((ProcessTypeDTO) o).getType() == this.type)) {
-            return true;
-        } else {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProcessTypeDTO that = (ProcessTypeDTO) o;
+
+        if (id != that.id) return false;
+        return type.equals(that.type);
+
     }
 
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + type.hashCode();
+        return result;
+    }
 }
