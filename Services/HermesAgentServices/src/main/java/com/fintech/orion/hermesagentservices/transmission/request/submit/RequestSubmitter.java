@@ -1,6 +1,6 @@
 package com.fintech.orion.hermesagentservices.transmission.request.submit;
 
-import com.fintech.orion.common.exceptions.FailedRequestException;
+import com.fintech.orion.common.exceptions.request.FailedRequestException;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;

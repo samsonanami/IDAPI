@@ -32,6 +32,7 @@ public class JobCommon implements JobCommonInterface {
         initializeJobCommon();
     }
 
+    @Override
     public Session getSession() {
         return session;
     }

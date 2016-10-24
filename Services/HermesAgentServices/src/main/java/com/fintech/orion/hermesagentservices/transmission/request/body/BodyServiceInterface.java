@@ -1,6 +1,6 @@
 package com.fintech.orion.hermesagentservices.transmission.request.body;
 
-import com.fintech.orion.common.exceptions.BodyServiceException;
+import com.fintech.orion.common.exceptions.request.BodyServiceException;
 import com.fintech.orion.dto.resource.ResourceDTO;
 
 import java.util.List;

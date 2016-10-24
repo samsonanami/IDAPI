@@ -25,10 +25,6 @@
 
     <bean id="jobListener" class="com.fintech.orion.hermes.listener.HermesListener" />
 
-    <!--DTO RELATED BEANS-->
-
-    <bean id="validatorFactory" class="com.fintech.orion.dto.validator.ValidatorFactory" />
-
     <!--ORION REPOSITORIES-->
 
     <bean id="processingRequestRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepository" />
@@ -42,7 +38,11 @@
     <bean id="jobHandler" class="com.fintech.orion.messaging.job.JobHandler" />
     <bean id="messageProcessor" class="com.fintech.orion.hermes.processor.MessageProcessor" />
     <bean id="processProvider" class="com.fintech.orion.hermes.provider.ProcessProvider" />
-    <bean id="jobManagerInterface" class="com.fintech.orion.hermes.handler.JobManager" />
+    <bean id="jobManager" class="com.fintech.orion.hermes.handler.JobManager" />
+    <bean id="requestProcessor" class="com.fintech.orion.hermes.processor.RequestProcessor" />
+    <bean id="RequestHandler" class="com.fintech.orion.hermes.handler.RequestHandler" />
+
+
 
 
     <!--REQUEST FACTORY BEANS-->
@@ -58,6 +58,10 @@
     </bean>
 
     <!--VALIDATOR FACTORY BEANS-->
+
+    <bean id="validatorFactory" class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
+        <property name="serviceLocatorInterface" value="com.fintech.orion.dto.validator.ValidatorFactoryInterface" />
+    </bean>
 
 
 

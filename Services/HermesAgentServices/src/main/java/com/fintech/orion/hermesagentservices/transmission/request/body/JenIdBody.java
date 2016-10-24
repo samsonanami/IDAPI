@@ -1,6 +1,7 @@
 package com.fintech.orion.hermesagentservices.transmission.request.body;
 
-import com.fintech.orion.common.exceptions.BodyServiceException;
+import com.fintech.orion.common.exceptions.request.BodyServiceException;
+import com.fintech.orion.common.exceptions.request.body.ImageBodyCreatorException;
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.validator.ValidatorException;
 import com.fintech.orion.dto.validator.ValidatorFactoryInterface;
@@ -62,7 +63,7 @@ public class JenIdBody implements BodyServiceInterface {
             } else {
                 throw new BodyServiceException("resourceList is null or does not contain the necessary resources");
             }
-        } catch (ValidatorException | IOException e) {
+        } catch (ValidatorException | IOException | ImageBodyCreatorException e) {
             throw new BodyServiceException(e);
         }
     }

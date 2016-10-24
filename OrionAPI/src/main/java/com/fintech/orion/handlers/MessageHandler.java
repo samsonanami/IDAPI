@@ -21,7 +21,7 @@ public class MessageHandler implements MessageHandlerInterface {
     @Override
     public Message getMessage(int id, String processingRequestId) throws JobHandlerException {
         GenericMapMessage mapMessage = new GenericMapMessage();
-        mapMessage.setClientId(id);
+        mapMessage.setLicenseId(id);
         mapMessage.setIdentificationCode(processingRequestId);
 
         return jobHandlerInterface.createGenericMapMessageToMessage(jobProducerInterface.getSession(), mapMessage);

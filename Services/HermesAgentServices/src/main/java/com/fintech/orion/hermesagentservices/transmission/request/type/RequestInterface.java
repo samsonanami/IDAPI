@@ -1,6 +1,6 @@
 package com.fintech.orion.hermesagentservices.transmission.request.type;
 
-import com.fintech.orion.common.exceptions.RequestException;
+import com.fintech.orion.common.exceptions.request.RequestException;
 import com.fintech.orion.dto.request.GenericRequest;
 
 /**

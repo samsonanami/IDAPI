@@ -5,6 +5,7 @@ package com.fintech.orion.hermesagentservices.transmission.payload.model.jenidre
  */
 public class Body {
     private MrzData[] mrzData;
+    private RoiData[] roiData;
 
     public MrzData[] getMrzData() {
         return mrzData;
@@ -12,5 +13,13 @@ public class Body {
 
     public void setMrzData(MrzData[] mrzData) {
         this.mrzData = mrzData;
+    }
+
+    public RoiData[] getRoiData() {
+        return roiData;
+    }
+
+    public void setRoiData(RoiData[] roiData) {
+        this.roiData = roiData;
     }
 }

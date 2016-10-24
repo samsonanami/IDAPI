@@ -7,7 +7,9 @@ import java.util.List;
 
 /**
  * Created by TharinduMP on 10/18/2016.
+ * RequestHandlerInterface
  */
+@FunctionalInterface
 public interface RequestHandlerInterface {
     void handleRequests(List<GenericRequest> genericRequests) throws RequestHandlerException;
 }

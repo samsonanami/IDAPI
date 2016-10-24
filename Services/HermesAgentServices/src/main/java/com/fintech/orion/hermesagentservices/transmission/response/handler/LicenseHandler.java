@@ -5,6 +5,7 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.license.LicenseDTO;
 import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.request.GenericRequest;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * LicenseHandler
  */
 public class LicenseHandler implements LicenseHandlerInterface {
+
+    static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(LicenseHandler.class);
 
     @Autowired
     private LicenseServiceInterface licenseService;
@@ -24,13 +27,13 @@ public class LicenseHandler implements LicenseHandlerInterface {
             LicenseDTO licenseDTO = licenseService.findById(genericRequest.getLicenseId().intValue());
 
             //update count
-            licenseDTO.setRequestCount(licenseDTO.getRequestCount() + 1);
+            licenseDTO.setCurrentRequestCount(licenseDTO.getCurrentRequestCount() + 1);
 
             //save
             licenseService.saveOrUpdate(licenseDTO);
 
         } catch (ItemNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error("Provided License Id was not found", e);
         }
 
     }

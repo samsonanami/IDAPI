@@ -22,5 +22,11 @@ public class HermesListener implements MessageListener {
     public void onMessage(Message message) {
         LOGGER.info("{} received a message", getClass().getName());
 
+        try {
+            jobManager.delegateJob(message);
+        } catch (Exception e) {
+            LOGGER.error("Job Delegation Failed.", e);
+        }
+
     }
 }

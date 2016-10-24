@@ -1,9 +1,8 @@
 package com.fintech.orion.hermesagentservices.transmission.request.type;
 
-import com.fintech.orion.common.exceptions.RequestException;
+import com.fintech.orion.common.exceptions.request.RequestException;
 import com.fintech.orion.coreservices.ProcessConfigServiceInterface;
 import com.fintech.orion.coreservices.ProcessServiceInterface;
-import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.processconfig.ProcessConfigDTO;

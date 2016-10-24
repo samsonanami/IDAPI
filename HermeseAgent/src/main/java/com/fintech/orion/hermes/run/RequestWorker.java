@@ -1,6 +1,6 @@
 package com.fintech.orion.hermes.run;
 
-import com.fintech.orion.common.exceptions.RequestException;
+import com.fintech.orion.common.exceptions.request.RequestException;
 import com.fintech.orion.common.exceptions.RequestWorkerException;
 import com.fintech.orion.dto.request.GenericRequest;
 import com.fintech.orion.dto.validator.ValidatorException;

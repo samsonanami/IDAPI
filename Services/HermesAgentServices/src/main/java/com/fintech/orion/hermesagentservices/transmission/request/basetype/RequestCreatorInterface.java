@@ -1,6 +1,6 @@
 package com.fintech.orion.hermesagentservices.transmission.request.basetype;
 
-import com.fintech.orion.common.exceptions.RequestSubmitterException;
+import com.fintech.orion.common.exceptions.request.RequestSubmitterException;
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.mashape.unirest.request.BaseRequest;
 

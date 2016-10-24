@@ -35,7 +35,7 @@ public class GenericRequestValidatorTest {
 
     @Test(expected = ValidatorException.class)
     public void shouldThrowExceptionWhenIdentificationCodeIsNull() throws ValidatorException {
-        genericRequest.setClientId(123);
+        genericRequest.setLicenseId(123);
         genericRequest.setProcessType(1);
         genericRequest.setProcessId(2);
         genericRequestValidator.validate(genericRequest);
@@ -43,7 +43,7 @@ public class GenericRequestValidatorTest {
 
     @Test(expected = ValidatorException.class)
     public void shouldThrowExceptionWhenProcessTypeIsNull() throws ValidatorException {
-        genericRequest.setClientId(123);
+        genericRequest.setLicenseId(123);
         genericRequest.setProcessId(23424);
         genericRequest.setIdentificationCode("156245623");
         genericRequestValidator.validate(genericRequest);
@@ -51,7 +51,7 @@ public class GenericRequestValidatorTest {
 
     @Test(expected = ValidatorException.class)
     public void shouldThrowExceptionWhenProcessIdIsNull() throws ValidatorException {
-        genericRequest.setClientId(123);
+        genericRequest.setLicenseId(123);
         genericRequest.setProcessType(1);
         genericRequest.setIdentificationCode("12567567");
         genericRequestValidator.validate(genericRequest);
