@@ -1,4 +1,4 @@
-package com.fintech.orion.helper;
+package com.fintech.orion.validation;
 
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.client.ClientDTO;

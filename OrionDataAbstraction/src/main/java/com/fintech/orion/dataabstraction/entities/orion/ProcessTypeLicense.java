@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
+// Generated Oct 21, 2016 11:43:31 AM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -47,7 +47,7 @@ public class ProcessTypeLicense  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="license_ID", nullable=false)
+    @JoinColumn(name="LICENSE", nullable=false)
     public License getLicense() {
         return this.license;
     }
@@ -57,7 +57,7 @@ public class ProcessTypeLicense  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="process_type_ID", nullable=false)
+    @JoinColumn(name="PROCESS_TYPE", nullable=false)
     public ProcessType getProcessType() {
         return this.processType;
     }

@@ -2,7 +2,6 @@ package com.fintech.orion.coreservices;
 
 import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
-import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Process entity service class
@@ -64,13 +62,13 @@ public class ProcessService extends AbstractService<Process, Integer> implements
     @Transactional
     @Override
     public void saveOrUpdate(ProcessDTO processDTO) {
-        saveOrUpdate(processMapper.processDTOToProcess(processDTO));
+        processRepositoryInterface.saveOrUpdate(processMapper.processDTOToProcess(processDTO));
     }
 
     @Transactional
     @Override
     public void delete(ProcessDTO processDTO) {
-        delete(processMapper.processDTOToProcess(processDTO));
+        processRepositoryInterface.delete(processMapper.processDTOToProcess(processDTO));
     }
 
     @Transactional

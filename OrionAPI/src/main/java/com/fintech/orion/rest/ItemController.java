@@ -4,11 +4,13 @@ import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.dto.resource.ResourceDTO;
+import com.fintech.orion.handlers.OrionJobHandlerInterface;
 import com.fintech.orion.helper.*;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.model.ResponseMessage;
 import com.fintech.orion.model.VerificationResponseMessage;
+import com.fintech.orion.validation.ClientValidatorInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,9 @@ public class ItemController {
 
     @Autowired
     private ClientValidatorInterface clientValidatorInterface;
+
+    @Autowired
+    private OrionJobHandlerInterface orionJobHandlerInterface;
 
     @RequestMapping(value = "v1/content/{contentType}", method = RequestMethod.POST)
     @ResponseBody
@@ -105,6 +110,8 @@ public class ItemController {
             }
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(accessToken, data.getVerificationProcesses());
+
+            orionJobHandlerInterface.sendProcess(accessToken, processingRequestId);
 
             VerificationResponseMessage result = new VerificationResponseMessage();
             result.setProcessingRequestId(processingRequestId);

@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
+// Generated Oct 21, 2016 11:43:31 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,11 +33,11 @@ public class Process  implements java.io.Serializable {
      private ProcessType processType;
      private ProcessingRequest processingRequest;
      private ProcessingStatus processingStatus;
-     private Response response;
      private Date requestSentOn;
      private Date responseReceivedOn;
      private String processIdentificationCode;
      private Set<Resource> resources = new HashSet<Resource>(0);
+     private Response response;
 
     public Process() {
     }
@@ -48,15 +49,15 @@ public class Process  implements java.io.Serializable {
         this.processingStatus = processingStatus;
         this.processIdentificationCode = processIdentificationCode;
     }
-    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, Response response, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Set<Resource> resources) {
+    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Set<Resource> resources, Response response) {
        this.processType = processType;
        this.processingRequest = processingRequest;
        this.processingStatus = processingStatus;
-       this.response = response;
        this.requestSentOn = requestSentOn;
        this.responseReceivedOn = responseReceivedOn;
        this.processIdentificationCode = processIdentificationCode;
        this.resources = resources;
+       this.response = response;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -101,16 +102,6 @@ public class Process  implements java.io.Serializable {
         this.processingStatus = processingStatus;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="RESPONSE")
-    public Response getResponse() {
-        return this.response;
-    }
-    
-    public void setResponse(Response response) {
-        this.response = response;
-    }
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="REQUEST_SENT_ON", length=19)
     public Date getRequestSentOn() {
@@ -148,6 +139,15 @@ public class Process  implements java.io.Serializable {
     
     public void setResources(Set<Resource> resources) {
         this.resources = resources;
+    }
+
+@OneToOne(fetch=FetchType.LAZY, mappedBy="process")
+    public Response getResponse() {
+        return this.response;
+    }
+    
+    public void setResponse(Response response) {
+        this.response = response;
     }
 
 

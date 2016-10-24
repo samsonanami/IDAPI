@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
+// Generated Oct 21, 2016 11:43:31 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,10 +27,11 @@ public class License  implements java.io.Serializable {
 
 
      private int id;
+     private Client client;
      private Date startDate;
      private Date endDate;
-     private Integer requestCount;
-     private Set<ClientLicense> clientLicenses = new HashSet<ClientLicense>(0);
+     private Integer currentRequestCount;
+     private Integer maximumRequestCount;
      private Set<ProcessTypeLicense> processTypeLicenses = new HashSet<ProcessTypeLicense>(0);
 
     public License() {
@@ -38,12 +41,13 @@ public class License  implements java.io.Serializable {
     public License(int id) {
         this.id = id;
     }
-    public License(int id, Date startDate, Date endDate, Integer requestCount, Set<ClientLicense> clientLicenses, Set<ProcessTypeLicense> processTypeLicenses) {
+    public License(int id, Client client, Date startDate, Date endDate, Integer currentRequestCount, Integer maximumRequestCount, Set<ProcessTypeLicense> processTypeLicenses) {
        this.id = id;
+       this.client = client;
        this.startDate = startDate;
        this.endDate = endDate;
-       this.requestCount = requestCount;
-       this.clientLicenses = clientLicenses;
+       this.currentRequestCount = currentRequestCount;
+       this.maximumRequestCount = maximumRequestCount;
        this.processTypeLicenses = processTypeLicenses;
     }
    
@@ -57,6 +61,16 @@ public class License  implements java.io.Serializable {
     
     public void setId(int id) {
         this.id = id;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="CLIENT")
+    public Client getClient() {
+        return this.client;
+    }
+    
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Temporal(TemporalType.DATE)
@@ -80,22 +94,23 @@ public class License  implements java.io.Serializable {
     }
 
     
-    @Column(name="REQUEST_COUNT")
-    public Integer getRequestCount() {
-        return this.requestCount;
+    @Column(name="CURRENT_REQUEST_COUNT")
+    public Integer getCurrentRequestCount() {
+        return this.currentRequestCount;
     }
     
-    public void setRequestCount(Integer requestCount) {
-        this.requestCount = requestCount;
+    public void setCurrentRequestCount(Integer currentRequestCount) {
+        this.currentRequestCount = currentRequestCount;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="license")
-    public Set<ClientLicense> getClientLicenses() {
-        return this.clientLicenses;
+    
+    @Column(name="MAXIMUM_REQUEST_COUNT")
+    public Integer getMaximumRequestCount() {
+        return this.maximumRequestCount;
     }
     
-    public void setClientLicenses(Set<ClientLicense> clientLicenses) {
-        this.clientLicenses = clientLicenses;
+    public void setMaximumRequestCount(Integer maximumRequestCount) {
+        this.maximumRequestCount = maximumRequestCount;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="license")

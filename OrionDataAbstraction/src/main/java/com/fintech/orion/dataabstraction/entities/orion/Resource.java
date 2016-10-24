@@ -1,7 +1,9 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 14, 2016 9:57:19 AM by Hibernate Tools 4.3.1
+// Generated Oct 21, 2016 11:43:31 AM by Hibernate Tools 4.3.1
 
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -28,6 +31,7 @@ public class Resource  implements java.io.Serializable {
      private ResourceType resourceType;
      private String location;
      private String resourceIdentificationCode;
+     private Set<ResourceMetadata> resourceMetadatas = new HashSet<ResourceMetadata>(0);
 
     public Resource() {
     }
@@ -39,12 +43,13 @@ public class Resource  implements java.io.Serializable {
         this.location = location;
         this.resourceIdentificationCode = resourceIdentificationCode;
     }
-    public Resource(Client client, Process process, ResourceType resourceType, String location, String resourceIdentificationCode) {
+    public Resource(Client client, Process process, ResourceType resourceType, String location, String resourceIdentificationCode, Set<ResourceMetadata> resourceMetadatas) {
        this.client = client;
        this.process = process;
        this.resourceType = resourceType;
        this.location = location;
        this.resourceIdentificationCode = resourceIdentificationCode;
+       this.resourceMetadatas = resourceMetadatas;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -107,6 +112,15 @@ public class Resource  implements java.io.Serializable {
     
     public void setResourceIdentificationCode(String resourceIdentificationCode) {
         this.resourceIdentificationCode = resourceIdentificationCode;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="resource")
+    public Set<ResourceMetadata> getResourceMetadatas() {
+        return this.resourceMetadatas;
+    }
+    
+    public void setResourceMetadatas(Set<ResourceMetadata> resourceMetadatas) {
+        this.resourceMetadatas = resourceMetadatas;
     }
 
 

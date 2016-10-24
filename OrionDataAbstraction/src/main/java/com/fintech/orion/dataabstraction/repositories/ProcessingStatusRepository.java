@@ -10,15 +10,13 @@ import java.util.List;
 
 public class ProcessingStatusRepository extends AbstractDAO<ProcessingStatus, Integer> implements ProcessingStatusRepositoryInterface {
 
-    public static final String STATUS = "status";
-
     protected ProcessingStatusRepository() {
         super(ProcessingStatus.class);
     }
 
     @Override
     public ProcessingStatus findByStatus(Status status) throws ItemNotFoundException {
-        List<ProcessingStatus> clients = findByCriteria(Restrictions.eq(STATUS, status.toString()));
+        List<ProcessingStatus> clients = findByCriteria(Restrictions.eq("status", status.toString()));
         if (clients != null && !clients.isEmpty()) {
             return clients.get(0);
         } else {

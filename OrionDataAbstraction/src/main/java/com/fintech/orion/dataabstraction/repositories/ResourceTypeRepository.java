@@ -11,15 +11,13 @@ import java.util.List;
 @Repository
 public class ResourceTypeRepository extends AbstractDAO<ResourceType, Integer> implements ResourceTypeRepositoryInterface {
 
-    public static final String TYPE = "type";
-
     protected ResourceTypeRepository() {
         super(ResourceType.class);
     }
 
     @Override
     public ResourceType findByType(String type) throws ItemNotFoundException {
-        List<ResourceType> resourceTypes = findByCriteria(Restrictions.eq(TYPE, type));
+        List<ResourceType> resourceTypes = findByCriteria(Restrictions.eq("type", type));
         if (resourceTypes != null && !resourceTypes.isEmpty()) {
             return resourceTypes.get(0);
         } else {

@@ -24,29 +24,28 @@ public class ProcessTypeService extends AbstractService<ProcessType, Integer> im
     @Autowired
     private ProcessTypeRepositoryInterface processTypeRepositoryInterface;
 
-
     @Transactional
     @Override
     public List<ProcessTypeDTO> getAllDTOs() {
-        return processTypeMapper.processTypesToProcessTypeDTOs(getAll());
+        return processTypeMapper.processTypesToProcessTypeDTOs(processTypeRepositoryInterface.getAll());
     }
 
     @Transactional
     @Override
     public ProcessTypeDTO findById(int id) throws ItemNotFoundException {
-        return processTypeMapper.processTypeToProcessTypeDTO(findById(new Integer(id)));
+        return processTypeMapper.processTypeToProcessTypeDTO(processTypeRepositoryInterface.findById(id));
     }
 
     @Transactional
     @Override
     public void saveOrUpdate(ProcessTypeDTO processTypeDTO) {
-        saveOrUpdate(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
+        processTypeRepositoryInterface.saveOrUpdate(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
     }
 
     @Transactional
     @Override
     public void delete(ProcessTypeDTO processTypeDTO) {
-        delete(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
+        processTypeRepositoryInterface.delete(processTypeMapper.processTypeDTOToProcessType(processTypeDTO));
     }
 
     @Transactional

@@ -20,10 +20,6 @@ public class ObjectCreator {
         return new Client();
     }
 
-    public static ClientLicense createClientLicenseObject() {
-        return new ClientLicense();
-    }
-
     public static License createLicenseObject() {
         return new License();
     }

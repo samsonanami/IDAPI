@@ -3,6 +3,7 @@ package com.fintech.orion.coreservices;
 import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.License;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.repositories.LicenseRepositoryInterface;
 import com.fintech.orion.dto.license.LicenseDTO;
 import com.fintech.orion.mapping.license.LicenseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,27 +21,30 @@ public class LicenseService extends AbstractService<License, Integer> implements
     @Autowired
     private LicenseMapper licenseMapper;
 
+    @Autowired
+    private LicenseRepositoryInterface licenseRepositoryInterface;
+
     @Transactional
     @Override
     public List<LicenseDTO> getAllDTOs() {
-        return licenseMapper.licensesToLicenseDTOs(getAll());
+        return licenseMapper.licensesToLicenseDTOs(licenseRepositoryInterface.getAll());
     }
 
     @Transactional
     @Override
     public LicenseDTO findById(int id) throws ItemNotFoundException {
-        return licenseMapper.licenseToLicenseDTO(findById(new Integer(id)));
+        return licenseMapper.licenseToLicenseDTO(licenseRepositoryInterface.findById(id));
     }
 
     @Transactional
     @Override
     public void saveOrUpdate(LicenseDTO licenseDTO) {
-        saveOrUpdate(licenseMapper.licenseDTOToLicense(licenseDTO));
+        licenseRepositoryInterface.saveOrUpdate(licenseMapper.licenseDTOToLicense(licenseDTO));
     }
 
     @Transactional
     @Override
     public void delete(LicenseDTO licenseDTO) {
-        delete(licenseMapper.licenseDTOToLicense(licenseDTO));
+        licenseRepositoryInterface.delete(licenseMapper.licenseDTOToLicense(licenseDTO));
     }
 }
