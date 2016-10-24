@@ -1,4 +1,4 @@
-package com.fintech.orion.hermesagentservices.transmission.response.handler;
+package com.fintech.orion.hermesagentservices.transmission.response.handler.license;
 
 import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.request.GenericRequest;

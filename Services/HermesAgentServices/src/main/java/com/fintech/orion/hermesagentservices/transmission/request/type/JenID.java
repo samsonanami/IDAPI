@@ -12,7 +12,7 @@ import com.fintech.orion.dto.request.GenericRequest;
 import com.fintech.orion.hermesagentservices.transmission.request.basetype.RequestCreatorInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.body.BodyServiceInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitterInterface;
-import com.fintech.orion.hermesagentservices.transmission.response.handler.LicenseHandlerInterface;
+import com.fintech.orion.hermesagentservices.transmission.response.handler.license.LicenseHandlerInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.handler.ResponseHandlerInterface;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;

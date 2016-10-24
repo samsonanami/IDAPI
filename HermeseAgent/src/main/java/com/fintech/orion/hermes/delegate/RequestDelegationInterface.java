@@ -6,6 +6,7 @@ import com.fintech.orion.hermesagentservices.transmission.request.type.RequestIn
 
 /**
  * Created by TharinduMP on 10/17/2016.
+ * RequestDelegationInterface
  */
 @FunctionalInterface
 public interface RequestDelegationInterface {

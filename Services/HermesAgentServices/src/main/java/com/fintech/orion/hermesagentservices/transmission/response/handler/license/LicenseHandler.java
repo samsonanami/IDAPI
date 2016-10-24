@@ -1,4 +1,4 @@
-package com.fintech.orion.hermesagentservices.transmission.response.handler;
+package com.fintech.orion.hermesagentservices.transmission.response.handler.license;
 
 import com.fintech.orion.coreservices.LicenseServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;

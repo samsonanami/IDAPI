@@ -1,7 +1,6 @@
 package com.fintech.orion.hermesagentservices.transmission.response.persistence;
 
 import com.fintech.orion.coreservices.ResponseServiceInterface;
-import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.response.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,11 +18,7 @@ public class ResponsePersister implements ResponsePersisterInterface {
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setRawJson(rawJson);
         responseDTO.setExtractedJson(extractedJson);
-
-        ProcessDTO processDTO = new ProcessDTO();
-        processDTO.setId(processId);
-
-        //TODO set process id
+        responseDTO.setProcessId(processId);
 
         //save response
         responseService.saveOrUpdate(responseDTO);

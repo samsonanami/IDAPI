@@ -1,4 +1,4 @@
-package com.fintech.orion.hermesagentservices.transmission.response.handler;
+package com.fintech.orion.hermesagentservices.transmission.response.handler.jenid;
 
 
 import com.fintech.orion.common.exceptions.response.ResponseHandlerException;
@@ -9,6 +9,7 @@ import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.response.ResponseDTO;
 import com.fintech.orion.hermesagentservices.transmission.payload.model.jenid.JenID;
 import com.fintech.orion.hermesagentservices.transmission.payload.model.jenidresultstring.JenIDResultString;
+import com.fintech.orion.hermesagentservices.transmission.response.handler.ResponseHandlerInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.mapper.GenericMapperInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.persistence.ResponsePersisterInterface;
 import com.mashape.unirest.http.HttpResponse;
