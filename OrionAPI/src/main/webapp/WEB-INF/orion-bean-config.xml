@@ -64,6 +64,9 @@
     <bean id="jobHandlerInterface" class="com.fintech.orion.messaging.job.JobHandler"></bean>
     <bean id="orionJobHandlerInterface" class="com.fintech.orion.handlers.OrionJobHandler"></bean>
     <bean id="messageHandlerInterface" class="com.fintech.orion.handlers.MessageHandler"></bean>
-    <bean id="validatorFactory" class="com.fintech.orion.dto.validator.ValidatorFactory"></bean>
+
+    <bean id="validatorFactory" class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
+        <property name="serviceLocatorInterface" value="com.fintech.orion.dto.validator.ValidatorFactoryInterface" />
+    </bean>
 
 </beans>
