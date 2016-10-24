@@ -11,15 +11,13 @@ import java.util.List;
 @Repository
 public class ProcessTypeRepository extends AbstractDAO<ProcessType, Integer> implements ProcessTypeRepositoryInterface {
 
-    public static final String PROCESS_TYPE = "type";
-
     protected ProcessTypeRepository() {
         super(ProcessType.class);
     }
 
     @Override
     public ProcessType findByType(String type) throws ItemNotFoundException {
-        List<ProcessType> processTypes = findByCriteria(Restrictions.eq(PROCESS_TYPE, type));
+        List<ProcessType> processTypes = findByCriteria(Restrictions.eq("type", type));
         if (processTypes != null && !processTypes.isEmpty()) {
             return processTypes.get(0);
         } else {

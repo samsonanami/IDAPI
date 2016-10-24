@@ -11,15 +11,13 @@ import java.util.List;
 @Repository
 public class ProcessingRequestRepository extends AbstractDAO<ProcessingRequest, Integer> implements ProcessingRequestRepositoryInterface {
 
-    public static final String PROCESSING_REQUEST_IDENTIFICATION_CODE = "processingRequestIdentificationCode";
-
     protected ProcessingRequestRepository() {
         super(ProcessingRequest.class);
     }
 
     @Override
     public ProcessingRequest findByIdIdentificationCode(String identificationCode) throws ItemNotFoundException {
-        List<ProcessingRequest> processingRequests = findByCriteria(Restrictions.eq(PROCESSING_REQUEST_IDENTIFICATION_CODE, identificationCode));
+        List<ProcessingRequest> processingRequests = findByCriteria(Restrictions.eq("processingRequestIdentificationCode", identificationCode));
         if (processingRequests != null && !processingRequests.isEmpty()) {
             return processingRequests.get(0);
         } else {

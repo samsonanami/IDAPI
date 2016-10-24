@@ -16,7 +16,8 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    private static String REALM = "ZONE_OAUTH_REALM";
+    @Autowired
+    private String realm;
 
     private static InMemoryTokenStore tokenStore = new InMemoryTokenStore();
 
@@ -49,7 +50,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer.realm(REALM + "/client");
+        oauthServer.realm(realm + "/client");
     }
 
 }

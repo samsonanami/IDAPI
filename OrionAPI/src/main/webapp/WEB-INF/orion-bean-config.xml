@@ -4,6 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="realm" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="ZONE_OAUTH_REALM"></constructor-arg>
+    </bean>
+
+    <bean id="resourceId" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="zone_rest_api"></constructor-arg>
+    </bean>
+
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
     <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
     <bean id="processingRequestServiceInterface" class="com.fintech.orion.coreservices.ProcessingRequestService"/>
@@ -33,7 +41,7 @@
     <bean id="fileSizeCheckerInterface" class="com.fintech.orion.helper.FileSizeChecker"></bean>
     <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator"></bean>
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler"></bean>
-    <bean id="clientValidatorInterface" class="com.fintech.orion.helper.ClientValidator"></bean>
+    <bean id="clientValidatorInterface" class="com.fintech.orion.validation.ClientValidator"></bean>
 
     <bean id="jobProducerInterface" class="com.fintech.orion.messaging.job.JobProducer">
         <constructor-arg name="queueName" value="MainQueue" />

@@ -4,7 +4,7 @@ import com.fintech.orion.common.exceptions.job.JobHandlerException;
 import com.fintech.orion.common.exceptions.job.JobProducerException;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.client.ClientDTO;
-import com.fintech.orion.helper.ClientValidator;
+import com.fintech.orion.validation.ClientValidator;
 import com.fintech.orion.messaging.job.JobProducerInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 

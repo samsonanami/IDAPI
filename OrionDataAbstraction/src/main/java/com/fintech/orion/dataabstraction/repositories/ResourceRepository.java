@@ -13,8 +13,6 @@ import java.util.List;
 @Repository
 public class ResourceRepository extends AbstractDAO<Resource, Integer> implements ResourceRepositoryInterface {
 
-    public static final String RESOURCE_IDENTIFICATION_CODE = "resourceIdentificationCode";
-
     protected ResourceRepository() {
         super(Resource.class);
     }
@@ -24,7 +22,7 @@ public class ResourceRepository extends AbstractDAO<Resource, Integer> implement
 
     @Override
     public Resource findByIdentificationCode(String resourceIdentificationCode) throws ItemNotFoundException {
-        List<Resource> resources = findByCriteria(Restrictions.eq(RESOURCE_IDENTIFICATION_CODE, resourceIdentificationCode));
+        List<Resource> resources = findByCriteria(Restrictions.eq("resourceIdentificationCode", resourceIdentificationCode));
         if (resources != null && !resources.isEmpty()) {
             return resources.get(0);
         } else {

@@ -1,5 +1,7 @@
 package com.fintech.orion.dto.license;
 
+import com.fintech.orion.dto.client.ClientDTO;
+
 import java.util.Date;
 
 /**
@@ -8,9 +10,12 @@ import java.util.Date;
 public class LicenseDTO {
 
     private int id;
+    private ClientDTO clientDTOt;
     private Date startDate;
     private Date endDate;
-    private Integer requestCount;
+    private Integer currentRequestCount;
+    private Integer maximumRequestCount;
+
 
     public int getId() {
         return id;
@@ -18,6 +23,14 @@ public class LicenseDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public ClientDTO getClientDTOt() {
+        return clientDTOt;
+    }
+
+    public void setClientDTOt(ClientDTO clientDTOt) {
+        this.clientDTOt = clientDTOt;
     }
 
     public Date getStartDate() {
@@ -36,11 +49,19 @@ public class LicenseDTO {
         this.endDate = endDate;
     }
 
-    public Integer getRequestCount() {
-        return requestCount;
+    public Integer getCurrentRequestCount() {
+        return currentRequestCount;
     }
 
-    public void setRequestCount(Integer requestCount) {
-        this.requestCount = requestCount;
+    public void setCurrentRequestCount(Integer currentRequestCount) {
+        this.currentRequestCount = currentRequestCount;
+    }
+
+    public Integer getMaximumRequestCount() {
+        return maximumRequestCount;
+    }
+
+    public void setMaximumRequestCount(Integer maximumRequestCount) {
+        this.maximumRequestCount = maximumRequestCount;
     }
 }
