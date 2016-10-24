@@ -3,7 +3,8 @@ package com.fintech.orion.dataabstraction.models;
 public enum Status {
     PROCESSING_COMPLETE("ProcessingComplete"),
     PROCESSING_PENDING("ProcessingPending"),
-    PROCESSING_REQUESTED("ProcessingRequested");
+    PROCESSING_REQUESTED("ProcessingRequested"),
+    PROCESSING_FAILED("ProcessingFailed");
 
     private String status;
 

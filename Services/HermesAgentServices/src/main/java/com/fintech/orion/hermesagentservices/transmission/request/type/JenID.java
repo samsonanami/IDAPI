@@ -1,8 +1,9 @@
 package com.fintech.orion.hermesagentservices.transmission.request.type;
 
-import com.fintech.orion.common.exceptions.BodyServiceException;
-import com.fintech.orion.common.exceptions.RequestException;
-import com.fintech.orion.common.exceptions.RequestSubmitterException;
+import com.fintech.orion.common.exceptions.*;
+import com.fintech.orion.coreservices.ProcessingStatusServiceInterface;
+import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.models.Status;
 import com.fintech.orion.dto.request.GenericRequest;
 import com.fintech.orion.hermesagentservices.transmission.request.basetype.RequestCreatorInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.body.BodyServiceInterface;
@@ -11,6 +12,7 @@ import com.fintech.orion.hermesagentservices.transmission.response.handler.Respo
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.request.BaseRequest;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,8 @@ import java.util.Map;
 @Scope("prototype")
 public class JenID extends AbstractRequest implements RequestInterface {
 
+    static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(JenID.class);
+
     @Autowired
     private BodyServiceInterface jenIdBody;
 
@@ -38,35 +42,40 @@ public class JenID extends AbstractRequest implements RequestInterface {
     @Autowired
     private ResponseHandlerInterface jenIdResponseHandler;
 
+    @Autowired
+    private ProcessingStatusServiceInterface processingStatusService;
+
     @Override
     public void process(GenericRequest genericRequest) throws RequestException {
 
         // initialize the resources and configurations
         super.process(genericRequest);
 
-        Map<String,Object> extras = new HashMap<>();
+        Map<String, Object> extras = new HashMap<>();
 
         try {
+            //start pessimistic. set status to failed.
+            processDTO.setProcessingStatusDTO(processingStatusService.findByStatus(Status.PROCESSING_FAILED));
+
             // create jen id body
-            extras.put("body",jenIdBody.createJSONBody(processConfigurationMap, resourceList, null));
+            extras.put("body", jenIdBody.createJSONBody(processConfigurationMap, resourceList, null));
 
             // create request
-            BaseRequest request = jenIdPostSyncRequest.createRequest(processConfigurationMap,resourceList,extras);
+            BaseRequest request = jenIdPostSyncRequest.createRequest(processConfigurationMap, resourceList, extras);
 
             // make jen id call
             HttpResponse<JsonNode> response = requestSubmitter.submitRequest(request);
 
-            // handle response
-            jenIdResponseHandler.handleResponse(response);
+            // handle response and status change to complete
+            this.processDTO = jenIdResponseHandler.handleResponse(response, processDTO);
 
-        } catch (RequestSubmitterException | BodyServiceException e) {
+        } catch (RequestSubmitterException | BodyServiceException | FailedRequestException | ItemNotFoundException | ResponseHandlerException e) {
+            LOGGER.error("JenID Request Failed. Status Set to failed", e);
             throw new RequestException(e);
+        } finally {
+            // save process with status
+            processService.saveOrUpdate(processDTO);
         }
-
-        // status update : call response handler
-
         // license update : will be done by the response handler
-
-
     }
 }

@@ -1,5 +1,6 @@
 package com.fintech.orion.hermesagentservices.transmission.response.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.annotation.ThreadSafe;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,10 @@ public class GenericMapper implements GenericMapperInterface {
     @Override
     public <T> T createMappedJsonObject(String textToMap, Class<T> mapperClass) throws IOException {
         return mapper.readValue(textToMap,mapperClass);
+    }
+
+    @Override
+    public String createJSONStringFromObject(Object o) throws JsonProcessingException {
+        return mapper.writeValueAsString(o);
     }
 }
