@@ -43,13 +43,13 @@ public class GenericMapMessageValidatorTest {
 
     @Test(expected = ValidatorException.class)
     public void shouldThrowExceptionWhenIdentificationIsNull() throws ValidatorException {
-        genericMapMessage.setClientId(425624);
+        genericMapMessage.setLicenseId(425624);
         genericMapMessageValidator.validate(genericMapMessage);
     }
 
     @Test
     public void shouldReturnResultWhenAllDetailsAreCorrect() throws ValidatorException {
-        genericMapMessage.setClientId(4243562);
+        genericMapMessage.setLicenseId(4243562);
         genericMapMessage.setIdentificationCode("567484568");
         ValidatorResult result = genericMapMessageValidator.validate(genericMapMessage);
         assertFalse("Has No Errors",result.hasErrors());

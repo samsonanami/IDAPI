@@ -15,7 +15,7 @@ public class GenericMapMessageValidator implements ValidatorInterface {
     public ValidatorResult validate(Object o) throws ValidatorException {
         if(o != null && o instanceof GenericMapMessage) {
             GenericMapMessage genericMapMessage = (GenericMapMessage) o;
-            CommonValidations.notNull(genericMapMessage.getClientId(),"clientId");
+            CommonValidations.notNull(genericMapMessage.getLicenseId(),"licenseId");
             CommonValidations.notBlank(genericMapMessage.getIdentificationCode(), "identificationCode");
         } else {
             throw new ValidatorException("Object is null or Object is not an instanceof GenericMapMessage");

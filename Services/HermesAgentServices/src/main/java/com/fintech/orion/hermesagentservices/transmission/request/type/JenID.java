@@ -8,6 +8,7 @@ import com.fintech.orion.dto.request.GenericRequest;
 import com.fintech.orion.hermesagentservices.transmission.request.basetype.RequestCreatorInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.body.BodyServiceInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitterInterface;
+import com.fintech.orion.hermesagentservices.transmission.response.handler.LicenseHandlerInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.handler.ResponseHandlerInterface;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -45,6 +46,9 @@ public class JenID extends AbstractRequest implements RequestInterface {
     @Autowired
     private ProcessingStatusServiceInterface processingStatusService;
 
+    @Autowired
+    private LicenseHandlerInterface licenseHandler;
+
     @Override
     public void process(GenericRequest genericRequest) throws RequestException {
 
@@ -75,7 +79,10 @@ public class JenID extends AbstractRequest implements RequestInterface {
         } finally {
             // save process with status
             processService.saveOrUpdate(processDTO);
+
+            //update license
+            licenseHandler.updateLicense(processDTO, genericRequest);
         }
-        // license update : will be done by the response handler
+
     }
 }
