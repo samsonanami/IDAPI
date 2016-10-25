@@ -38,7 +38,7 @@ public class RequestHandler implements RequestHandlerInterface {
             for (GenericRequest genericRequest : genericRequests) {
                 try {
                     // validate each genericRequest
-                    validatorFactory.getValidator("GenericRequestValidator").validate(genericRequest);
+                    validatorFactory.getValidator("genericRequestValidator").validate(genericRequest);
 
                     //get each genericRequests' a request
                     RequestInterface request = requestFactoryService.getRequest(String.valueOf(genericRequest.getProcessType()));

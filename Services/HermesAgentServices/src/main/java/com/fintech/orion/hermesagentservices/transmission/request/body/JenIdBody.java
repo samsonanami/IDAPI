@@ -34,7 +34,7 @@ public class JenIdBody implements BodyServiceInterface {
         try {
 
             //validate
-            validatorFactory.getValidator("JenIdConfigurationValidator").validate(configurations);
+            validatorFactory.getValidator("jenIdConfigurationValidator").validate(configurations);
 
             if (resourceList != null && resourceList.size() == 1) {
                 //create image object

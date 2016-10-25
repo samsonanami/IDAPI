@@ -33,10 +33,10 @@ public class RequestProcessor implements RequestProcessorInterface {
         try {
             LOGGER.trace("starting createGenericRequest");
             //validate genericMapMessage
-            validatorFactory.getValidator("GenericMapMessageValidator").validate(genericMapMessage);
+            validatorFactory.getValidator("genericMapMessageValidator").validate(genericMapMessage);
 
             //validate RequestProcessDTO
-            validatorFactory.getValidator("ProcessDTOValidator").validate(processDTO);
+            validatorFactory.getValidator("processDTOValidator").validate(processDTO);
 
             return genericRequestMapper.mapMessageAndRequestProcessToGenericRequest(processDTO, genericMapMessage);
         } finally {

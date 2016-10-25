@@ -5,11 +5,13 @@ import com.fintech.orion.dto.validator.validations.CommonValidations;
 import com.fintech.orion.dto.validator.ValidatorException;
 import com.fintech.orion.dto.validator.ValidatorInterface;
 import com.fintech.orion.dto.validator.ValidatorResult;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by TharinduMP on 10/12/2016.
  * GenericMapMessageValidator
  */
+@Component
 public class GenericMapMessageValidator implements ValidatorInterface {
     @Override
     public ValidatorResult validate(Object o) throws ValidatorException {

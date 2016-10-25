@@ -28,7 +28,7 @@ public class JenIdPostSyncRequest implements RequestCreatorInterface {
 
         try {
             //validations
-            validatorFactory.getValidator("JenIdConfigurationValidator").validate(configurations);
+            validatorFactory.getValidator("jenIdConfigurationValidator").validate(configurations);
 
             return Unirest.post(configurations.get("url"))
                     .header("Content-Type", configurations.get("header.contentType"))

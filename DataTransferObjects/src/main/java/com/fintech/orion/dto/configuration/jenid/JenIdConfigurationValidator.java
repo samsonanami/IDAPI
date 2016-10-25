@@ -5,6 +5,7 @@ import com.fintech.orion.dto.validator.ValidatorException;
 import com.fintech.orion.dto.validator.ValidatorInterface;
 import com.fintech.orion.dto.validator.ValidatorResult;
 import com.fintech.orion.dto.validator.validations.MapValidations;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import java.util.Map;
  * Created by TharinduMP on 10/19/2016.
  * JenIdConfigurationValidator
  */
+@Component
 public class JenIdConfigurationValidator extends CommonConfigurationMapValidator implements ValidatorInterface{
 
     @Override
