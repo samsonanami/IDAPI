@@ -1,6 +1,5 @@
 package com.fintech.orion.dto.process;
 
-import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
 import com.fintech.orion.dto.processtype.ProcessTypeDTO;
 import com.fintech.orion.dto.response.ResponseDTO;
@@ -14,7 +13,6 @@ public class ProcessDTO {
 
     private Integer id;
     private ProcessTypeDTO processTypeDTO;
-    private ProcessingRequestDTO processingRequestDTO;
     private ProcessingStatusDTO processingStatusDTO;
     private ResponseDTO responseDTO;
     private Date requestSentOn;
@@ -35,14 +33,6 @@ public class ProcessDTO {
 
     public void setProcessTypeDTO(ProcessTypeDTO processTypeDTO) {
         this.processTypeDTO = processTypeDTO;
-    }
-
-    public ProcessingRequestDTO getProcessingRequestDTO() {
-        return processingRequestDTO;
-    }
-
-    public void setProcessingRequestDTO(ProcessingRequestDTO processingRequestDTO) {
-        this.processingRequestDTO = processingRequestDTO;
     }
 
     public ProcessingStatusDTO getProcessingStatusDTO() {
