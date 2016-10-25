@@ -1,5 +1,6 @@
 package com.fintech.orion.hermesagentservices.transmission.response.persistence;
 
+import com.fintech.orion.common.exceptions.persistence.PersistenceException;
 import com.fintech.orion.dto.response.ResponseDTO;
 
 /**
@@ -8,5 +9,5 @@ import com.fintech.orion.dto.response.ResponseDTO;
  */
 @FunctionalInterface
 public interface ResponsePersisterInterface {
-    ResponseDTO save(String rawJson, String extractedJson, int processId);
+    ResponseDTO save(String rawJson, String extractedJson, int processId) throws PersistenceException;
 }

@@ -86,6 +86,7 @@
         <property name="corePoolSize" value="5" />
         <property name="maxPoolSize" value="10" />
         <property name="WaitForTasksToCompleteOnShutdown" value="true" />
+        <property name="awaitTerminationSeconds" value="30" />
     </bean>
 
     <!--TASK WORKER BEAN-->

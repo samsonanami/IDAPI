@@ -1,6 +1,7 @@
 package com.fintech.orion.hermesagentservices.transmission.response.handler.jenid;
 
 
+import com.fintech.orion.common.exceptions.persistence.PersistenceException;
 import com.fintech.orion.common.exceptions.response.ResponseHandlerException;
 import com.fintech.orion.coreservices.ProcessingStatusServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
@@ -74,6 +75,8 @@ public class JenIdResponseHandler implements ResponseHandlerInterface {
 
         } catch (ItemNotFoundException e) {
             LOGGER.error("Could not find ProcessingComplete Status in processing status table.");
+            throw new ResponseHandlerException(e);
+        } catch (PersistenceException e) {
             throw new ResponseHandlerException(e);
         }
         return processDTO;

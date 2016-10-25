@@ -5,14 +5,18 @@ import com.fintech.orion.hermes.configuration.AppConfigurationProviderInterface;
 import com.fintech.orion.hermes.configuration.AppStateProvider;
 import com.fintech.orion.hermes.configuration.AppStateProviderInterface;
 import com.fintech.orion.messaging.job.JobConsumerInterface;
+import com.mashape.unirest.http.Unirest;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Created by TharinduMP on 10/10/2016.
@@ -53,7 +57,7 @@ public class Service implements Daemon {
     }
 
     /**
-     *  Set Hermes Job Consumer
+     * Set Hermes Job Consumer
      */
     private static void setJobConsumer() {
         LOGGER.info("Setting Job Listener...");
@@ -88,6 +92,26 @@ public class Service implements Daemon {
     @Override
     public void destroy() {
         LOGGER.info("Hermes Agent Destroying Allocated System Resources...");
-        applicationContext.close();
+        try {
+            // shutdown all Unirest threads after completion
+            LOGGER.info("Shutting Down all Unirest Threads...");
+            Unirest.shutdown();
+            LOGGER.info("Unirest Threads Shutdown Complete.");
+
+            // shutdown concurrent workers after they are done without interrupting
+            LOGGER.info("Shutting Down Executor Service...");
+            ThreadPoolTaskExecutor taskExecutor = (ThreadPoolTaskExecutor) applicationContext.getBean("taskExecutor");
+            taskExecutor.shutdown();
+            LOGGER.info("Executor Service Shutdown Complete.");
+
+            LOGGER.info("Closing Application Context...");
+            applicationContext.close();
+            LOGGER.info("Application context Closed.");
+
+        } catch (IOException e) {
+            LOGGER.error("Exception in Resource Destroying at Agent shutdown.", e);
+        }
+
+
     }
 }

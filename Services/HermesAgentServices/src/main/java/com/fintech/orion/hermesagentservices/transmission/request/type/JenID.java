@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,8 +72,14 @@ public class JenID extends AbstractRequest implements RequestInterface {
             // create request
             BaseRequest request = jenIdPostSyncRequest.createRequest(processConfigurationMap, resourceList, extras);
 
+            //set request start time
+            processDTO.setRequestSentOn(new Date());
+
             // make jen id call
             HttpResponse<JsonNode> response = requestSubmitter.submitRequest(request);
+
+            //set response arrival time
+            processDTO.setResponseReceivedOn(new Date());
 
             // handle response and status change to complete
             this.processDTO = jenIdResponseHandler.handleResponse(response, processDTO);
