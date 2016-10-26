@@ -11,5 +11,5 @@ import com.mashape.unirest.request.BaseRequest;
  */
 @FunctionalInterface
 public interface RequestSubmitterInterface {
-    HttpResponse<JsonNode> submitRequest(BaseRequest baseRequest) throws FailedRequestException;
+    HttpResponse<String> submitRequest(BaseRequest baseRequest) throws FailedRequestException;
 }

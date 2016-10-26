@@ -38,7 +38,6 @@
 
     <bean id="processingRequestService" class="com.fintech.orion.coreservices.ProcessingRequestService" />
     <bean id="processingStatusService" class="com.fintech.orion.coreservices.ProcessingStatusService" />
-    <bean id="responseService" class="com.fintech.orion.coreservices.ResponseService" />
     <bean id="licenseService" class="com.fintech.orion.coreservices.LicenseService" />
     <bean id="processService" class="com.fintech.orion.coreservices.ProcessService" />
     <bean id="processConfigService" class="com.fintech.orion.coreservices.ProcessConfigService" />
@@ -59,13 +58,14 @@
 
     <bean id="requestDelegation" class="com.fintech.orion.hermes.delegate.RequestDelegation" />
     <bean id="licenseHandler" class="com.fintech.orion.hermesagentservices.transmission.response.handler.license.LicenseHandler" />
+    <bean id="processState" class="com.fintech.orion.hermesagentservices.state.process.ProcessState" />
 
     <!--REQUEST FACTORY BEANS-->
     <bean id="jenId" class="com.fintech.orion.hermesagentservices.transmission.request.type.JenID" scope="prototype" />
 
 
     <!-- ALIAS MATCHING PROCESS TYPE IN DATASOURCE-->
-    <alias name="jenId" alias="0" />
+    <alias name="jenId" alias="1" />
 
 
     <bean id="requestFactoryService" class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
@@ -101,7 +101,7 @@
     <bean id="jenIdResponseHandler" class="com.fintech.orion.hermesagentservices.transmission.response.handler.jenid.JenIdResponseHandler" />
 
     <bean id="genericMapper" class="com.fintech.orion.hermesagentservices.transmission.response.mapper.GenericMapper" />
-    <bean id="responsePersister" class="com.fintech.orion.hermesagentservices.transmission.response.persistence.ResponsePersister" />
+    <bean id="responsePersister" class="com.fintech.orion.hermesagentservices.transmission.response.persistence.ResponseDTOBuilder" />
 
 
     <!--JSON JACKSON MAPPER-->

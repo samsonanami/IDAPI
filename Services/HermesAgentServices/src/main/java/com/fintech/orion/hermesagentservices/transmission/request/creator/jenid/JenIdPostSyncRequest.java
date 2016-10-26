@@ -1,5 +1,7 @@
 package com.fintech.orion.hermesagentservices.transmission.request.creator.jenid;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.request.RequestSubmitterException;
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.validator.ValidatorException;
@@ -23,6 +25,9 @@ public class JenIdPostSyncRequest implements RequestCreatorInterface {
     @Autowired
     private ValidatorFactoryInterface validatorFactory;
 
+    @Autowired
+    private ObjectMapper mapper;
+
     @Override
     public BaseRequest createRequest(Map<String,String> configurations, List<ResourceDTO> resourceList, Map extras) throws RequestSubmitterException {
 
@@ -34,8 +39,8 @@ public class JenIdPostSyncRequest implements RequestCreatorInterface {
                     .header("Content-Type", configurations.get("header.contentType"))
                     .header("Authorization", configurations.get("header.authorization"))
                     .queryString("synchronous",configurations.get("queryString.synchronous"))
-                    .body(extras.get("body"));
-        } catch (ValidatorException e) {
+                    .body(mapper.writeValueAsString(extras.get("body")));
+        } catch (ValidatorException | JsonProcessingException e) {
             throw new RequestSubmitterException(e);
         }
     }

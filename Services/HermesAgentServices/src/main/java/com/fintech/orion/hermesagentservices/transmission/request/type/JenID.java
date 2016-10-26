@@ -9,6 +9,7 @@ import com.fintech.orion.coreservices.ProcessingStatusServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.Status;
 import com.fintech.orion.dto.request.GenericRequest;
+import com.fintech.orion.hermesagentservices.state.process.ProcessStateInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.basetype.RequestCreatorInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.body.BodyServiceInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitterInterface;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -54,6 +56,9 @@ public class JenID extends AbstractRequest implements RequestInterface {
     @Autowired
     private LicenseHandlerInterface licenseHandler;
 
+    @Autowired
+    private ProcessStateInterface processState;
+
     @Override
     public void process(GenericRequest genericRequest) throws RequestException {
 
@@ -76,7 +81,7 @@ public class JenID extends AbstractRequest implements RequestInterface {
             processDTO.setRequestSentOn(new Date());
 
             // make jen id call
-            HttpResponse<JsonNode> response = requestSubmitter.submitRequest(request);
+            HttpResponse<String> response = requestSubmitter.submitRequest(request);
 
             //set response arrival time
             processDTO.setResponseReceivedOn(new Date());
@@ -89,7 +94,7 @@ public class JenID extends AbstractRequest implements RequestInterface {
             throw new RequestException(e);
         } finally {
             // save process with status
-            processService.saveOrUpdate(processDTO);
+            processState.updateFinalProcessState(processDTO);
 
             //update license
             licenseHandler.updateLicense(processDTO, genericRequest);

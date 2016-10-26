@@ -1,8 +1,5 @@
 package com.fintech.orion.coreservices;
 
-import com.fintech.orion.common.AbstractService;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessConfig;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessConfigId;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ProcessConfigRepositoryInterface;
 import com.fintech.orion.dto.processconfig.ProcessConfigDTO;
@@ -17,31 +14,13 @@ import java.util.List;
  * ProcessConfig entity service class
  */
 @Service
-public class ProcessConfigService extends AbstractService<ProcessConfig, ProcessConfigId> implements ProcessConfigServiceInterface {
+public class ProcessConfigService implements ProcessConfigServiceInterface {
 
     @Autowired
     private ProcessConfigRepositoryInterface processConfigRepositoryInterface;
 
     @Autowired
     private ProcessConfigMapper processConfigMapper;
-
-    @Transactional
-    @Override
-    public List<ProcessConfigDTO> getAllDTOs() {
-        return processConfigMapper.processConfigsToProcessConfigDTOs(processConfigRepositoryInterface.getAll());
-    }
-
-    @Transactional
-    @Override
-    public void saveOrUpdate(ProcessConfigDTO processConfigDTO) throws ItemNotFoundException {
-        processConfigRepositoryInterface.saveOrUpdate(processConfigMapper.processConfigDTOToProcessConfig(processConfigDTO));
-    }
-
-    @Transactional
-    @Override
-    public void delete(ProcessConfigDTO processConfigDTO) throws ItemNotFoundException {
-        processConfigRepositoryInterface.delete(processConfigMapper.processConfigDTOToProcessConfig(processConfigDTO));
-    }
 
     @Transactional
     @Override

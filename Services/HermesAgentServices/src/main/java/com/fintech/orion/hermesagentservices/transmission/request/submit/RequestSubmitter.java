@@ -17,9 +17,9 @@ public class RequestSubmitter implements RequestSubmitterInterface {
     static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(RequestSubmitter.class);
 
     @Override
-    public HttpResponse<JsonNode> submitRequest(BaseRequest baseRequest) throws FailedRequestException {
+    public HttpResponse<String> submitRequest(BaseRequest baseRequest) throws FailedRequestException {
         try {
-            return baseRequest.asJson();
+            return baseRequest.asString();
         }
         catch (UnirestException e) {
             LOGGER.error("Failed Request : {}", baseRequest.getHttpRequest().toString());

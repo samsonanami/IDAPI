@@ -8,17 +8,17 @@ import org.junit.Test;
  * Created by TharinduMP on 10/24/2016.
  * ResponsePersisterTest
  */
-public class ResponsePersisterTest {
+public class ResponseDTOBuilderTest {
 
-    private ResponsePersister responsePersister;
+    private ResponseDTOBuilder responseDTOBuilder;
 
     @Before
     public void setUp() throws Exception {
-        responsePersister = new ResponsePersister();
+        responseDTOBuilder = new ResponseDTOBuilder();
     }
 
     @Test(expected = PersistenceException.class)
     public void shouldReturnExceptionGivenNullArguments() throws PersistenceException {
-        responsePersister.save(null,null,0);
+        responseDTOBuilder.build(null,null,0);
     }
 }

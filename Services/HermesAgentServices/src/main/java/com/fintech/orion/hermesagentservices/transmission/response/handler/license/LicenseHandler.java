@@ -21,19 +21,27 @@ public class LicenseHandler implements LicenseHandlerInterface {
 
     @Override
     public void updateLicense(ProcessDTO processDTO, GenericRequest genericRequest) {
+
         //for the moment, update license on all instances
         try {
             //get license
-            LicenseDTO licenseDTO = licenseService.findById(genericRequest.getLicenseId().intValue());
+            LicenseDTO licenseDTO = licenseService.findById(genericRequest.getLicenseId());
+
+            //get license count
+            Integer currentLicCount = licenseDTO.getCurrentRequestCount();
 
             //update count
-            licenseDTO.setCurrentRequestCount(licenseDTO.getCurrentRequestCount() + 1);
+            if(currentLicCount != null) {
+                licenseDTO.setCurrentRequestCount(licenseDTO.getCurrentRequestCount() + 1);
+            } else {
+                licenseDTO.setCurrentRequestCount(1);
+            }
 
             //save
-            licenseService.saveOrUpdate(licenseDTO);
+            licenseService.updateLicenseWithDTO(licenseDTO);
 
         } catch (ItemNotFoundException e) {
-            LOGGER.error("Provided License Id was not found", e);
+            LOGGER.error("Provided License Id was not found. License count is not updated.", e);
         }
 
     }

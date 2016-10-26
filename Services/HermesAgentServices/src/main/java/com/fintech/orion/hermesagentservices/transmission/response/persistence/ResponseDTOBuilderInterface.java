@@ -8,6 +8,6 @@ import com.fintech.orion.dto.response.ResponseDTO;
  * ResponsePersisterInterface
  */
 @FunctionalInterface
-public interface ResponsePersisterInterface {
-    ResponseDTO save(String rawJson, String extractedJson, int processId) throws PersistenceException;
+public interface ResponseDTOBuilderInterface {
+    ResponseDTO build(String rawJson, String extractedJson, int processId) throws PersistenceException;
 }

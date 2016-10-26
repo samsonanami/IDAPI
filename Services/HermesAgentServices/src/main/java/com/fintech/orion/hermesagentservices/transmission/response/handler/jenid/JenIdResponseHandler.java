@@ -12,9 +12,8 @@ import com.fintech.orion.hermesagentservices.transmission.payload.model.jenid.Je
 import com.fintech.orion.hermesagentservices.transmission.payload.model.jenidresultstring.JenIDResultString;
 import com.fintech.orion.hermesagentservices.transmission.response.handler.ResponseHandlerInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.mapper.GenericMapperInterface;
-import com.fintech.orion.hermesagentservices.transmission.response.persistence.ResponsePersisterInterface;
+import com.fintech.orion.hermesagentservices.transmission.response.persistence.ResponseDTOBuilderInterface;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,32 +36,32 @@ public class JenIdResponseHandler implements ResponseHandlerInterface {
     private ProcessingStatusServiceInterface processingStatusService;
 
     @Autowired
-    private ResponsePersisterInterface responsePersister;
+    private ResponseDTOBuilderInterface responsePersister;
 
     @Override
-    public ProcessDTO handleResponse(HttpResponse<JsonNode> response, ProcessDTO processDTO) throws ResponseHandlerException {
+    public ProcessDTO handleResponse(HttpResponse<String> response, ProcessDTO processDTO) throws ResponseHandlerException {
 
         try {
             if(response.getStatus() == 200) {
 
                 //get response mapped to jen id model
-                String rawJson = response.getBody().toString();
+                String rawJson = response.getBody();
                 JenID jenID = genericMapper.createMappedJsonObject(rawJson, JenID.class);
                 JenIDResultString jenIDResultString = genericMapper.createMappedJsonObject(jenID.getOutputData().getResultString(), JenIDResultString.class);
 
                 //convert to saving format
                 String extractedJson = genericMapper.createJSONStringFromObject(jenIDResultString);
 
-                //save response
-                ResponseDTO responseDTO = responsePersister.save(rawJson, extractedJson, processDTO.getId());
+                //add response to process object
+                ResponseDTO responseDTO = responsePersister.build(rawJson, extractedJson, processDTO.getId());
                 processDTO.setResponseDTO(responseDTO);
 
                 //set status to complete
                 processDTO.setProcessingStatusDTO(processingStatusService.findByStatus(Status.PROCESSING_COMPLETE));
 
             } else {
-                // save the error into the process response
-                ResponseDTO responseDTO = responsePersister.save(response.getBody().toString(), "", processDTO.getId());
+                // add the error into the process object
+                ResponseDTO responseDTO = responsePersister.build(response.getBody(), "", processDTO.getId());
                 processDTO.setResponseDTO(responseDTO);
 
                 // log it on logger

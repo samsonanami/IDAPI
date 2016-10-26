@@ -38,7 +38,7 @@ public class RequestWorker implements Callable {
 
             //validations
             CommonValidations.notNull(request,"request object");
-            validatorFactory.getValidator("genericRequestValidator").validate(validatorFactory);
+            validatorFactory.getValidator("genericRequestValidator").validate(genericRequest);
 
             this.request = request;
             this.genericRequest = genericRequest;

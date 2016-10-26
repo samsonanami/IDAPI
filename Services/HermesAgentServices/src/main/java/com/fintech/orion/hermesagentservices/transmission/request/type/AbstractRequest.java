@@ -20,8 +20,9 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractRequest {
 
+
     @Autowired
-    protected ProcessServiceInterface processService;
+    private ProcessServiceInterface processService;
 
     @Autowired
     private ProcessConfigServiceInterface processConfigService;

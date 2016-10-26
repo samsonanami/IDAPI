@@ -11,5 +11,5 @@ import com.mashape.unirest.http.JsonNode;
  */
 @FunctionalInterface
 public interface ResponseHandlerInterface {
-    ProcessDTO handleResponse(HttpResponse<JsonNode> response, ProcessDTO processDTO) throws ResponseHandlerException;
+    ProcessDTO handleResponse(HttpResponse<String> response, ProcessDTO processDTO) throws ResponseHandlerException;
 }

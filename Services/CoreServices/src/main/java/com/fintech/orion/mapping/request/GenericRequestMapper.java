@@ -17,7 +17,8 @@ import org.mapstruct.Mappings;
 public interface GenericRequestMapper {
     @Mappings({
             @Mapping(source = "processDTO.processTypeDTO.id", target = "processType"),
-            @Mapping(source = "processDTO.id", target = "processId")
+            @Mapping(source = "processDTO.id", target = "processId"),
+            @Mapping(source = "processDTO.processIdentificationCode", target = "identificationCode")
     })
     GenericRequest mapMessageAndRequestProcessToGenericRequest(ProcessDTO processDTO, GenericMapMessage genericMapMessage);
 }

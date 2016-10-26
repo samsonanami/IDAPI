@@ -1,6 +1,5 @@
 package com.fintech.orion.coreservices;
 
-import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
@@ -27,7 +26,7 @@ import java.util.List;
  * Process entity service class
  */
 @Service
-public class ProcessService extends AbstractService<Process, Integer> implements ProcessServiceInterface {
+public class ProcessService implements ProcessServiceInterface {
 
     @Autowired
     private ProcessRepositoryInterface processRepositoryInterface;
@@ -49,26 +48,10 @@ public class ProcessService extends AbstractService<Process, Integer> implements
 
     @Transactional
     @Override
-    public List<ProcessDTO> getAllDTOs() {
-        return processMapper.processesToProcessDTOs(getAll());
-    }
-
-    @Transactional
-    @Override
-    public ProcessDTO findById(int id) throws ItemNotFoundException {
-        return processMapper.processToProcessDTO(processRepositoryInterface.findById(id));
-    }
-
-    @Transactional
-    @Override
-    public void saveOrUpdate(ProcessDTO processDTO) {
-        processRepositoryInterface.saveOrUpdate(processMapper.processDTOToProcess(processDTO));
-    }
-
-    @Transactional
-    @Override
-    public void delete(ProcessDTO processDTO) {
-        processRepositoryInterface.delete(processMapper.processDTOToProcess(processDTO));
+    public void update(ProcessDTO processDTO) throws ItemNotFoundException {
+        Process process = processRepositoryInterface.findById(processDTO.getId());
+        processMapper.updateProcess(processDTO,process);
+        processRepositoryInterface.saveOrUpdate(process);
     }
 
     @Transactional

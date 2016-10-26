@@ -33,7 +33,7 @@ public class JenIdBody implements BodyServiceInterface {
     public JenID createJSONBody(Map<String, String> configurations, List<ResourceDTO> resourceList, Map extras) throws BodyServiceException {
         try {
 
-            //validate
+            //validate configurations
             validatorFactory.getValidator("jenIdConfigurationValidator").validate(configurations);
 
             if (resourceList != null && resourceList.size() == 1) {

@@ -1,6 +1,5 @@
 package com.fintech.orion.coreservices;
 
-import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
@@ -13,13 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * Resource entity service class
  */
 @Service
-public class ResourceService extends AbstractService<Resource, Integer> implements ResourceServiceInterface {
+public class ResourceService implements ResourceServiceInterface {
 
     @Autowired
     private ResourceRepositoryInterface resourceRepositoryInterface;
@@ -38,32 +35,8 @@ public class ResourceService extends AbstractService<Resource, Integer> implemen
 
     @Transactional
     @Override
-    public List<ResourceDTO> getAllDTOs() {
-        return resourceMapper.resourcesToResourceDTOs(resourceRepositoryInterface.getAll());
-    }
-
-    @Transactional
-    @Override
-    public ResourceDTO findById(int id) throws ItemNotFoundException {
-        return resourceMapper.resourceToResourceDTO(resourceRepositoryInterface.findById(id));
-    }
-
-    @Transactional
-    @Override
-    public void saveOrUpdate(ResourceDTO resourceDTO) {
-        resourceRepositoryInterface.saveOrUpdate(resourceMapper.resourceDTOToResource(resourceDTO));
-    }
-
-    @Transactional
-    @Override
     public void saveOrUpdate(String resourceId, int processId) throws ItemNotFoundException {
         resourceRepositoryInterface.saveOrUpdate(resourceId, processId);
-    }
-
-    @Transactional
-    @Override
-    public void delete(ResourceDTO resourceDTO) {
-        resourceRepositoryInterface.delete(resourceMapper.resourceDTOToResource(resourceDTO));
     }
 
     @Transactional

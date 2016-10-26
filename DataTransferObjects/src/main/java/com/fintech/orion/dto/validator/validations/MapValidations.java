@@ -14,22 +14,22 @@ public class MapValidations {
 
     public static void doesContainKeyWithNonEmptyValue(final Map<String, String> map, String key) throws ValidatorException {
         //check null
-        CommonValidations.notNull(map,map.getClass().getSimpleName());
+        CommonValidations.notNull(map,"Provided Map Object");
 
         //check if key is null
-        CommonValidations.notBlank(key,key.getClass().getSimpleName());
+        CommonValidations.notBlank(key,"Provided Key " + key + " for Map Object");
 
         //check key contains value
         doesContainKey(map,key);
 
         //check if empty
-        CommonValidations.notBlank(map.get(key),"key value");
+        CommonValidations.notBlank(map.get(key),"key : " + key + " value");
     }
 
 
     private static void doesContainKey(final Map<String, String> map, String key) throws ValidatorException {
        if(!map.containsKey(key)) {
-           throw new ValidatorException("");
+           throw new ValidatorException("The map does not contain the key : " + key);
        }
     }
 }

@@ -16,6 +16,4 @@ public interface ProcessTypeMapper {
 
     ProcessType processTypeDTOToProcessType(ProcessTypeDTO processTypeDTO);
 
-    List<ProcessTypeDTO> processTypesToProcessTypeDTOs(List<ProcessType> processTypes);
-
 }
