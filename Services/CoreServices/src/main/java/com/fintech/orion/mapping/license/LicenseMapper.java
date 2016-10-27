@@ -3,6 +3,7 @@ package com.fintech.orion.mapping.license;
 import com.fintech.orion.dataabstraction.entities.orion.License;
 import com.fintech.orion.dto.license.LicenseDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -14,8 +15,6 @@ public interface LicenseMapper {
 
     LicenseDTO licenseToLicenseDTO(License license);
 
-    License licenseDTOToLicense(LicenseDTO licenseDTO);
-
-    List<LicenseDTO> licensesToLicenseDTOs(List<License> licenses);
+    void updateLicenseWithLicenseDTO(@MappingTarget License license, LicenseDTO licenseDTO);
 
 }

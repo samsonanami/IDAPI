@@ -7,8 +7,9 @@ import javax.jms.Message;
 
 /**
  * Created by TharinduMP on 10/11/2016.
- *
+ * MessageProcessorInterface
  */
+@FunctionalInterface
 public interface MessageProcessorInterface {
     GenericMapMessage processMessage(Message message) throws MessageProcessorException;
 }

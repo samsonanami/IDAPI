@@ -9,22 +9,19 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class CommonValidations {
 
-    private static final String DEFAULT_IS_NULL_EX_MESSAGE = " is null";
-    private static final String DEFAULT_IS_EMPTY_EX_MESSAGE = " is empty";
-
     private CommonValidations() {
     }
 
     public static void notNull(final Object object, final String objectName) throws ValidatorException {
         if (object == null) {
-            throw new ValidatorException(objectName + DEFAULT_IS_NULL_EX_MESSAGE);
+            throw new ValidatorException(objectName + ValidationMessages.DEFAULT_IS_NULL_EX_MESSAGE);
         }
     }
 
     public static void notBlank(final String chars, final String objectName) throws ValidatorException {
         notNull(chars,objectName);
         if(StringUtils.isBlank(chars)) {
-            throw new ValidatorException(objectName + DEFAULT_IS_EMPTY_EX_MESSAGE);
+            throw new ValidatorException(objectName + ValidationMessages.DEFAULT_IS_EMPTY_EX_MESSAGE);
         }
     }
 }

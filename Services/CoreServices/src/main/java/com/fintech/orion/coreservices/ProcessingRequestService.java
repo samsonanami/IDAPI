@@ -1,6 +1,5 @@
 package com.fintech.orion.coreservices;
 
-import com.fintech.orion.common.AbstractService;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
@@ -14,13 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * ProcessingRequest entity service class
  */
 @Service
-public class ProcessingRequestService extends AbstractService<ProcessingRequest, Integer> implements ProcessingRequestServiceInterface {
+public class ProcessingRequestService implements ProcessingRequestServiceInterface {
 
     @Autowired
     private ProcessingRequestRepositoryInterface processingRequestRepositoryInterface;
@@ -30,30 +27,6 @@ public class ProcessingRequestService extends AbstractService<ProcessingRequest,
 
     @Autowired
     private ClientMapper clientMapper;
-
-    @Transactional
-    @Override
-    public List<ProcessingRequestDTO> getAllDTOs() {
-        return processingRequestMapper.processingRequestsToProcessingRequestDTOs(processingRequestRepositoryInterface.getAll());
-    }
-
-    @Transactional
-    @Override
-    public ProcessingRequestDTO findById(int id) throws ItemNotFoundException {
-        return processingRequestMapper.processingRequestToProcessingRequestDTO(processingRequestRepositoryInterface.findById(id));
-    }
-
-    @Transactional
-    @Override
-    public void saveOrUpdate(ProcessingRequestDTO processingRequestDTO) {
-        processingRequestRepositoryInterface.saveOrUpdate(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
-    }
-
-    @Transactional
-    @Override
-    public void delete(ProcessingRequestDTO processingRequestDTO) {
-        processingRequestRepositoryInterface.delete(processingRequestMapper.processingRequestDTOToProcessingRequest(processingRequestDTO));
-    }
 
     @Transactional
     @Override

@@ -29,16 +29,16 @@ public class RequestProcessor implements RequestProcessorInterface {
     private GenericRequestMapper genericRequestMapper;
 
     @Override
-    public GenericRequest createGenericRequest(GenericMapMessage genericMapMessage, ProcessDTO process) throws ValidatorException {
+    public GenericRequest createGenericRequest(GenericMapMessage genericMapMessage, ProcessDTO processDTO) throws ValidatorException {
         try {
             LOGGER.trace("starting createGenericRequest");
             //validate genericMapMessage
-            validatorFactory.getValidator(genericMapMessage).validate(genericMapMessage);
+            validatorFactory.getValidator("genericMapMessageValidator").validate(genericMapMessage);
 
             //validate RequestProcessDTO
-            validatorFactory.getValidator(process).validate(process);
+            validatorFactory.getValidator("processDTOValidator").validate(processDTO);
 
-            return genericRequestMapper.mapMessageAndRequestProcessToGenericRequest(process, genericMapMessage);
+            return genericRequestMapper.mapMessageAndRequestProcessToGenericRequest(processDTO, genericMapMessage);
         } finally {
             LOGGER.trace("createGenericRequest completed");
         }

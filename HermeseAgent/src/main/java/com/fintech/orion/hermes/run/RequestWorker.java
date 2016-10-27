@@ -1,5 +1,6 @@
 package com.fintech.orion.hermes.run;
 
+import com.fintech.orion.common.exceptions.request.RequestException;
 import com.fintech.orion.common.exceptions.RequestWorkerException;
 import com.fintech.orion.dto.request.GenericRequest;
 import com.fintech.orion.dto.validator.ValidatorException;
@@ -37,7 +38,7 @@ public class RequestWorker implements Callable {
 
             //validations
             CommonValidations.notNull(request,"request object");
-            validatorFactory.getValidator(genericRequest).validate(validatorFactory);
+            validatorFactory.getValidator("genericRequestValidator").validate(genericRequest);
 
             this.request = request;
             this.genericRequest = genericRequest;
@@ -52,7 +53,12 @@ public class RequestWorker implements Callable {
     public Object call() throws Exception {
         if (initialized) {
             LOGGER.debug("worker processing started.");
-            request.process(genericRequest);
+            try {
+                request.process(genericRequest);
+            } catch (RequestException e) {
+                LOGGER.error("Request Exception", e);
+                throw new RequestWorkerException(e);
+            }
             return null;
         } else {
             LOGGER.error("Worker is not Initialized. Make sure the worker is initialized before calling.");

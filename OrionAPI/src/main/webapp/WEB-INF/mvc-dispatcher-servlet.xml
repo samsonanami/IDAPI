@@ -9,7 +9,7 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
 
     <context:component-scan
-            base-package="com.fintech.orion.dataabstraction.entities.common com.fintech.orion.mapping com.fintech.orion.coreservices com.fintech.orion "/>
+            base-package="com.fintech.orion.dto com.fintech.orion.dataabstraction.entities.common com.fintech.orion.mapping com.fintech.orion.coreservices com.fintech.orion "/>
 
     <mvc:annotation-driven/>
 

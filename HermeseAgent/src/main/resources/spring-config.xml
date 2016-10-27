@@ -6,7 +6,7 @@
 
     <!--SPRING CONFIGURATIONS-->
     <context:annotation-config />
-    <context:component-scan base-package="com.fintech.orion.mapping.*" />
+    <context:component-scan base-package="com.fintech.orion.mapping.* com.fintech.orion.dto.*" />
 
     <!--OTHER IMPORTS-->
     <import resource="spring-datasource.xml" />

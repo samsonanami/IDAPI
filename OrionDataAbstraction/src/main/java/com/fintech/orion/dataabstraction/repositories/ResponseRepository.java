@@ -11,4 +11,9 @@ public class ResponseRepository extends AbstractDAO<Response, Integer> implement
         super(Response.class);
     }
 
+    @Override
+    public void saveResponse(Response response) {
+        getCurrentSession().save(response);
+    }
+
 }

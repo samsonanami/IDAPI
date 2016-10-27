@@ -7,7 +7,7 @@ package com.fintech.orion.dto.messaging;
 public class GenericMapMessage {
 
     private String identificationCode;
-    private Integer clientId;
+    private Integer licenseId;
 
     public String getIdentificationCode() {
         return identificationCode;
@@ -17,11 +17,11 @@ public class GenericMapMessage {
         this.identificationCode = identificationCode;
     }
 
-    public Integer getClientId() {
-        return clientId;
+    public Integer getLicenseId() {
+        return licenseId;
     }
 
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
+    public void setLicenseId(Integer licenseId) {
+        this.licenseId = licenseId;
     }
 }

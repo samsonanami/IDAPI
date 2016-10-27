@@ -17,6 +17,4 @@ public interface ProcessingRequestMapper {
 
     ProcessingRequest processingRequestDTOToProcessingRequest(ProcessingRequestDTO processingRequestDTO);
 
-    List<ProcessingRequestDTO> processingRequestsToProcessingRequestDTOs(List<ProcessingRequest> processingRequests);
-
 }

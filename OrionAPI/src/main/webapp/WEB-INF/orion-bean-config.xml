@@ -5,7 +5,7 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="realm" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="ZONE_OAUTH_REALM"></constructor-arg>
+        <constructor-arg type="java.lang.String" value="ZONE_OAUTH_REALM" />
     </bean>
 
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
@@ -16,7 +16,6 @@
     <bean id="processTypeServiceInterface" class="com.fintech.orion.coreservices.ProcessTypeService"/>
     <bean id="resourceServiceInterface" class="com.fintech.orion.coreservices.ResourceService"/>
     <bean id="resourceTypeServiceInterface" class="com.fintech.orion.coreservices.ResourceTypeService"/>
-    <bean id="responseServiceInterface" class="com.fintech.orion.coreservices.ResponseService"/>
     <bean id="processingStatusServiceInterface" class="com.fintech.orion.coreservices.ProcessingStatusService"/>
     <bean id="processConfigServiceInterface" class="com.fintech.orion.coreservices.ProcessConfigService"/>
 
@@ -32,12 +31,12 @@
     <bean id="processingStatusRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingStatusRepository"/>
     <bean id="processConfigRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessConfigRepository"/>
 
-    <bean id="fileExtensionValidatorInterface" class="com.fintech.orion.helper.FileExtensionValidator"></bean>
-    <bean id="fileUploadHandlerInterface" class="com.fintech.orion.helper.FileUploadHandler"></bean>
-    <bean id="fileSizeCheckerInterface" class="com.fintech.orion.helper.FileSizeChecker"></bean>
-    <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator"></bean>
-    <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler"></bean>
-    <bean id="clientValidatorInterface" class="com.fintech.orion.validation.ClientValidator"></bean>
+    <bean id="fileExtensionValidatorInterface" class="com.fintech.orion.helper.FileExtensionValidator" />
+    <bean id="fileUploadHandlerInterface" class="com.fintech.orion.helper.FileUploadHandler" />
+    <bean id="fileSizeCheckerInterface" class="com.fintech.orion.helper.FileSizeChecker" />
+    <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator" />
+    <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler" />
+    <bean id="clientValidatorInterface" class="com.fintech.orion.validation.ClientValidator" />
 
     <bean id="jobProducerInterface" class="com.fintech.orion.messaging.job.JobProducer">
         <constructor-arg name="queueName" value="MainQueue" />
@@ -57,9 +56,12 @@
 
     <bean id="destinationHandler" class="com.fintech.orion.messaging.connection.DestinationHandler" />
 
-    <bean id="jobHandlerInterface" class="com.fintech.orion.messaging.job.JobHandler"></bean>
-    <bean id="orionJobHandlerInterface" class="com.fintech.orion.handlers.OrionJobHandler"></bean>
-    <bean id="messageHandlerInterface" class="com.fintech.orion.handlers.MessageHandler"></bean>
-    <bean id="validatorFactory" class="com.fintech.orion.dto.validator.ValidatorFactory"></bean>
+    <bean id="jobHandlerInterface" class="com.fintech.orion.messaging.job.JobHandler" />
+    <bean id="orionJobHandlerInterface" class="com.fintech.orion.handlers.OrionJobHandler" />
+    <bean id="messageHandlerInterface" class="com.fintech.orion.handlers.MessageHandler" />
+
+    <bean id="validatorFactory" class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
+        <property name="serviceLocatorInterface" value="com.fintech.orion.dto.validator.ValidatorFactoryInterface" />
+    </bean>
 
 </beans>

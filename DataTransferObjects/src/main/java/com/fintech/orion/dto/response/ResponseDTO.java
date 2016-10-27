@@ -1,25 +1,20 @@
 package com.fintech.orion.dto.response;
 
-import com.fintech.orion.dto.process.ProcessDTO;
-
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Created by ChathurangaRW on 10/17/2016.
  */
 public class ResponseDTO {
-    private int id;
+
+    private Integer processId;
     private String rawJson;
     private String extractedJson;
-    private Set<ProcessDTO> processDTOs = new HashSet<ProcessDTO>(0);
 
-    public int getId() {
-        return id;
+    public Integer getProcessId() {
+        return processId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setProcessId(Integer processId) {
+        this.processId = processId;
     }
 
     public String getRawJson() {
@@ -36,13 +31,5 @@ public class ResponseDTO {
 
     public void setExtractedJson(String extractedJson) {
         this.extractedJson = extractedJson;
-    }
-
-    public Set<ProcessDTO> getProcessDTOs() {
-        return processDTOs;
-    }
-
-    public void setProcessDTOs(Set<ProcessDTO> processDTOs) {
-        this.processDTOs = processDTOs;
     }
 }

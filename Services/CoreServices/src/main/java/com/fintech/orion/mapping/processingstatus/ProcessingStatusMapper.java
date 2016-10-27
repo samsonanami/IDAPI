@@ -16,6 +16,4 @@ public interface ProcessingStatusMapper {
 
     ProcessingStatus processingStatusDTOToProcessingStatus(ProcessingStatusDTO processingStatusDTO);
 
-    List<ProcessingStatusDTO> processingStatussToProcessingStatusDTOs(List<ProcessingStatus> processingStatuses);
-
 }

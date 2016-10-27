@@ -7,16 +7,14 @@ import com.fintech.orion.mapping.processtype.ProcessTypeMapper;
 import com.fintech.orion.mapping.response.ResponseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
-
-import java.util.List;
 
 /**
  * Process entity mappings
  */
 @Mapper(uses = {ProcessTypeMapper.class,
-        ProcessingStatusMapper.class,
-        ResponseMapper.class}, componentModel = "spring")
+        ProcessingStatusMapper.class, ResponseMapper.class}, componentModel = "spring")
 public interface ProcessMapper {
 
     @Mappings({
@@ -33,5 +31,10 @@ public interface ProcessMapper {
     })
     Process processDTOToProcess(ProcessDTO processDTO);
 
-    List<ProcessDTO> processesToProcessDTOs(List<Process> processes);
+    @Mappings({
+            @Mapping(target = "processingStatus", source = "processingStatusDTO"),
+            @Mapping(target = "processIdentificationCode", ignore = true),
+            @Mapping(target = "response", source = "responseDTO")
+    })
+    void updateProcess(ProcessDTO processDTO, @MappingTarget Process process);
 }

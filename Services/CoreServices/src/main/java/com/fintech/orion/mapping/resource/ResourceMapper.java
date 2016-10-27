@@ -22,15 +22,8 @@ public interface ResourceMapper {
             @Mapping(target = "processDTO", source = "process"),
             @Mapping(target = "resourceTypeDTO", source = "resourceType")
     })
-    ResourceDTO resourceToResourceDTO(Resource Resource);
+    ResourceDTO resourceToResourceDTO(Resource resource);
 
-    @Mappings({
-            @Mapping(target = "client", source = "clientDTO"),
-            @Mapping(target = "process", source = "processDTO"),
-            @Mapping(target = "resourceType", source = "resourceTypeDTO")
-    })
-    Resource resourceDTOToResource(ResourceDTO ResourceDTO);
-
-    List<ResourceDTO> resourcesToResourceDTOs(List<Resource> Resources);
+    List<ResourceDTO> resourcesToResourceDTOs(List<Resource> resource);
     
 }

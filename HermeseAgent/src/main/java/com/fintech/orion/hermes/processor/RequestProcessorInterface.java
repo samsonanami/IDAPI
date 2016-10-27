@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by TharinduMP on 10/18/2016.
+ * RequestProcessorInterface
  */
 public interface RequestProcessorInterface {
     GenericRequest createGenericRequest(GenericMapMessage genericMapMessage, ProcessDTO process) throws ValidatorException;
