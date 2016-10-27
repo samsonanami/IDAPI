@@ -3,7 +3,6 @@ package com.fintech.orion.messaging.job;
 import com.fintech.orion.common.exceptions.job.JobHandlerException;
 import com.fintech.orion.dto.messaging.GenericMapMessage;
 import com.fintech.orion.dto.validator.ValidatorException;
-import com.fintech.orion.dto.validator.ValidatorFactory;
 import com.fintech.orion.dto.validator.ValidatorFactoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 

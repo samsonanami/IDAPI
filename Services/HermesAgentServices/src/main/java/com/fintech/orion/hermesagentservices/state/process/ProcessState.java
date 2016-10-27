@@ -23,6 +23,8 @@ public class ProcessState implements ProcessStateInterface {
             processService.update(processDTO);
         } catch (ItemNotFoundException e) {
             LOGGER.error("Process Id was not found in database to update final state of the Process.", e);
+        } catch (Exception e) {
+            LOGGER.error("Updating Process Failed", e);
         }
     }
 }

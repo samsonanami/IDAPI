@@ -10,6 +10,7 @@ import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.response.ResponseDTO;
 import com.fintech.orion.hermesagentservices.transmission.payload.model.jenid.JenID;
 import com.fintech.orion.hermesagentservices.transmission.payload.model.jenidresultstring.JenIDResultString;
+import com.fintech.orion.hermesagentservices.transmission.payload.processor.ProcessorInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.handler.ResponseHandlerInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.mapper.GenericMapperInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.persistence.ResponseDTOBuilderInterface;
@@ -36,24 +37,22 @@ public class JenIdResponseHandler implements ResponseHandlerInterface {
     private ProcessingStatusServiceInterface processingStatusService;
 
     @Autowired
-    private ResponseDTOBuilderInterface responsePersister;
+    private ResponseDTOBuilderInterface responseDTOBuilder;
+
+    @Autowired
+    private ProcessorInterface jenIdProcessor;
 
     @Override
     public ProcessDTO handleResponse(HttpResponse<String> response, ProcessDTO processDTO) throws ResponseHandlerException {
 
         try {
-            if(response.getStatus() == 200) {
+            if(response.getStatus() == 201) {
 
-                //get response mapped to jen id model
                 String rawJson = response.getBody();
-                JenID jenID = genericMapper.createMappedJsonObject(rawJson, JenID.class);
-                JenIDResultString jenIDResultString = genericMapper.createMappedJsonObject(jenID.getOutputData().getResultString(), JenIDResultString.class);
-
-                //convert to saving format
-                String extractedJson = genericMapper.createJSONStringFromObject(jenIDResultString);
+                String extractedJson = jenIdProcessor.unmarshall(response.getBody());
 
                 //add response to process object
-                ResponseDTO responseDTO = responsePersister.build(rawJson, extractedJson, processDTO.getId());
+                ResponseDTO responseDTO = responseDTOBuilder.build(rawJson, extractedJson, processDTO.getId());
                 processDTO.setResponseDTO(responseDTO);
 
                 //set status to complete
@@ -61,7 +60,7 @@ public class JenIdResponseHandler implements ResponseHandlerInterface {
 
             } else {
                 // add the error into the process object
-                ResponseDTO responseDTO = responsePersister.build(response.getBody(), "", processDTO.getId());
+                ResponseDTO responseDTO = responseDTOBuilder.build(response.getBody(), "", processDTO.getId());
                 processDTO.setResponseDTO(responseDTO);
 
                 // log it on logger
@@ -71,7 +70,6 @@ public class JenIdResponseHandler implements ResponseHandlerInterface {
         } catch (IOException e) {
             LOGGER.error("Jen ID Response parsing failed.");
             throw new ResponseHandlerException(e);
-
         } catch (ItemNotFoundException e) {
             LOGGER.error("Could not find ProcessingComplete Status in processing status table.");
             throw new ResponseHandlerException(e);

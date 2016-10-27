@@ -14,6 +14,8 @@ public abstract class AbstractImageBodyCreator {
         image.setMmWidth(0);
         image.setPixelHeight(0);
         image.setPixelWidth(0);
+        image.setCropped(0);
+        image.setSize(0);
         return image;
     }
 }

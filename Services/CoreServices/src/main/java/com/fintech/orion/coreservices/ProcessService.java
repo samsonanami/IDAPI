@@ -1,10 +1,12 @@
 package com.fintech.orion.coreservices;
 
 import com.fintech.orion.dataabstraction.entities.orion.Process;
+import com.fintech.orion.dataabstraction.entities.orion.Response;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateTimestamp;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
+import com.fintech.orion.dataabstraction.repositories.ResponseRepositoryInterface;
 import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
@@ -15,6 +17,7 @@ import com.fintech.orion.mapping.processingrequest.ProcessingRequestMapper;
 import com.fintech.orion.mapping.processingstatus.ProcessingStatusMapper;
 import com.fintech.orion.mapping.processtype.ProcessTypeMapper;
 import com.fintech.orion.mapping.resource.ResourceMapper;
+import com.fintech.orion.mapping.response.ResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,9 @@ public class ProcessService implements ProcessServiceInterface {
     private ProcessRepositoryInterface processRepositoryInterface;
 
     @Autowired
+    private ResponseRepositoryInterface responseRepositoryInterface;
+
+    @Autowired
     private ProcessMapper processMapper;
 
     @Autowired
@@ -46,11 +52,17 @@ public class ProcessService implements ProcessServiceInterface {
     @Autowired
     private ResourceMapper resourceMapper;
 
+    @Autowired
+    private ResponseMapper responseMapper;
+
     @Transactional
     @Override
     public void update(ProcessDTO processDTO) throws ItemNotFoundException {
         Process process = processRepositoryInterface.findById(processDTO.getId());
         processMapper.updateProcess(processDTO,process);
+        Response response = responseMapper.responseDTOToResponse(processDTO.getResponseDTO());
+        response.setProcess(process);
+        responseRepositoryInterface.saveResponse(response);
         processRepositoryInterface.saveOrUpdate(process);
     }
 

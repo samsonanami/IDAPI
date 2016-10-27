@@ -23,7 +23,7 @@ public class Base64Service implements Base64ServiceInterface {
             } catch (IOException e) {
                 throw new Base64ServiceException(e);
             }
-            return java.util.Base64.getUrlEncoder().encodeToString(bytes);
+            return java.util.Base64.getEncoder().encodeToString(bytes);
         } else {
             throw new Base64ServiceException("InputStream is null");
         }

@@ -25,22 +25,20 @@ public class JenIdPostSyncRequest implements RequestCreatorInterface {
     @Autowired
     private ValidatorFactoryInterface validatorFactory;
 
-    @Autowired
-    private ObjectMapper mapper;
-
     @Override
     public BaseRequest createRequest(Map<String,String> configurations, List<ResourceDTO> resourceList, Map extras) throws RequestSubmitterException {
 
         try {
             //validations
             validatorFactory.getValidator("jenIdConfigurationValidator").validate(configurations);
+            String body = (String) extras.get("body");
 
             return Unirest.post(configurations.get("url"))
                     .header("Content-Type", configurations.get("header.contentType"))
                     .header("Authorization", configurations.get("header.authorization"))
                     .queryString("synchronous",configurations.get("queryString.synchronous"))
-                    .body(mapper.writeValueAsString(extras.get("body")));
-        } catch (ValidatorException | JsonProcessingException e) {
+                    .body(body);
+        } catch (ValidatorException e) {
             throw new RequestSubmitterException(e);
         }
     }

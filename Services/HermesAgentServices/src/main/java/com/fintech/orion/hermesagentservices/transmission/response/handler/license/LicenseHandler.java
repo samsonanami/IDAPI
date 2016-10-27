@@ -42,6 +42,8 @@ public class LicenseHandler implements LicenseHandlerInterface {
 
         } catch (ItemNotFoundException e) {
             LOGGER.error("Provided License Id was not found. License count is not updated.", e);
+        } catch (Exception e) {
+            LOGGER.error("Updating License Count Failed", e);
         }
 
     }

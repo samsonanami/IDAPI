@@ -58,6 +58,12 @@
 
     <bean id="requestDelegation" class="com.fintech.orion.hermes.delegate.RequestDelegation" />
     <bean id="licenseHandler" class="com.fintech.orion.hermesagentservices.transmission.response.handler.license.LicenseHandler" />
+
+    <!--RESOURCES DIRECTORY PATH TO GET RESOURCES-->
+    <bean id="resourcesDir" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="C:\\"/>
+    </bean>
+
     <bean id="processState" class="com.fintech.orion.hermesagentservices.state.process.ProcessState" />
 
     <!--REQUEST FACTORY BEANS-->
@@ -101,10 +107,12 @@
     <bean id="jenIdResponseHandler" class="com.fintech.orion.hermesagentservices.transmission.response.handler.jenid.JenIdResponseHandler" />
 
     <bean id="genericMapper" class="com.fintech.orion.hermesagentservices.transmission.response.mapper.GenericMapper" />
-    <bean id="responsePersister" class="com.fintech.orion.hermesagentservices.transmission.response.persistence.ResponseDTOBuilder" />
+    <bean id="responseDTOBuilder" class="com.fintech.orion.hermesagentservices.transmission.response.persistence.ResponseDTOBuilder" />
+    <bean id="jenIdProcessor" class="com.fintech.orion.hermesagentservices.transmission.payload.processor.jenid.Processor" />
 
 
     <!--JSON JACKSON MAPPER-->
-    <bean id="mapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+    <bean id="mapperProvider" class="com.fintech.orion.hermesagentservices.transmission.payload.provider.MapperProvider" />
+    <bean id="mapper" class="com.fasterxml.jackson.databind.ObjectMapper" scope="prototype" />
 
 </beans>

@@ -5,10 +5,7 @@ import com.fintech.orion.common.exceptions.request.body.ImageBodyCreatorExceptio
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.validator.ValidatorException;
 import com.fintech.orion.dto.validator.ValidatorFactoryInterface;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.jenid.Image;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.jenid.InputData;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.jenid.InputImage;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.jenid.JenID;
+import com.fintech.orion.hermesagentservices.transmission.payload.model.jenid.*;
 import com.fintech.orion.hermesagentservices.transmission.request.body.jenid.image.ImageBodyCreatorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,15 +40,21 @@ public class JenIdBody implements BodyServiceInterface {
                 //create input image list
                 List<InputImage> inputImages = new ArrayList<>();
 
+                MetaData metaData = new MetaData();
+                metaData.setDescription("IDAPI");
+
                 //create input image
                 InputImage inputImage = new InputImage();
                 inputImage.setImage(image);
+                inputImage.setInputImageType(configurations.get("body.inputImages.type"));
+                inputImage.setMetaData(metaData);
 
                 inputImages.add(inputImage);
 
                 //create input data object
                 InputData inputData = new InputData();
                 inputData.setInputImages(inputImages);
+                inputData.setDescription(configurations.get("body.description"));
 
                 //add client id
                 inputData.setClientID(configurations.get("body.clientID"));

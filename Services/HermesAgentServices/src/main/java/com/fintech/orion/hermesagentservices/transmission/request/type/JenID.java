@@ -1,22 +1,17 @@
 package com.fintech.orion.hermesagentservices.transmission.request.type;
 
-import com.fintech.orion.common.exceptions.request.BodyServiceException;
-import com.fintech.orion.common.exceptions.request.FailedRequestException;
 import com.fintech.orion.common.exceptions.request.RequestException;
-import com.fintech.orion.common.exceptions.request.RequestSubmitterException;
-import com.fintech.orion.common.exceptions.response.ResponseHandlerException;
 import com.fintech.orion.coreservices.ProcessingStatusServiceInterface;
-import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.Status;
 import com.fintech.orion.dto.request.GenericRequest;
 import com.fintech.orion.hermesagentservices.state.process.ProcessStateInterface;
+import com.fintech.orion.hermesagentservices.transmission.payload.processor.ProcessorInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.basetype.RequestCreatorInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.body.BodyServiceInterface;
 import com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitterInterface;
-import com.fintech.orion.hermesagentservices.transmission.response.handler.license.LicenseHandlerInterface;
 import com.fintech.orion.hermesagentservices.transmission.response.handler.ResponseHandlerInterface;
+import com.fintech.orion.hermesagentservices.transmission.response.handler.license.LicenseHandlerInterface;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.request.BaseRequest;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +54,10 @@ public class JenID extends AbstractRequest implements RequestInterface {
     @Autowired
     private ProcessStateInterface processState;
 
+    @Autowired
+    private ProcessorInterface jenIdProcessor;
+
+    @Transactional
     @Override
     public void process(GenericRequest genericRequest) throws RequestException {
 
@@ -72,7 +71,8 @@ public class JenID extends AbstractRequest implements RequestInterface {
             processDTO.setProcessingStatusDTO(processingStatusService.findByStatus(Status.PROCESSING_FAILED));
 
             // create jen id body
-            extras.put("body", jenIdBody.createJSONBody(processConfigurationMap, resourceList, null));
+            Object o = jenIdBody.createJSONBody(processConfigurationMap, resourceList, null);
+            extras.put("body", jenIdProcessor.marshall(o));
 
             // create request
             BaseRequest request = jenIdPostSyncRequest.createRequest(processConfigurationMap, resourceList, extras);
@@ -89,7 +89,7 @@ public class JenID extends AbstractRequest implements RequestInterface {
             // handle response and status change to complete
             this.processDTO = jenIdResponseHandler.handleResponse(response, processDTO);
 
-        } catch (RequestSubmitterException | BodyServiceException | FailedRequestException | ItemNotFoundException | ResponseHandlerException e) {
+        } catch (Exception e) {
             LOGGER.error("JenID Request Failed. Status Set to failed", e);
             throw new RequestException(e);
         } finally {

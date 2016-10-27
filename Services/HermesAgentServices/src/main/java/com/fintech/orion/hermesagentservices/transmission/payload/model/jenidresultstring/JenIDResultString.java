@@ -5,13 +5,13 @@ package com.fintech.orion.hermesagentservices.transmission.payload.model.jenidre
  */
 public class JenIDResultString {
 
-    private Body body;
+    private DocumentResult documentresult;
 
-    public Body getBody() {
-        return body;
+    public DocumentResult getDocumentresult() {
+        return documentresult;
     }
 
-    public void setBody(Body body) {
-        this.body = body;
+    public void setDocumentresult(DocumentResult documentresult) {
+        this.documentresult = documentresult;
     }
 }
