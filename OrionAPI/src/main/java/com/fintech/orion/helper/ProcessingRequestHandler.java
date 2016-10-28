@@ -65,7 +65,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
             ProcessTypeDTO processTypeDTO = processTypeServiceInterface.findByType(v.getVerificationProcessType());
             ProcessDTO processDTO = processServiceInterface.save(processTypeDTO, processingRequestDTO, processingStatusDTO);
             for (com.fintech.orion.dataabstraction.models.verificationprocess.Resource r : v.getResources()) {
-                resourceServiceInterface.saveOrUpdate(r.getResourceId(), processDTO.getId());
+                resourceServiceInterface.update(r.getResourceId(), processDTO.getId(), r.getResourceName());
             }
         }
         return processingRequestDTO.getProcessingRequestIdentificationCode();

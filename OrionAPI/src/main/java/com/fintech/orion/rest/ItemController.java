@@ -1,19 +1,26 @@
 package com.fintech.orion.rest;
 
+import com.fintech.orion.common.exceptions.DestinationProviderException;
 import com.fintech.orion.common.exceptions.FileValidatorException;
+import com.fintech.orion.common.exceptions.PersistenceException;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.helper.GenerateUUID;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.validation.file.ValidatorStatus;
 import com.fintech.orion.handlers.OrionJobHandlerInterface;
-import com.fintech.orion.helper.*;
-import com.fintech.orion.dataabstraction.helper.GenerateUUID;
+import com.fintech.orion.helper.ErrorHandler;
+import com.fintech.orion.helper.JsonValidatorInterface;
+import com.fintech.orion.helper.ProcessingRequestHandlerInterface;
+import com.fintech.orion.io.PersistenceInterface;
+import com.fintech.orion.io.destination.DestinationProviderInterface;
 import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.model.ResponseMessage;
 import com.fintech.orion.model.VerificationResponseMessage;
 import com.fintech.orion.validation.ClientValidatorInterface;
 import com.fintech.orion.validation.file.FileValidatorInterface;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +42,13 @@ public class ItemController {
     private static final String TAG = "ItemController: ";
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
 
+    public static final String SERVER_ERROR = "Server Error";
+
     @Autowired
     private String jsonNotInCorrectFormatMessage;
 
     @Autowired
     private ResourceServiceInterface resourceServiceInterface;
-
-    @Autowired
-    private FileUploadHandlerInterface fileUploadHandlerInterface;
 
     @Autowired
     private JsonValidatorInterface jsonValidatorInterface;
@@ -59,6 +65,12 @@ public class ItemController {
     @Autowired
     private FileValidatorInterface fileValidator;
 
+    @Autowired
+    private PersistenceInterface localFilePersistence;
+
+    @Autowired
+    private DestinationProviderInterface genericDestinationProvider;
+
     @RequestMapping(value = "v1/content/{contentType}", method = RequestMethod.POST)
     @ResponseBody
     public Object uploadContent(@PathVariable String contentType,
@@ -68,31 +80,22 @@ public class ItemController {
         try {
             clientValidatorInterface.checkClientValidity(accessToken);
 
-
             // content type validation must be implemented
 
 
             // file validation
             ValidatorStatus validatorStatus = fileValidator.validateFile(multiPart);
 
-            if(!validatorStatus.isPassed()) {
+            if (!validatorStatus.isPassed()) {
                 return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, validatorStatus.getMessage(), response);
             }
 
-
-            ResourceDTO resourceDTO;
-            String fileName = multiPart.getOriginalFilename();
-            String extension = fileName.split("\\.")[1];
+            String extension = FilenameUtils.getExtension(multiPart.getOriginalFilename());
             String uuidNumber = GenerateUUID.uuidNumber();
             String newFilename = uuidNumber + "." + extension;
 
-            boolean isUploaded = fileUploadHandlerInterface.upload(multiPart, newFilename);
-
-            if(isUploaded) {
-                resourceDTO = resourceServiceInterface.save(newFilename, uuidNumber, contentType, accessToken);
-            } else {
-                return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server Error", response);
-            }
+            localFilePersistence.persistTo(multiPart, genericDestinationProvider.provide(newFilename));
+            ResourceDTO resourceDTO = resourceServiceInterface.save(newFilename, uuidNumber, contentType, accessToken);
 
             ContentUploadResourceResult result = new ContentUploadResourceResult();
             result.setResourceReferenceCode(resourceDTO.getResourceIdentificationCode());
@@ -103,13 +106,19 @@ public class ItemController {
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
         } catch (FileValidatorException e) {
             LOGGER.error("provided multipart file was null", e);
-            return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Server Error", response);
+            return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, SERVER_ERROR, response);
+        } catch (PersistenceException e) {
+            LOGGER.error("persisting the file failed", e);
+            return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, SERVER_ERROR, response);
+        } catch (DestinationProviderException e) {
+            LOGGER.error("destination filename was null", e);
+            return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, SERVER_ERROR, response);
         }
     }
 
     @RequestMapping(value = "v1/verification", method = RequestMethod.POST)
     @ResponseBody
-    public Object verification(@RequestParam(name = "integration_request", required = false) boolean integrationRequest,
+    public Object verification(@RequestParam(name = "integration_request", defaultValue = "false" ,required = false) boolean integrationRequest,
                                HttpServletResponse response,
                                @RequestParam("access_token") String accessToken,
                                @RequestBody ProcessingRequest data) {
@@ -122,7 +131,9 @@ public class ItemController {
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(accessToken, data.getVerificationProcesses());
 
-            orionJobHandlerInterface.sendProcess(accessToken, processingRequestId);
+            if(!integrationRequest) {
+                orionJobHandlerInterface.sendProcess(accessToken, processingRequestId);
+            }
 
             VerificationResponseMessage result = new VerificationResponseMessage();
             result.setProcessingRequestId(processingRequestId);

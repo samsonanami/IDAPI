@@ -32,13 +32,13 @@
     <bean id="processConfigRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessConfigRepository"/>
 
     <bean id="fileExtensionValidatorInterface" class="com.fintech.orion.helper.FileExtensionValidator" />
-    <bean id="fileUploadHandlerInterface" class="com.fintech.orion.helper.FileUploadHandler" />
-    <bean id="fileSizeCheckerInterface" class="com.fintech.orion.helper.FileSizeChecker" />
     <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator" />
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler" />
     <bean id="clientValidatorInterface" class="com.fintech.orion.validation.ClientValidator" />
 
     <bean id="fileValidator" class="com.fintech.orion.validation.file.FileValidator" />
+    <bean id="localFilePersistence" class="com.fintech.orion.io.file.LocalFilePersistence" />
+    <bean id="genericDestinationProvider" class="com.fintech.orion.io.destination.generic.GenericDestinationProvider" />
 
     <bean id="jobProducerInterface" class="com.fintech.orion.messaging.job.JobProducer">
         <constructor-arg name="queueName" value="MainQueue" />

@@ -29,6 +29,7 @@ public class Resource  implements java.io.Serializable {
      private Client client;
      private Process process;
      private ResourceType resourceType;
+     private String resourceName;
      private String location;
      private String resourceIdentificationCode;
      private Set<ResourceMetadata> resourceMetadatas = new HashSet<ResourceMetadata>(0);
@@ -94,7 +95,15 @@ public class Resource  implements java.io.Serializable {
         this.resourceType = resourceType;
     }
 
-    
+    @Column(name="RESOURCE_NAME", nullable=true)
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
+
     @Column(name="LOCATION", nullable=false, length=128)
     public String getLocation() {
         return this.location;

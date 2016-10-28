@@ -13,6 +13,8 @@ import java.util.Map;
 /**
  * Created by TharinduMP on 10/27/2016.
  * FileValidator
+ * Refactor for (Phase 2): this classes should be broken by responsibilities and should take
+ * content type as a variable of change
  */
 public class FileValidator implements FileValidatorInterface {
 
