@@ -2,8 +2,6 @@ package com.fintech.orion.hermes.provider;
 
 import com.fintech.orion.common.exceptions.ProcessProviderException;
 import com.fintech.orion.coreservices.ProcessingRequestServiceInterface;
-import com.fintech.orion.dataabstraction.entities.orion.Process;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.process.ProcessDTO;
 import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
@@ -15,11 +13,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**

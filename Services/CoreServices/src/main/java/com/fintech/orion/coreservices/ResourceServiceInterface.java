@@ -8,7 +8,7 @@ import com.fintech.orion.dto.resource.ResourceDTO;
  */
 public interface ResourceServiceInterface {
 
-    void saveOrUpdate(String resourceId, int processId) throws ItemNotFoundException;
+    void update(String resourceId, int processId, String resourceName) throws ItemNotFoundException;
 
     ResourceDTO save(String newFilename, String uuidNumber, String contentType, String accessToken) throws ItemNotFoundException;
 

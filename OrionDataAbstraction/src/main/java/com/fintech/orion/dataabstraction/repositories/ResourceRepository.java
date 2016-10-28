@@ -31,10 +31,11 @@ public class ResourceRepository extends AbstractDAO<Resource, Integer> implement
     }
 
     @Override
-    public void saveOrUpdate(String resourceId, int processId) throws ItemNotFoundException {
+    public void update(String resourceId, int processId, String resourceName) throws ItemNotFoundException {
         Resource resource = findByIdentificationCode(resourceId);
         Process process = processRepositoryInterface.findById(processId);
         resource.setProcess(process);
+        resource.setResourceName(resourceName);
         saveOrUpdate(resource);
     }
 }

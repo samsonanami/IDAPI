@@ -47,7 +47,7 @@
     </bean>
 
     <bean id="workingDir" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="//opt//orion//data"/>
+        <constructor-arg type="java.lang.String" value="E:\\"/>
     </bean>
 
     <bean id="inspectionImageUrl" class="java.lang.String">

@@ -35,8 +35,8 @@ public class ResourceService implements ResourceServiceInterface {
 
     @Transactional
     @Override
-    public void saveOrUpdate(String resourceId, int processId) throws ItemNotFoundException {
-        resourceRepositoryInterface.saveOrUpdate(resourceId, processId);
+    public void update(String resourceId, int processId, String resourceName) throws ItemNotFoundException {
+        resourceRepositoryInterface.update(resourceId, processId, resourceName);
     }
 
     @Transactional

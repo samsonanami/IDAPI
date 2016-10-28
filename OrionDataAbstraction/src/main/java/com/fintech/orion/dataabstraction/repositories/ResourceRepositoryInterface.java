@@ -8,5 +8,5 @@ public interface ResourceRepositoryInterface extends DAOInterface<Resource, Inte
 
     Resource findByIdentificationCode(String resourceIdentificationCode) throws ItemNotFoundException;
 
-    void saveOrUpdate(String resourceId, int processId) throws ItemNotFoundException;
+    void update(String resourceId, int processId, String resourceName) throws ItemNotFoundException;
 }
