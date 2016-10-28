@@ -29,24 +29,17 @@ public class FileUploadHandler implements FileUploadHandlerInterface {
         try {
             File file = new File(filename);
             multipartFile.transferTo(file);
+            SFileTransfer sFileTransfer = new SFileTransfer(configuration);
 
-            if(fileSizeCheckerInterface.checkSize(multipartFile)) {
-
-                SFileTransfer sFileTransfer = new SFileTransfer(configuration);
-
-                LOGGER.info("Uploading File");
-
-                if (sFileTransfer.transferFile(file.getPath(), workingDir)) {
-                    LOGGER.info("Uploading File Complete");
-                    return true;
-                } else {
-                    LOGGER.info("Uploading File Failed");
-                    return false;
-                }
+            LOGGER.info("Uploading File");
+            if (sFileTransfer.transferFile(file.getPath(), workingDir)) {
+                LOGGER.info("Uploading File Complete");
+                return true;
             } else {
-                LOGGER.info(maximumFileSizeMessage);
+                LOGGER.info("Uploading File Failed");
                 return false;
             }
+
         } catch (IOException e) {
             LOGGER.error("File Not Found" + e);
             return false;

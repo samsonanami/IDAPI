@@ -1,9 +1,11 @@
 package com.fintech.orion.rest;
 
+import com.fintech.orion.common.exceptions.FileValidatorException;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.dto.resource.ResourceDTO;
+import com.fintech.orion.dto.validation.file.ValidatorStatus;
 import com.fintech.orion.handlers.OrionJobHandlerInterface;
 import com.fintech.orion.helper.*;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
@@ -11,6 +13,7 @@ import com.fintech.orion.model.ContentUploadResourceResult;
 import com.fintech.orion.model.ResponseMessage;
 import com.fintech.orion.model.VerificationResponseMessage;
 import com.fintech.orion.validation.ClientValidatorInterface;
+import com.fintech.orion.validation.file.FileValidatorInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +36,10 @@ public class ItemController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemController.class);
 
     @Autowired
-    private String fileNotInCorrectFormatMessage;
-
-    @Autowired
-    private String maximumFileSizeMessage;
-
-    @Autowired
     private String jsonNotInCorrectFormatMessage;
 
     @Autowired
     private ResourceServiceInterface resourceServiceInterface;
-
-    @Autowired
-    private FileExtensionValidatorInterface fileExtensionValidatorInterface;
 
     @Autowired
     private FileUploadHandlerInterface fileUploadHandlerInterface;
@@ -62,6 +56,9 @@ public class ItemController {
     @Autowired
     private OrionJobHandlerInterface orionJobHandlerInterface;
 
+    @Autowired
+    private FileValidatorInterface fileValidator;
+
     @RequestMapping(value = "v1/content/{contentType}", method = RequestMethod.POST)
     @ResponseBody
     public Object uploadContent(@PathVariable String contentType,
@@ -71,28 +68,42 @@ public class ItemController {
         try {
             clientValidatorInterface.checkClientValidity(accessToken);
 
+
+            // content type validation must be implemented
+
+
+            // file validation
+            ValidatorStatus validatorStatus = fileValidator.validateFile(multiPart);
+
+            if(!validatorStatus.isPassed()) {
+                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, validatorStatus.getMessage(), response);
+            }
+
+
             ResourceDTO resourceDTO;
             String fileName = multiPart.getOriginalFilename();
             String extension = fileName.split("\\.")[1];
             String uuidNumber = GenerateUUID.uuidNumber();
             String newFilename = uuidNumber + "." + extension;
-            if (!fileExtensionValidatorInterface.validate(extension)) {
-                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, fileNotInCorrectFormatMessage, response);
-            }
 
             boolean isUploaded = fileUploadHandlerInterface.upload(multiPart, newFilename);
 
             if(isUploaded) {
                 resourceDTO = resourceServiceInterface.save(newFilename, uuidNumber, contentType, accessToken);
             } else {
-                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, maximumFileSizeMessage, response);
+                return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server Error", response);
             }
+
             ContentUploadResourceResult result = new ContentUploadResourceResult();
             result.setResourceReferenceCode(resourceDTO.getResourceIdentificationCode());
             return result;
+
         } catch (ItemNotFoundException ex) {
             LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
+        } catch (FileValidatorException e) {
+            LOGGER.error("provided multipart file was null", e);
+            return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Server Error", response);
         }
     }
 
