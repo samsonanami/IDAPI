@@ -32,9 +32,9 @@
     <bean id="processConfigRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessConfigRepository"/>
 
     <bean id="fileExtensionValidatorInterface" class="com.fintech.orion.helper.FileExtensionValidator" />
-    <bean id="jsonValidatorInterface" class="com.fintech.orion.helper.JsonValidator" />
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler" />
     <bean id="clientValidatorInterface" class="com.fintech.orion.validation.ClientValidator" />
+    <bean id="processingRequestJsonFormatValidator" class="com.fintech.orion.helper.ProcessingRequestJsonFormatValidator"/>
 
     <bean id="fileValidator" class="com.fintech.orion.validation.file.FileValidator" />
     <bean id="localFilePersistence" class="com.fintech.orion.io.file.LocalFilePersistence" />
@@ -69,6 +69,7 @@
 
     <util:map id="supportedFilesAndSizes" value-type="java.lang.Integer">
         <entry key="jpeg" value="5242880"/>
+        <entry key="png" value="5242880"/>
         <entry key="mp4" value="2097152" />
     </util:map>
 

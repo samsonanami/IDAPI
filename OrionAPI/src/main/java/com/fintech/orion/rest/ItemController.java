@@ -11,8 +11,8 @@ import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.validation.file.ValidatorStatus;
 import com.fintech.orion.handlers.OrionJobHandlerInterface;
 import com.fintech.orion.helper.ErrorHandler;
-import com.fintech.orion.helper.JsonValidatorInterface;
 import com.fintech.orion.helper.ProcessingRequestHandlerInterface;
+import com.fintech.orion.helper.ProcessingRequestJsonFormatValidatorInterface;
 import com.fintech.orion.io.PersistenceInterface;
 import com.fintech.orion.io.destination.DestinationProviderInterface;
 import com.fintech.orion.model.ContentUploadResourceResult;
@@ -51,9 +51,6 @@ public class ItemController {
     private ResourceServiceInterface resourceServiceInterface;
 
     @Autowired
-    private JsonValidatorInterface jsonValidatorInterface;
-
-    @Autowired
     private ProcessingRequestHandlerInterface processingRequestHandlerInterface;
 
     @Autowired
@@ -70,6 +67,9 @@ public class ItemController {
 
     @Autowired
     private DestinationProviderInterface genericDestinationProvider;
+
+    @Autowired
+    private ProcessingRequestJsonFormatValidatorInterface processingRequestJsonFormatValidator;
 
     @RequestMapping(value = "v1/content/{contentType}", method = RequestMethod.POST)
     @ResponseBody
@@ -125,7 +125,7 @@ public class ItemController {
         try {
             clientValidatorInterface.checkClientValidity(accessToken);
 
-            if(!jsonValidatorInterface.jsonValidate(data.getVerificationProcesses())){
+            if(!processingRequestJsonFormatValidator.validate(data)){
                 return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, jsonNotInCorrectFormatMessage, response);
             }
 

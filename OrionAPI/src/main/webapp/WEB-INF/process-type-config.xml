@@ -13,26 +13,20 @@
     </bean>
 
     <bean id="idVerificationType" class="com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess">
-    <property name="verificationProcessType" value="idVerification"/>
-    <property name="resources" ref="idVerificationTypeResources"/>
-</bean>
+        <property name="verificationProcessType" value="idVerification"/>
+        <property name="resources" ref="idVerificationTypeResources"/>
+    </bean>
 
     <bean id="idVerificationTypeResources" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-                <ref bean="idVerificationTypeResource1"/>
-                <ref bean="idVerificationTypeResource2"/>
+                <ref bean="idVerificationTypeResource"/>
             </array>
         </constructor-arg>
     </bean>
 
-    <bean id="idVerificationTypeResource1" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
+    <bean id="idVerificationTypeResource" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
         <property name="resourceId" value=""/>
-        <property name="resourceName" value=""/>
-    </bean>
-
-    <bean id="idVerificationTypeResource2" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-        <property name="resourceId" value=""/>
-        <property name="resourceName" value=""/>
+        <property name="resourceName" value="id"/>
     </bean>
 </beans>

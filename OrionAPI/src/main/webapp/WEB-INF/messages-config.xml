@@ -13,7 +13,7 @@
     </bean>
 
     <bean id="jsonNotInCorrectFormatMessage" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="Json not in correct format"/>
+        <constructor-arg type="java.lang.String" value="Invalid JSON format"/>
     </bean>
 
     <bean id="attemptedToLogWithoutAuthentication" class="java.lang.String">
