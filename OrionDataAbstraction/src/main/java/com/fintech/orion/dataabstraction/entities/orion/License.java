@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 21, 2016 11:43:31 AM by Hibernate Tools 4.3.1
+// Generated Nov 3, 2016 3:50:24 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,45 +23,45 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="license"
-    ,catalog="orion"
 )
 public class License  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private Client client;
      private Date startDate;
      private Date endDate;
      private Integer currentRequestCount;
      private Integer maximumRequestCount;
+     private Boolean enabled;
+     private Boolean status;
+     private String licenseKey;
      private Set<ProcessTypeLicense> processTypeLicenses = new HashSet<ProcessTypeLicense>(0);
 
     public License() {
     }
 
-	
-    public License(int id) {
-        this.id = id;
-    }
-    public License(int id, Client client, Date startDate, Date endDate, Integer currentRequestCount, Integer maximumRequestCount, Set<ProcessTypeLicense> processTypeLicenses) {
-       this.id = id;
+    public License(Client client, Date startDate, Date endDate, Integer currentRequestCount, Integer maximumRequestCount, Boolean enabled, Boolean status, String licenseKey, Set<ProcessTypeLicense> processTypeLicenses) {
        this.client = client;
        this.startDate = startDate;
        this.endDate = endDate;
        this.currentRequestCount = currentRequestCount;
        this.maximumRequestCount = maximumRequestCount;
+       this.enabled = enabled;
+       this.status = status;
+       this.licenseKey = licenseKey;
        this.processTypeLicenses = processTypeLicenses;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
 
     
     @Column(name="ID", unique=true, nullable=false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -111,6 +113,36 @@ public class License  implements java.io.Serializable {
     
     public void setMaximumRequestCount(Integer maximumRequestCount) {
         this.maximumRequestCount = maximumRequestCount;
+    }
+
+    
+    @Column(name="ENABLED")
+    public Boolean getEnabled() {
+        return this.enabled;
+    }
+    
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    
+    @Column(name="STATUS")
+    public Boolean getStatus() {
+        return this.status;
+    }
+    
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    
+    @Column(name="LICENSE_KEY", length=50)
+    public String getLicenseKey() {
+        return this.licenseKey;
+    }
+    
+    public void setLicenseKey(String licenseKey) {
+        this.licenseKey = licenseKey;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="license")
