@@ -36,7 +36,7 @@ public class ObjectCreator {
         client.setUserName("test");
         client.setPassword("test");
         client.setRefreshToken("98765");
-        client.setEnnabled(false);
+        client.setEnabled(false);
         return client;
     }
 

@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 21, 2016 11:43:31 AM by Hibernate Tools 4.3.1
+// Generated Nov 3, 2016 3:50:24 PM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.AttributeOverride;
@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="process_config"
-    ,catalog="orion"
 )
 public class ProcessConfig  implements java.io.Serializable {
 
@@ -60,7 +59,7 @@ public class ProcessConfig  implements java.io.Serializable {
     }
 
     
-    @Column(name="VALUE", nullable=false, length=45)
+    @Column(name="VALUE", nullable=false, length=150)
     public String getValue() {
         return this.value;
     }
