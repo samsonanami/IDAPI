@@ -18,6 +18,8 @@
     <bean id="resourceTypeServiceInterface" class="com.fintech.orion.coreservices.ResourceTypeService"/>
     <bean id="processingStatusServiceInterface" class="com.fintech.orion.coreservices.ProcessingStatusService"/>
     <bean id="processConfigServiceInterface" class="com.fintech.orion.coreservices.ProcessConfigService"/>
+    <bean id="clientService" class="com.fintech.orion.api.service.client.ClientLicenseService"/>
+    <bean id="clientLicenseValidator" class="com.fintech.orion.api.service.validator.ClientLicenseValidatorService"/>
 
     <bean id="clientRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ClientRepository"/>
     <bean id="licenseRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.LicenseRepository"/>

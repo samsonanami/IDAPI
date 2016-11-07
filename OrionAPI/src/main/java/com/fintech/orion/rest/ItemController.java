@@ -1,5 +1,8 @@
 package com.fintech.orion.rest;
 
+import com.fintech.orion.api.service.client.ClientLicenseServiceInterface;
+import com.fintech.orion.api.service.exceptions.ClientServiceException;
+import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInterface;
 import com.fintech.orion.common.exceptions.DestinationProviderException;
 import com.fintech.orion.common.exceptions.FileValidatorException;
 import com.fintech.orion.common.exceptions.PersistenceException;
@@ -71,6 +74,12 @@ public class ItemController {
     @Autowired
     private DestinationProviderInterface genericDestinationProvider;
 
+    @Autowired
+    private ClientLicenseServiceInterface clientService;
+
+    @Autowired
+    private ClientLicenseValidatorServiceInterface clientLicenseValidator;
+
     @RequestMapping(value = "v1/content/{contentType}", method = RequestMethod.POST)
     @ResponseBody
     public Object uploadContent(@PathVariable String contentType,
@@ -123,10 +132,16 @@ public class ItemController {
                                @RequestParam("access_token") String accessToken,
                                @RequestBody ProcessingRequest data) {
         try {
-            clientValidatorInterface.checkClientValidity(accessToken);
+            String licenseKey = clientService.getActiveLicenseOfClient(accessToken);
+
+
 
             if(!jsonValidatorInterface.jsonValidate(data.getVerificationProcesses())){
                 return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, jsonNotInCorrectFormatMessage, response);
+            }
+
+            if(!clientLicenseValidator.validate(licenseKey, data)){
+               return ErrorHandler.renderError(HttpServletResponse.SC_UNAUTHORIZED, "Your license does not cover the processing types requested", response);
             }
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(accessToken, data.getVerificationProcesses());
@@ -141,6 +156,9 @@ public class ItemController {
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
+        } catch (ClientServiceException ex){
+            LOGGER.error(TAG, ex);
+            return ErrorHandler.renderError(HttpServletResponse.SC_UNAUTHORIZED, "Your license has expored or you don't have a valid license", response);
         }
     }
 
