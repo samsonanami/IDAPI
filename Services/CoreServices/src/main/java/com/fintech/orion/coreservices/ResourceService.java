@@ -43,7 +43,7 @@ public class ResourceService implements ResourceServiceInterface {
     @Override
     public ResourceDTO save(String newFilename, String uuidNumber, String contentType, String accessToken) throws ItemNotFoundException {
         ResourceType resourceType = resourceTypeServiceInterface.findByType(contentType);
-        Client client = clientMapper.clientDTOToClient(clientServiceInterface.findByAuthToken(accessToken));
+        Client client = clientMapper.clientDTOToClient(clientServiceInterface.findByUserName(accessToken));
 
         Resource resource = new Resource();
         resource.setLocation(newFilename);

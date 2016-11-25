@@ -14,7 +14,7 @@ public class ClientValidator implements ClientValidatorInterface {
     private ClientServiceInterface clientServiceInterface;
 
     @Override
-    public ClientDTO checkClientValidity(String authToken) throws ItemNotFoundException {
-        return clientServiceInterface.findByAuthToken(authToken);
+    public ClientDTO checkClientValidity(String username) throws ItemNotFoundException {
+        return clientServiceInterface.findByUserName(username);
     }
 }

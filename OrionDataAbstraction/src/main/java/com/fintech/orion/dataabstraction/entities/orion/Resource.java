@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 21, 2016 11:43:31 AM by Hibernate Tools 4.3.1
+// Generated Nov 24, 2016 6:26:52 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -29,8 +29,8 @@ public class Resource  implements java.io.Serializable {
      private Client client;
      private Process process;
      private ResourceType resourceType;
-     private String resourceName;
      private String location;
+     private String resourceName;
      private String resourceIdentificationCode;
      private Set<ResourceMetadata> resourceMetadatas = new HashSet<ResourceMetadata>(0);
 
@@ -44,11 +44,12 @@ public class Resource  implements java.io.Serializable {
         this.location = location;
         this.resourceIdentificationCode = resourceIdentificationCode;
     }
-    public Resource(Client client, Process process, ResourceType resourceType, String location, String resourceIdentificationCode, Set<ResourceMetadata> resourceMetadatas) {
+    public Resource(Client client, Process process, ResourceType resourceType, String location, String resourceName, String resourceIdentificationCode,  Set<ResourceMetadata> resourceMetadatas) {
        this.client = client;
        this.process = process;
        this.resourceType = resourceType;
        this.location = location;
+       this.resourceName = resourceName;
        this.resourceIdentificationCode = resourceIdentificationCode;
        this.resourceMetadatas = resourceMetadatas;
     }
@@ -95,15 +96,7 @@ public class Resource  implements java.io.Serializable {
         this.resourceType = resourceType;
     }
 
-    @Column(name="RESOURCE_NAME", nullable=true)
-    public String getResourceName() {
-        return resourceName;
-    }
-
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
-    }
-
+    
     @Column(name="LOCATION", nullable=false, length=128)
     public String getLocation() {
         return this.location;
@@ -111,6 +104,16 @@ public class Resource  implements java.io.Serializable {
     
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    
+    @Column(name="RESOURCE_NAME", length=50)
+    public String getResourceName() {
+        return this.resourceName;
+    }
+    
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
     }
 
     
@@ -122,6 +125,7 @@ public class Resource  implements java.io.Serializable {
     public void setResourceIdentificationCode(String resourceIdentificationCode) {
         this.resourceIdentificationCode = resourceIdentificationCode;
     }
+
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="resource")
     public Set<ResourceMetadata> getResourceMetadatas() {

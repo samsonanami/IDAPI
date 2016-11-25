@@ -20,11 +20,11 @@ public class ClientValidatorTest {
         ClientDTO clientDTO = ObjectCreator.aClientDTO();
 
         ClientServiceInterface clientServiceInterfaceMock = mock(ClientService.class);
-        when(clientServiceInterfaceMock.findByAuthToken(authToken)).thenReturn(clientDTO);
+        when(clientServiceInterfaceMock.findByUserName(authToken)).thenReturn(clientDTO);
         ReflectionTestUtils.setField(clientValidator, "clientServiceInterface", clientServiceInterfaceMock);
         Object found = clientValidator.checkClientValidity(authToken);
         assertThat(found, instanceOf(ClientDTO.class));
-        verify(clientServiceInterfaceMock, times(1)).findByAuthToken(authToken);
+        verify(clientServiceInterfaceMock, times(1)).findByUserName(authToken);
     }
 
 }

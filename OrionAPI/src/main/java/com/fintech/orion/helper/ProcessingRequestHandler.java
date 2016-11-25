@@ -56,7 +56,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
 
     @Override
     public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
-        ClientDTO clientDTO = clientServiceInterface.findByAuthToken(accessToken);
+        ClientDTO clientDTO = clientServiceInterface.findByUserName(accessToken);
 
         ProcessingRequestDTO processingRequestDTO = processingRequestServiceInterface.save(clientDTO);
         ProcessingStatusDTO processingStatusDTO = processingStatusServiceInterface.findByStatus(Status.PROCESSING_REQUESTED);

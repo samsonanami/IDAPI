@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Oct 21, 2016 11:43:31 AM by Hibernate Tools 4.3.1
+// Generated Nov 24, 2016 6:26:52 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -30,34 +30,34 @@ public class Process  implements java.io.Serializable {
 
 
      private Integer id;
-     private ProcessType processType;
      private ProcessingRequest processingRequest;
      private ProcessingStatus processingStatus;
+     private ProcessType processType;
      private Date requestSentOn;
      private Date responseReceivedOn;
      private String processIdentificationCode;
-     private Set<Resource> resources = new HashSet<Resource>(0);
      private Response response;
+     private Set<Resource> resources = new HashSet<Resource>(0);
 
     public Process() {
     }
 
 	
-    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, String processIdentificationCode) {
-        this.processType = processType;
+    public Process(ProcessingRequest processingRequest, ProcessingStatus processingStatus, ProcessType processType, String processIdentificationCode) {
         this.processingRequest = processingRequest;
         this.processingStatus = processingStatus;
+        this.processType = processType;
         this.processIdentificationCode = processIdentificationCode;
     }
-    public Process(ProcessType processType, ProcessingRequest processingRequest, ProcessingStatus processingStatus, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Set<Resource> resources, Response response) {
-       this.processType = processType;
+    public Process(ProcessingRequest processingRequest, ProcessingStatus processingStatus, ProcessType processType, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Response response, Set<Resource> resources) {
        this.processingRequest = processingRequest;
        this.processingStatus = processingStatus;
+       this.processType = processType;
        this.requestSentOn = requestSentOn;
        this.responseReceivedOn = responseReceivedOn;
        this.processIdentificationCode = processIdentificationCode;
-       this.resources = resources;
        this.response = response;
+       this.resources = resources;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -70,16 +70,6 @@ public class Process  implements java.io.Serializable {
     
     public void setId(Integer id) {
         this.id = id;
-    }
-
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PROCESS_TYPE", nullable=false)
-    public ProcessType getProcessType() {
-        return this.processType;
-    }
-    
-    public void setProcessType(ProcessType processType) {
-        this.processType = processType;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
@@ -100,6 +90,16 @@ public class Process  implements java.io.Serializable {
     
     public void setProcessingStatus(ProcessingStatus processingStatus) {
         this.processingStatus = processingStatus;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PROCESS_TYPE", nullable=false)
+    public ProcessType getProcessType() {
+        return this.processType;
+    }
+    
+    public void setProcessType(ProcessType processType) {
+        this.processType = processType;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -132,15 +132,6 @@ public class Process  implements java.io.Serializable {
         this.processIdentificationCode = processIdentificationCode;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="process")
-    public Set<Resource> getResources() {
-        return this.resources;
-    }
-    
-    public void setResources(Set<Resource> resources) {
-        this.resources = resources;
-    }
-
 @OneToOne(fetch=FetchType.LAZY, mappedBy="process")
     public Response getResponse() {
         return this.response;
@@ -148,6 +139,15 @@ public class Process  implements java.io.Serializable {
     
     public void setResponse(Response response) {
         this.response = response;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="process")
+    public Set<Resource> getResources() {
+        return this.resources;
+    }
+    
+    public void setResources(Set<Resource> resources) {
+        this.resources = resources;
     }
 
 

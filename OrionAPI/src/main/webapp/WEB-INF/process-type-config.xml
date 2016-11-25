@@ -8,31 +8,64 @@
         <constructor-arg>
             <array value-type="com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess">
                 <ref bean="idVerificationType"/>
+                <ref bean="addressVerificationType"/>
             </array>
         </constructor-arg>
     </bean>
 
     <bean id="idVerificationType" class="com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess">
-    <property name="verificationProcessType" value="idVerification"/>
-    <property name="resources" ref="idVerificationTypeResources"/>
-</bean>
+        <property name="verificationProcessType" value="idVerification"/>
+        <property name="resources" ref="idVerificationTypeResources"/>
+    </bean>
+
+    <bean id="addressVerificationType" class="com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess">
+        <property name="verificationProcessType" value="addressVerification"/>
+        <property name="resources" ref="addressVerificationResources"/>
+    </bean>
 
     <bean id="idVerificationTypeResources" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-                <ref bean="idVerificationTypeResource1"/>
-                <ref bean="idVerificationTypeResource2"/>
+                <ref bean="idResourceType"/>
+                <ref bean="passportResourceType"/>
+                <ref bean="drivingLicenseResourceType"/>
+                <ref bean="keyedValuesResourceType"/>
             </array>
         </constructor-arg>
     </bean>
 
-    <bean id="idVerificationTypeResource1" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-        <property name="resourceId" value=""/>
+    <bean id="addressVerificationResources" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
+                <ref bean="utilityBillResourceType"/>
+                <ref bean="keyedValuesResourceType"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="idResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
+        <property name="resourceId" value="id"/>
         <property name="resourceName" value=""/>
     </bean>
 
-    <bean id="idVerificationTypeResource2" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-        <property name="resourceId" value=""/>
+    <bean id="passportResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
+        <property name="resourceId" value="passport"/>
         <property name="resourceName" value=""/>
     </bean>
+
+    <bean id="drivingLicenseResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
+        <property name="resourceId" value="drivingLicense"/>
+        <property name="resourceName" value=""/>
+    </bean>
+
+    <bean id="utilityBillResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
+        <property name="resourceId" value="utilityBill"/>
+        <property name="resourceName" value=""/>
+    </bean>
+
+    <bean id="keyedValuesResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
+        <property name="resourceId" value="keyedValue"/>
+        <property name="resourceName" value=""/>
+    </bean>
+
 </beans>

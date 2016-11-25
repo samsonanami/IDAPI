@@ -8,6 +8,6 @@ import com.fintech.orion.dto.client.ClientDTO;
  */
 public interface ClientValidatorInterface {
 
-    ClientDTO checkClientValidity(String authToken) throws ItemNotFoundException;
+    ClientDTO checkClientValidity(String userName) throws ItemNotFoundException;
 
 }

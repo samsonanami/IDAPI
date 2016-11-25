@@ -29,9 +29,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * Item controller endpoints
@@ -74,11 +76,13 @@ public class ItemController {
     @RequestMapping(value = "v1/content/{contentType}", method = RequestMethod.POST)
     @ResponseBody
     public Object uploadContent(@PathVariable String contentType,
-                                HttpServletResponse response,
-                                @RequestParam("access_token") String accessToken,
+                                HttpServletResponse response, HttpServletRequest request,
                                 @RequestParam("file") final MultipartFile multiPart) {
         try {
-            clientValidatorInterface.checkClientValidity(accessToken);
+
+            Principal principal = request.getUserPrincipal();
+
+            clientValidatorInterface.checkClientValidity(principal.getName());
 
             // content type validation must be implemented
 
@@ -95,7 +99,7 @@ public class ItemController {
             String newFilename = uuidNumber + "." + extension;
 
             localFilePersistence.persistTo(multiPart, genericDestinationProvider.provide(newFilename));
-            ResourceDTO resourceDTO = resourceServiceInterface.save(newFilename, uuidNumber, contentType, accessToken);
+            ResourceDTO resourceDTO = resourceServiceInterface.save(newFilename, uuidNumber, contentType, principal.getName());
 
             ContentUploadResourceResult result = new ContentUploadResourceResult();
             result.setResourceReferenceCode(resourceDTO.getResourceIdentificationCode());
@@ -103,7 +107,7 @@ public class ItemController {
 
         } catch (ItemNotFoundException ex) {
             LOGGER.error(TAG, ex);
-            return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
+            return ErrorHandler.renderError(HttpServletResponse.SC_FORBIDDEN, "Unregistered access is not authorized.", response);
         } catch (FileValidatorException e) {
             LOGGER.error("provided multipart file was null", e);
             return ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, SERVER_ERROR, response);
@@ -119,20 +123,21 @@ public class ItemController {
     @RequestMapping(value = "v1/verification", method = RequestMethod.POST)
     @ResponseBody
     public Object verification(@RequestParam(name = "integration_request", defaultValue = "false" ,required = false) boolean integrationRequest,
-                               HttpServletResponse response,
-                               @RequestParam("access_token") String accessToken,
+                               HttpServletResponse response, HttpServletRequest request,
                                @RequestBody ProcessingRequest data) {
         try {
-            clientValidatorInterface.checkClientValidity(accessToken);
+            Principal principal = request.getUserPrincipal();
+
+            clientValidatorInterface.checkClientValidity(principal.getName());
 
             if(!jsonValidatorInterface.jsonValidate(data.getVerificationProcesses())){
                 return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, jsonNotInCorrectFormatMessage, response);
             }
 
-            String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(accessToken, data.getVerificationProcesses());
+            String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(principal.getName(), data.getVerificationProcesses());
 
             if(!integrationRequest) {
-                orionJobHandlerInterface.sendProcess(accessToken, processingRequestId);
+                orionJobHandlerInterface.sendProcess(principal.getName(), processingRequestId);
             }
 
             VerificationResponseMessage result = new VerificationResponseMessage();
@@ -147,12 +152,14 @@ public class ItemController {
     @RequestMapping(value = "v1/verification/{verificationRequestId}", method = RequestMethod.GET)
     @ResponseBody
     public Object verificationResults(@PathVariable String verificationRequestId,
-                                HttpServletResponse response,
-                                @RequestParam("access_token") String accessToken) {
+                                HttpServletResponse response, HttpServletRequest request
+                                ) {
         try {
-            clientValidatorInterface.checkClientValidity(accessToken);
+            Principal principal = request.getUserPrincipal();
 
-            return processingRequestHandlerInterface.getVerificationRequestData(accessToken, verificationRequestId);
+            clientValidatorInterface.checkClientValidity(principal.getName());
+
+            return processingRequestHandlerInterface.getVerificationRequestData(principal.getName(), verificationRequestId);
         } catch (Exception ex){
             LOGGER.error(TAG, ex);
             return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
@@ -163,13 +170,15 @@ public class ItemController {
     @ResponseBody
     public void processedResources(@PathVariable String verificationProcessId,
                                @PathVariable String id,
-                               HttpServletResponse response,
-                               @RequestParam("access_token") String accessToken) throws IOException {
+                               HttpServletResponse response, HttpServletRequest request
+                               ) throws IOException {
         ResponseMessage responseMessage;
         try {
-            clientValidatorInterface.checkClientValidity(accessToken);
+            Principal principal = request.getUserPrincipal();
 
-            BufferedImage bufferedImage = processingRequestHandlerInterface.getResourceData(accessToken, verificationProcessId, id);
+            clientValidatorInterface.checkClientValidity(principal.getName());
+
+            BufferedImage bufferedImage = processingRequestHandlerInterface.getResourceData(principal.getName(), verificationProcessId, id);
             response.setContentType("image/jpg");
             ImageIO.write(bufferedImage, "jpg", response.getOutputStream());
         } catch (Exception ex){

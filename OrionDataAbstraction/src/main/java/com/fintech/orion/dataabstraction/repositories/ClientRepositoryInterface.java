@@ -8,4 +8,6 @@ public interface ClientRepositoryInterface extends DAOInterface<Client, Integer>
 
     Client findByAuthToken(String authToken) throws ItemNotFoundException;
 
+    Client findByUserName(String username) throws ItemNotFoundException;
+
 }

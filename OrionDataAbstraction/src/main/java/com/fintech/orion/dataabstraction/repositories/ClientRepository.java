@@ -3,6 +3,7 @@ package com.fintech.orion.dataabstraction.repositories;
 import com.fintech.orion.dataabstraction.entities.common.AbstractDAO;
 import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,18 @@ public class ClientRepository extends AbstractDAO<Client, Integer> implements Cl
             return clients.get(0);
         } else {
             throw new ItemNotFoundException("Client not found");
+        }
+    }
+
+    @Override
+    public Client findByUserName(String username) throws ItemNotFoundException {
+        Criteria criteria = getCurrentSession().createCriteria(Client.class);
+        criteria.add(Restrictions.eq("userName", username));
+        List<Client> clients = criteria.list();
+        if(clients != null && !clients.isEmpty()){
+            return clients.get(0);
+        }else {
+            throw new ItemNotFoundException("No valid user found for username : " + username);
         }
     }
 }

@@ -69,6 +69,8 @@
 
     <util:map id="supportedFilesAndSizes" value-type="java.lang.Integer">
         <entry key="jpeg" value="5242880"/>
+        <entry key="jpg" value="5242880"/>
+        <entry key="json" value="5242880"/>
         <entry key="mp4" value="2097152" />
     </util:map>
 
