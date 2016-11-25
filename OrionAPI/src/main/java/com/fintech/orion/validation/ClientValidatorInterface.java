@@ -8,6 +8,7 @@ import com.fintech.orion.dto.client.ClientDTO;
  */
 public interface ClientValidatorInterface {
 
+    @Deprecated
     ClientDTO checkClientValidity(String authToken) throws ItemNotFoundException;
 
 }
