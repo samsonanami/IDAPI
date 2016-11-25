@@ -16,7 +16,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="processing_status"
-    ,catalog="orion"
 )
 public class ProcessingStatus  implements java.io.Serializable {
 

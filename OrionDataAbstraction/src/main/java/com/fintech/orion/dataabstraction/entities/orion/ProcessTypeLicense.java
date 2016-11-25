@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="process_type_license"
-    ,catalog="orion"
 )
 public class ProcessTypeLicense  implements java.io.Serializable {
 
