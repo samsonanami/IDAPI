@@ -10,3 +10,5 @@ include 'HermeseAgent'
 include 'JobMessagingChannelHandler'
 include 'DataTransferObjects'
 
+include 'DocumentVerification'
+
