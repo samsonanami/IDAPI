@@ -79,9 +79,9 @@ public class ItemControllerTest {
         when(processingRequestHandlerInterfaceMock.saveVerificationProcessData(ACCESS_TOKEN, data.getVerificationProcesses())).thenReturn("12341231234");
         ReflectionTestUtils.setField(itemController, PROCESSING_REQUEST_HANDLER_INTERFACE, processingRequestHandlerInterfaceMock);
 
-        JsonValidatorInterface jsonValidatorInterfaceMock = mock(JsonValidator.class);
-        when(jsonValidatorInterfaceMock.jsonValidate(data.getVerificationProcesses())).thenReturn(true);
-        ReflectionTestUtils.setField(itemController, "jsonValidatorInterface", jsonValidatorInterfaceMock);
+        ProcessingRequestJsonFormatValidatorInterface validatorInterface = mock(ProcessingRequestJsonFormatValidator.class);
+        when(validatorInterface.validate(data)).thenReturn(true);
+        ReflectionTestUtils.setField(itemController, "processingRequestJsonFormatValidator", validatorInterface);
 
         ClientValidatorInterface clientValidatorInterfaceMock = mock(ClientValidator.class);
         when(clientValidatorInterfaceMock.checkClientValidity(ACCESS_TOKEN)).thenReturn(ObjectCreator.aClientDTO());
