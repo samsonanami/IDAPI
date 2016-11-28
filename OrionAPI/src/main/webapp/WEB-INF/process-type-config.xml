@@ -44,28 +44,28 @@
     </bean>
 
     <bean id="idResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-        <property name="resourceId" value="id"/>
-        <property name="resourceName" value=""/>
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="id"/>
     </bean>
 
     <bean id="passportResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-        <property name="resourceId" value="passport"/>
-        <property name="resourceName" value=""/>
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="passport"/>
     </bean>
 
     <bean id="drivingLicenseResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-        <property name="resourceId" value="drivingLicense"/>
-        <property name="resourceName" value=""/>
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="drivingLicense"/>
     </bean>
 
     <bean id="utilityBillResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-        <property name="resourceId" value="utilityBill"/>
-        <property name="resourceName" value=""/>
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="utilityBill"/>
     </bean>
 
     <bean id="keyedValuesResourceType" class="com.fintech.orion.dataabstraction.models.verificationprocess.Resource">
-        <property name="resourceId" value="keyedValue"/>
-        <property name="resourceName" value=""/>
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="keyedValue"/>
     </bean>
 
 </beans>

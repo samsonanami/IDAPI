@@ -1,11 +1,14 @@
 package com.fintech.orion.rest;
 
 import com.fintech.orion.api.service.client.ClientLicenseServiceInterface;
+import com.fintech.orion.api.service.exceptions.ClientLicenseValidatorException;
 import com.fintech.orion.api.service.exceptions.ClientServiceException;
 import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInterface;
 import com.fintech.orion.common.exceptions.DestinationProviderException;
 import com.fintech.orion.common.exceptions.FileValidatorException;
 import com.fintech.orion.common.exceptions.PersistenceException;
+import com.fintech.orion.common.exceptions.job.JobHandlerException;
+import com.fintech.orion.common.exceptions.job.JobProducerException;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.helper.GenerateUUID;
@@ -14,8 +17,8 @@ import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.validation.file.ValidatorStatus;
 import com.fintech.orion.handlers.OrionJobHandlerInterface;
 import com.fintech.orion.helper.ErrorHandler;
-import com.fintech.orion.helper.JsonValidatorInterface;
 import com.fintech.orion.helper.ProcessingRequestHandlerInterface;
+import com.fintech.orion.helper.ProcessingRequestJsonFormatValidatorInterface;
 import com.fintech.orion.io.PersistenceInterface;
 import com.fintech.orion.io.destination.DestinationProviderInterface;
 import com.fintech.orion.model.ContentUploadResourceResult;
@@ -56,9 +59,6 @@ public class ItemController {
     private ResourceServiceInterface resourceServiceInterface;
 
     @Autowired
-    private JsonValidatorInterface jsonValidatorInterface;
-
-    @Autowired
     private ProcessingRequestHandlerInterface processingRequestHandlerInterface;
 
     @Autowired
@@ -82,6 +82,8 @@ public class ItemController {
     @Autowired
     private ClientLicenseValidatorServiceInterface clientLicenseValidator;
 
+    @Autowired
+    private ProcessingRequestJsonFormatValidatorInterface processingRequestJsonFormatValidator;
 
     @RequestMapping(value = "v1/content/{contentType}", method = RequestMethod.POST)
     @ResponseBody
@@ -135,6 +137,9 @@ public class ItemController {
     public Object verification(@RequestParam(name = "integration_request", defaultValue = "false" ,required = false) boolean integrationRequest,
                                HttpServletResponse response, HttpServletRequest request,
                                @RequestBody ProcessingRequest data) {
+
+        VerificationResponseMessage result = new VerificationResponseMessage();
+        ResponseMessage responseMessage = ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not satisfy your request.", response);
         try {
             Principal principal = request.getUserPrincipal();
 
@@ -142,11 +147,11 @@ public class ItemController {
             String licenseKey = clientService.getActiveLicenseOfClient(principal.getName());
 
             if(!processingRequestJsonFormatValidator.validate(data)){
-                return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, jsonNotInCorrectFormatMessage, response);
+                responseMessage =  ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, jsonNotInCorrectFormatMessage, response);
             }
 
             if(!clientLicenseValidator.validate(licenseKey, data)){
-                return ErrorHandler.renderError(HttpServletResponse.SC_UNAUTHORIZED, "Your license does not cover the processing types requested", response);
+                responseMessage = ErrorHandler.renderError(HttpServletResponse.SC_UNAUTHORIZED, "Your license does not cover the processing types requested", response);
             }
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(principal.getName(), data.getVerificationProcesses());
@@ -155,16 +160,27 @@ public class ItemController {
                 orionJobHandlerInterface.sendProcess(principal.getName(), processingRequestId);
             }
 
-            VerificationResponseMessage result = new VerificationResponseMessage();
+            result = new VerificationResponseMessage();
             result.setProcessingRequestId(processingRequestId);
-            return result;
-        } catch (Exception ex){
+        } catch (ItemNotFoundException ex){
             LOGGER.error(TAG, ex);
-            return ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage(), response);
+            responseMessage =  ErrorHandler.renderError(HttpServletResponse.SC_BAD_REQUEST, "One ore more resource mentioned " +
+                    "were not found or you are not authorized to access to the resource mentioned.", response);
         } catch (ClientServiceException e) {
             LOGGER.error(TAG, e);
-            return ErrorHandler.renderError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage(), response);
+            responseMessage =  ErrorHandler.renderError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage(), response);
+        } catch (JobProducerException e) {
+            LOGGER.error(TAG, e);
+            responseMessage = ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not satisfy your request.", response);
+        } catch (ClientLicenseValidatorException e) {
+            LOGGER.error(TAG, e);
+            responseMessage = ErrorHandler.renderError(HttpServletResponse.SC_UNAUTHORIZED, "Your license does not cover the processing type requested", response);
+        } catch (JobHandlerException e) {
+            LOGGER.error(TAG, e);
+            responseMessage = ErrorHandler.renderError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not satisfy your request.", response);;
         }
+
+        return result.getProcessingRequestId() != null ? result : responseMessage;
     }
 
     @RequestMapping(value = "v1/verification/{verificationRequestId}", method = RequestMethod.GET)

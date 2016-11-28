@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
@@ -54,6 +55,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
     @Autowired
     private ProcessConfigServiceInterface processConfigServiceInterface;
 
+    @Transactional(rollbackFor = ItemNotFoundException.class)
     @Override
     public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
         ClientDTO clientDTO = clientServiceInterface.findByUserName(accessToken);
@@ -83,7 +85,7 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
                     new com.fintech.orion.dataabstraction.models.verificationresult.VerificationProcess();
             verificationProcess.setVerificationProcessId(p.getProcessIdentificationCode());
             verificationProcess.setStatus(p.getProcessingStatusDTO().getStatus());
-            if(p.getProcessingStatusDTO().getStatus().equals(Status.PROCESSING_COMPLETE)){
+            if(p.getProcessingStatusDTO().getStatus().equals(Status.PROCESSING_COMPLETE.getStatus())){
                 verificationProcess.setData(p.getResponseDTO().getExtractedJson());
             }
             verificationProcessList.add(verificationProcess);

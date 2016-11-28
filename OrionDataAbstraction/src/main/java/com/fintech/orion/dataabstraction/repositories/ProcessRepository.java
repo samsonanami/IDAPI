@@ -5,10 +5,12 @@ import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
+@Transactional
 public class ProcessRepository extends AbstractDAO<Process, Integer> implements ProcessRepositoryInterface {
 
     protected ProcessRepository() {
