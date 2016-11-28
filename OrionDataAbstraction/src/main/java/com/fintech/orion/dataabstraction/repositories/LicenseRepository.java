@@ -8,11 +8,17 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 @Repository
+@Transactional
 public class LicenseRepository extends AbstractDAO<License, Integer> implements LicenseRepositoryInterface {
 
     protected LicenseRepository() {
@@ -21,11 +27,12 @@ public class LicenseRepository extends AbstractDAO<License, Integer> implements 
 
 
     @Override
-    public List<License> getCurrentlyActiveLicenseListOfClient(Client client) throws ItemNotFoundException{
+    @Transactional
+    public List<License> getCurrentlyActiveLicenseListOfClient(Client client) throws ItemNotFoundException, ParseException {
         Criteria criteria = getCurrentSession().createCriteria(License.class);
         criteria.add(Restrictions.eq("client", client));
-        criteria.add(Restrictions.ge("startDate", new Date()));
-        criteria.add(Restrictions.le("endDate", new Date()));
+        criteria.add(Restrictions.le("startDate", new Date()));
+        criteria.add(Restrictions.ge("endDate", new Date()));
         return criteria.list();
     }
 

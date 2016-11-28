@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class ClientLicenseServiceTest {
 
-    private static final String AUT_TOKEN = "e398ad4a-24a1-4b39-88ec-1f6c9f8a3ba4";
+    private static final String CLIENT_NAME = "zone";
     private static final String VALID_LICENSE = "e398ad4a-25a1-4b39-99ec-1f6c9f8a3ba4";
 
     Client client = new Client();
@@ -46,34 +47,34 @@ public class ClientLicenseServiceTest {
     }
 
     @Test
-    public void should_return_the_correct_license_of_the_client() throws ClientServiceException, ItemNotFoundException {
+    public void should_return_the_correct_license_of_the_client() throws ClientServiceException, ItemNotFoundException, ParseException {
         licenseList.add(license);
-        Mockito.when(clientRepositoryInterface.findByAuthToken(AUT_TOKEN)).thenReturn(client);
+        Mockito.when(clientRepositoryInterface.findByUserName(CLIENT_NAME)).thenReturn(client);
         Mockito.when(licenseRepositoryInterface.getCurrentlyActiveLicenseListOfClient(client)).thenReturn(licenseList);
-        Assert.assertEquals(VALID_LICENSE, clientLicenseService.getActiveLicenseOfClient(AUT_TOKEN));
+        Assert.assertEquals(VALID_LICENSE, clientLicenseService.getActiveLicenseOfClient(CLIENT_NAME));
     }
 
     @Test (expected = ClientServiceException.class)
-    public void should_throw_a_clientServiceException_if_no_clients_found_for_given_auth_token() throws ClientServiceException, ItemNotFoundException{
+    public void should_throw_a_clientServiceException_if_no_clients_found_for_given_auth_token() throws ClientServiceException, ItemNotFoundException, ParseException {
         licenseList.add(license);
-        Mockito.when(clientRepositoryInterface.findByAuthToken(AUT_TOKEN)).thenThrow(new ItemNotFoundException("Client not found"));
+        Mockito.when(clientRepositoryInterface.findByUserName(CLIENT_NAME)).thenThrow(new ItemNotFoundException("Client not found"));
         Mockito.when(licenseRepositoryInterface.getCurrentlyActiveLicenseListOfClient(client)).thenReturn(licenseList);
-        String token = clientLicenseService.getActiveLicenseOfClient(AUT_TOKEN);
+        String token = clientLicenseService.getActiveLicenseOfClient(CLIENT_NAME);
     }
 
     @Test (expected = ClientServiceException.class)
-    public void should_throw_a_ClientServiceException_if_no_license_found_for_the_client() throws ItemNotFoundException, ClientServiceException {
-        Mockito.when(clientRepositoryInterface.findByAuthToken(AUT_TOKEN)).thenReturn(client);
+    public void should_throw_a_ClientServiceException_if_no_license_found_for_the_client() throws ItemNotFoundException, ClientServiceException, ParseException {
+        Mockito.when(clientRepositoryInterface.findByUserName(CLIENT_NAME)).thenReturn(client);
         Mockito.when(licenseRepositoryInterface.getCurrentlyActiveLicenseListOfClient(client)).thenThrow(new ItemNotFoundException("No license found for the client"));
-        String token = clientLicenseService.getActiveLicenseOfClient(AUT_TOKEN);
+        String token = clientLicenseService.getActiveLicenseOfClient(CLIENT_NAME);
     }
 
     @Test (expected = ClientServiceException.class)
-    public void should_throw_ClientServiceException_if_the_length_of_the_valid_license_list_is_zero() throws ItemNotFoundException, ClientServiceException {
-        Mockito.when(clientRepositoryInterface.findByAuthToken(AUT_TOKEN)).thenReturn(client);
+    public void should_throw_ClientServiceException_if_the_length_of_the_valid_license_list_is_zero() throws ItemNotFoundException, ClientServiceException, ParseException {
+        Mockito.when(clientRepositoryInterface.findByUserName(CLIENT_NAME)).thenReturn(client);
         List<License> emptyLicenseList = new ArrayList<>();
         Mockito.when(licenseRepositoryInterface.getCurrentlyActiveLicenseListOfClient(client)).thenReturn(emptyLicenseList);
-        String token = clientLicenseService.getActiveLicenseOfClient(AUT_TOKEN);
+        String token = clientLicenseService.getActiveLicenseOfClient(CLIENT_NAME);
     }
 
 }

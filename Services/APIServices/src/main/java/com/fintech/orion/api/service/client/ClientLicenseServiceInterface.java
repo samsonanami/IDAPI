@@ -8,5 +8,5 @@ import com.fintech.orion.api.service.exceptions.ClientServiceException;
  */
 public interface ClientLicenseServiceInterface {
 
-    String getActiveLicenseOfClient(String authenticationToken) throws ClientServiceException;
+    String getActiveLicenseOfClient(String clientName) throws ClientServiceException;
 }
