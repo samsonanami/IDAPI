@@ -20,9 +20,10 @@ public class ClientService implements ClientServiceInterface {
     @Autowired
     private ClientMapper clientMapper;
 
+
     @Transactional
     @Override
-    public ClientDTO findByAuthToken(String authToken) throws ItemNotFoundException {
-        return clientMapper.clientToClientDTO(clientRepositoryInterface.findByAuthToken(authToken));
+    public ClientDTO findByUserName(String userName) throws ItemNotFoundException {
+        return clientMapper.clientToClientDTO(clientRepositoryInterface.findByUserName(userName));
     }
 }

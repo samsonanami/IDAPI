@@ -8,7 +8,9 @@ import com.fintech.orion.dataabstraction.repositories.ClientRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.LicenseRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,19 +30,20 @@ public class ClientLicenseService implements ClientLicenseServiceInterface{
     private LicenseRepositoryInterface licenseRepositoryInterface;
 
     @Override
-    public String getActiveLicenseOfClient(String authenticationToken) throws ClientServiceException {
+    @Transactional
+    public String getActiveLicenseOfClient(String clientName) throws ClientServiceException {
         String licenseKey;
         Client client;
         List<License> licenseList;
         try {
-            client = clientRepositoryInterface.findByAuthToken(authenticationToken);
+            client = clientRepositoryInterface.findByUserName(clientName);
         } catch (ItemNotFoundException e) {
-            throw new ClientServiceException("No client found for authentication token : " + authenticationToken, e);
+            throw new ClientServiceException("No client found for user name : " + clientName, e);
         }
         try {
             licenseList = licenseRepositoryInterface.getCurrentlyActiveLicenseListOfClient(client);
         } catch (ItemNotFoundException e) {
-            throw new ClientServiceException("No license found for the client with authentication token : " + authenticationToken, e);
+            throw new ClientServiceException("No license found for the client with user name : " + clientName, e);
         }
         if(licenseList.size() == 0){
             throw new ClientServiceException("No valid license found for client with id : "+ client.getId());

@@ -8,6 +8,6 @@ import com.fintech.orion.dto.client.ClientDTO;
  */
 public interface ClientServiceInterface {
 
-    ClientDTO findByAuthToken(String authToken) throws ItemNotFoundException;
+    ClientDTO findByUserName(String userName) throws ItemNotFoundException;
 
 }

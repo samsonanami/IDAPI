@@ -51,7 +51,7 @@ public class ResourceServiceTest {
         ResourceType resourceType = ObjectCreator.createResourceTypeObject();
 
         ClientServiceInterface clientService = mock(ClientService.class);
-        when(clientService.findByAuthToken("123456")).thenReturn(clientDTO);
+        when(clientService.findByUserName("123456")).thenReturn(clientDTO);
         ReflectionTestUtils.setField(serviceInterface, "clientServiceInterface", clientService);
 
         ResourceTypeServiceInterface resourceTypeService = mock(ResourceTypeService.class);
