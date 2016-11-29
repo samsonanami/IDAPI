@@ -34,14 +34,14 @@
     <bean id="processConfigRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessConfigRepository"/>
 
     <bean id="fileExtensionValidatorInterface" class="com.fintech.orion.helper.FileExtensionValidator" />
-    <bean id="processingRequestJsonFormatValidator" class="com.fintech.orion.helper.ProcessingRequestJsonFormatValidator"/>
+    <bean id="processingRequestJsonFormatValidator" class="com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidator"/>
 
-    <bean id="processingRequestHandlerInterface" class="com.fintech.orion.helper.ProcessingRequestHandler" />
-    <bean id="clientValidatorInterface" class="com.fintech.orion.validation.ClientValidator" />
+    <bean id="processingRequestHandlerInterface" class="com.fintech.orion.api.service.request.ProcessingRequestHandler" />
+    <bean id="clientValidatorInterface" class="com.fintech.orion.api.service.validator.ClientValidator" />
 
-    <bean id="fileValidator" class="com.fintech.orion.validation.file.FileValidator" />
-    <bean id="localFilePersistence" class="com.fintech.orion.io.file.LocalFilePersistence" />
-    <bean id="genericDestinationProvider" class="com.fintech.orion.io.destination.generic.GenericDestinationProvider" />
+    <bean id="fileValidator" class="com.fintech.orion.api.service.validator.file.FileValidator" />
+    <bean id="localFilePersistence" class="com.fintech.orion.api.service.io.file.LocalFilePersistence" />
+    <bean id="genericDestinationProvider" class="com.fintech.orion.api.service.io.destination.generic.GenericDestinationProvider" />
 
     <bean id="jobProducerInterface" class="com.fintech.orion.messaging.job.JobProducer">
         <constructor-arg name="queueName" value="MainQueue" />
@@ -62,8 +62,8 @@
     <bean id="destinationHandler" class="com.fintech.orion.messaging.connection.DestinationHandler" />
 
     <bean id="jobHandlerInterface" class="com.fintech.orion.messaging.job.JobHandler" />
-    <bean id="orionJobHandlerInterface" class="com.fintech.orion.handlers.OrionJobHandler" />
-    <bean id="messageHandlerInterface" class="com.fintech.orion.handlers.MessageHandler" />
+    <bean id="orionJobHandlerInterface" class="com.fintech.orion.api.service.messenging.OrionJobHandler" />
+    <bean id="messageHandlerInterface" class="com.fintech.orion.api.service.messenging.MessageHandler" />
 
     <bean id="validatorFactory" class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
         <property name="serviceLocatorInterface" value="com.fintech.orion.dto.validator.ValidatorFactoryInterface" />

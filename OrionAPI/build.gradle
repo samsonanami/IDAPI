@@ -78,7 +78,7 @@ dependencies {
 
     compile project (':Services:CoreServices')
     compile project (':Services:APIServices')
-    compile project (':JobMessagingChannelHandler')
+
 }
 
 // Embeded Jetty for testing
