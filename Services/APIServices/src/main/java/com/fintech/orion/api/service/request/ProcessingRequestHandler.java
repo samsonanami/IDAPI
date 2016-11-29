@@ -57,8 +57,8 @@ public class ProcessingRequestHandler implements ProcessingRequestHandlerInterfa
 
     @Transactional(rollbackFor = ItemNotFoundException.class)
     @Override
-    public String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
-        ClientDTO clientDTO = clientServiceInterface.findByUserName(accessToken);
+    public String saveVerificationProcessData(String clientName, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException {
+        ClientDTO clientDTO = clientServiceInterface.findByUserName(clientName);
 
         ProcessingRequestDTO processingRequestDTO = processingRequestServiceInterface.save(clientDTO);
         ProcessingStatusDTO processingStatusDTO = processingStatusServiceInterface.findByStatus(Status.PROCESSING_REQUESTED);

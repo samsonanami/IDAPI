@@ -12,7 +12,7 @@ import java.util.List;
 public interface LicenseRepositoryInterface extends DAOInterface<License, Integer> {
 
     @Transactional
-    List<License> getCurrentlyActiveLicenseListOfClient(Client client) throws ItemNotFoundException, ParseException;
+    List<License> getCurrentlyActiveLicenseListOfClient(Client client) throws ItemNotFoundException;
 
     License getLicenseByLicenseKey(String licenseKey) throws ItemNotFoundException;
 }

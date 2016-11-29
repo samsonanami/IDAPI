@@ -44,8 +44,6 @@ public class ClientLicenseService implements ClientLicenseServiceInterface{
             licenseList = licenseRepositoryInterface.getCurrentlyActiveLicenseListOfClient(client);
         } catch (ItemNotFoundException e) {
             throw new ClientServiceException("No license found for the client with user name : " + clientName, e);
-        } catch (ParseException e){
-            throw new ClientServiceException("error", e);
         }
         if(licenseList.size() == 0){
             throw new ClientServiceException("No valid license found for client with id : "+ client.getId());

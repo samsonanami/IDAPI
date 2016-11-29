@@ -96,5 +96,15 @@ public class ClientLicenseValidatorServiceTest {
         validatorService.validate(INVALID_LICENSE, processingRequest);
     }
 
+    @Test
+    public void should_return_false_if_un_authorized_processing_type_requested() throws ItemNotFoundException, ClientLicenseValidatorException {
+        VerificationProcess v = new VerificationProcess();
+        v.setVerificationProcessType("addressVerification");
+        verificationProcessList.add(v);
+        processingRequest.setVerificationProcesses(verificationProcessList);
+        Mockito.when(licenseRepositoryInterface.getLicenseByLicenseKey(VALID_LICENSE)).thenReturn(license);
+        Assert.assertFalse(validatorService.validate(VALID_LICENSE, processingRequest));
+    }
+
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ProcessingRequestHandlerInterface {
 
-    String saveVerificationProcessData(String accessToken, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException;
+    String saveVerificationProcessData(String clientName, List<VerificationProcess> verificationProcessList) throws ItemNotFoundException;
 
     VerificationRequest getVerificationRequestData(String accessToken, String verificationRequestId) throws ItemNotFoundException;
 

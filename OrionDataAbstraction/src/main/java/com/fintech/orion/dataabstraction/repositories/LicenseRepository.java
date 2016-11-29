@@ -28,7 +28,7 @@ public class LicenseRepository extends AbstractDAO<License, Integer> implements 
 
     @Override
     @Transactional
-    public List<License> getCurrentlyActiveLicenseListOfClient(Client client) throws ItemNotFoundException, ParseException {
+    public List<License> getCurrentlyActiveLicenseListOfClient(Client client) throws ItemNotFoundException {
         Criteria criteria = getCurrentSession().createCriteria(License.class);
         criteria.add(Restrictions.eq("client", client));
         criteria.add(Restrictions.le("startDate", new Date()));

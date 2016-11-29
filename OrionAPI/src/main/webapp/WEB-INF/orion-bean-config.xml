@@ -33,7 +33,6 @@
     <bean id="processingStatusRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessingStatusRepository"/>
     <bean id="processConfigRepositoryInterface" class="com.fintech.orion.dataabstraction.repositories.ProcessConfigRepository"/>
 
-    <bean id="fileExtensionValidatorInterface" class="com.fintech.orion.helper.FileExtensionValidator" />
     <bean id="processingRequestJsonFormatValidator" class="com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidator"/>
 
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.api.service.request.ProcessingRequestHandler" />

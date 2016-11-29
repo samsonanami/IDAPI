@@ -1,8 +1,6 @@
-package com.fintech.orion.helper;
+package com.fintech.orion.api.service.validator;
 
 
-import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidator;
-import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorInterface;
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
 import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
 import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
