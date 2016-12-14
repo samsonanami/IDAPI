@@ -17,7 +17,7 @@ public class PassportMRZDecodingStrategyTest {
     public void setup(){
         strategy = new PassportMRZDecodingStrategy();
         expectedResult = new MRZDecodeResults();
-        mrz = "P<GBRSORRELL<<PHI LI P<MARK<<<<<<<<<<<<<<<<<<<7613359992GBR5901205M2211097<<<<<<<<<<<<<<O6";
+        mrz = "P<GBRSORRELL<<PHILIP<MARK<<<<<<<<<<<<<<<<<<<7613359992GBR5901205M2211097<<<<<<<<<<<<<<O6";
 
     }
 
@@ -37,17 +37,11 @@ public class PassportMRZDecodingStrategyTest {
 
     @Test
     public void should_return_valid_passport_number(){
-        expectedResult.setPassPortNumber("761335999#");
+        expectedResult.setPassPortNumber("761335999");
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getPassPortNumber(), results.getPassPortNumber());
     }
 
-    @Test
-    public void should_return_valid_nationality(){
-        expectedResult.setNationality("BRITISH CITIZEN");
-        MRZDecodeResults results = strategy.decode(mrz);
-        Assert.assertEquals(expectedResult.getNationality(), results.getNationality());
-    }
 
     @Test
     public void should_return_valid_sex(){
@@ -58,32 +52,18 @@ public class PassportMRZDecodingStrategyTest {
 
     @Test
     public void should_return_valid_dateOfBirth(){
-        expectedResult.setDateOfBirth("20 JAN /JAN 59");
+        expectedResult.setDateOfBirth("59012");
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getDateOfBirth(), results.getDateOfBirth());
     }
 
     @Test
     public void should_return_valid_dateOfExpire(){
-        expectedResult.setDateofExpire("09 NOV /NOV 22");
+        expectedResult.setDateofExpire("221109");
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getDateofExpire(), results.getDateofExpire());
     }
 
-
-    @Test
-    public void should_return_valid_issuing_authorithy(){
-        expectedResult.setIssuingAuthority("IPS");
-        MRZDecodeResults results = strategy.decode(mrz);
-        Assert.assertEquals(expectedResult.getIssuingAuthority(), results.getIssuingAuthority());
-    }
-
-    @Test
-    public void should_return_valid_place_of_birth(){
-        expectedResult.setDateOfBirth("SOUTHEND -ON - SEA");
-        MRZDecodeResults results = strategy.decode(mrz);
-        Assert.assertEquals(expectedResult.getDateOfBirth(), results.getDateOfBirth());
-    }
 
     @Test
     public void should_return_valid_place_of_issue(){
@@ -91,10 +71,5 @@ public class PassportMRZDecodingStrategyTest {
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getPlaceOfIssue(), results.getPlaceOfIssue());
     }
-    @Test
-    public void should_return_valid_date_of_issue(){
-        expectedResult.setDateOfIssue("09 FEB /FEV 12");
-        MRZDecodeResults results = strategy.decode(mrz);
-        Assert.assertEquals(expectedResult.getDateOfIssue(), results.getDateOfIssue());
-    }
+
 }

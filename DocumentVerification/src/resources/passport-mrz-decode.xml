@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       <bean id="mrzConfigureList" class="java.util.ArrayList">
+              <constructor-arg>
+                     <array value-type="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+                             <ref bean="idSurName"/>
+                             <ref bean="idSurName"/>
+                             <ref bean="idGivenames"/>
+                             <ref bean="idPassPortNumber"/>
+                             <ref bean="idNationality"/>
+                             <ref bean="idDateOfBirth"/>
+                             <ref bean="idSex"/>
+                             <ref bean="idExpireDate"/>
+                             <ref bean="idCheckDigitOne"/>
+                             <ref bean="idCheckDigitTwo"/>
+                             <ref bean="idCheckDigitThree"/>
+                             <ref bean="idCheckDigitFour"/>
+                             <ref bean="idCheckDigitFive"/>
+                     </array>
+              </constructor-arg>
+       </bean>
+       <bean id="idSurName" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+             <property name="itemName" value="surname"></property>
+              <property name="startIndex" value ="6"></property>
+              <property name="endIndex" value="44"></property>
+       </bean>
+        <bean id="idGivenames" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="idGivenames"></property>
+            <property name="startIndex" value ="6"></property>
+            <property name="endIndex" value="44"></property>
+        </bean>
+        <bean id="idPassPortNumber" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="PassPortNumber"></property>
+            <property name="startIndex" value ="1"></property>
+            <property name="endIndex" value="9"></property>
+        </bean>
+        <bean id="idNationality" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="Nationality"></property>
+            <property name="startIndex" value ="11"></property>
+            <property name="endIndex" value="13"></property>
+        </bean>
+        <bean id="idDateOfBirth" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="DateOfBirth"></property>
+            <property name="startIndex" value ="14"></property>
+            <property name="endIndex" value="19"></property>
+        </bean>
+        <bean id="idSex" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="Sex"></property>
+            <property name="startIndex" value ="20"></property>
+            <property name="endIndex" value="20"></property>
+        </bean>
+        <bean id="idExpireDate" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="ExpireDate"></property>
+            <property name="startIndex" value ="22"></property>
+            <property name="endIndex" value="27"></property>
+        </bean>
+        <bean id="idCheckDigitOne" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="CheckDigitOne"></property>
+            <property name="startIndex" value ="10"></property>
+            <property name="endIndex" value="10"></property>
+        </bean>
+        <bean id="idCheckDigitTwo" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="CheckDigitTwo"></property>
+            <property name="startIndex" value ="20"></property>
+            <property name="endIndex" value="20"></property>
+        </bean>
+        <bean id="idCheckDigitThree" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="CheckDigitThree"></property>
+            <property name="startIndex" value ="44"></property>
+            <property name="endIndex" value="44"></property>
+        </bean>
+        <bean id="idCheckDigitFour" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="CheckDigitFour"></property>
+            <property name="startIndex" value ="28"></property>
+            <property name="endIndex" value="28"></property>
+        </bean>
+        <bean id="idCheckDigitFive" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+            <property name="itemName" value="CheckDigitFive"></property>
+            <property name="startIndex" value ="43"></property>
+            <property name="endIndex" value="43"></property>
+        </bean>
+
+
+    <bean id="mrzCheckDigitConfigureList" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+                <ref bean="idCheckDigitPraseOne"/>
+                <ref bean="idCheckDigitPraseTwo"/>
+                <ref bean="idCheckDigitPraseThree"/>
+                <ref bean="idCheckDigitPraseFour"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="idCheckDigitPraseOne" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+        <property name="itemName" value="CheckDigitPraseOne"></property>
+        <property name="startIndex" value ="1"></property>
+        <property name="endIndex" value="9"></property>
+    </bean>
+    <bean id="idCheckDigitPraseTwo" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+        <property name="itemName" value="CheckDigitPraseTwo"></property>
+        <property name="startIndex" value ="14"></property>
+        <property name="endIndex" value="19"></property>
+    </bean>
+
+    <bean id="idCheckDigitPraseThree" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+        <property name="itemName" value="CheckDigitPraseFour"></property>
+        <property name="startIndex" value ="22"></property>
+        <property name="endIndex" value="27"></property>
+    </bean>
+    <bean id="idCheckDigitPraseFour" class="com.fintech.orion.documentverification.common.mrz.PassportDecodeItems">
+        <property name="itemName" value="CheckDigitPraseFive"></property>
+        <property name="startIndex" value ="29"></property>
+        <property name="endIndex" value="42"></property>
+    </bean>
+</beans>

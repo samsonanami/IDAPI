@@ -5,19 +5,58 @@ package com.fintech.orion.documentverification.common.mrz;
  */
 public class MRZDecodeResults {
 
-    private String firstName;
     private String surname;
     private String givenName;
     private String passPortNumber;
-    private String nationality;
     private String sex;
     private String dateOfBirth;
-    private String dateofExpire;
-    private String issuingAuthority;
-    private String placeOfBirth;
+    private String dateOfExpire;
     private String placeOfIssue;
-    private String dateOfIssue;
+    private String checkDigitPhraseOne;
+    private String checkDigitPhraseTwo;
+    private String checkDigitPhraseThree;
+    private String checkDigitPhraseFour;
+    private String checkDigitPhraseFive;
 
+    public String getCheckDigitPhraseOne() {
+        return checkDigitPhraseOne;
+    }
+
+    public void setCheckDigitPhraseOne(String checkDigitPhraseOne) {
+        this.checkDigitPhraseOne = checkDigitPhraseOne;
+    }
+
+    public String getCheckDigitPhraseTwo() {
+        return checkDigitPhraseTwo;
+    }
+
+    public void setCheckDigitPhraseTwo(String checkDigitPhraseTwo) {
+        this.checkDigitPhraseTwo = checkDigitPhraseTwo;
+    }
+
+    public String getCheckDigitPhraseThree() {
+        return checkDigitPhraseThree;
+    }
+
+    public void setCheckDigitPhraseThree(String checkDigitPhraseThree) {
+        this.checkDigitPhraseThree = checkDigitPhraseThree;
+    }
+
+    public String getCheckDigitPhraseFour() {
+        return checkDigitPhraseFour;
+    }
+
+    public void setCheckDigitPhraseFour(String checkDigitPhraseFour) {
+        this.checkDigitPhraseFour = checkDigitPhraseFour;
+    }
+
+    public String getCheckDigitPhraseFive() {
+        return checkDigitPhraseFive;
+    }
+
+    public void setCheckDigitPhraseFive(String checkDigitPhraseFive) {
+        this.checkDigitPhraseFive = checkDigitPhraseFive;
+    }
 
     public String getSurname() {
         return surname;
@@ -43,14 +82,6 @@ public class MRZDecodeResults {
         this.passPortNumber = passPortNumber;
     }
 
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
     public String getSex() {
         return sex;
     }
@@ -68,27 +99,11 @@ public class MRZDecodeResults {
     }
 
     public String getDateofExpire() {
-        return dateofExpire;
+        return dateOfExpire;
     }
 
     public void setDateofExpire(String dateofExpire) {
-        this.dateofExpire = dateofExpire;
-    }
-
-    public String getIssuingAuthority() {
-        return issuingAuthority;
-    }
-
-    public void setIssuingAuthority(String issuingAuthority) {
-        this.issuingAuthority = issuingAuthority;
-    }
-
-    public String getPlaceOfBirth() {
-        return placeOfBirth;
-    }
-
-    public void setPlaceOfBirth(String placeOfBirth) {
-        this.placeOfBirth = placeOfBirth;
+        this.dateOfExpire = dateofExpire;
     }
 
     public String getPlaceOfIssue() {
@@ -98,23 +113,4 @@ public class MRZDecodeResults {
     public void setPlaceOfIssue(String placeOfIssue) {
         this.placeOfIssue = placeOfIssue;
     }
-
-    public String getDateOfIssue() {
-        return dateOfIssue;
-    }
-
-    public void setDateOfIssue(String dateOfIssue) {
-        this.dateOfIssue = dateOfIssue;
-    }
-
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-
 }
