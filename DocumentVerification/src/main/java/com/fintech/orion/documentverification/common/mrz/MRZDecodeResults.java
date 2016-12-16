@@ -17,6 +17,59 @@ public class MRZDecodeResults {
     private String checkDigitPhraseThree;
     private String checkDigitPhraseFour;
     private String checkDigitPhraseFive;
+    private String dateofBirthMonth;
+    private String dateofBirthYear;
+    private String initialsOfTheFirstName;
+    private String decadeDigitOfBirthYear;
+    private String dateWithinTheBirthMonth;
+
+    public String getDateWithinTheBirthMonth() {
+        return dateWithinTheBirthMonth;
+    }
+
+    public void setDateWithinTheBirthMonth(String dateWithinTheBirthMonth) {
+        this.dateWithinTheBirthMonth = dateWithinTheBirthMonth;
+    }
+
+    public String getDecadeDigitOfBirthYear() {
+        return decadeDigitOfBirthYear;
+    }
+
+    public void setDecadeDigitOfBirthYear(String decadeDigitOfBirthYear) {
+        this.decadeDigitOfBirthYear = decadeDigitOfBirthYear;
+    }
+
+    public String getDateOfExpire() {
+        return dateOfExpire;
+    }
+
+    public void setDateOfExpire(String dateOfExpire) {
+        this.dateOfExpire = dateOfExpire;
+    }
+
+    public String getDateofBirthMonth() {
+        return dateofBirthMonth;
+    }
+
+    public void setDateofBirthMonth(String dateofBirthMonth) {
+        this. dateofBirthMonth =  dateofBirthMonth;
+    }
+
+    public String getDateofBirthYear() {
+        return dateofBirthYear;
+    }
+
+    public void setDateofBirthYear(String dateofBirthYear) {
+        this.dateofBirthYear = dateofBirthYear;
+    }
+
+    public String getInitialsOfTheFirstName() {
+        return initialsOfTheFirstName;
+    }
+
+    public void setInitialsOfTheFirstName(String initialsOfTheFirstName) {
+        this.initialsOfTheFirstName = initialsOfTheFirstName;
+    }
 
     public String getCheckDigitPhraseOne() {
         return checkDigitPhraseOne;

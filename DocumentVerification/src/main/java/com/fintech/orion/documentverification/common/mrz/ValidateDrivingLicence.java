@@ -1,16 +1,16 @@
 package com.fintech.orion.documentverification.common.mrz;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Created by MudithaJ on 12/14/2016.
+ * Created by MudithaJ on 12/16/2016.
  */
-public class ValidatePassPortMRZ implements ValidateMRZ {
+public class ValidateDrivingLicence  implements ValidateMRZ{
 
-    static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ValidatePassPortMRZ.class);
-
+    static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ValidateDrivingLicence.class);
     @Override
     public boolean validate(String mrz )
     { try {
@@ -18,7 +18,6 @@ public class ValidatePassPortMRZ implements ValidateMRZ {
         Map<String, String> validateMap = new HashMap<String, String>();
 
         validateMap.put("checkMRZLength", String.valueOf(this.checkMRZLength(mrz)));
-        validateMap.put("isPassportMRZ", String.valueOf(this.isPassportMRZ(mrz)));
 
 
         if (validateMap.containsValue("false")) {
@@ -31,7 +30,7 @@ public class ValidatePassPortMRZ implements ValidateMRZ {
     }
     catch (NullPointerException e)
     {
-        LOGGER.error("MRZ Validation fail for -"+mrz);
+        LOGGER.error("MRZ Validation fail for DL-"+mrz);
         return false;
     }
     }
@@ -39,21 +38,12 @@ public class ValidatePassPortMRZ implements ValidateMRZ {
     private boolean checkMRZLength(String mrz)
     {
         boolean validate = false;
-        if(mrz.length() == 88) {
+        if(mrz.length() == 16) {
             validate = true;
         }
-
 
         return validate;
 
     }
-    private boolean isPassportMRZ(String mrz)
-    {
-        if(mrz.charAt(0)=='P') {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+
 }

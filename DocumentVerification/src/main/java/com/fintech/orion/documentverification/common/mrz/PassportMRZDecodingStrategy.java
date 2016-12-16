@@ -1,31 +1,40 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 
+import org.slf4j.Logger;
 
 /**
  * Created by MudithaJ on 11/24/2016.
  */
 public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
 
+    static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ValidatePassPortMRZ.class);
+
     @Override
     public MRZDecodeResults decode(String mrz) {
         MRZDecodeResults results = new MRZDecodeResults();
         PassportDecodeItems items = new PassportDecodeItems();
+       try {
+           mrz = mrz.replaceAll("\\s+", "");
 
-         mrz = mrz.replaceAll("\\s+", "");
+           results.setSurname(decodeSurName(mrz));
+           results.setGivenName(decodeGivenName(mrz));
+           results.setPassPortNumber(decodePassportNumber(mrz));
+           results.setSex(decodeSex(mrz));
+           results.setDateofExpire(decodeDateOfExpire(mrz));
+           results.setPlaceOfIssue(decodePlaceOfIssue(mrz));
+           results.setDateOfBirth(decodeDateOfBirth(mrz));
+       }
+    catch(NullPointerException e)
+    {
+        LOGGER.error("MRZ Decoding fail for -"+mrz);
+        results = null;
 
-        results.setSurname(decodeSurName(mrz));
-        results.setGivenName(decodeGivenName(mrz));
-        results.setPassPortNumber(decodePassportNumber(mrz));
-        results.setSex(decodeSex(mrz));
-        results.setDateofExpire(decodeDateOfExpire(mrz));
-        results.setPlaceOfIssue(decodePlaceOfIssue(mrz));
-        results.setDateOfBirth(decodeDateOfBirth(mrz));
-
+    }
         return results;
     }
     private String decodeSurName(String mrz) {
-          String surName = "SurName1";
+          String surName ;
           int start = 5;
           int end   = 44;
 
@@ -37,7 +46,7 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
         return surName.trim() ;
     }
     private String decodeGivenName(String mrz) {
-         String givenName = "GivenName1";
+         String givenName ;
         int start = 5;
         int end   = 44;
 
@@ -59,7 +68,7 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
         return givenName.trim();
     }
     private String decodePassportNumber(String mrz) {
-         String passPortNumber = "passportNumber1";
+         String passPortNumber ;
         int start = 44;
         int end   = 53;
 
@@ -68,7 +77,7 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
         return passPortNumber.trim();
     }
     private String decodeSex(String mrz) {
-        String sex = "sex1";
+        String sex ;
         int start = 64;
         int end   = 65;
 
@@ -78,30 +87,19 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
     }
     private String decodeDateOfBirth(String mrz) {
 
-        String dateOfBirth ="dateofbirth1";
+        String dateOfBirth;
 
         int start = 57;
         int end   = 62;
 
           dateOfBirth = mrz.substring(start,end);
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM", Locale.ENGLISH);
-//        LocalDate dateObj = LocalDate.parse(dateOfBirth,formatter);
-//        String month = dateObj.toString();
-//
-//        formatter = DateTimeFormatter.ofPattern("LL", Locale.ENGLISH);
-//        dateObj = LocalDate.parse(dateOfBirth,formatter);
-//        String date =  dateObj.toString();
-//
-//        formatter = DateTimeFormatter.ofPattern("YY", Locale.ENGLISH);
-//        dateObj = LocalDate.parse(dateOfBirth,formatter);
-//        String year =  dateObj.toString();
 
 
         return dateOfBirth;
 
     }
     private String decodeDateOfExpire(String mrz) {
-            String dateOfExpire = "dateofexpite1";
+            String dateOfExpire;
         int start = 65;
         int end   = 71;
 
@@ -112,7 +110,7 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
     }
 
     private String decodePlaceOfIssue(String mrz) {
-            String issuingAuthority = "issuingAuthority1";
+            String issuingAuthority;
         int start = 54;
         int end   = 57;
 
