@@ -21,7 +21,6 @@ public class ClientMapperTest {
         Client client = clientMapper.clientDTOToClient(clientDTO);
 
         assertEquals(client.getId(), clientDTO.getId());
-        assertEquals(client.getAuthToken(), clientDTO.getAuthToken());
     }
 
     @Test
@@ -32,7 +31,6 @@ public class ClientMapperTest {
         ClientDTO clientDTO = clientMapper.clientToClientDTO(client);
 
         assertEquals(client.getId(), clientDTO.getId());
-        assertEquals(client.getAuthToken(), clientDTO.getAuthToken());
     }
 
 }

@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Nov 3, 2016 3:50:24 PM by Hibernate Tools 4.3.1
+// Generated Nov 24, 2016 6:26:52 PM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -18,6 +18,7 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table(name="response"
+    ,catalog="orion"
 )
 public class Response  implements java.io.Serializable {
 

@@ -31,11 +31,9 @@ public class ObjectCreator {
         Client client = new Client();
         client.setId(1);
         client.setEmail("test@test.com");
-        client.setAuthToken("12345");
         client.setRegisteredOn(GenerateTimestamp.timestamp());
         client.setUserName("test");
         client.setPassword("test");
-        client.setRefreshToken("98765");
         client.setEnabled(false);
         return client;
     }

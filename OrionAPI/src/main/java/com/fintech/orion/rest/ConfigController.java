@@ -5,7 +5,7 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.configs.Config;
 import com.fintech.orion.dataabstraction.models.configs.ConfigResults;
 import com.fintech.orion.dto.processconfig.ProcessConfigDTO;
-import com.fintech.orion.helper.ErrorHandler;
+import com.fintech.orion.common.ErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

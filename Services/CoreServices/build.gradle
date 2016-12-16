@@ -24,6 +24,7 @@ dependencies {
 
     compile project (':OrionDataAbstraction')
     compile project (':DataTransferObjects')
+    compile project (':JobMessagingChannelHandler')
 }
 
 task generateMainMapperClasses(type: JavaCompile) {

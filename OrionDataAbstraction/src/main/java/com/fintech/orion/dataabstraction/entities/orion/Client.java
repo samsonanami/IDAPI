@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Nov 3, 2016 3:50:24 PM by Hibernate Tools 4.3.1
+// Generated Nov 25, 2016 4:31:13 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -29,40 +29,34 @@ public class Client  implements java.io.Serializable {
 
      private Integer id;
      private String email;
-     private String authToken;
      private Date registeredOn;
      private String userName;
      private String password;
-     private String refreshToken;
      private boolean enabled;
+     private Set<License> licenses = new HashSet<License>(0);
      private Set<ProcessingRequest> processingRequests = new HashSet<ProcessingRequest>(0);
      private Set<Resource> resources = new HashSet<Resource>(0);
-     private Set<License> licenses = new HashSet<License>(0);
 
     public Client() {
     }
 
 	
-    public Client(String email, String authToken, Date registeredOn, String userName, String password, String refreshToken, boolean enabled) {
+    public Client(String email, Date registeredOn, String userName, String password, boolean enabled) {
         this.email = email;
-        this.authToken = authToken;
         this.registeredOn = registeredOn;
         this.userName = userName;
         this.password = password;
-        this.refreshToken = refreshToken;
         this.enabled = enabled;
     }
-    public Client(String email, String authToken, Date registeredOn, String userName, String password, String refreshToken, boolean enabled, Set<ProcessingRequest> processingRequests, Set<Resource> resources, Set<License> licenses) {
+    public Client(String email, Date registeredOn, String userName, String password, boolean enabled, Set<License> licenses, Set<ProcessingRequest> processingRequests, Set<Resource> resources) {
        this.email = email;
-       this.authToken = authToken;
        this.registeredOn = registeredOn;
        this.userName = userName;
        this.password = password;
-       this.refreshToken = refreshToken;
        this.enabled = enabled;
+       this.licenses = licenses;
        this.processingRequests = processingRequests;
        this.resources = resources;
-       this.licenses = licenses;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -85,16 +79,6 @@ public class Client  implements java.io.Serializable {
     
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    
-    @Column(name="AUTH_TOKEN", nullable=false, length=50)
-    public String getAuthToken() {
-        return this.authToken;
-    }
-    
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
     }
 
     @Temporal(TemporalType.DATE)
@@ -128,23 +112,22 @@ public class Client  implements java.io.Serializable {
     }
 
     
-    @Column(name="REFRESH_TOKEN", nullable=false, length=50)
-    public String getRefreshToken() {
-        return this.refreshToken;
-    }
-    
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    
     @Column(name="ENABLED", nullable=false)
     public boolean isEnabled() {
         return this.enabled;
     }
     
-    public void setEnabled(boolean ennabled) {
-        this.enabled = ennabled;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
+    public Set<License> getLicenses() {
+        return this.licenses;
+    }
+    
+    public void setLicenses(Set<License> licenses) {
+        this.licenses = licenses;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="client")
@@ -163,15 +146,6 @@ public class Client  implements java.io.Serializable {
     
     public void setResources(Set<Resource> resources) {
         this.resources = resources;
-    }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
-    public Set<License> getLicenses() {
-        return this.licenses;
-    }
-    
-    public void setLicenses(Set<License> licenses) {
-        this.licenses = licenses;
     }
 
 
