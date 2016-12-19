@@ -1,11 +1,11 @@
 package com.fintech.orion.dataabstraction.repositories;
 
-import com.fintech.orion.dataabstraction.entities.common.DAOInterface;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import org.springframework.data.repository.CrudRepository;
 
-public interface ResourceTypeRepositoryInterface extends DAOInterface<ResourceType, Integer> {
+public interface ResourceTypeRepositoryInterface extends CrudRepository<ResourceType, Integer> {
 
-    ResourceType findByType(String type) throws ItemNotFoundException;
+    ResourceType findResourceTypeByType(String type);
 
 }

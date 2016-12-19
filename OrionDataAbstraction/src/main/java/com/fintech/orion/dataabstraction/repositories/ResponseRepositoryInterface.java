@@ -1,9 +1,7 @@
 package com.fintech.orion.dataabstraction.repositories;
 
-import com.fintech.orion.dataabstraction.entities.common.DAOInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Response;
+import org.springframework.data.repository.CrudRepository;
 
-public interface ResponseRepositoryInterface extends DAOInterface<Response , Integer> {
-
-    void saveResponse(Response response);
+public interface ResponseRepositoryInterface extends CrudRepository<Response , Integer> {
 }

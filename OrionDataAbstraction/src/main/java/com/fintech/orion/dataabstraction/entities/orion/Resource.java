@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Nov 24, 2016 6:26:52 PM by Hibernate Tools 4.3.1
+// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -20,36 +20,30 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="resource"
-    ,catalog="orion"
 )
 public class Resource  implements java.io.Serializable {
 
 
      private Integer id;
      private Client client;
+     private OcrProcess ocrProcess;
      private Process process;
+     private ResourceName resourceName;
      private ResourceType resourceType;
      private String location;
-     private String resourceName;
      private String resourceIdentificationCode;
      private Set<ResourceMetadata> resourceMetadatas = new HashSet<ResourceMetadata>(0);
 
     public Resource() {
     }
 
-	
-    public Resource(Client client, ResourceType resourceType, String location, String resourceIdentificationCode) {
-        this.client = client;
-        this.resourceType = resourceType;
-        this.location = location;
-        this.resourceIdentificationCode = resourceIdentificationCode;
-    }
-    public Resource(Client client, Process process, ResourceType resourceType, String location, String resourceName, String resourceIdentificationCode,  Set<ResourceMetadata> resourceMetadatas) {
+    public Resource(Client client, OcrProcess ocrProcess, Process process, ResourceName resourceName, ResourceType resourceType, String location, String resourceIdentificationCode, Set<ResourceMetadata> resourceMetadatas) {
        this.client = client;
+       this.ocrProcess = ocrProcess;
        this.process = process;
+       this.resourceName = resourceName;
        this.resourceType = resourceType;
        this.location = location;
-       this.resourceName = resourceName;
        this.resourceIdentificationCode = resourceIdentificationCode;
        this.resourceMetadatas = resourceMetadatas;
     }
@@ -67,13 +61,23 @@ public class Resource  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="CLIENT", nullable=false)
+    @JoinColumn(name="CLIENT")
     public Client getClient() {
         return this.client;
     }
     
     public void setClient(Client client) {
         this.client = client;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="OCR_PROCESS")
+    public OcrProcess getOcrProcess() {
+        return this.ocrProcess;
+    }
+    
+    public void setOcrProcess(OcrProcess ocrProcess) {
+        this.ocrProcess = ocrProcess;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
@@ -87,7 +91,17 @@ public class Resource  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="RESOURCE_TYPE", nullable=false)
+    @JoinColumn(name="RESOURCE_NAME")
+    public ResourceName getResourceName() {
+        return this.resourceName;
+    }
+    
+    public void setResourceName(ResourceName resourceName) {
+        this.resourceName = resourceName;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="RESOURCE_TYPE")
     public ResourceType getResourceType() {
         return this.resourceType;
     }
@@ -97,7 +111,7 @@ public class Resource  implements java.io.Serializable {
     }
 
     
-    @Column(name="LOCATION", nullable=false, length=128)
+    @Column(name="LOCATION", length=128)
     public String getLocation() {
         return this.location;
     }
@@ -107,17 +121,7 @@ public class Resource  implements java.io.Serializable {
     }
 
     
-    @Column(name="RESOURCE_NAME", length=50)
-    public String getResourceName() {
-        return this.resourceName;
-    }
-    
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
-    }
-
-    
-    @Column(name="RESOURCE_IDENTIFICATION_CODE", nullable=false, length=40)
+    @Column(name="RESOURCE_IDENTIFICATION_CODE", length=40)
     public String getResourceIdentificationCode() {
         return this.resourceIdentificationCode;
     }
@@ -135,7 +139,6 @@ public class Resource  implements java.io.Serializable {
     public void setResourceMetadatas(Set<ResourceMetadata> resourceMetadatas) {
         this.resourceMetadatas = resourceMetadatas;
     }
-
 
 
 

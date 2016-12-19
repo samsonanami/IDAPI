@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,13 +34,12 @@ public class ClientLicenseService implements ClientLicenseServiceInterface{
         String licenseKey;
         Client client;
         List<License> licenseList;
-        try {
-            client = clientRepositoryInterface.findByUserName(clientName);
-        } catch (ItemNotFoundException e) {
-            throw new ClientServiceException("No client found for user name : " + clientName, e);
+        client = clientRepositoryInterface.findClientByUserName(clientName);
+        if (client == null){
+            throw new ClientServiceException("No client found for user name : " + clientName);
         }
         try {
-            licenseList = licenseRepositoryInterface.getCurrentlyActiveLicenseListOfClient(client);
+            licenseList = licenseRepositoryInterface.findLicensesByClientAndLessThanEndDateAndGreaterThanStartDate(client, new Date());
         } catch (ItemNotFoundException e) {
             throw new ClientServiceException("No license found for the client with user name : " + clientName, e);
         }

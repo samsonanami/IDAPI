@@ -16,7 +16,7 @@ import java.io.IOException;
 
 /**
  * Created by TharinduMP on 10/26/2016.
- * JenID Processor
+ * JenID VerificationProcessor
  * Used to create the payload with necessary details from request and cut out the necessary parts from response
  */
 public class Processor implements ProcessorInterface {

@@ -22,6 +22,6 @@ public class ProcessingStatusService implements ProcessingStatusServiceInterface
     @Transactional
     @Override
     public ProcessingStatusDTO findByStatus(Status status) throws ItemNotFoundException {
-        return processingStatusMapper.processingStatusToProcessingStatusDTO(processingStatusRepositoryInterface.findByStatus(status));
+        return processingStatusMapper.processingStatusToProcessingStatusDTO(processingStatusRepositoryInterface.findProcessingStatusByStatus(status.getStatus()));
     }
 }

@@ -24,6 +24,6 @@ public class ClientService implements ClientServiceInterface {
     @Transactional
     @Override
     public ClientDTO findByUserName(String userName) throws ItemNotFoundException {
-        return clientMapper.clientToClientDTO(clientRepositoryInterface.findByUserName(userName));
+        return clientMapper.clientToClientDTO(clientRepositoryInterface.findClientByUserName(userName));
     }
 }

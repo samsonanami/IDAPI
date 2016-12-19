@@ -1,8 +1,9 @@
 package com.fintech.orion.api.service.validator;
 
-import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
-import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
-import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
+
+import com.fintech.orion.dto.request.api.Resource;
+import com.fintech.orion.dto.request.api.VerificationProcess;
+import com.fintech.orion.dto.request.api.VerificationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class ProcessingRequestJsonFormatValidator implements ProcessingRequestJs
     @Autowired
     private List<VerificationProcess> verificationProcessList;
 
-    public boolean validate(ProcessingRequest processingRequest) {
+    public boolean validate(VerificationRequest processingRequest) {
         boolean status = false;
         if(processingRequest.getVerificationProcesses() != null){
             status = validateProcessingRequest(processingRequest);
@@ -26,7 +27,7 @@ public class ProcessingRequestJsonFormatValidator implements ProcessingRequestJs
         return status;
     }
 
-    private boolean validateProcessingRequest(ProcessingRequest processingRequest) {
+    private boolean validateProcessingRequest(VerificationRequest processingRequest) {
         boolean status = false;
         for (VerificationProcess process : processingRequest.getVerificationProcesses()){
             status = false;

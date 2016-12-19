@@ -19,7 +19,7 @@ public class ResourceTypeService implements ResourceTypeServiceInterface {
     @Transactional
     @Override
     public ResourceType findByType(String type) throws ItemNotFoundException {
-        return resourceTypeRepositoryInterface.findByType(type);
+        return resourceTypeRepositoryInterface.findResourceTypeByType(type);
     }
 
 }
