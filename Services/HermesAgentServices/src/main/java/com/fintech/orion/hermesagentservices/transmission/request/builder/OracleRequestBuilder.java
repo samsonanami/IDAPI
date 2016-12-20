@@ -13,12 +13,18 @@ import java.util.Map;
 public class OracleRequestBuilder implements RequestBuilder {
 
     @Override
-    public BaseRequest buildRequest(Map<String, String> configurations, Map content) {
+    public BaseRequest buildPostRequest(Map<String, String> configurations, Map content) {
         Assert.notNull(configurations, "Configurations cannot be null");
         String body = (String)content.get("body");
 
         return Unirest.post(configurations.get("url"))
                 .header("Content-Type", configurations.get("header.contentType"))
                 .body(body);
+    }
+
+    @Override
+    public BaseRequest buildGetRequest(Map<String, String> configurations, Map content) {
+        Assert.notNull(configurations, "Configurations cannot be null");
+        return Unirest.get(configurations.get("url"));
     }
 }

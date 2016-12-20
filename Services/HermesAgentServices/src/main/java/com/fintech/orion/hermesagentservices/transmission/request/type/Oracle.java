@@ -12,7 +12,6 @@ import com.mashape.unirest.request.BaseRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +43,7 @@ public class Oracle extends AbstractRequest implements RequestInterface{
         RequestBuilderFactory requestBuilderFactory = new RequestBuilderFactory();
         RequestBuilder builder = requestBuilderFactory.getRequestBuilder(BuilderType.ORACLE);
 
-        BaseRequest request = builder.buildRequest(processConfigurationMap, content);
+        BaseRequest request = builder.buildPostRequest(processConfigurationMap, content);
 
         try {
             HttpResponse<String> response = requestSubmitter.submitRequest(request);

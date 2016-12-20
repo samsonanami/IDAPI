@@ -35,6 +35,9 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     @Autowired
     private ResourceNameRepositoryInterface resourceNameRepositoryInterface;
 
+    @Autowired
+    private ProcessTypeRepositoryInterface processTypeRepositoryInterface;
+
     @Transactional(rollbackFor = ItemNotFoundException.class)
     @Override
     public String saveVerificationProcessData(String clientName, List<VerificationProcess> verificationProcessList) {
@@ -53,6 +56,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
             process.setProcessIdentificationCode(UUID.randomUUID().toString());
             process.setProcessingRequest(processingRequest);
             process.setProcessingStatus(initialStatus);
+            process.setProcessType(processTypeRepositoryInterface.findProcessTypeByType(v.getVerificationProcessType()));
             processRepositoryInterface.save(process);
 
             for (Resource r: v.getResources()){

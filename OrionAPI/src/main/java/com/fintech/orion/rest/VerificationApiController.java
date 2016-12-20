@@ -72,14 +72,14 @@ public class VerificationApiController implements VerificationApi {
                 LOGGER.warn("Failed to validate processing request with json body {} by user {} ", body, principal.getName());
                 errorMessage.setMessage("Invalid json format received. Please check the request and try again.");
                 errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
-                responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
             }
 
             if(!clientLicenseValidator.validate(licenseKey, body)){
                 LOGGER.warn("Client {} requested one or more processing type not coverd by the license with processing request {}", principal.getName(), body);
                 errorMessage.setMessage("Your license does not cover the processing types requested");
                 errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
-                responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
             }
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(principal.getName(), body.getVerificationProcesses());

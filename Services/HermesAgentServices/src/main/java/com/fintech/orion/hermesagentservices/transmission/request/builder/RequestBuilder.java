@@ -10,5 +10,7 @@ import java.util.Map;
  */
 public interface RequestBuilder {
 
-    BaseRequest buildRequest(Map<String,String> configurations, Map content);
+    BaseRequest buildPostRequest(Map<String,String> configurations, Map content);
+
+    BaseRequest buildGetRequest(Map<String, String> configurations, Map content);
 }

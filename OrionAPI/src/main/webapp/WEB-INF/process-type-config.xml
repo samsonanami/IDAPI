@@ -28,7 +28,8 @@
             <array value-type="com.fintech.orion.dto.request.api.Resource">
                 <ref bean="idResourceType"/>
                 <ref bean="passportResourceType"/>
-                <ref bean="drivingLicenseResourceType"/>
+                <ref bean="drivingLicenseFrontResourceType"/>
+                <ref bean="drivingLicenseBackResourceType"/>
                 <ref bean="keyedValuesResourceType"/>
             </array>
         </constructor-arg>
@@ -53,9 +54,14 @@
         <property name="resourceName" value="passport"/>
     </bean>
 
-    <bean id="drivingLicenseResourceType" class="com.fintech.orion.dto.request.api.Resource">
+    <bean id="drivingLicenseFrontResourceType" class="com.fintech.orion.dto.request.api.Resource">
         <property name="resourceId" value=""/>
-        <property name="resourceName" value="drivingLicense"/>
+        <property name="resourceName" value="drivingLicenseFront"/>
+    </bean>
+
+    <bean id="drivingLicenseBackResourceType" class="com.fintech.orion.dto.request.api.Resource">
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="drivingLicenseBack"/>
     </bean>
 
     <bean id="utilityBillResourceType" class="com.fintech.orion.dto.request.api.Resource">

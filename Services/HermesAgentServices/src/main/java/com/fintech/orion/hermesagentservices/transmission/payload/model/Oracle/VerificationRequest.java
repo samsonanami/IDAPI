@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class VerificationRequest {
 
-    private List<VerificationProcess> verificationProcessList;
+    private List<VerificationProcess> verificationProcesses;
 
-    public List<VerificationProcess> getVerificationProcessList() {
-        return verificationProcessList;
+    public List<VerificationProcess> getVerificationProcesses() {
+        return verificationProcesses;
     }
 
-    public void setVerificationProcessList(List<VerificationProcess> verificationProcessList) {
-        this.verificationProcessList = verificationProcessList;
+    public void setVerificationProcesses(List<VerificationProcess> verificationProcesses) {
+        this.verificationProcesses = verificationProcesses;
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public class VerificationProcess {
 
     private String verificationProcessType;
-    private List<Resource> resourceList;
+    private List<VerificationResource> resources;
 
     public String getVerificationProcessType() {
         return verificationProcessType;
@@ -19,11 +19,11 @@ public class VerificationProcess {
         this.verificationProcessType = verificationProcessType;
     }
 
-    public List<Resource> getResourceList() {
-        return resourceList;
+    public List<VerificationResource> getResources() {
+        return resources;
     }
 
-    public void setResourceList(List<Resource> resourceList) {
-        this.resourceList = resourceList;
+    public void setResources(List<VerificationResource> resources) {
+        this.resources = resources;
     }
 }

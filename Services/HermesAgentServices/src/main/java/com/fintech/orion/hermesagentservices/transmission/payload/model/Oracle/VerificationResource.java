@@ -4,7 +4,7 @@ package com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle;
  * Created by sasitha on 12/19/16.
  *
  */
-public class Resource {
+public class VerificationResource {
     private String resourceId;
     private String resourceName;
 

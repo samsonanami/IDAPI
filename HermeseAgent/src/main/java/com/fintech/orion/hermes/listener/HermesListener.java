@@ -1,12 +1,11 @@
 package com.fintech.orion.hermes.listener;
 
+
 import com.fintech.orion.hermes.orchestrator.VerificationOrchestrator;
 import com.fintech.orion.jobchanel.consumer.MessageDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
@@ -19,6 +18,7 @@ public class HermesListener implements MessageDelegate {
 
     @Autowired
     private VerificationOrchestrator Orchestrator;
+
 
     @Override
     public void delegateMessage(Serializable message) {
