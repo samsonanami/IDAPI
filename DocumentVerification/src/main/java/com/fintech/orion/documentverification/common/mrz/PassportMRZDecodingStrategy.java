@@ -1,42 +1,121 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 
-import org.slf4j.Logger;
+import com.fintech.orion.documentverification.common.exception.PassportMRZDecodeException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by MudithaJ on 11/24/2016.
  */
 public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
 
-    static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ValidatePassPortMRZ.class);
+
+    @Autowired
+    @Qualifier("passportMRZConfigureList")
+    private HashMap<String,MRZItemProperty> mrzItemProperty;
+
+    private int mrzFirstLineCharacterCount;
 
     @Override
-    public MRZDecodeResults decode(String mrz) {
+    public MRZDecodeResults decode(String mrz) throws PassportMRZDecodeException{
         MRZDecodeResults results = new MRZDecodeResults();
-        PassportDecodeItems items = new PassportDecodeItems();
+        MRZItemProperty items = new MRZItemProperty();
+        this.mrzFirstLineCharacterCount = 44;
        try {
            mrz = mrz.replaceAll("\\s+", "");
+           mrz=this.fixCharacterMismatchinOCR(mrz);
+           Range rangeSurName = convertConfigPropertiesToProcessableProperties("SurName");
+           results.setSurname(decodeSurName(mrz,rangeSurName));
 
-           results.setSurname(decodeSurName(mrz));
-           results.setGivenName(decodeGivenName(mrz));
-           results.setPassPortNumber(decodePassportNumber(mrz));
-           results.setSex(decodeSex(mrz));
-           results.setDateofExpire(decodeDateOfExpire(mrz));
-           results.setPlaceOfIssue(decodePlaceOfIssue(mrz));
-           results.setDateOfBirth(decodeDateOfBirth(mrz));
+          Range rangeGivenName = convertConfigPropertiesToProcessableProperties("Givennames");
+           results.setGivenName(decodeGivenName(mrz,rangeGivenName));
+
+          Range rangePassportNumber = convertConfigPropertiesToProcessableProperties("PassPortNumber");
+          results.setPassPortNumber(decodePassportNumber(mrz,rangePassportNumber));
+
+           Range sexRange = convertConfigPropertiesToProcessableProperties("Sex");
+         results.setSex(decodeSex(mrz,sexRange));
+
+           Range dateOfExpireRange = convertConfigPropertiesToProcessableProperties("ExpireDate");
+           results.setDateofExpire(decodeDateOfExpire(mrz,dateOfExpireRange));
+
+           Range placeOfIssueRange = convertConfigPropertiesToProcessableProperties("Nationality");
+           results.setPlaceOfIssue(decodePlaceOfIssue(mrz,placeOfIssueRange));
+
+           Range dateOfBirthRange = convertConfigPropertiesToProcessableProperties("DateOfBirth");
+          results.setDateOfBirth(decodeDateOfBirth(mrz,dateOfBirthRange));
+
+           Range checkDigitOneRange = convertConfigPropertiesToProcessableProperties("CheckDigitOne");
+           results.setCheckDigitPhraseOne(decodeCheckDigitPraseOne(mrz,checkDigitOneRange));
+
+           Range checkDigitTwoRange = convertConfigPropertiesToProcessableProperties("CheckDigitTwo");
+           results.setCheckDigitPhraseTwo(decodeCheckDigitPraseTwo(mrz,checkDigitTwoRange));
+
+          Range checkDigitThreeRange = convertConfigPropertiesToProcessableProperties("CheckDigitThree");
+               results.setCheckDigitPhraseThree(decodeCheckDigitPraseThree(mrz,checkDigitThreeRange));
+
+           Range checkDigitFourRange = convertConfigPropertiesToProcessableProperties("CheckDigitFour");
+           results.setCheckDigitPhraseFour(decodeCheckDigitPraseFour(mrz,checkDigitFourRange));
+
+          Range checkDigitFiveRange = convertConfigPropertiesToProcessableProperties("CheckDigitFive");
+           results.setCheckDigitPhraseFive(decodeCheckDigitPraseFive(mrz,checkDigitFiveRange));
+
+
+
+
        }
     catch(NullPointerException e)
     {
-        LOGGER.error("MRZ Decoding fail for -"+mrz);
-        results = null;
+      throw new PassportMRZDecodeException("Not well formatted passport MRZ or not well set configuration properties",e);
 
     }
         return results;
     }
-    private String decodeSurName(String mrz) {
+
+    private MRZItemProperty getItemProperties(String key)
+    {
+        MRZItemProperty property  = mrzItemProperty.get(key);
+
+        return property;
+    }
+    private Range convertConfigPropertiesToProcessableProperties(String key)
+    {
+        MRZItemProperty property = this.getItemProperties(key);
+        Range range = new Range();
+        if(property.getMrzLineNumber() ==2 )
+        {
+            range.setStart(property.getStartIndex() +this.mrzFirstLineCharacterCount-1);
+            range.setEnd(property.getEndIndex()+this.mrzFirstLineCharacterCount);
+        }else
+        {
+            range.setStart(property.getStartIndex()-1);
+            range.setEnd(property.getEndIndex());
+        }
+
+       return  range;
+    }
+    private String fixCharacterMismatchinOCR(String mrz)
+    {  StringBuilder builder = new StringBuilder(mrz);
+
+        if(mrz.charAt(42) == 'o')
+        {
+            builder.setCharAt(42,'0');
+        }
+        if(mrz.charAt(43) == 'o')
+        {
+            builder.setCharAt(43,'0');
+        }
+
+      return builder.toString();
+    }
+    private String decodeSurName(String mrz,Range range) {
           String surName ;
-          int start = 5;
-          int end   = 44;
+          int start = range.getStart();
+          int end   = range.getEnd();
 
         surName = mrz.substring(start,end);
         int fillerCharacterIndex = surName.indexOf("<");
@@ -45,10 +124,10 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
 
         return surName.trim() ;
     }
-    private String decodeGivenName(String mrz) {
+    private String decodeGivenName(String mrz,Range range) {
          String givenName ;
-        int start = 5;
-        int end   = 44;
+        int start = range.getStart();
+        int end   = range.getEnd();
 
         givenName= mrz.substring(start,end);
         int fillerCharacterIndex = givenName.indexOf("<");
@@ -67,41 +146,43 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
 
         return givenName.trim();
     }
-    private String decodePassportNumber(String mrz) {
+    private String decodePassportNumber(String mrz,Range range) {
          String passPortNumber ;
-        int start = 44;
-        int end   = 53;
-
+        int start =range.getStart() ;
+        int end   = range.getEnd();
         passPortNumber = mrz.substring(start,end);
 
         return passPortNumber.trim();
     }
-    private String decodeSex(String mrz) {
+    private String decodeSex(String mrz,Range range) {
         String sex ;
-        int start = 64;
-        int end   = 65;
+        int start =range.getStart() ;
+        int end   = range.getEnd();
+
 
         sex = mrz.substring(start,end);
 
         return sex.trim();
     }
-    private String decodeDateOfBirth(String mrz) {
+    private String decodeDateOfBirth(String mrz,Range range) {
 
         String dateOfBirth;
 
-        int start = 57;
-        int end   = 62;
+        int start =range.getStart() ;
+        int end   = range.getEnd();
+
 
           dateOfBirth = mrz.substring(start,end);
 
 
-        return dateOfBirth;
+        return dateOfBirth.trim();
 
     }
-    private String decodeDateOfExpire(String mrz) {
+    private String decodeDateOfExpire(String mrz,Range range) {
             String dateOfExpire;
-        int start = 65;
-        int end   = 71;
+        int start =range.getStart() ;
+        int end   = range.getEnd();
+
 
         dateOfExpire = mrz.substring(start,end);
 
@@ -109,10 +190,12 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy{
 
     }
 
-    private String decodePlaceOfIssue(String mrz) {
+    private String decodePlaceOfIssue(String mrz,Range range) {
             String issuingAuthority;
-        int start = 54;
-        int end   = 57;
+
+        int start =range.getStart() ;
+        int end   = range.getEnd();
+
 
         issuingAuthority = mrz.substring(start,end);
         return issuingAuthority;

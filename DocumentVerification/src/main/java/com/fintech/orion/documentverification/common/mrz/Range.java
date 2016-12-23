@@ -8,6 +8,16 @@ public class Range {
     private int start;
     private int end;
 
+    public int getLineNumber() {
+        return LineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        LineNumber = lineNumber;
+    }
+
+    private int LineNumber;
+
     public int getStart() {
         return start;
     }

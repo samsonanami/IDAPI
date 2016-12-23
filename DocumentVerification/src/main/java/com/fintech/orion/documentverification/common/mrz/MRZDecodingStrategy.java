@@ -5,5 +5,5 @@ package com.fintech.orion.documentverification.common.mrz;
  */
 public interface MRZDecodingStrategy {
 
-    MRZDecodeResults decode(String mrz);
+    MRZDecodeResults decode(String mrz) throws Exception;
 }

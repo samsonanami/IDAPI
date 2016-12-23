@@ -1,6 +1,11 @@
 package com.fintech.orion.documentverification.common.mrz;
 
+import com.fintech.orion.documentverification.common.exception.DirivingLicenseMRZValidatingException;
+import com.fintech.orion.documentverification.common.exception.DrivingLicenseMRZDecodingException;
+import com.fintech.orion.documentverification.common.exception.PassPortMRZValidateException;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,40 +15,66 @@ import java.util.Map;
  */
 public class ValidateDrivingLicence  implements ValidateMRZ{
 
-    static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(ValidateDrivingLicence.class);
+    private String message;
+    @Autowired
+    @Qualifier("addressConfigureList")
+    private HashMap<String,MRZItemProperty> mrzItemProperty;
     @Override
-    public boolean validate(String mrz )
+    public ValidateMRZResult validate(String mrz) throws DirivingLicenseMRZValidatingException
     { try {
-        boolean validMRZ;
+        ValidateMRZResult validMRZ=new ValidateMRZResult();
+        validMRZ.setMRZType("DrivingLicense");
+        validMRZ.setItem(mrz);
+
         Map<String, String> validateMap = new HashMap<String, String>();
 
         validateMap.put("checkMRZLength", String.valueOf(this.checkMRZLength(mrz)));
 
 
         if (validateMap.containsValue("false")) {
-            validMRZ = false;
+            validMRZ.setValidationResult("false");
+            validMRZ.setMessage(this.getValidationResultMessage(validateMap));
         } else {
-            validMRZ = true;
+            validMRZ.setValidationResult("true");
         }
 
         return validMRZ;
     }
     catch (NullPointerException e)
     {
-        LOGGER.error("MRZ Validation fail for DL-"+mrz);
-        return false;
+
+            throw new DirivingLicenseMRZValidatingException("Not well formatted Driving license MRZ or not well set configuration properties",e);
     }
+    }
+    @Override
+    public String getValidationResultMessage(Map<String, String> validateMap)
+    {
+        String message ="";
+        for (Map.Entry<String, String> e : validateMap.entrySet()) {
+            if(e.getValue() == "false")
+            {
+                message = message +e.getKey() +"<<";
+            }
+        }
+
+        return message;
     }
 
     private boolean checkMRZLength(String mrz)
     {
         boolean validate = false;
-        if(mrz.length() == 16) {
+        int length = this.getConfigValue("MZRLength").getEndIndex();
+        if(mrz.length() == length) {
             validate = true;
         }
 
         return validate;
 
+    }
+    public MRZItemProperty getConfigValue(String key)
+    {
+        MRZItemProperty property = mrzItemProperty.get(key);
+        return  property;
     }
 
 }

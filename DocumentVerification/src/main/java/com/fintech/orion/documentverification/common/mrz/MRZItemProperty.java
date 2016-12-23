@@ -3,11 +3,12 @@ package com.fintech.orion.documentverification.common.mrz;
 /**
  * Created by MudithaJ on 12/1/2016.
  */
-public class PassportDecodeItems {
+public class MRZItemProperty {
 
     private String itemName;
     private int startIndex;
     private int endIndex;
+    private int mrzLineNumber;
 
     public String getItemName() {
         return itemName;
@@ -31,5 +32,13 @@ public class PassportDecodeItems {
 
     public void setEndIndex(int endIndex) {
         this.endIndex = endIndex;
+    }
+
+    public int getMrzLineNumber() {
+        return mrzLineNumber;
+    }
+
+    public void setMrzLineNumber(int mrzLineNumber) {
+        this.mrzLineNumber = mrzLineNumber;
     }
 }
