@@ -15,5 +15,5 @@ public interface VerificationRequestDetailServiceInterface {
 
     ProcessingRequest getProcessingRequest(String processingRequestId) throws ItemNotFoundException;
 
-    void saveRawResponse(String rawResponse, Process process);
+    void saveResponse(String rawResponse, String processedResponse, Process process);
 }

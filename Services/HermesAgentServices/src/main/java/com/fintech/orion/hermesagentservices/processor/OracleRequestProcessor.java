@@ -50,6 +50,12 @@ public class OracleRequestProcessor implements VerificationProcessor {
     @Autowired
     private VerificationRequestDetailServiceInterface verificationRequestDetailService;
 
+    @Autowired
+    private String oracleAPIBaseUrl;
+
+    @Autowired
+    private String maximumWaitingTimeInSeconds;
+
     @Async
     @Override
     @Transactional
@@ -84,7 +90,7 @@ public class OracleRequestProcessor implements VerificationProcessor {
     private BaseRequest buildPostRequest(ProcessingRequest processingRequest){
         Map<String, String> processConfigurationMap = new HashMap<>();
         Map<String, Object> content = new HashMap<>();
-        processConfigurationMap.put("url", "http://10.101.15.212:8080/oracle/v1/verification");
+        processConfigurationMap.put("url", oracleAPIBaseUrl + "verification");
         processConfigurationMap.put("header.contentType", "application/json");
 
         RequestBodyBuilderFactory requestBodyBuilderFactory = new RequestBodyBuilderFactory();
@@ -110,7 +116,7 @@ public class OracleRequestProcessor implements VerificationProcessor {
 
     private OcrResponse waitForProcessingComplete(VerificationProcessResponse verificationProcessResponse) throws FailedRequestException, InterruptedException, IOException {
         String verificationProcessId = verificationProcessResponse.getVerificationProcessCode();
-        String processDetailsCheckUrl = "http://10.101.15.212:8080/oracle/v1/verification/" + verificationProcessId;
+        String processDetailsCheckUrl = oracleAPIBaseUrl + "verification/" + verificationProcessId;
         Map<String, String> processConfigurationMap = new HashMap<>();
         processConfigurationMap.put("url", processDetailsCheckUrl);
 
@@ -120,18 +126,25 @@ public class OracleRequestProcessor implements VerificationProcessor {
         HttpResponse<String> response = null;
         OcrResponse ocrResponse = new OcrResponse();
         boolean continueCheck = true;
-        int maximumCountToCheck = 10;
-        while (continueCheck && maximumCountToCheck >0){
-            maximumCountToCheck--;
+        int maximumTimeToWait = Integer.valueOf(maximumWaitingTimeInSeconds);
+        long startTime = System.currentTimeMillis();
+        while (continueCheck && maximumTimeToWait >0){
+            maximumTimeToWait--;
+            Thread.sleep(1000);
             response = requestSubmitter.submitRequest(getRequest);
-            if (response.getStatus() != 200){
+            if (response.getStatus() == 200){
+                ObjectMapper objectMapper = new ObjectMapper();
+                ocrResponse = objectMapper.readValue(response.getBody(), OcrResponse.class);
+                if (ocrResponse.getStatus().equals("processing_successful") ||
+                        ocrResponse.getStatus().equals("processing_failed")){
+                    continueCheck = false;
+                }
+            }else {
                 continueCheck = false;
             }
-            ObjectMapper objectMapper = new ObjectMapper();
-            ocrResponse = objectMapper.readValue(response.getBody(), OcrResponse.class);
-            Thread.sleep(10000);
         }
-        LOGGER.debug("Received final response from oracle api : {} ", response.getBody());
+        LOGGER.debug("Received final response from oracle api : {}  elapsed time to receive response from ocr api" +
+                " {} ", response, System.currentTimeMillis() - startTime);
         return  ocrResponse;
     }
 

@@ -24,7 +24,7 @@ public interface ContentApi {
         @ApiResponse(code = 401, message = "Unauthorized request", response = ResourceUploadResponse.class),
         @ApiResponse(code = 413, message = "Request entity too large", response = ResourceUploadResponse.class),
         @ApiResponse(code = 415, message = "Unsupported media type", response = ResourceUploadResponse.class) })
-    @RequestMapping(value = "/content/{contentType}",
+    @RequestMapping(value = "/v1/content/{contentType}",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
     ResponseEntity<Object> contentContentTypePost(

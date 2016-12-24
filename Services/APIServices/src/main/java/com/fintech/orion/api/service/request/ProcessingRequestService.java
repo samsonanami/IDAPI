@@ -1,5 +1,8 @@
 package com.fintech.orion.api.service.request;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
+import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
 import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
@@ -11,6 +14,7 @@ import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -72,7 +76,27 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     }
 
     @Override
-    public VerificationProcessDetailedResponse getDetailedResponse(String accessToken, String verificationRequestId) throws ItemNotFoundException {
-        return null;
+    @Transactional
+    public VerificationProcessDetailedResponse getDetailedResponse(String clientName, String verificationRequestId) throws IOException, ResourceAccessPolicyViolationException, ResourceNotFoundException {
+
+        Client client = clientRepositoryInterface.findClientByUserName(clientName);
+        ProcessingRequest processingRequest = processingRequestRepositoryInterface.findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestId);
+        if (processingRequest == null){
+            throw new ResourceNotFoundException("No processing request found with identification code : " + verificationRequestId);
+        }
+        if(!processingRequest.getClient().getUserName().equals(client.getUserName())){
+            throw new ResourceAccessPolicyViolationException("Accessing content not belong to the requested user is denied by resource access policy.");
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        VerificationProcessDetailedResponse response = new VerificationProcessDetailedResponse();
+        Process process = processingRequest.getProcesses().iterator().next();
+        if(process.getResponse() != null){
+            String processedJson = process.getResponse().getExtractedJson();
+            response = objectMapper.readValue(processedJson, VerificationProcessDetailedResponse.class);
+        }else {
+            response.setVerificationRequestId(verificationRequestId);
+            response.setStatus("Pending");
+        }
+        return response;
     }
 }

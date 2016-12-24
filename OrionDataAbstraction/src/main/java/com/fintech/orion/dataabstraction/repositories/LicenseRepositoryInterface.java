@@ -5,10 +5,12 @@ import com.fintech.orion.dataabstraction.entities.orion.License;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface LicenseRepositoryInterface extends CrudRepository<License, Integer> {
 
 

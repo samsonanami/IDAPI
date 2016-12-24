@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ClientLicenseService implements ClientLicenseServiceInterface{
     public String getActiveLicenseOfClient(String clientName) throws ClientServiceException {
         String licenseKey;
         Client client;
-        List<License> licenseList;
+        List<License> licenseList = new ArrayList<>();
         client = clientRepositoryInterface.findClientByUserName(clientName);
         if (client == null){
             throw new ClientServiceException("No client found for user name : " + clientName);
@@ -43,7 +44,7 @@ public class ClientLicenseService implements ClientLicenseServiceInterface{
         } catch (ItemNotFoundException e) {
             throw new ClientServiceException("No license found for the client with user name : " + clientName, e);
         }
-        if(licenseList.size() == 0){
+        if(licenseList.isEmpty()){
             throw new ClientServiceException("No valid license found for client with id : "+ client.getId());
         }else {
             licenseKey = licenseList.get(DEFAULT_LICENSE_INDEX).getLicenseKey();

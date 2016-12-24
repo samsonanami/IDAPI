@@ -6,11 +6,11 @@ import com.fintech.orion.dataabstraction.entities.orion.License;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessTypeLicense;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
-import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
-import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
 import com.fintech.orion.dataabstraction.repositories.ClientRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.LicenseRepositoryInterface;
+import com.fintech.orion.dto.request.api.Resource;
+import com.fintech.orion.dto.request.api.VerificationProcess;
+import com.fintech.orion.dto.request.api.VerificationRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +30,6 @@ import java.util.Set;
  */
 public class ClientLicenseValidatorServiceTest {
 
-/*
-
 
     @InjectMocks
     private  ClientLicenseValidatorService validatorService;
@@ -48,11 +46,13 @@ public class ClientLicenseValidatorServiceTest {
     private static final String INVALID_LICENSE = "m998ad4a-34a1-4b39-99ec-1f6c9f8a3ba4";
 
     String authToken;
-    ProcessingRequest processingRequest;
+
+    VerificationRequest verificationRequest;
     List<VerificationProcess> verificationProcessList;
-    VerificationProcess verificationProcess;
-    List<Resource> resourceList;
-    Resource resource;
+    VerificationProcess idVerificationProcess;
+    VerificationProcess addressVerificationProcess;
+    Resource passport;
+    Resource drivingLicense;
 
     Client client = new Client();
     License license = new License();
@@ -63,15 +63,26 @@ public class ClientLicenseValidatorServiceTest {
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
+        verificationRequest = new VerificationRequest();
+        passport = new Resource();
+        drivingLicense = new Resource();
+        idVerificationProcess = new VerificationProcess();
+        addressVerificationProcess = new VerificationProcess();
         authToken = "";
-        resource = new Resource();
-        processingRequest = new ProcessingRequest();
+        passport.setResourceName("passport");
+        drivingLicense.setResourceName("drivingLicenseFront");
+
+        List<Resource> resourceList =  new ArrayList<>();
+        resourceList.add(drivingLicense);
+        resourceList.add(passport);
+
+        idVerificationProcess.setVerificationProcessType(ID_VERIFICATION);
+        idVerificationProcess.setResources(resourceList);
+
         verificationProcessList = new ArrayList<>();
-        verificationProcess = new VerificationProcess();
-        verificationProcess.setVerificationProcessType(ID_VERIFICATION);
-        verificationProcessList.add(verificationProcess);
-        processingRequest.setVerificationProcesses(verificationProcessList);
-        resourceList = new ArrayList<>();
+        verificationProcessList.add(idVerificationProcess);
+
+        verificationRequest.setVerificationProcesses(verificationProcessList);
 
         processType1 = new ProcessType();
         processTypeLicenses = new HashSet<>();
@@ -88,13 +99,13 @@ public class ClientLicenseValidatorServiceTest {
     @Test
     public void should_return_true_for_valid_processing_request_of_a_client_having_valid_license() throws ClientLicenseValidatorException, ItemNotFoundException {
         Mockito.when(licenseRepositoryInterface.findLicenseByLicenseKey(VALID_LICENSE)).thenReturn(license);
-        Assert.assertTrue(validatorService.validate(VALID_LICENSE, processingRequest));
+        Assert.assertTrue(validatorService.validate(VALID_LICENSE, verificationRequest));
     }
 
     @Test (expected = ClientLicenseValidatorException.class)
     public void should_throw_ClientLicenseValidatorException_if_no_license_were_found_for_given_license_key() throws ItemNotFoundException, ClientLicenseValidatorException {
         Mockito.when(licenseRepositoryInterface.findLicenseByLicenseKey(INVALID_LICENSE)).thenThrow(new ItemNotFoundException("No license found"));
-        validatorService.validate(INVALID_LICENSE, processingRequest);
+        validatorService.validate(INVALID_LICENSE, verificationRequest);
     }
 
     @Test
@@ -102,11 +113,10 @@ public class ClientLicenseValidatorServiceTest {
         VerificationProcess v = new VerificationProcess();
         v.setVerificationProcessType("addressVerification");
         verificationProcessList.add(v);
-        processingRequest.setVerificationProcesses(verificationProcessList);
+        verificationRequest.setVerificationProcesses(verificationProcessList);
         Mockito.when(licenseRepositoryInterface.findLicenseByLicenseKey(VALID_LICENSE)).thenReturn(license);
-        Assert.assertFalse(validatorService.validate(VALID_LICENSE, processingRequest));
+        Assert.assertFalse(validatorService.validate(VALID_LICENSE, verificationRequest));
     }
-*/
 
 
 }

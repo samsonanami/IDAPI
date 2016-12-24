@@ -34,11 +34,11 @@ public class OracleRequestBodyBuilder implements RequestBodyBuilder{
         verificationRequest.setVerificationProcesses(verificationProcessList);
         String bodyString = "{}";
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
+        /*try {
             bodyString = objectMapper.writeValueAsString(verificationRequest);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }
+        }*/
         return bodyString;
     }
 }

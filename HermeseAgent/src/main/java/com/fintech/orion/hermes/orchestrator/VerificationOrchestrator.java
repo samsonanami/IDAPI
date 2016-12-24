@@ -2,19 +2,18 @@ package com.fintech.orion.hermes.orchestrator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fintech.orion.common.exceptions.HermeseResponseprocessorException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailService;
-import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.hermesagentservices.processor.OracleRequestProcessor;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.response.OcrResponse;
+import com.fintech.orion.hermesagentservices.response.processor.HermeseResponseProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.ExecutionException;
@@ -32,6 +31,9 @@ public class VerificationOrchestrator {
 
     @Autowired
     private VerificationRequestDetailService verificationRequestDetailService;
+
+    @Autowired
+    private HermeseResponseProcessor hermeseResponseProcessor;
 
     @Transactional
     public void orchestrate(Object message){
@@ -57,33 +59,31 @@ public class VerificationOrchestrator {
 
         try {
             LOGGER.debug("received results {}", oracleResults.get());
-            LOGGER.debug("Elapsed time : " + (System.currentTimeMillis() - start));
+            LOGGER.debug("Elapsed time to complete the processing : " + (System.currentTimeMillis() - start));
             ProcessingRequest processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
+            String rawString = objectMapper.writeValueAsString(oracleResults.get());
+            String processedString = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
             for (Process process : processingRequest.getProcesses()){
-                switch (process.getProcessType().getType()){
-                    case "idVerification":
-                        saveRawResponseOfProcess(objectMapper.writeValueAsString(oracleResults.get()), process);
-                        break;
-                    case "addressVerification" :
-                        saveRawResponseOfProcess(objectMapper.writeValueAsString(oracleResults.get()), process);
-                        break;
-                }
+                saveProcessResponse(rawString, processedString, process);
             }
+
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error("Verification process orchestration interrupted ", e);
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            LOGGER.error("Verification process execution occurred ", e);
         } catch (ItemNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to find required data to complete the processing ", e);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            LOGGER.error("Error occurred processing one or more json ", e);
+        } catch (HermeseResponseprocessorException e) {
+            LOGGER.error("Error while processing the response ", e);
         }
 
     }
 
     @Transactional
-    private void saveRawResponseOfProcess(String rawResponse, Process process){
-        verificationRequestDetailService.saveRawResponse(rawResponse, process);
+    private void saveProcessResponse(String rawResponse, String processedString, Process process){
+        verificationRequestDetailService.saveResponse(rawResponse, processedString, process);
     }
 
 }

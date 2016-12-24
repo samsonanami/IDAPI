@@ -9,6 +9,7 @@ import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
 import com.fintech.orion.dto.response.api.ResourceUploadResponse;
 import com.fintech.orion.dto.validation.file.ValidatorStatus;
+import com.fintech.orion.exception.FileHandlerException;
 import com.fintech.orion.exception.ResourceCreationException;
 import com.fintech.orion.service.core.file.FileHandlerServiceInterface;
 import com.fintech.orion.service.core.file.FileStorage;
@@ -85,16 +86,16 @@ public class ContentApiController implements ContentApi {
             errorMessage.setMessage("Internal server error. Please check your request and try agian");
             errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             responseEntity = new ResponseEntity<Object>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (IOException e) {
-            LOGGER.error("Unable to save the multipart file in location : " + workingDir, e);
-            errorMessage.setMessage("Internal server error. Please check your request and try agian");
-            errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            responseEntity = new ResponseEntity<Object>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (ResourceCreationException e) {
+        }catch (ResourceCreationException e) {
             LOGGER.error("Unable to create resource with content type {} requested by user {} ",  contentType, principal.getName(), e);
             errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
             errorMessage.setMessage("Bad request : " + e.getMessage());
             responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
+        } catch (FileHandlerException e) {
+            LOGGER.error("Unable to save the multipart file in location : " + workingDir, e);
+            errorMessage.setMessage("Internal server error. Please check your request and try agian");
+            errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            responseEntity = new ResponseEntity<Object>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;

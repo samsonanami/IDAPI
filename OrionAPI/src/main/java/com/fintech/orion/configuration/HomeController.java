@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class HomeController {
-	@RequestMapping(value = "/docs", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/docs", method = RequestMethod.GET)
 	public String index() {
 		System.out.println("swagger-ui.html");
 		return "redirect:swagger-ui.html";

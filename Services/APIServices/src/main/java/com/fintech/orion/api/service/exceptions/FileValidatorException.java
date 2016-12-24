@@ -9,7 +9,4 @@ public class FileValidatorException extends Exception {
         super(e);
     }
 
-    public FileValidatorException(String message) {
-        super(message);
-    }
 }

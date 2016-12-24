@@ -23,11 +23,6 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
     @Autowired
     private ProcessingRequestRepositoryInterface processingRequestRepositoryInterface;
 
-    @Autowired
-    private ProcessRepositoryInterface processRepositoryInterface;
-
-    @Autowired
-    private ClientRepositoryInterface clientRepositoryInterface;
 
     @Autowired
     private ResponseRepositoryInterface responseRepositoryInterface;
@@ -44,11 +39,12 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
 
     @Override
     @Transactional
-    public void saveRawResponse(String rawResponse, Process process) {
+    public void saveResponse(String rawResponse, String processedResponse, Process process) {
         Response response = new Response();
         response.setProcess(process);
         response.setRawJson(rawResponse);
-
+        response.setExtractedJson(processedResponse);
         responseRepositoryInterface.save(response);
     }
+
 }

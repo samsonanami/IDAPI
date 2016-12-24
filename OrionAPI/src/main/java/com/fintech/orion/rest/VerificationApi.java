@@ -20,7 +20,7 @@ public interface VerificationApi {
         @ApiResponse(code = 200, message = "successful operation", response = VerificationRequestResponse.class),
         @ApiResponse(code = 400, message = "Bad request", response = VerificationRequestResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized request", response = VerificationRequestResponse.class) })
-    @RequestMapping(value = "/verification",
+    @RequestMapping(value = "/v1/verification",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -37,9 +37,11 @@ public interface VerificationApi {
         @ApiResponse(code = 400, message = "Bad request", response = VerificationProcessDetailedResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized request", response = VerificationProcessDetailedResponse.class),
         @ApiResponse(code = 404, message = "Requested procesisng request is not found", response = VerificationProcessDetailedResponse.class) })
-    @RequestMapping(value = "/verification/{verificationId}",
+    @RequestMapping(value = "/v1/verification/{verificationId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<VerificationProcessDetailedResponse> verificationVerificationIdGet(@ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String verificationId);
+    ResponseEntity<Object> verificationVerificationIdGet(@ApiParam(value = "verification id", required = true)
+                                                         @PathVariable("verificationId") String verificationId,
+                                                         HttpServletResponse response, HttpServletRequest request);
 
 }

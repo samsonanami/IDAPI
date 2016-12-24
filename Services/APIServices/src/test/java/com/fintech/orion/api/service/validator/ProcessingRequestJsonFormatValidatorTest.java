@@ -1,13 +1,19 @@
 package com.fintech.orion.api.service.validator;
 
 
-import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
-import com.fintech.orion.dataabstraction.models.verificationprocess.Resource;
-import com.fintech.orion.dataabstraction.models.verificationprocess.VerificationProcess;
+
+import com.fintech.orion.dto.request.api.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ReflectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,199 +23,269 @@ import java.util.List;
  *
  * Created by sasitha on 11/2/16.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ProcessingRequestJsonFormatValidatorTest {
 
-/*
-
-    private static final String RESOURCE_ID = "123456";
-    private static final String ID_VERIFICATION = "idVerification";
-    private List<VerificationProcess> verificationProcessList = new ArrayList<>();
-    private static final String VERIFICATION_PROCESS_LIST = "verificationProcessList";
-    private ProcessingRequest processingRequest;
-    private ProcessingRequestJsonFormatValidatorInterface processingRequestJsonFormatValidator;
+    @InjectMocks
+    private ProcessingRequestJsonFormatValidator processingRequestJsonFormatValidator;
 
 
-    private ProcessingRequest processingRequestToValidate;
-    private  List<VerificationProcess> verificationProcessToValidate;
-    private VerificationProcess verificationProcess1;
-    private VerificationProcess verificationProcess2;
-    private VerificationProcess verificationProcess3;
-    private List<Resource> resourceList1;
-    Resource resource1;
+    private List<VerificationProcess> verificationProcessConfigList;
 
+
+    /*
+        configuration objects C stands for configuration
+     */
+    private Resource passportRC;
+    private Resource dlRC;
+    private List<Resource> idVerificationRCList;
+    private List<Resource> addressVerificationRCList;
+    private VerificationProcess idVerificationC;
+    private VerificationProcess addressVerificationC;
+
+    /*
+        request body objects R stands for request
+     */
+    private Resource passportR;
+    private Resource dlR;
+    private List<Resource> idVerificationRList;
+    private List<Resource> addressVerificationRList;
+    private VerificationProcess idVerificationR;
+    private VerificationProcess addressVerificationR;
+    private List<VerificationProcess> verificationProcessList;
+    private VerificationRequest verificationRequest;
+
+
+    private void setupConfigurationValues(){
+        passportRC = new Resource();
+        passportRC.setResourceName("passport");
+        passportRC.setResourceId("");
+        dlRC = new Resource();
+        dlRC.setResourceName("drivingLicenseFront");
+        dlRC.setResourceId("");
+
+        idVerificationRCList = new ArrayList<>();
+        idVerificationRCList.add(passportRC);
+        idVerificationRCList.add(dlRC);
+
+        addressVerificationRCList = new ArrayList<>();
+        addressVerificationRCList.add(dlRC);
+
+        idVerificationC = new VerificationProcess();
+        idVerificationC.setVerificationProcessType("idVerification");
+        idVerificationC.setResources(idVerificationRCList);
+
+        addressVerificationC = new VerificationProcess();
+        addressVerificationC.setVerificationProcessType("addressVerification");
+        addressVerificationC.setResources(addressVerificationRCList);
+
+        verificationProcessConfigList = new ArrayList<>();
+        verificationProcessConfigList.add(idVerificationC);
+        verificationProcessConfigList.add(addressVerificationC);
+
+
+        ReflectionTestUtils.setField(processingRequestJsonFormatValidator, "verificationProcessList", verificationProcessConfigList);
+
+    }
     @Before
     public void setup() {
-        setupAutowiredFields();
-        processingRequestToValidate = new ProcessingRequest();
-        verificationProcess1 = new VerificationProcess();
-        verificationProcess2 = new VerificationProcess();
-        verificationProcess3 = new VerificationProcess();
-        verificationProcessToValidate = new ArrayList<>();
+        MockitoAnnotations.initMocks(this);
+        passportR = new Resource();
+        dlR = new Resource();
+        idVerificationRList = new ArrayList<>();
+        addressVerificationRList = new ArrayList<>();
+        idVerificationR = new VerificationProcess();
+        addressVerificationR= new VerificationProcess();
+        verificationRequest = new VerificationRequest();
+        verificationProcessList = new ArrayList<>();
+        setupConfigurationValues();
 
-        verificationProcess1.setVerificationProcessType(ID_VERIFICATION);
-        verificationProcess2.setVerificationProcessType("verificationType2");
-        verificationProcess3.setVerificationProcessType(ID_VERIFICATION);
-
-
-        resourceList1 = new ArrayList<>();
-        resource1 = new Resource();
-        resource1.setResourceId(RESOURCE_ID);
-        resource1.setResourceName("id");
-        resourceList1.add(resource1);
-        verificationProcess1.setResources(resourceList1);
-        verificationProcess2.setResources(resourceList1);
-        verificationProcess3.setResources(resourceList1);
+        passportR.setResourceName("passport");
+        passportR.setResourceId("12345");
+        dlR.setResourceName("drivingLicenseFront");
+        dlR.setResourceId("45678");
     }
+
 
     @Test
     public void should_return_true_if_json_structure_is_correct(){
 
-        verificationProcessToValidate.add(verificationProcess1);
+        idVerificationRList.add(passportR);
+        idVerificationRList.add(dlR);
 
-        processingRequestToValidate.setVerificationProcesses(verificationProcessToValidate);
+        addressVerificationRList.add(dlR);
 
-        Assert.assertTrue(processingRequestJsonFormatValidator.validate(processingRequestToValidate));
+        idVerificationR.setResources(idVerificationRList);
+        idVerificationR.setVerificationProcessType("idVerification");
+
+
+        addressVerificationR.setResources(addressVerificationRList);
+        addressVerificationR.setVerificationProcessType("addressVerification");
+
+        verificationProcessList.add(idVerificationR);
+        verificationProcessList.add(addressVerificationR);
+
+        verificationRequest.setVerificationProcesses(verificationProcessList);
+
+
+        boolean isVerified = processingRequestJsonFormatValidator.validate(verificationRequest);
+        Assert.assertTrue(isVerified);
+
+
     }
 
     @Test
     public void should_return_false_if_no_verification_processes_are_found(){
-        Assert.assertFalse(processingRequestJsonFormatValidator.validate(processingRequestToValidate));
+        Assert.assertFalse(processingRequestJsonFormatValidator.validate(verificationRequest));
     }
 
     @Test
     public void should_return_false_if_one_of_the_verification_process_type_is_incorrect(){
 
+        idVerificationRList.add(passportR);
+        idVerificationRList.add(dlR);
 
-        verificationProcessToValidate.add(verificationProcess1);
-        verificationProcessToValidate.add(verificationProcess2);
-        verificationProcessToValidate.add(verificationProcess3);
+        addressVerificationRList.add(dlR);
 
-        processingRequestToValidate.setVerificationProcesses(verificationProcessToValidate);
+        idVerificationR.setResources(idVerificationRList);
+        idVerificationR.setVerificationProcessType("idVerificationInvalid");
 
-        Assert.assertFalse(processingRequestJsonFormatValidator.validate(processingRequestToValidate));
+
+        addressVerificationR.setResources(addressVerificationRList);
+        addressVerificationR.setVerificationProcessType("addressVerification");
+
+        verificationProcessList.add(idVerificationR);
+        verificationProcessList.add(addressVerificationR);
+
+        verificationRequest.setVerificationProcesses(verificationProcessList);
+
+
+        boolean isVerified = processingRequestJsonFormatValidator.validate(verificationRequest);
+        Assert.assertFalse(isVerified);
 
     }
 
     @Test
     public void should_return_false_if_verification_process_type_is_null(){
 
-        verificationProcessToValidate.add(verificationProcess1);
-        verificationProcessToValidate.add(verificationProcess2);
-        verificationProcessToValidate.add(verificationProcess3);
+        idVerificationRList.add(passportR);
+        idVerificationRList.add(dlR);
 
-        processingRequestToValidate.setVerificationProcesses(verificationProcessToValidate);
+        addressVerificationRList.add(dlR);
 
-        Assert.assertFalse(processingRequestJsonFormatValidator.validate(processingRequestToValidate));
+        idVerificationR.setResources(idVerificationRList);
+
+
+        addressVerificationR.setResources(addressVerificationRList);
+        addressVerificationR.setVerificationProcessType("addressVerification");
+
+        verificationProcessList.add(idVerificationR);
+        verificationProcessList.add(addressVerificationR);
+
+        verificationRequest.setVerificationProcesses(verificationProcessList);
+
+
+        boolean isVerified = processingRequestJsonFormatValidator.validate(verificationRequest);
+        Assert.assertFalse(isVerified);
     }
 
     @Test
     public void should_return_false_if_one_of_the_verification_process_has_wrong_resource_name(){
-        Resource resource = new Resource();
-        resource.setResourceName("Front image");
-        resource.setResourceId(RESOURCE_ID);
+        idVerificationRList.add(passportR);
+        idVerificationRList.add(dlR);
 
-        List<Resource> resourceList = new ArrayList<>();
-        resourceList.add(resource);
+        addressVerificationRList.add(dlR);
+        addressVerificationRList.add(passportRC);
 
-        verificationProcess1.setResources(resourceList1);
-        verificationProcess2.setResources(resourceList);
-        verificationProcess3.setResources(resourceList1);
+        idVerificationR.setResources(idVerificationRList);
+        idVerificationR.setVerificationProcessType("idVerificationInvalid");
 
-        verificationProcessToValidate.add(verificationProcess1);
-        verificationProcessToValidate.add(verificationProcess2);
-        verificationProcessToValidate.add(verificationProcess3);
 
-        processingRequestToValidate.setVerificationProcesses(verificationProcessToValidate);
+        addressVerificationR.setResources(addressVerificationRList);
+        addressVerificationR.setVerificationProcessType("addressVerification");
 
-        Assert.assertFalse(processingRequestJsonFormatValidator.validate(processingRequestToValidate));
+        verificationProcessList.add(idVerificationR);
+        verificationProcessList.add(addressVerificationR);
+
+        verificationRequest.setVerificationProcesses(verificationProcessList);
+        boolean isVerified = processingRequestJsonFormatValidator.validate(verificationRequest);
+        Assert.assertFalse(isVerified);
     }
 
     @Test
     public void should_return_false_if_more_than_one_resource_from_same_resource_type_present_in_one_verification_request(){
-        Resource resource = new Resource();
-        resource.setResourceName("id");
-        resource.setResourceId(RESOURCE_ID);
+        idVerificationRList.add(passportR);
+        idVerificationRList.add(passportR);
+        idVerificationRList.add(dlR);
 
-        List<Resource> resourceList = new ArrayList<>();
-        resourceList.add(resource);
+        addressVerificationRList.add(dlR);
 
-        verificationProcess1.setResources(resourceList1);
-        verificationProcess2.setResources(resourceList);
-        verificationProcess3.setResources(resourceList1);
+        idVerificationR.setResources(idVerificationRList);
 
-        processingRequestToValidate.setVerificationProcesses(verificationProcessToValidate);
 
-        Assert.assertFalse(processingRequestJsonFormatValidator.validate(processingRequestToValidate));
+        addressVerificationR.setResources(addressVerificationRList);
+        addressVerificationR.setVerificationProcessType("addressVerification");
+
+        verificationProcessList.add(idVerificationR);
+        verificationProcessList.add(addressVerificationR);
+
+        verificationRequest.setVerificationProcesses(verificationProcessList);
+
+        boolean isVerified = processingRequestJsonFormatValidator.validate(verificationRequest);
+        Assert.assertFalse(isVerified);
     }
 
     @Test
     public void should_return_false_if_one_or_more_resources_having_empty_resource_id(){
-        Resource resource = new Resource();
-        resource.setResourceName("id");
-        resource.setResourceId("");
+        Resource newResource = new Resource();
+        newResource.setResourceName("passport");
+        newResource.setResourceId("");
+        idVerificationRList.add(newResource);
+        idVerificationRList.add(dlR);
 
-        List<Resource> resourceList = new ArrayList<>();
-        resourceList.add(resource);
+        addressVerificationRList.add(dlR);
 
-        verificationProcess2.setVerificationProcessType(ID_VERIFICATION);
+        idVerificationR.setResources(idVerificationRList);
+        idVerificationR.setVerificationProcessType("idVerification");
 
-        verificationProcess1.setResources(resourceList1);
-        verificationProcess2.setResources(resourceList);
-        verificationProcess3.setResources(resourceList1);
 
-        verificationProcessToValidate.add(verificationProcess1);
-        verificationProcessToValidate.add(verificationProcess2);
-        verificationProcessToValidate.add(verificationProcess3);
+        addressVerificationR.setResources(addressVerificationRList);
+        addressVerificationR.setVerificationProcessType("addressVerification");
 
-        processingRequestToValidate.setVerificationProcesses(verificationProcessToValidate);
+        verificationProcessList.add(idVerificationR);
+        verificationProcessList.add(addressVerificationR);
 
-        Assert.assertFalse(processingRequestJsonFormatValidator.validate(processingRequestToValidate));
+        verificationRequest.setVerificationProcesses(verificationProcessList);
+
+
+        boolean isVerified = processingRequestJsonFormatValidator.validate(verificationRequest);
+        Assert.assertFalse(isVerified);
     }
 
     @Test
     public void should_return_false_if_one_or_more_resources_having_null_resource_id(){
-        Resource resource = new Resource();
-        resource.setResourceName("id");
+        Resource newResource = new Resource();
+        newResource.setResourceName("passport");
+        idVerificationRList.add(newResource);
+        idVerificationRList.add(dlR);
 
-        List<Resource> resourceList = new ArrayList<>();
-        resourceList.add(resource);
+        addressVerificationRList.add(dlR);
 
-        verificationProcess2.setVerificationProcessType(ID_VERIFICATION);
+        idVerificationR.setResources(idVerificationRList);
+        idVerificationR.setVerificationProcessType("idVerification");
 
-        verificationProcess1.setResources(resourceList1);
-        verificationProcess2.setResources(resourceList);
-        verificationProcess3.setResources(resourceList1);
 
-        verificationProcessToValidate.add(verificationProcess1);
-        verificationProcessToValidate.add(verificationProcess2);
-        verificationProcessToValidate.add(verificationProcess3);
+        addressVerificationR.setResources(addressVerificationRList);
+        addressVerificationR.setVerificationProcessType("addressVerification");
 
-        processingRequestToValidate.setVerificationProcesses(verificationProcessToValidate);
+        verificationProcessList.add(idVerificationR);
+        verificationProcessList.add(addressVerificationR);
 
-        Assert.assertFalse(processingRequestJsonFormatValidator.validate(processingRequestToValidate));
+        verificationRequest.setVerificationProcesses(verificationProcessList);
+
+
+        boolean isVerified = processingRequestJsonFormatValidator.validate(verificationRequest);
+        Assert.assertFalse(isVerified);
     }
-
-
-
-
-    private void setupAutowiredFields(){
-        List<Resource> resourceList = new ArrayList<>();
-        Resource resource = new Resource();
-        resource.setResourceId("123456789");
-        resource.setResourceName("id");
-        resourceList.add(resource);
-        VerificationProcess verificationProcess = new VerificationProcess();
-        verificationProcess.setVerificationProcessType(ID_VERIFICATION);
-        verificationProcess.setResources(resourceList);
-
-        verificationProcessList.add(verificationProcess);
-        processingRequest = new ProcessingRequest();
-        processingRequest.setVerificationProcesses(verificationProcessList);
-
-        processingRequestJsonFormatValidator = new ProcessingRequestJsonFormatValidator();
-        ReflectionTestUtils.setField(processingRequestJsonFormatValidator, VERIFICATION_PROCESS_LIST, verificationProcessList);
-    }
-*/
-
 
 }

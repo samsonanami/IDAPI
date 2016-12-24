@@ -3,9 +3,12 @@ package com.fintech.orion.rest;
 import com.fintech.orion.api.service.client.ClientLicenseServiceInterface;
 import com.fintech.orion.api.service.exceptions.ClientLicenseValidatorException;
 import com.fintech.orion.api.service.exceptions.ClientServiceException;
+import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
+import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
 import com.fintech.orion.api.service.request.ProcessingRequestServiceInterface;
 import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInterface;
 import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorInterface;
+import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
 
 
@@ -109,9 +113,40 @@ public class VerificationApiController implements VerificationApi {
         return responseEntity;
     }
 
-    public ResponseEntity<VerificationProcessDetailedResponse> verificationVerificationIdGet(@ApiParam(value = "verification id",required=true ) @PathVariable("verificationId") String verificationId) {
-        // do some magic!
-        return new ResponseEntity<VerificationProcessDetailedResponse>(HttpStatus.OK);
+    public ResponseEntity<Object> verificationVerificationIdGet(
+            @ApiParam(value = "verification id",required=true ) @PathVariable("verificationId") String verificationId,
+            HttpServletResponse response, HttpServletRequest request) {
+        VerificationProcessDetailedResponse verificationResponse;
+        ResponseEntity<Object> responseEntity =null;
+        Principal principal = request.getUserPrincipal();
+        GenericErrorMessage errorMessage = new GenericErrorMessage();
+        try {
+            String licenseKey = clientService.getActiveLicenseOfClient(principal.getName());
+            verificationResponse = processingRequestHandlerInterface.getDetailedResponse(principal.getName(), verificationId);
+            responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
+        } catch (ClientServiceException e) {
+            LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(), e);
+            errorMessage.setMessage("Your license is expired or suspended. Please contact support");
+            errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
+            responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
+        } catch (IOException e) {
+            LOGGER.error("Unable to parse json string to object ", e);
+            errorMessage.setMessage("Internal server error. Please check your request and try agian");
+            errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            responseEntity = new ResponseEntity<Object>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch (ResourceAccessPolicyViolationException e) {
+            LOGGER.warn("Client {} is trying to access resource {} which he/she is not autorized to ", principal.getName(), verificationId , e);
+            errorMessage.setMessage("You are not authorized to access this resource. This attempt will be recored.");
+            errorMessage.setStatus(HttpStatus.FORBIDDEN.value());
+            responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.FORBIDDEN);
+        } catch (ResourceNotFoundException e) {
+            LOGGER.warn("Unable to find the verification request  {} mentioned by the client {} ", verificationId, principal.getName(), e);
+            errorMessage.setMessage("The processing request you are trying to access is not found");
+            errorMessage.setStatus(HttpStatus.NOT_FOUND.value());
+            responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.NOT_FOUND);
+        }
+
+        return responseEntity;
     }
 
 }

@@ -31,16 +31,41 @@
 
     <bean id="oracleRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.OracleRequestProcessor"/>
 
-    <bean id="resourceProviderService" class="com.fintech.orion.hermesagentservices.resources.ResourceProviderService" />
-    <bean id="base64Service" class="com.fintech.orion.hermesagentservices.resources.Base64Service" />
 
     <bean id="requestSubmitter" class="com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitter"/>
 
     <bean id="verificationRequestDetailService" class="com.fintech.orion.common.service.VerificationRequestDetailService"/>
 
+    <bean id="hermeseResponseProcessor" class="com.fintech.orion.hermesagentservices.response.processor.HermeseResponseProcessor"/>
+
+    <bean id="oracleAPIBaseUrl" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="http://10.101.15.212:8080/oracle/v1/"/>
+    </bean>
+
+    <bean id="maximumWaitingTimeInSeconds" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="60"/>
+    </bean>
+
+    <bean id="maximumNumberOfTimeShouldRetry" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="10"/>
+    </bean>
+
     <!--RESOURCES DIRECTORY PATH TO GET RESOURCES-->
     <bean id="resourcesDir" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="C:\\"/>
+    </bean>
+
+
+    <bean id="verificationConfigurationMap" class="java.util.HashMap" scope="prototype">
+        <constructor-arg>
+            <map key-type="java.lang.String" value-type="com.fintech.orion.hermesagentservices.configuration.VerificationConfiguration">
+                <entry key="surname" value-ref="surnameVC"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="surnameVC" class="com.fintech.orion.hermesagentservices.configuration.VerificationConfiguration">
+        <property name="verificationStrategy" value="STRING" />
     </bean>
 
 

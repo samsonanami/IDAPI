@@ -10,7 +10,4 @@ public class DestinationProviderException extends Exception {
         super(e);
     }
 
-    public DestinationProviderException(String message) {
-        super(message);
-    }
 }
