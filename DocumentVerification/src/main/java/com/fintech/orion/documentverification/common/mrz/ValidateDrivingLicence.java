@@ -1,0 +1,80 @@
+package com.fintech.orion.documentverification.common.mrz;
+
+import com.fintech.orion.documentverification.common.exception.DirivingLicenseMRZValidatingException;
+import com.fintech.orion.documentverification.common.exception.DrivingLicenseMRZDecodingException;
+import com.fintech.orion.documentverification.common.exception.PassPortMRZValidateException;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by MudithaJ on 12/16/2016.
+ */
+public class ValidateDrivingLicence  implements ValidateMRZ{
+
+    private String message;
+    @Autowired
+    @Qualifier("addressConfigureList")
+    private HashMap<String,MRZItemProperty> mrzItemProperty;
+    @Override
+    public ValidateMRZResult validate(String mrz) throws DirivingLicenseMRZValidatingException
+    { try {
+        ValidateMRZResult validMRZ=new ValidateMRZResult();
+        validMRZ.setMRZType("DrivingLicense");
+        validMRZ.setItem(mrz);
+
+        Map<String, String> validateMap = new HashMap<String, String>();
+
+        validateMap.put("checkMRZLength", String.valueOf(this.checkMRZLength(mrz)));
+
+
+        if (validateMap.containsValue("false")) {
+            validMRZ.setValidationResult("false");
+            validMRZ.setMessage(this.getValidationResultMessage(validateMap));
+        } else {
+            validMRZ.setValidationResult("true");
+        }
+
+        return validMRZ;
+    }
+    catch (NullPointerException e)
+    {
+
+            throw new DirivingLicenseMRZValidatingException("Not well formatted Driving license MRZ or not well set configuration properties",e);
+    }
+    }
+    @Override
+    public String getValidationResultMessage(Map<String, String> validateMap)
+    {
+        String message ="";
+        for (Map.Entry<String, String> e : validateMap.entrySet()) {
+            if(e.getValue() == "false")
+            {
+                message = message +e.getKey() +"<<";
+            }
+        }
+
+        return message;
+    }
+
+    private boolean checkMRZLength(String mrz)
+    {
+        boolean validate = false;
+        int length = this.getConfigValue("MZRLength").getEndIndex();
+        if(mrz.length() == length) {
+            validate = true;
+        }
+
+        return validate;
+
+    }
+    public MRZItemProperty getConfigValue(String key)
+    {
+        MRZItemProperty property = mrzItemProperty.get(key);
+        return  property;
+    }
+
+}

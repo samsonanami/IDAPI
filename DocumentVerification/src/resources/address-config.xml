@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       <bean id="addressConfigureList" class="java.util.HashMap">
+              <constructor-arg>
+                     <map   key-type="java.lang.String" value-type="com.fintech.orion.documentverification.common.Address.AddressType">
+                            <entry key = "AddressTypeOne" value-ref="idAddressTypeOne"/>
+                            <entry key = "AddressTypeTwo" value-ref="idAddressTypeTwo"/>
+                     </map>
+              </constructor-arg>
+       </bean>
+       <bean id="idAddressTypeOne" class="com.fintech.orion.documentverification.common.Address.AddressType">
+              <property name="type" value="1"></property>
+              <property name="validateRegularExpression" value ="^([^,]*,){3}[^,]*$"></property>
+              <property name="decodeRegularExpression" value="(.+?),(.+?),(.+?),([^,]*$)"></property>
+              <property name="description" value="Address contains property number"></property>
+       </bean>
+       <bean id="idAddressTypeTwo" class="com.fintech.orion.documentverification.common.Address.AddressType">
+              <property name="type" value="2"></property>
+              <property name="validateRegularExpression" value ="^([^,]*,){4}[^,]*$"></property>
+              <property name="decodeRegularExpression" value="(.+?),(.+?),(.+?),(.+?),([^,]*$)"></property>
+              <property name="description" value="Flat address"></property>
+       </bean>
+</beans>
