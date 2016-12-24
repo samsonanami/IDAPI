@@ -24,14 +24,14 @@ public class LicenseService implements LicenseServiceInterface {
     @Transactional
     @Override
     public LicenseDTO findById(int id) throws ItemNotFoundException {
-        return licenseMapper.licenseToLicenseDTO(licenseRepositoryInterface.findById(id));
+        return licenseMapper.licenseToLicenseDTO(licenseRepositoryInterface.findOne(id));
     }
 
     @Transactional
     @Override
     public void updateLicenseWithDTO(LicenseDTO licenseDTO) throws ItemNotFoundException {
-        License license = licenseRepositoryInterface.findById(licenseDTO.getId());
+        License license = licenseRepositoryInterface.findOne(licenseDTO.getId());
         licenseMapper.updateLicenseWithLicenseDTO(license,licenseDTO);
-        licenseRepositoryInterface.saveOrUpdate(license);
+        licenseRepositoryInterface.save(license);
     }
 }

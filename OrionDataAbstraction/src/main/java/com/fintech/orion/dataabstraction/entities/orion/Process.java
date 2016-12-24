@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Nov 24, 2016 6:26:52 PM by Hibernate Tools 4.3.1
+// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="process"
-    ,catalog="orion"
 )
 public class Process  implements java.io.Serializable {
 
@@ -73,7 +72,7 @@ public class Process  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PROCESSING_REQUEST", nullable=false)
+    @JoinColumn(name="PROCESSING_REQUEST")
     public ProcessingRequest getProcessingRequest() {
         return this.processingRequest;
     }
@@ -83,7 +82,7 @@ public class Process  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PROCESSING_STATUS", nullable=false)
+    @JoinColumn(name="PROCESSING_STATUS")
     public ProcessingStatus getProcessingStatus() {
         return this.processingStatus;
     }
@@ -93,7 +92,7 @@ public class Process  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PROCESS_TYPE", nullable=false)
+    @JoinColumn(name="PROCESS_TYPE")
     public ProcessType getProcessType() {
         return this.processType;
     }
@@ -123,7 +122,7 @@ public class Process  implements java.io.Serializable {
     }
 
     
-    @Column(name="PROCESS_IDENTIFICATION_CODE", nullable=false, length=40)
+    @Column(name="PROCESS_IDENTIFICATION_CODE", length=40)
     public String getProcessIdentificationCode() {
         return this.processIdentificationCode;
     }

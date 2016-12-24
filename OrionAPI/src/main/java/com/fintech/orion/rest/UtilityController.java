@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class UtilityController {
 
-    @RequestMapping(value = "v1/health", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/health", method = RequestMethod.GET)
     @ResponseBody
     public Object getV1health(HttpServletRequest request, HttpServletResponse response){
         return "V1 health status ok";

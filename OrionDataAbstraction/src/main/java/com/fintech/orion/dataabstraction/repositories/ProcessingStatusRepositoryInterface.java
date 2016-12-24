@@ -1,12 +1,14 @@
 package com.fintech.orion.dataabstraction.repositories;
 
-import com.fintech.orion.dataabstraction.entities.common.DAOInterface;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.Status;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ProcessingStatusRepositoryInterface extends DAOInterface<ProcessingStatus, Integer> {
+@Repository
+public interface ProcessingStatusRepositoryInterface extends CrudRepository<ProcessingStatus, Integer> {
 
-    ProcessingStatus findByStatus(Status status) throws ItemNotFoundException;
+    ProcessingStatus findProcessingStatusByStatus(String status);
 
 }

@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Nov 24, 2016 6:26:52 PM by Hibernate Tools 4.3.1
+// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -36,11 +36,6 @@ public class ProcessingRequest  implements java.io.Serializable {
     public ProcessingRequest() {
     }
 
-	
-    public ProcessingRequest(Client client, String processingRequestIdentificationCode) {
-        this.client = client;
-        this.processingRequestIdentificationCode = processingRequestIdentificationCode;
-    }
     public ProcessingRequest(Client client, Date receivedOn, String processingRequestIdentificationCode, Set<Process> processes) {
        this.client = client;
        this.receivedOn = receivedOn;

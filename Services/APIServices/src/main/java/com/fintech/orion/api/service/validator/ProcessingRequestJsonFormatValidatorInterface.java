@@ -1,6 +1,7 @@
 package com.fintech.orion.api.service.validator;
 
 import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRequest;
+import com.fintech.orion.dto.request.api.VerificationRequest;
 
 /**
  *
@@ -8,5 +9,5 @@ import com.fintech.orion.dataabstraction.models.verificationprocess.ProcessingRe
  */
 public interface ProcessingRequestJsonFormatValidatorInterface {
 
-    boolean validate(ProcessingRequest processingRequest);
+    boolean validate(VerificationRequest processingRequest);
 }

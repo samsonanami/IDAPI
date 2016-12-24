@@ -25,6 +25,6 @@ public class ProcessConfigService implements ProcessConfigServiceInterface {
     @Transactional
     @Override
     public List<ProcessConfigDTO> findById(int processType) throws ItemNotFoundException {
-        return processConfigMapper.processConfigsToProcessConfigDTOs(processConfigRepositoryInterface.findById(processType));
+        return processConfigMapper.processConfigsToProcessConfigDTOs(processConfigRepositoryInterface.findProcessConfigsById(processType));
     }
 }

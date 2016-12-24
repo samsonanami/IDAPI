@@ -40,7 +40,6 @@ public class Service implements Daemon {
      */
     public static void startAgent() {
         loadApplicationContext();
-        setJobConsumer();
     }
 
     /**

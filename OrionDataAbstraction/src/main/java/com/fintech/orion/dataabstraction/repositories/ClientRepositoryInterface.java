@@ -1,11 +1,11 @@
 package com.fintech.orion.dataabstraction.repositories;
 
-import com.fintech.orion.dataabstraction.entities.common.DAOInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Client;
-import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ClientRepositoryInterface extends DAOInterface<Client, Integer> {
+@Repository
+public interface ClientRepositoryInterface extends CrudRepository<Client, Integer> {
 
-    Client findByUserName(String username) throws ItemNotFoundException;
-
+    Client findClientByUserName(String userName);
 }

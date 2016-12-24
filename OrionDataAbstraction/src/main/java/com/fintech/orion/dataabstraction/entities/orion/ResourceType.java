@@ -16,7 +16,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="resource_type"
-    ,catalog="orion"
 )
 public class ResourceType  implements java.io.Serializable {
 
@@ -68,7 +67,6 @@ public class ResourceType  implements java.io.Serializable {
     public void setResources(Set<Resource> resources) {
         this.resources = resources;
     }
-
 
 
 

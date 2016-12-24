@@ -17,7 +17,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="resource_metadata"
-    ,catalog="orion"
 )
 public class ResourceMetadata  implements java.io.Serializable {
 

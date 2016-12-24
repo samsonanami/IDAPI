@@ -10,7 +10,4 @@ public class PersistenceException extends Exception {
         super(e);
     }
 
-    public PersistenceException(String message) {
-        super(message);
-    }
 }

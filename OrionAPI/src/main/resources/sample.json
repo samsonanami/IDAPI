@@ -1,0 +1,154 @@
+{
+  "verificationRequestId" : "19b44e18-a25f-427c-9884-ebe6dcec1b96",
+  "status" : "Completed",
+  "data" : [{
+    "id" : "surname",
+    "value" : [{
+      "id" : "idDocValue",
+      "value" : "VIRTANENIFP",
+      "confidence" : 78
+    }, {
+      "id" : "addressDocValue",
+      "value" : "VIRTANENIFP",
+      "confidence" : 60
+    }, {
+      "id" : "keyedValue",
+      "value" : "VIRTANEN"
+    }
+    ],
+    "comparison" : [{
+      "id" : "keyedVsIdDoc",
+      "value" : false
+    }, {
+      "id" : "keyedVsAddressDoc",
+      "value" : true
+    }, {
+      "id" : "idDocVsAddressDoc",
+      "value" : false
+    }
+    ]
+  }
+  ],
+  "visualAuthenticity" : [{
+    "structure" : [{
+      "id" : "idDoc",
+      "match" : true,
+      "confidence" : 60
+    }, {
+      "id" : "addressDoc",
+      "match" : true,
+      "confidence" : 60
+    }
+    ]
+  }, {
+    "keyIdentifications" : [{
+      "id" : "idDoc",
+      "match" : true,
+      "confidence" : 60
+    }, {
+      "id" : "addressDoc",
+      "match" : true,
+      "confidence" : 60
+    }
+    ]
+  }
+  ],
+  "imageQuality" : [{
+    "brightness" : [{
+      "id" : "idDoc",
+      "compliance" : 60
+    }, {
+      "id" : "addressDoc",
+      "match" : true,
+      "confidence" : 70
+    }, {
+      "id" : "selified",
+      "match" : true,
+      "confidence" : 55
+    }
+    ]
+  }, {
+    "focus" : [{
+      "id" : "idDoc",
+      "compliance" : 60
+    }, {
+      "id" : "addressDoc",
+      "match" : true,
+      "confidence" : 70
+    }, {
+      "id" : "selified",
+      "match" : true,
+      "confidence" : 55
+    }
+    ]
+  }
+  ],
+  "dataValidation" : [{
+    "id" : "surname",
+    "value" : [{
+      "idDocVizValue" : "Kularatne",
+      "idDocMrzValue" : "Kularatne",
+      "idDocConfidence" : 100,
+      "addressVizValue" : "sfsdfdsf",
+      "addressMrzvalue" : "",
+      "addressDocConfidence" : 90
+    }
+    ]
+  }, {
+    "id" : "address",
+    "value" : [{
+      "idDocVizValue" : "asdasd",
+      "idDocMrzValue" : "asdsd",
+      "idDocConfidence" : 80,
+      "addressVizValue" : "asdffh",
+      "addressMrzvalue" : "",
+      "addressDocConfidence" : 70
+    }
+    ]
+  }
+  ],
+  "dataConsistency" : [{
+    "idDocMrzVsSelifiedMrzMatch" : 100,
+    "confidence" : 90
+  }, {
+    "addressDocMrzVsSelifiedMrzMatch" : 100,
+    "confidence" : 90
+  }
+  ],
+  "idDocFullValidations" : [{
+    "id" : "Document type",
+    "value" : "Passport",
+    "ocrConfidence" : 80,
+    "remarks" : ""
+  }, {
+    "id" : "Document number",
+    "value" : "2345354",
+    "ocrConfidence" : 80,
+    "remarks" : ""
+  }, {
+    "id" : "Expired date",
+    "value" : "10-11-2016",
+    "ocrConfidence" : 80,
+    "remarks" : "Expired"
+  }, {
+    "id" : "Check digit validation",
+    "value" : "clear",
+    "ocrConfidence" : 80,
+    "remarks" : "validation details"
+  }
+  ],
+  "addressDocFullValidations" : [{
+    "id" : "Document type",
+    "value" : "Gas bill",
+    "ocrConfidence" : 80,
+    "remarks" : ""
+  }, {
+    "id" : "Title",
+    "value" : "Mrs",
+    "ocrConfidence" : 70,
+    "remarks" : ""
+  }
+  ],
+  "livenessTest" : 90,
+  "facialMatch" : 85
+}
