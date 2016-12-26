@@ -1,25 +1,26 @@
-package com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.response;
+package com.fintech.orion.dto.hermese.model.Oracle.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
- * OcrFieldData
+ * OcrFieldValue
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-02T04:51:04.641Z")
 
-public class OcrFieldData   {
+public class OcrFieldValue   {
   @JsonProperty("id")
   private String id = null;
 
   @JsonProperty("value")
-  private List<OcrFieldValue> value = new ArrayList<OcrFieldValue>();
+  private String value = null;
 
-  public OcrFieldData id(String id) {
+  @JsonProperty("confidence")
+  private Integer confidence = null;
+
+  public OcrFieldValue id(String id) {
     this.id = id;
     return this;
   }
@@ -37,13 +38,8 @@ public class OcrFieldData   {
     this.id = id;
   }
 
-  public OcrFieldData value(List<OcrFieldValue> value) {
+  public OcrFieldValue value(String value) {
     this.value = value;
-    return this;
-  }
-
-  public OcrFieldData addValueItem(OcrFieldValue valueItem) {
-    this.value.add(valueItem);
     return this;
   }
 
@@ -52,12 +48,30 @@ public class OcrFieldData   {
    * @return value
   **/
   @ApiModelProperty(value = "")
-  public List<OcrFieldValue> getValue() {
+  public String getValue() {
     return value;
   }
 
-  public void setValue(List<OcrFieldValue> value) {
+  public void setValue(String value) {
     this.value = value;
+  }
+
+  public OcrFieldValue confidence(Integer confidence) {
+    this.confidence = confidence;
+    return this;
+  }
+
+   /**
+   * Get confidence
+   * @return confidence
+  **/
+  @ApiModelProperty(value = "")
+  public Integer getConfidence() {
+    return confidence;
+  }
+
+  public void setConfidence(Integer confidence) {
+    this.confidence = confidence;
   }
 
 
@@ -69,23 +83,25 @@ public class OcrFieldData   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OcrFieldData ocrFieldData = (OcrFieldData) o;
-    return Objects.equals(this.id, ocrFieldData.id) &&
-        Objects.equals(this.value, ocrFieldData.value);
+    OcrFieldValue ocrFieldValue = (OcrFieldValue) o;
+    return Objects.equals(this.id, ocrFieldValue.id) &&
+        Objects.equals(this.value, ocrFieldValue.value) &&
+        Objects.equals(this.confidence, ocrFieldValue.confidence);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, value);
+    return Objects.hash(id, value, confidence);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OcrFieldData {\n");
+    sb.append("class OcrFieldValue {\n");
 
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
+    sb.append("    confidence: ").append(toIndentedString(confidence)).append("\n");
     sb.append("}");
     return sb.toString();
   }

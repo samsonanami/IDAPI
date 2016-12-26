@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
+// Generated Dec 25, 2016 10:54:56 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="processing_request"
+    ,catalog="idapi"
 )
 public class ProcessingRequest  implements java.io.Serializable {
 
@@ -56,7 +57,7 @@ public class ProcessingRequest  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="CLIENT", nullable=false)
+    @JoinColumn(name="CLIENT")
     public Client getClient() {
         return this.client;
     }
@@ -76,7 +77,7 @@ public class ProcessingRequest  implements java.io.Serializable {
     }
 
     
-    @Column(name="PROCESSING_REQUEST_IDENTIFICATION_CODE", nullable=false, length=40)
+    @Column(name="PROCESSING_REQUEST_IDENTIFICATION_CODE", length=40)
     public String getProcessingRequestIdentificationCode() {
         return this.processingRequestIdentificationCode;
     }

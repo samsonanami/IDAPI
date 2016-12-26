@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
+// Generated Dec 25, 2016 10:54:56 AM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.AttributeOverride;
@@ -17,6 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="process_config"
+    ,catalog="idapi"
 )
 public class ProcessConfig  implements java.io.Serializable {
 

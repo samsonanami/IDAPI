@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
+// Generated Dec 25, 2016 10:54:56 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -21,6 +21,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="ocr_processing_request"
+    ,catalog="idapi"
 )
 public class OcrProcessingRequest  implements java.io.Serializable {
 
@@ -79,6 +80,8 @@ public class OcrProcessingRequest  implements java.io.Serializable {
     public void setOcrProcesses(Set<OcrProcess> ocrProcesses) {
         this.ocrProcesses = ocrProcesses;
     }
+
+
 
 
 }

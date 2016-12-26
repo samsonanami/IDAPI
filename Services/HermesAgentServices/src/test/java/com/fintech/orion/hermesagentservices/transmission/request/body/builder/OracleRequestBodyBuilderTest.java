@@ -1,6 +1,6 @@
 package com.fintech.orion.hermesagentservices.transmission.request.body.builder;
 
-import com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.VerificationResource;
+import com.fintech.orion.dto.hermese.model.Oracle.VerificationResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.Assert;
@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by sasitha on 12/23/16.

@@ -3,9 +3,9 @@ package com.fintech.orion.hermesagentservices.transmission.request.body.builder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.VerificationResource;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.VerificationProcess;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.VerificationRequest;
+import com.fintech.orion.dto.hermese.model.Oracle.VerificationResource;
+import com.fintech.orion.dto.hermese.model.Oracle.VerificationProcess;
+import com.fintech.orion.dto.hermese.model.Oracle.VerificationRequest;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,11 +34,11 @@ public class OracleRequestBodyBuilder implements RequestBodyBuilder{
         verificationRequest.setVerificationProcesses(verificationProcessList);
         String bodyString = "{}";
         ObjectMapper objectMapper = new ObjectMapper();
-        /*try {
+        try {
             bodyString = objectMapper.writeValueAsString(verificationRequest);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }*/
+        }
         return bodyString;
     }
 }

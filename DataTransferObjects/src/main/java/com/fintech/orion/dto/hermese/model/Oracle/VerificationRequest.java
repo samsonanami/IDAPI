@@ -1,4 +1,4 @@
-package com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle;
+package com.fintech.orion.dto.hermese.model.Oracle;
 
 import java.util.List;
 

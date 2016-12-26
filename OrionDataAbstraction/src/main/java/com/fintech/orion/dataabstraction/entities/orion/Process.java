@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
+// Generated Dec 25, 2016 10:54:56 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -24,6 +24,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="process"
+    ,catalog="idapi"
 )
 public class Process  implements java.io.Serializable {
 
@@ -41,13 +42,6 @@ public class Process  implements java.io.Serializable {
     public Process() {
     }
 
-	
-    public Process(ProcessingRequest processingRequest, ProcessingStatus processingStatus, ProcessType processType, String processIdentificationCode) {
-        this.processingRequest = processingRequest;
-        this.processingStatus = processingStatus;
-        this.processType = processType;
-        this.processIdentificationCode = processIdentificationCode;
-    }
     public Process(ProcessingRequest processingRequest, ProcessingStatus processingStatus, ProcessType processType, Date requestSentOn, Date responseReceivedOn, String processIdentificationCode, Response response, Set<Resource> resources) {
        this.processingRequest = processingRequest;
        this.processingStatus = processingStatus;

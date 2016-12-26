@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Nov 24, 2016 6:26:52 PM by Hibernate Tools 4.3.1
+// Generated Dec 25, 2016 10:54:56 AM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.AttributeOverride;
@@ -17,6 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="resource_metadata"
+    ,catalog="idapi"
 )
 public class ResourceMetadata  implements java.io.Serializable {
 

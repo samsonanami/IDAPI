@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
+// Generated Dec 25, 2016 10:54:56 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -16,12 +16,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="resource_name"
+    ,catalog="idapi"
 )
 public class ResourceName  implements java.io.Serializable {
 
 
      private int id;
      private String name;
+     private String configFilePath;
      private Set<Resource> resources = new HashSet<Resource>(0);
      private Set<ResourceNameOcrExtractionField> resourceNameOcrExtractionFields = new HashSet<ResourceNameOcrExtractionField>(0);
 
@@ -32,9 +34,10 @@ public class ResourceName  implements java.io.Serializable {
     public ResourceName(int id) {
         this.id = id;
     }
-    public ResourceName(int id, String name, Set<Resource> resources, Set<ResourceNameOcrExtractionField> resourceNameOcrExtractionFields) {
+    public ResourceName(int id, String name, String configFilePath, Set<Resource> resources, Set<ResourceNameOcrExtractionField> resourceNameOcrExtractionFields) {
        this.id = id;
        this.name = name;
+       this.configFilePath = configFilePath;
        this.resources = resources;
        this.resourceNameOcrExtractionFields = resourceNameOcrExtractionFields;
     }
@@ -61,6 +64,16 @@ public class ResourceName  implements java.io.Serializable {
         this.name = name;
     }
 
+    
+    @Column(name="CONFIG_FILE_PATH", length=50)
+    public String getConfigFilePath() {
+        return this.configFilePath;
+    }
+    
+    public void setConfigFilePath(String configFilePath) {
+        this.configFilePath = configFilePath;
+    }
+
 @OneToMany(fetch=FetchType.LAZY, mappedBy="resourceName")
     public Set<Resource> getResources() {
         return this.resources;
@@ -78,6 +91,9 @@ public class ResourceName  implements java.io.Serializable {
     public void setResourceNameOcrExtractionFields(Set<ResourceNameOcrExtractionField> resourceNameOcrExtractionFields) {
         this.resourceNameOcrExtractionFields = resourceNameOcrExtractionFields;
     }
+
+
+
 
 }
 

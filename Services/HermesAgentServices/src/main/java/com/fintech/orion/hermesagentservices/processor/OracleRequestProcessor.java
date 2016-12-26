@@ -1,7 +1,5 @@
 package com.fintech.orion.hermesagentservices.processor;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.request.FailedRequestException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
@@ -11,9 +9,9 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.VerificationProcessResponse;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.VerificationResource;
-import com.fintech.orion.hermesagentservices.transmission.payload.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.Oracle.VerificationProcessResponse;
+import com.fintech.orion.dto.hermese.model.Oracle.VerificationResource;
+import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyBuilder;
 import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyBuilderFactory;
 import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyType;
@@ -126,11 +124,11 @@ public class OracleRequestProcessor implements VerificationProcessor {
         HttpResponse<String> response = null;
         OcrResponse ocrResponse = new OcrResponse();
         boolean continueCheck = true;
-        int maximumTimeToWait = Integer.valueOf(maximumWaitingTimeInSeconds);
+        int maximumTimeToWait = (Integer.valueOf(maximumWaitingTimeInSeconds)/10);
         long startTime = System.currentTimeMillis();
         while (continueCheck && maximumTimeToWait >0){
             maximumTimeToWait--;
-            Thread.sleep(1000);
+            Thread.sleep(10000);
             response = requestSubmitter.submitRequest(getRequest);
             if (response.getStatus() == 200){
                 ObjectMapper objectMapper = new ObjectMapper();

@@ -1,5 +1,5 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Dec 17, 2016 2:50:34 PM by Hibernate Tools 4.3.1
+// Generated Dec 25, 2016 10:54:56 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -20,6 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="resource_name_ocr_extraction_field"
+    ,catalog="idapi"
 )
 public class ResourceNameOcrExtractionField  implements java.io.Serializable {
 
