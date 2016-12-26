@@ -11,6 +11,7 @@ import com.fintech.orion.dto.response.api.FieldDataComparision;
 import com.fintech.orion.dto.response.api.FieldDataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class DataComparator implements DocumentVerification {
     private DataValidationStrategy validationStrategy;
 
     private DocumentDataValidator validator;
+
+    @Autowired
+    private DataValidationStrategyProvider dataValidationStrategyProvider;
 
     @Override
     public List<Object> verifyExtractedDocumentResult(OcrResponse ocrResponse,  Map<String, VerificationConfiguration> configurations) {
@@ -95,13 +99,12 @@ public class DataComparator implements DocumentVerification {
     }
 
     private DataValidationStrategy verificationStrategy(String field){
-        DataValidationStrategyProvider provider = new DataValidationStrategyProvider();
         VerificationConfiguration verificationConfiguration = verificationConfigurationMap.get(field);
         DataValidationStrategyType type;
         DataValidationStrategy strategy = null;
         try{
             type = verificationConfiguration.getSameValueComparisonStrategyAcrossMultipleResources();
-            strategy = provider.getValidationStrategy(type);
+            strategy = dataValidationStrategyProvider.getValidationStrategy(type);
         }catch (Exception e){
             LOGGER.warn("Could not find a same value comparison strategy across multiple resources for " +
                     "extraction field {} the full configuration for this extraction field is {} ",

@@ -2,6 +2,7 @@ package com.fintech.orion.documentverification.common.Address;
 
 import com.fintech.orion.documentverification.common.exception.AddressValidatingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.Iterator;
 /**
  * Created by MudithaJ on 12/22/2016.
  */
+@Component
 public class AddressCompare implements Address {
 
     @Autowired
