@@ -7,6 +7,8 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.documentverification.factory.DocumentVerification;
 import com.fintech.orion.documentverification.factory.DocumentVerificationFactory;
 import com.fintech.orion.documentverification.factory.DocumentVerificationType;
+import com.fintech.orion.dto.hermese.ResponseProcessorResult;
+import com.fintech.orion.dto.response.api.DataValidation;
 import com.fintech.orion.dto.response.api.FieldData;
 import com.fintech.orion.dto.response.api.ValidationData;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
@@ -45,10 +47,10 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
     @Override
     @Transactional
-    public String processAndUpdateRawResponse(String rawResponse, ProcessingRequest processingRequest) throws HermeseResponseprocessorException {
+    public ResponseProcessorResult processAndUpdateRawResponse(String rawResponse, ProcessingRequest processingRequest) throws HermeseResponseprocessorException {
         try {
 
-            String processedResponse = getProcessedJson(null, rawResponse, processingRequest);
+            ResponseProcessorResult processedResponse = getProcessedJson(null, rawResponse, processingRequest);
             return processedResponse;
         } catch (IOException e) {
             throw new HermeseResponseprocessorException("Error mapping object to json ", e);
@@ -58,7 +60,7 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
     }
 
 
-    private String getProcessedJson(String existingProcessedResponse, String newRawResponse, ProcessingRequest processingRequest) throws IOException {
+    private ResponseProcessorResult getProcessedJson(String existingProcessedResponse, String newRawResponse, ProcessingRequest processingRequest) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         VerificationProcessDetailedResponse detailedResponse = new VerificationProcessDetailedResponse();
         if (existingProcessedResponse != null && !existingProcessedResponse.isEmpty()){
@@ -75,9 +77,29 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
         updateDataComparison(detailedResponse, ocrResponse);
         updateIdDocumentFullValidation(detailedResponse, ocrResponse);
+        setFinalProcessingStatus(detailedResponse);
+        ResponseProcessorResult result = new ResponseProcessorResult();
+        result.setFinalProcessingStatus(true);
+        result.setProcessedString(objectMapper.writeValueAsString(detailedResponse));
+        if (detailedResponse.getStatus().equalsIgnoreCase("Failed")){
+            result.setFinalProcessingStatus(false);
+        }
 
-        return objectMapper.writeValueAsString(detailedResponse);
+        return result;
 
+    }
+
+    private void setFinalProcessingStatus(VerificationProcessDetailedResponse detailedResponse){
+        for (ValidationData validation : detailedResponse.getAddressDocFullValidations()){
+            if(validation.getId().equalsIgnoreCase("critical_error_set") && !validation.getRemarks().isEmpty()){
+                detailedResponse.setStatus("Failed");
+            }
+        }
+        for (ValidationData validation : detailedResponse.getAddressDocFullValidations()){
+            if(validation.getId().equalsIgnoreCase("critical_error_set") && !validation.getRemarks().isEmpty()){
+                detailedResponse.setStatus("Failed");
+            }
+        }
     }
 
     private void updateDataComparison(VerificationProcessDetailedResponse response, OcrResponse ocrResponse){
