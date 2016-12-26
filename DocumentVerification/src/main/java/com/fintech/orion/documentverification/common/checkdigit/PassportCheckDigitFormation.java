@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
 /**
  * Created by MudithaJ on 11/28/2016.
  */
+@Component
 public class PassportCheckDigitFormation {
 
     private int moduler;
@@ -23,6 +25,7 @@ public class PassportCheckDigitFormation {
     private int checkDigitAphabteENDValue;
     private int secondStringStartIndex;
     private int mrzFirstLineCharacterCount;
+
     @Autowired
     @Qualifier("passportMRZConfigureList")
     private HashMap<String,MRZItemProperty> mrzItemProperty;

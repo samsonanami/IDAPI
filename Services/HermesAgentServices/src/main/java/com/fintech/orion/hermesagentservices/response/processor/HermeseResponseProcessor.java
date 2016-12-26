@@ -8,6 +8,7 @@ import com.fintech.orion.documentverification.factory.DocumentVerification;
 import com.fintech.orion.documentverification.factory.DocumentVerificationFactory;
 import com.fintech.orion.documentverification.factory.DocumentVerificationType;
 import com.fintech.orion.dto.response.api.FieldData;
+import com.fintech.orion.dto.response.api.ValidationData;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.configuration.VerificationConfiguration;
@@ -38,16 +39,16 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
     @Qualifier("verificationConfigurationMap")
     private Map<String, VerificationConfiguration> verificationConfigurationMap;
 
+    @Autowired
     private DocumentVerificationFactory documentVerificationFactory;
 
 
     @Override
     @Transactional
     public String processAndUpdateRawResponse(String rawResponse, ProcessingRequest processingRequest) throws HermeseResponseprocessorException {
-        documentVerificationFactory = new DocumentVerificationFactory();
         try {
 
-            String processedResponse = getProcessedJson(null, rawResponse);
+            String processedResponse = getProcessedJson(null, rawResponse, processingRequest);
             return processedResponse;
         } catch (IOException e) {
             throw new HermeseResponseprocessorException("Error mapping object to json ", e);
@@ -57,7 +58,7 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
     }
 
 
-    private String getProcessedJson(String existingProcessedResponse, String newRawResponse) throws IOException {
+    private String getProcessedJson(String existingProcessedResponse, String newRawResponse, ProcessingRequest processingRequest) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         VerificationProcessDetailedResponse detailedResponse = new VerificationProcessDetailedResponse();
         if (existingProcessedResponse != null && !existingProcessedResponse.isEmpty()){
@@ -66,20 +67,37 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
         OcrResponse ocrResponse = objectMapper.readValue(newRawResponse, OcrResponse.class);
         detailedResponse.setStatus(ocrResponse.getStatus());
-        detailedResponse.setVerificationRequestId(ocrResponse.getVerificationRequestId());
+        detailedResponse.setVerificationRequestId(processingRequest.getProcessingRequestIdentificationCode());
+        ocrResponse.setVerificationRequestId(processingRequest.getProcessingRequestIdentificationCode());
 
 
 
+
+        updateDataComparison(detailedResponse, ocrResponse);
+        updateIdDocumentFullValidation(detailedResponse, ocrResponse);
+
+        return objectMapper.writeValueAsString(detailedResponse);
+
+    }
+
+    private void updateDataComparison(VerificationProcessDetailedResponse response, OcrResponse ocrResponse){
         List<Object> resultList = new ArrayList<>();
-
         DocumentVerification dataComparison = documentVerificationFactory.getDocumentVerification(DocumentVerificationType.DATA_COMPARISON);
         resultList = dataComparison.verifyExtractedDocumentResult(ocrResponse, verificationConfigurationMap);
         List<FieldData> fieldDataList = resultList.stream()
                 .map(element->(FieldData) element)
                 .collect(Collectors.toList());
-        detailedResponse.setData(fieldDataList);
+        response.setData(fieldDataList);
+    }
 
-        return objectMapper.writeValueAsString(detailedResponse);
+    private void updateIdDocumentFullValidation(VerificationProcessDetailedResponse response, OcrResponse ocrResponse){
+        List<Object> resultList = new ArrayList<>();
+        DocumentVerification idDocFullComparision = documentVerificationFactory.getDocumentVerification(DocumentVerificationType.ID_DOC_FULL_VERIFICATIONS);
+        resultList = idDocFullComparision.verifyExtractedDocumentResult(ocrResponse, verificationConfigurationMap);
+        List<ValidationData> validationDataList= resultList.stream()
+                .map(element->(ValidationData) element)
+                .collect(Collectors.toList());
+        response.setIdDocFullValidations(validationDataList);
 
     }
 

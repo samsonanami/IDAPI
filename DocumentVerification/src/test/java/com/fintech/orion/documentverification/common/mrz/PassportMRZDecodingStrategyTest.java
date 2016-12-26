@@ -36,7 +36,7 @@ public class PassportMRZDecodingStrategyTest {
     {
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("SurName")).thenReturn(helper.getMRZSurNameSystemProperty());
-        Mockito.when(mrzItemProperty.get("Givennames")).thenReturn(helper.getMRZGivenNameSystemProperty());
+        Mockito.when(mrzItemProperty.get("GivenNames")).thenReturn(helper.getMRZGivenNameSystemProperty());
         Mockito.when(mrzItemProperty.get("PassPortNumber")).thenReturn(helper.getMRZPassportNumberSystemProperty());
         Mockito.when(mrzItemProperty.get("Sex")).thenReturn(helper.getMRZSexSystemProperty());
         Mockito.when(mrzItemProperty.get("DateOfBirth")).thenReturn(helper.getMRZDateOfBirthSystemProperty());
@@ -64,7 +64,7 @@ public class PassportMRZDecodingStrategyTest {
     public void should_return_valid_given_name()throws PassportMRZDecodeException{
         expectedResult.setGivenName("PHILIP MARK");
         PassportMRZHelper helper = new PassportMRZHelper();
-        Mockito.when(mrzItemProperty.get("Givennames")).thenReturn(helper.getMRZGivenNameSystemProperty());
+        Mockito.when(mrzItemProperty.get("GivenNames")).thenReturn(helper.getMRZGivenNameSystemProperty());
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getGivenName(), results.getGivenName());
     }

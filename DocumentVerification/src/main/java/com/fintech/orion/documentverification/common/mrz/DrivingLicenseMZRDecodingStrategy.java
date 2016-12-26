@@ -4,6 +4,7 @@ import com.fintech.orion.documentverification.common.exception.DrivingLicenseMRZ
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 /**
  * Created by MudithaJ on 12/15/2016.
  */
+@Component
 public class DrivingLicenseMZRDecodingStrategy  implements MRZDecodingStrategy{
     @Autowired
     @Qualifier("drivingLicenseMRZConfigureList")
