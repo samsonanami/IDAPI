@@ -6,5 +6,5 @@ package com.fintech.orion.dto.configuration;
  */
 public enum DataValidationStrategyType {
 
-    STRING, DATE
+    STRING, DATE, ADDRESS
 }

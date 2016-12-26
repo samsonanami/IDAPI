@@ -23,6 +23,9 @@ public class ValidationData   {
   @JsonProperty("remarks")
   private String remarks = null;
 
+  @JsonProperty("validationStatus")
+  private boolean validationStatus = false;
+
   public ValidationData id(String id) {
     this.id = id;
     return this;
@@ -95,6 +98,18 @@ public class ValidationData   {
     this.remarks = remarks;
   }
 
+  /**
+   * Get vaLidationStatus
+   * @return
+   */
+  @ApiModelProperty(value = "")
+  public boolean getValidationStatus() {
+    return validationStatus;
+  }
+
+  public void setValidationStatus(boolean validationStatus) {
+    validationStatus = validationStatus;
+  }
 
   @Override
   public boolean equals(Object o) {
@@ -108,12 +123,13 @@ public class ValidationData   {
     return Objects.equals(this.id, validationData.id) &&
         Objects.equals(this.value, validationData.value) &&
         Objects.equals(this.ocrConfidence, validationData.ocrConfidence) &&
-        Objects.equals(this.remarks, validationData.remarks);
+        Objects.equals(this.remarks, validationData.remarks) &&
+        Objects.equals(this.validationStatus, validationData.validationStatus);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, value, ocrConfidence, remarks);
+    return Objects.hash(id, value, ocrConfidence, remarks, validationStatus);
   }
 
   @Override
@@ -125,6 +141,7 @@ public class ValidationData   {
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    ocrConfidence: ").append(toIndentedString(ocrConfidence)).append("\n");
     sb.append("    remarks: ").append(toIndentedString(remarks)).append("\n");
+    sb.append("    validationStatus: ").append(toIndentedString(validationStatus)).append("\n");
     sb.append("}");
     return sb.toString();
   }

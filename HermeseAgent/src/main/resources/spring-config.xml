@@ -11,5 +11,8 @@
     <!--OTHER IMPORTS-->
     <import resource="spring-datasource.xml" />
     <import resource="spring-beans.xml" />
+    <import resource="address-config.xml"/>
+    <import resource="driving-license-config.xml"/>
+    <import resource="passport-mrz-decode.xml"/>
 
 </beans>

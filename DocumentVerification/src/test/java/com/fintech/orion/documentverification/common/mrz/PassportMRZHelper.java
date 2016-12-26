@@ -40,7 +40,7 @@ public class PassportMRZHelper {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
-        mrzItemProperty.setItemName("Givennames");
+        mrzItemProperty.setItemName("GivenNames");
         mrzItemProperty.setStartIndex(6);
         mrzItemProperty.setEndIndex(44);
         mrzItemProperty.setMrzLineNumber(1);
