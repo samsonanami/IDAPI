@@ -120,6 +120,10 @@
 
     <bean id="passportCheckDigitFormation" class="com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation"/>
 
+    <bean id =" dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
+    <bean id="addressComparator" class="com.fintech.orion.documentverification.common.Address.AddressCompare"/>
+    <bean id="addressDecoder" class="com.fintech.orion.documentverification.common.Address.AddressDecoding"/>
+
 
     <bean id="idDocCustomValidations" class="java.util.HashMap" scope="prototype">
         <constructor-arg>

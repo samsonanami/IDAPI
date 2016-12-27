@@ -41,7 +41,7 @@ public class AddressCompareTest {
 
         Mockito.when(decoder.decode(addressOne)).thenReturn(helper.getTypeOneCorrectAddress());
         AddressCompareResult expectedResult = new AddressCompareResult();
-        expectedResult.setResult("true");
+        expectedResult.setResult(true);
         Assert.assertEquals(expectedResult.isResult(), result.compare(addressOne,addressOne).isResult() );
     }
     @Test
@@ -50,7 +50,7 @@ public class AddressCompareTest {
 
         Mockito.when(decoder.decode(addressTwo)).thenReturn(helper.getTypeTwoCorrectAddress());
         AddressCompareResult expectedResult = new AddressCompareResult();
-        expectedResult.setResult("true");
+        expectedResult.setResult(true);
         Assert.assertEquals(expectedResult.isResult(), result.compare(addressTwo,addressTwo).isResult() );
     }
     @Test
@@ -60,7 +60,7 @@ public class AddressCompareTest {
         Mockito.when(decoder.decode(addressOne)).thenReturn(helper.getTypeOneCorrectAddress());
         Mockito.when(decoder.decode(addressTwo)).thenReturn(helper.getTypeTwoCorrectAddress());
         AddressCompareResult expectedResult = new AddressCompareResult();
-        expectedResult.setResult("false");
+        expectedResult.setResult(false);
         Assert.assertEquals(expectedResult.isResult(), result.compare(addressOne,addressTwo).isResult() );
     }
 

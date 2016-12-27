@@ -14,7 +14,7 @@ import java.util.Iterator;
 public class AddressCompare implements Address {
 
     @Autowired
-    private  AddressDecoding decoder ;
+    private  AddressDecoding addressDecoder ;
     @Override
     public AddressCompareResult compare(String addressOne, String addressTwo) throws AddressValidatingException
     {
@@ -24,8 +24,8 @@ public class AddressCompare implements Address {
             AddressDecodeResults addressTwoResult;
             HashMap<String, String> resultMap = new HashMap<String, String>();
             String message = "";
-            addressOneresult = decoder.decode(addressOne);
-            addressTwoResult = decoder.decode(addressTwo);
+            addressOneresult = addressDecoder.decode(addressOne);
+            addressTwoResult = addressDecoder.decode(addressTwo);
 
             result.setAddressOne(addressOne);
             result.setAddressTwo(addressTwo);
@@ -44,9 +44,9 @@ public class AddressCompare implements Address {
                 message = message + set.getKey() + ":" + set.getValue() + ",";
             }
             if (resultMap.containsValue("false")) {
-                result.setResult("false");
+                result.setResult(false);
             } else {
-                result.setResult("true");
+                result.setResult(true);
             }
             result.setMessage(message);
 
