@@ -9,7 +9,7 @@ public class AddressCompareResult {
     private String addressTwo;
     private String addressOneType;
     private String addressTwoType;
-    private String result;
+    private boolean result;
     private String message;
 
     public AddressCompareResult() {
@@ -18,7 +18,7 @@ public class AddressCompareResult {
         this.addressTwo="";
         this.addressOneType="";
         this.addressTwoType="";
-        this.result="";
+        this.result=false;
         this.message="";
     }
 
@@ -55,11 +55,11 @@ public class AddressCompareResult {
         this.addressTwo = addressTwo;
     }
 
-    public String isResult() {
+    public boolean isResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(boolean result) {
         this.result = result;
     }
 

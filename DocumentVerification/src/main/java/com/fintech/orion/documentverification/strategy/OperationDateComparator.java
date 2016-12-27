@@ -1,6 +1,5 @@
 package com.fintech.orion.documentverification.strategy;
 
-import com.fintech.orion.documentverification.common.Address.AddressDecodeResults;
 import com.fintech.orion.documentverification.common.exception.DateComparatorException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
