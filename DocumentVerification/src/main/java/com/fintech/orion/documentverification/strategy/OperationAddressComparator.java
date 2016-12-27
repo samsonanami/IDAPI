@@ -20,7 +20,7 @@ public class OperationAddressComparator implements DataValidationStrategy {
         ValidationResult validationResult = new ValidationResult(false, "Error Validating date");
         try {
             AddressCompareResult result = addressCompare.compare(base, compare);
-            if (result.isResult().equalsIgnoreCase("true")){
+            if (result.isResult()){
                 validationResult.setStatus(Boolean.valueOf(result.isResult()));
                 validationResult.setRemarks(result.getMessage());
             }

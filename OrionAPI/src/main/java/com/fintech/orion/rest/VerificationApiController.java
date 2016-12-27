@@ -57,7 +57,7 @@ public class VerificationApiController implements VerificationApi {
 
     public ResponseEntity<Object> verificationPost(
             @ApiParam(value = "", required = true, defaultValue = "true")
-            @RequestParam(value = "integrationRequest", required = true, defaultValue="false") String integrationRequest,
+            @RequestParam(value = "integration_request", required = true, defaultValue="false") String integrationRequest,
             @ApiParam(value = "Processing request" ,required=true ) @RequestBody VerificationRequest body,
             HttpServletResponse response, HttpServletRequest request) {
         // do some magic!

@@ -11,6 +11,7 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.LicenseRepositoryInterface;
 import com.fintech.orion.dto.hermese.ResponseProcessorResult;
+import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.hermesagentservices.processor.OracleRequestProcessor;
 import com.fintech.orion.hermesagentservices.response.processor.HermeseResponseProcessor;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -69,7 +71,7 @@ public class VerificationOrchestrator {
             ProcessingRequest processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
             String rawString = objectMapper.writeValueAsString(oracleResults.get());
             ResponseProcessorResult result = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
-            updateLicenseStatus(result, processingMessage.getClientLicense());
+            updateLicenseStatus(rawString, processingMessage.getClientLicense());
             for (Process process : processingRequest.getProcesses()){
                 saveProcessResponse(rawString, result.getProcessedString(), process);
             }
@@ -89,13 +91,19 @@ public class VerificationOrchestrator {
     }
 
     @Transactional
-    private void updateLicenseStatus(ResponseProcessorResult result, String licenseKey) throws ItemNotFoundException {
-        if (result.isFinalProcessingStatus()){
-            License license = licenseRepositoryInterface.findLicenseByLicenseKey(licenseKey);
-            int currentLicenseCount = license.getCurrentRequestCount();
-            currentLicenseCount = currentLicenseCount + 1;
-            license.setCurrentRequestCount(currentLicenseCount);
-            licenseRepositoryInterface.save(license);
+    private void updateLicenseStatus(String rawString, String licenseKey) throws ItemNotFoundException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            OcrResponse response = objectMapper.readValue(rawString, OcrResponse.class);
+            if (response.getStatus().equalsIgnoreCase("processing_successful")){
+                License license = licenseRepositoryInterface.findLicenseByLicenseKey(licenseKey);
+                int currentLicenseCount = license.getCurrentRequestCount();
+                currentLicenseCount = currentLicenseCount + 1;
+                license.setCurrentRequestCount(currentLicenseCount);
+                licenseRepositoryInterface.save(license);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Error while trying to update license key", e);
         }
     }
     @Transactional
