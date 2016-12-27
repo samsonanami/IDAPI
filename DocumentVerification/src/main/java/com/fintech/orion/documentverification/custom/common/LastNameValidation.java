@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class LastNameValidation extends ValidationHelper implements CustomValidation {
-git stage 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();

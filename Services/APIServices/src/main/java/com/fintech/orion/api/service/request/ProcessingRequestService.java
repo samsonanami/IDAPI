@@ -1,6 +1,7 @@
 package com.fintech.orion.api.service.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fintech.orion.api.service.exceptions.DataNotFoundException;
 import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
 import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
 import com.fintech.orion.dataabstraction.entities.orion.*;
@@ -13,6 +14,7 @@ import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.Date;
@@ -42,9 +44,9 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     @Autowired
     private ProcessTypeRepositoryInterface processTypeRepositoryInterface;
 
-    @Transactional(rollbackFor = ItemNotFoundException.class)
+    @Transactional(rollbackFor = {ItemNotFoundException.class, DataNotFoundException.class})
     @Override
-    public String saveVerificationProcessData(String clientName, List<VerificationProcess> verificationProcessList) {
+    public String saveVerificationProcessData(String clientName, List<VerificationProcess> verificationProcessList) throws DataNotFoundException {
         Client client = clientRepositoryInterface.findClientByUserName(clientName);
 
         ProcessingRequest processingRequest = new ProcessingRequest();
@@ -63,16 +65,26 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
             process.setProcessType(processTypeRepositoryInterface.findProcessTypeByType(v.getVerificationProcessType()));
             processRepositoryInterface.save(process);
 
-            for (Resource r: v.getResources()){
-                com.fintech.orion.dataabstraction.entities.orion.Resource resourceEntity = resourceRepositoryInterface.findResourceByResourceIdentificationCode(r.getResourceId());
-                ResourceName resourceName = resourceNameRepositoryInterface.findResourceNameByName(r.getResourceName());
-                resourceEntity.setProcess(process);
-                resourceEntity.setResourceName(resourceName);
-                resourceRepositoryInterface.save(resourceEntity);
-            }
+            updateResources(v.getResources(), process);
 
         }
         return processingRequest.getProcessingRequestIdentificationCode();
+    }
+
+    @Transactional
+    private void updateResources(List<Resource> resourceList, Process process) throws DataNotFoundException {
+        for (Resource r: resourceList){
+            com.fintech.orion.dataabstraction.entities.orion.Resource resourceEntity = resourceRepositoryInterface.findResourceByResourceIdentificationCode(r.getResourceId());
+            if (resourceEntity == null){
+                throw new DataNotFoundException("No resource found with resource identification code :" +
+                        r.getResourceId() + " and could not be associated with resource name  : " +
+                        r.getResourceName() + " to complete the processing.");
+            }
+            ResourceName resourceName = resourceNameRepositoryInterface.findResourceNameByName(r.getResourceName());
+            resourceEntity.setProcess(process);
+            resourceEntity.setResourceName(resourceName);
+            resourceRepositoryInterface.save(resourceEntity);
+        }
     }
 
     @Override

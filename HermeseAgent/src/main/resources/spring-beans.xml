@@ -55,6 +55,15 @@
         <constructor-arg type="java.lang.String" value="C:\\"/>
     </bean>
 
+    <bean id="addressCompare" class="com.fintech.orion.documentverification.common.Address.AddressCompare"/>
+    <bean id="addressDecoding" class="com.fintech.orion.documentverification.common.Address.AddressDecoding"/>
+
+    <bean id="operationAddressComparator" class="com.fintech.orion.documentverification.strategy.OperationAddressComparator"/>
+    <bean id="operationDateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
+    <bean id="operationStringComparator" class="com.fintech.orion.documentverification.strategy.OperationStringComparator"/>
+
+    <bean id="dataValidationStrategyProvider" class="com.fintech.orion.documentverification.strategy.DataValidationStrategyProvider"/>
+
     <bean id="documentVerificationFactory" class="com.fintech.orion.documentverification.factory.DocumentVerificationFactory"/>
 
     <bean id="dataComparator" class="com.fintech.orion.documentverification.factory.DataComparator"/>

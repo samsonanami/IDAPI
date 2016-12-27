@@ -23,6 +23,7 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/v1/**"/>

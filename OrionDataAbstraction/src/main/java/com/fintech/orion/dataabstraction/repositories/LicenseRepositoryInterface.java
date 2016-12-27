@@ -14,7 +14,7 @@ import java.util.List;
 public interface LicenseRepositoryInterface extends CrudRepository<License, Integer> {
 
 
-    @Query("select l from License l where l.client  = ?1 and l.startDate < ?2 and l.endDate > ?2 ")
+    @Query("select l from License l where l.client  = ?1 and l.startDate < ?2 and l.endDate > ?2 and l.enabled = true and l.status = true ")
     List<License> findLicensesByClientAndLessThanEndDateAndGreaterThanStartDate(Client client, Date today) throws ItemNotFoundException;
 
     License findLicenseByLicenseKey(String licenseKey) throws ItemNotFoundException;

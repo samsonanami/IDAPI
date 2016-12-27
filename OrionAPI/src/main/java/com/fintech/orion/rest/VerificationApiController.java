@@ -1,10 +1,7 @@
 package com.fintech.orion.rest;
 
 import com.fintech.orion.api.service.client.ClientLicenseServiceInterface;
-import com.fintech.orion.api.service.exceptions.ClientLicenseValidatorException;
-import com.fintech.orion.api.service.exceptions.ClientServiceException;
-import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
-import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
+import com.fintech.orion.api.service.exceptions.*;
 import com.fintech.orion.api.service.request.ProcessingRequestServiceInterface;
 import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInterface;
 import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorInterface;
@@ -60,7 +57,7 @@ public class VerificationApiController implements VerificationApi {
 
     public ResponseEntity<Object> verificationPost(
             @ApiParam(value = "", required = true, defaultValue = "true")
-            @RequestParam(value = "integrationRequest", required = true, defaultValue="false") String integrationRequest,
+            @RequestParam(value = "integration_request", required = true, defaultValue="false") String integrationRequest,
             @ApiParam(value = "Processing request" ,required=true ) @RequestBody VerificationRequest body,
             HttpServletResponse response, HttpServletRequest request) {
         // do some magic!
@@ -108,6 +105,12 @@ public class VerificationApiController implements VerificationApi {
             errorMessage.setMessage(e.getMessage());
             errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
             responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
+        } catch (DataNotFoundException e) {
+            LOGGER.error("Error ocured wihle processing the request {} submitted by user {}", body,
+                    principal.getName(), e);
+            errorMessage.setMessage(e.getMessage());
+            errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
+            responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
         }
 
         return responseEntity;

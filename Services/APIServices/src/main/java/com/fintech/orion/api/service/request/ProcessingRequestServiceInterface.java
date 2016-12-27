@@ -1,5 +1,6 @@
 package com.fintech.orion.api.service.request;
 
+import com.fintech.orion.api.service.exceptions.DataNotFoundException;
 import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
 import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface ProcessingRequestServiceInterface {
 
-    String saveVerificationProcessData(String clientName, List<VerificationProcess> verificationProcessList);
+    String saveVerificationProcessData(String clientName, List<VerificationProcess> verificationProcessList) throws DataNotFoundException;
 
     VerificationProcessDetailedResponse getDetailedResponse(String clientName, String verificationRequestId) throws IOException, ResourceAccessPolicyViolationException, ResourceNotFoundException;
 }

@@ -14,6 +14,7 @@ import com.fintech.orion.exception.ResourceCreationException;
 import com.fintech.orion.service.core.file.FileHandlerServiceInterface;
 import com.fintech.orion.service.core.file.FileStorage;
 import io.swagger.annotations.*;
+import org.apache.commons.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class ContentApiController implements ContentApi {
             if (!validatorStatus.isPassed()) {
                 errorMessage.setMessage(validatorStatus.getMessage());
                 errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
-                responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
             }
 
             String fileName = fileHandlerService.persistFile(file, FileStorage.LOCAL, workingDir);

@@ -5,9 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.HermeseResponseprocessorException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailService;
+import com.fintech.orion.dataabstraction.entities.orion.License;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.repositories.LicenseRepositoryInterface;
+import com.fintech.orion.dto.hermese.ResponseProcessorResult;
+import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.hermesagentservices.processor.OracleRequestProcessor;
 import com.fintech.orion.hermesagentservices.response.processor.HermeseResponseProcessor;
@@ -16,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -34,6 +39,9 @@ public class VerificationOrchestrator {
 
     @Autowired
     private HermeseResponseProcessor hermeseResponseProcessor;
+
+    @Autowired
+    private LicenseRepositoryInterface licenseRepositoryInterface;
 
     @Transactional
     public void orchestrate(Object message){
@@ -62,9 +70,10 @@ public class VerificationOrchestrator {
             LOGGER.debug("Elapsed time to complete the processing : " + (System.currentTimeMillis() - start));
             ProcessingRequest processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
             String rawString = objectMapper.writeValueAsString(oracleResults.get());
-            String processedString = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
+            ResponseProcessorResult result = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
+            updateLicenseStatus(rawString, processingMessage.getClientLicense());
             for (Process process : processingRequest.getProcesses()){
-                saveProcessResponse(rawString, processedString, process);
+                saveProcessResponse(rawString, result.getProcessedString(), process);
             }
 
         } catch (InterruptedException e) {
@@ -81,6 +90,22 @@ public class VerificationOrchestrator {
 
     }
 
+    @Transactional
+    private void updateLicenseStatus(String rawString, String licenseKey) throws ItemNotFoundException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            OcrResponse response = objectMapper.readValue(rawString, OcrResponse.class);
+            if (response.getStatus().equalsIgnoreCase("processing_successful")){
+                License license = licenseRepositoryInterface.findLicenseByLicenseKey(licenseKey);
+                int currentLicenseCount = license.getCurrentRequestCount();
+                currentLicenseCount = currentLicenseCount + 1;
+                license.setCurrentRequestCount(currentLicenseCount);
+                licenseRepositoryInterface.save(license);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Error while trying to update license key", e);
+        }
+    }
     @Transactional
     private void saveProcessResponse(String rawResponse, String processedString, Process process){
         verificationRequestDetailService.saveResponse(rawResponse, processedString, process);
