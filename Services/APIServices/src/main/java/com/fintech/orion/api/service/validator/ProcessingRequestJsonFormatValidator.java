@@ -45,7 +45,7 @@ public class ProcessingRequestJsonFormatValidator implements ProcessingRequestJs
 
     private boolean validateVerificationProcess(VerificationProcess process) {
         boolean status;
-        status = true;
+        status = false;
         for (Resource r : process.getResources()){
             status = false;
             if(r.getResourceId() != null && !r.getResourceId().isEmpty() && findOccurrencesOfResourceByName(process.getResources(), r.getResourceName()) ==
