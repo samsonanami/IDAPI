@@ -20,47 +20,46 @@ import java.util.List;
 public class DateOfBirthValidation extends ValidationHelper implements CustomValidation {
 
     @Autowired
-     private OperationDateComparator dateComparator;
+    private OperationDateComparator dateComparator;
+
+
 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
-        validationData.setId("date_of_birth");
-        OcrFieldData fieldData=getFieldDataById("date_of_birth",ocrResponse);
-        if (fieldData != null && fieldData.getValue() != null && !fieldData.getValue().isEmpty()) {
-            validationData = validateData(fieldData.getValue());
-        }else
-        {
-            validationData.setValue("Unknown");
-            validationData.setRemarks("Could not verify document version");
+        OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
+        validationData = validateInput(fieldData);
+        if (validationData.getValidationStatus()){
+            validationData = validateDateOfBirth(fieldData.getValue());
+        }
+        validationData.setId("Date of Birth Validation");
+        return validationData;
+    }
+
+    private ValidationData validateDateOfBirth(List<OcrFieldValue> values) throws CustomValidationException {
+        ValidationData validationData = new ValidationData();
+        if (values.size() >= 1) {
+            String firstDateOfBirth = values.iterator().next().getValue();
+            validationData = compareRestOfTheDatesWithBaseDate(firstDateOfBirth, values);
+        }else {
             validationData.setValidationStatus(false);
+            validationData.setRemarks("Not Enough date to complete the validation.");
         }
         return validationData;
     }
 
-    public ValidationData validateData(List<OcrFieldValue> values) throws CustomValidationException
-    {
-        ValidationData  validationData= new  ValidationData();
-        int valueCount = 1;
-        String dataValue="";
-        if(values.size() > 1){
-            validationData.setValidationStatus(false);
-            validationData.setRemarks("Only one document available");
-        }
-        for(OcrFieldValue value:values) {
-
-            if(dateComparator.doOperation(value.getValue(),dataValue).isStatus()){
-                validationData.setValidationStatus(true);
-                validationData.setRemarks("");
-            }else{
+    private ValidationData compareRestOfTheDatesWithBaseDate(String base, List<OcrFieldValue> values){
+        ValidationData validationData = new ValidationData();
+        for (OcrFieldValue value : values) {
+            if (!dateComparator.doOperation(base, value.getValue()).isStatus()) {
                 validationData.setValidationStatus(false);
-                validationData.setRemarks("document not matched");
+                validationData.setRemarks(getFailedRemarksMessage());
                 break;
+            } else {
+                validationData.setValidationStatus(true);
+                validationData.setRemarks(getSuccessRemarksMessage());
             }
-            valueCount++;
-            dataValue=value.getValue();
         }
-
-        return  validationData;
+        return validationData;
     }
 }

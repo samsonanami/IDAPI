@@ -108,7 +108,7 @@ public class ValidationData   {
   }
 
   public void setValidationStatus(boolean validationStatus) {
-    validationStatus = validationStatus;
+    this.validationStatus = validationStatus;
   }
 
   @Override

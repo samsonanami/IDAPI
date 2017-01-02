@@ -33,7 +33,6 @@ task copyConfigs(type: Copy){
     from "src/main/resources"
 }
 
-/*
 jar {
     manifest {
         attributes(
@@ -49,4 +48,4 @@ sourceSets {
             exclude '*.xml'
        }
     }
-}*/
+}

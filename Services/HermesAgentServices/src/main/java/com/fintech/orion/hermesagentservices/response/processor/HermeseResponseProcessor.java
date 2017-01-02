@@ -3,11 +3,13 @@ package com.fintech.orion.hermesagentservices.response.processor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.HermeseResponseprocessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.documentverification.factory.DocumentVerification;
 import com.fintech.orion.documentverification.factory.DocumentVerificationFactory;
 import com.fintech.orion.documentverification.factory.DocumentVerificationType;
 import com.fintech.orion.dto.hermese.ResponseProcessorResult;
+import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.response.api.DataValidation;
 import com.fintech.orion.dto.response.api.FieldData;
 import com.fintech.orion.dto.response.api.ValidationData;
@@ -76,7 +78,12 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
 
         updateDataComparison(detailedResponse, ocrResponse);
-        updateIdDocumentFullValidation(detailedResponse, ocrResponse);
+        if (getProcessByProcessId(processingRequest, "idVerification") != null){
+            updateIdDocumentFullValidation(detailedResponse, ocrResponse);
+        }
+        if (getProcessByProcessId(processingRequest, "addressVerification") != null){
+            updateAddressDocumentFullValidation(detailedResponse, ocrResponse);
+        }
         setFinalProcessingStatus(detailedResponse);
         ResponseProcessorResult result = new ResponseProcessorResult();
         result.setFinalProcessingStatus(true);
@@ -90,7 +97,7 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
     }
 
     private void setFinalProcessingStatus(VerificationProcessDetailedResponse detailedResponse){
-        for (ValidationData validation : detailedResponse.getAddressDocFullValidations()){
+        for (ValidationData validation : detailedResponse.getIdDocFullValidations()){
             if(validation.getId().equalsIgnoreCase("critical_error_set") && !validation.getRemarks().isEmpty()){
                 detailedResponse.setStatus("Failed");
             }
@@ -114,7 +121,8 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
     private void updateIdDocumentFullValidation(VerificationProcessDetailedResponse response, OcrResponse ocrResponse){
         List<Object> resultList = new ArrayList<>();
-        DocumentVerification idDocFullComparision = documentVerificationFactory.getDocumentVerification(DocumentVerificationType.ID_DOC_FULL_VERIFICATIONS);
+        DocumentVerification idDocFullComparision =
+                documentVerificationFactory.getDocumentVerification(DocumentVerificationType.ID_DOC_FULL_VERIFICATIONS);
         resultList = idDocFullComparision.verifyExtractedDocumentResult(ocrResponse, verificationConfigurationMap);
         List<ValidationData> validationDataList= resultList.stream()
                 .map(element->(ValidationData) element)
@@ -123,5 +131,30 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
     }
 
+    private void updateAddressDocumentFullValidation(VerificationProcessDetailedResponse response, OcrResponse ocrResponse){
+        List<Object> resultList = new ArrayList<>();
+        DocumentVerification addressDocFullComparision =
+                documentVerificationFactory.getDocumentVerification(DocumentVerificationType.ADDRESS_DOC_FULL_VERIFICATIONS);
+        resultList = addressDocFullComparision.verifyExtractedDocumentResult(ocrResponse, verificationConfigurationMap);
+        List<ValidationData> validationDataList = getValidationDataList(resultList);
+        response.setAddressDocFullValidations(validationDataList);
+    }
+
+    private List<ValidationData> getValidationDataList(List<Object> objectList){
+        return  objectList.stream()
+                .map(element->(ValidationData) element)
+                .collect(Collectors.toList());
+    }
+
+    private Process getProcessByProcessId(ProcessingRequest processingRequest, String processType){
+        Process process = null;
+        for (Process p : processingRequest.getProcesses()){
+            if (p.getProcessType().getType().equalsIgnoreCase(processType)){
+                process = p;
+                break;
+            }
+        }
+        return process;
+    }
 
 }

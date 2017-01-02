@@ -9,52 +9,71 @@ import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
-import org.springframework.stereotype.Component;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
-
 /**
- * Created by MudithaJ on 12/27/2016.
+ * Created by sasitha on 12/29/16.
+ *
  */
-@Component
-public class ExpireDateValidation extends ValidationHelper implements CustomValidation {
+
+public class MinimumAgeValidation extends ValidationHelper implements CustomValidation{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MinimumAgeValidation.class);
+
+    private int minimumAge;
 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
-        ValidationData validationData = new ValidationData();
+        if (minimumAge <= 0 || getOcrExtractionFieldName() == null){
+            throw new CustomValidationException("Minimum age / extraction field name parameters missing");
+        }
 
-        OcrFieldData fieldData=getFieldDataById(getOcrExtractionFieldName(),ocrResponse);
+        ValidationData validationData = new ValidationData();
+        OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()){
             try {
-                validationData = checkDocumentExpirationDate(fieldData);
+                validationData = validateMinimumAge(fieldData);
             } catch (DateComparatorException e) {
-                throw new CustomValidationException("Error occurred while performing document expiry date verification ");
+                throw new CustomValidationException("Error Occurred while performing minimum age verification ", e);
             }
         }
-        if(validationData.getValidationStatus()){
+        if (!validationData.getValidationStatus()){
             validationData.setRemarks(getSuccessRemarksMessage());
         }
-        validationData.setId("Document Expiry Date Verification");
+        validationData.setId("Minimum age verification");
         return validationData;
     }
 
-    private ValidationData checkDocumentExpirationDate(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateMinimumAge(OcrFieldData ocrFieldData) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
+        LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()){
             Date date = dateDecoder.decodeDate(fieldValue.getValue());
-            if (date.before(new Date())){
-                validationData.setRemarks(getDocumentNameFromOcrFieldValueId(fieldValue.getId()) + getFailedRemarksMessage());
+            LocalDate birthday = new LocalDate(date);
+            Years age = Years.yearsBetween(birthday, today);
+            if (age.getYears()<minimumAge){
+                validationData.setRemarks(getFailedRemarksMessage());
+                validationData.setValue(String.valueOf(age.getYears()));
                 validationData.setValidationStatus(false);
-                validationData.setValue(date.toString());
                 break;
             }else {
                 validationData.setValidationStatus(true);
+                validationData.setValue(String.valueOf(age.getYears()));
             }
+
         }
         return validationData;
     }
 
+    public void setMinimumAge(int minimumAge) {
+        this.minimumAge = minimumAge;
+    }
 }

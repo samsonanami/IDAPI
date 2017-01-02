@@ -68,6 +68,7 @@
 
     <bean id="dataComparator" class="com.fintech.orion.documentverification.factory.DataComparator"/>
     <bean id="idDocFullValidator" class="com.fintech.orion.documentverification.factory.IdentificationDocumentFullVerification"/>
+    <bean id="addressDocFullValidator" class="com.fintech.orion.documentverification.factory.AddressDocumentFullVerification"/>
 
     <bean id="verificationConfigurationMap" class="java.util.HashMap" scope="prototype">
         <constructor-arg>
@@ -120,24 +121,70 @@
 
     <bean id="passportCheckDigitFormation" class="com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation"/>
 
-    <bean id =" dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
+    <bean id ="dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
     <bean id="addressComparator" class="com.fintech.orion.documentverification.common.Address.AddressCompare"/>
     <bean id="addressDecoder" class="com.fintech.orion.documentverification.common.Address.AddressDecoding"/>
 
 
-    <bean id="idDocCustomValidations" class="java.util.HashMap" scope="prototype">
+    <bean id="idDocCustomValidations" class="java.util.ArrayList">
         <constructor-arg>
-            <map key-type="java.lang.String" value-type="com.fintech.orion.documentverification.custom.CustomValidation">
-                <entry key="documentType" value-ref="documentTypeValidation"/>
-            </map>
+            <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
+                <ref bean="documentTypeValidation"/>
+                <ref bean="documentVersionValidation"/>
+                <ref bean="surNameValidation"/>
+                <ref bean="genderVerification"/>
+                <ref bean="minimumAgeVerification"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="addressDocCustomValidations" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
+                <ref bean="documentTypeValidation"/>
+                <ref bean="surNameValidation"/>
+                <ref bean="addressValidation"/>
+            </array>
         </constructor-arg>
     </bean>
 
 
     <bean id="documentTypeValidation" class="com.fintech.orion.documentverification.custom.common.DocumentTypeValidation">
         <property name="criticalValidation" value="false"/>
+        <property name="failedRemarksMessage" value="Document type verification failed"/>
+        <property name="successRemarksMessage" value="Documet type verification success"/>
     </bean>
     <bean id="documentVersionValidation" class="com.fintech.orion.documentverification.custom.common.DocumentVersionValidation">
+        <property name="criticalValidation" value="false"/>
+        <property name="failedRemarksMessage" value="Document version verification failed"/>
+        <property name="successRemarksMessage" value="Document version verification success"/>
+    </bean>
+    <bean id="surNameValidation" class="com.fintech.orion.documentverification.custom.common.SimpleStringFieldValidator">
         <property name="criticalValidation" value="true"/>
+        <property name="ocrExtractionFieldName" value="surname"/>
+        <property name="failedRemarksMessage" value="Surname not matching "/>
+        <property name="successRemarksMessage" value="Surname match"/>
+        <property name="verificationDisplayName" value="Surname Verification"/>
+    </bean>
+    
+    <bean id="addressValidation" class="com.fintech.orion.documentverification.custom.common.AddressValidation">
+        <property name="successRemarksMessage" value="Address matching"/>
+        <property name="failedRemarksMessage" value="Address not matching"/>
+        <property name="ocrExtractionFieldName" value="address"/>
+        <property name="criticalValidation" value="false"/>
+    </bean>
+
+    <bean id="minimumAgeVerification" class="com.fintech.orion.documentverification.custom.common.MinimumAgeValidation">
+        <property name="criticalValidation" value="false"/>
+        <property name="ocrExtractionFieldName" value="date_of_birth"/>
+        <property name="minimumAge" value="18"/>
+        <property name="failedRemarksMessage" value="Customer is under 18 years old"/>
+        <property name="successRemarksMessage" value="Customer is over 18 years"/>
+    </bean>
+    <bean id="genderVerification" class="com.fintech.orion.documentverification.custom.common.GenderValidation">
+        <property name="criticalValidation" value="false"/>
+        <property name="ocrExtractionFieldName" value="sex"/>
+        <property name="successRemarksMessage" value="Customer is "/>
+        <property name="failedRemarksMessage" value="Mismatching gender over multiple documents"/>
     </bean>
 </beans>

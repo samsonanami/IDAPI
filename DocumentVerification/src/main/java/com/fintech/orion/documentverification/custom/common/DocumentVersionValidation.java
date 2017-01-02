@@ -21,9 +21,9 @@ public class DocumentVersionValidation extends ValidationHelper implements Custo
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
-        validationData.setId("Document Version");
-        OcrFieldData fieldData = getFieldDataById("document_version", ocrResponse);
-        OcrFieldValue fieldValue = getFieldValueById(resourceName.getName()+"##document_version", fieldData);
+
+        OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
+        OcrFieldValue fieldValue = getFieldValueById(resourceName.getName()+"##" + getOcrExtractionFieldName(), fieldData);
         if (fieldValue != null && fieldValue.getValue() != null && !fieldValue.getValue().isEmpty()){
             validationData.setValue(fieldValue.getValue());
             validationData.setOcrConfidence(fieldValue.getConfidence());
@@ -32,6 +32,7 @@ public class DocumentVersionValidation extends ValidationHelper implements Custo
             validationData.setRemarks("Could not verify document version");
             validationData.setValidationStatus(false);
         }
+        validationData.setId("Document Version");
         return validationData;
     }
 }

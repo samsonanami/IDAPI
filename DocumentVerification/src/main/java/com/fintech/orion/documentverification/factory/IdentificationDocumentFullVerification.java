@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by sasitha on 12/26/16.
@@ -47,7 +48,8 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
     private PassportCheckDigitFormation passportCheckDigitFormation;
 
     @Autowired
-    private List<CustomValidation> idDocCustomValidations;
+    @Qualifier("idDocCustomValidations")
+    private List idDocCustomValidations;
 
     @Override
     @Transactional
@@ -70,13 +72,16 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
                 idVerificationResource = resource;
             }
         }
-
-        ResourceName resourceName = idVerificationResource.getResourceName();
+        ResourceName resourceName = new ResourceName();
+        if (idVerificationResource != null){
+            resourceName = idVerificationResource.getResourceName();
+        }
         List<Object> idDocFullValidationList = new ArrayList<>();
         ValidationData errorDataSet = new ValidationData();
+        errorDataSet.setRemarks("");
         errorDataSet.setId("critical_error_set");
         LOGGER.debug("Starting custom validation with resource name {} and ocr response {}", resourceName, ocrResponse);
-        for (CustomValidation validation : idDocCustomValidations){
+        for (CustomValidation validation : getCustomValidationList()){
             try {
                 ValidationData validationData = validation.validate(resourceName, ocrResponse);
                 idDocFullValidationList.add(validationData);
@@ -91,6 +96,10 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
         idDocFullValidationList.add(errorDataSet);
 
         return idDocFullValidationList;
+    }
+
+    private List<CustomValidation> getCustomValidationList(){
+        return idDocCustomValidations;
     }
 
 /*
@@ -174,24 +183,5 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
 
         return validationData;
     }
-
-    private OcrFieldData getFieldDataById(String id, OcrResponse ocrResponse){
-        OcrFieldData data = new OcrFieldData();
-        for (OcrFieldData fieldData : ocrResponse.getData()){
-            if (fieldData.getId().equalsIgnoreCase(id)){
-                data = fieldData;
-            }
-        }
-        return data;
-    }
-
-    private OcrFieldValue getFieldValueById(String id, OcrFieldData fieldData){
-        OcrFieldValue fieldValue = new OcrFieldValue();
-        for (OcrFieldValue f : fieldData.getValue()){
-            if (f.getId().equalsIgnoreCase(id)){
-                fieldValue = f;
-            }
-        }
-        return fieldValue;
-    }*/
+    */
 }

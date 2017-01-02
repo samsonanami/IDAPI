@@ -9,6 +9,8 @@ import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,58 +18,72 @@ import java.util.List;
 
 /**
  * Created by MudithaJ on 12/27/2016.
+ *
  */
 @Component
-public class AddressValidation  extends ValidationHelper implements CustomValidation {
+public class AddressValidation extends ValidationHelper implements CustomValidation {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddressValidation.class);
 
     @Autowired
     private AddressCompare addressComparator;
 
+
+
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
-        validationData.setId("address");
-        OcrFieldData fieldData=getFieldDataById("address",ocrResponse);
+        if (getOcrExtractionFieldName() == null || getOcrExtractionFieldName().isEmpty()) {
+            throw new CustomValidationException("Address field name should not be null");
+        }
+        OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
+        validationData = validateInput(fieldData);
+        if (validationData.getValidationStatus()){
+            validationData = validateAddress(fieldData.getValue());
+        }
+        if (validationData.getValidationStatus()){
+            validationData.setRemarks(getSuccessRemarksMessage());
+        }else {
+            validationData.setRemarks(getFailedRemarksMessage());
+            LOGGER.warn("Address verification failed. Full result set obtained from ocr response is {}", fieldData);
+        }
+        validationData.setId("Address Verification");
+        return validationData;
+    }
 
-        if (fieldData != null && fieldData.getValue() != null && !fieldData.getValue().isEmpty()) {
-            validationData = validateData(fieldData.getValue());
-        }else{
-            validationData.setValue("Unknown");
-            validationData.setRemarks("Could not verify document version");
+    private ValidationData validateAddress(List<OcrFieldValue> values) throws CustomValidationException {
+        ValidationData validationData = new ValidationData();
+        if (values.size() >= 1) {
+            String baseAddress = values.iterator().next().getValue();
+            validationData = compareBaseAddressWithOthers(baseAddress, values);
+        } else {
             validationData.setValidationStatus(false);
+            validationData.setRemarks("Not Enough date to complete the validation.");
         }
         return validationData;
     }
 
-    public ValidationData validateData(List<OcrFieldValue> values) throws CustomValidationException
-    { try{
-        ValidationData  validationData= new  ValidationData();
-        int valueCount = 1;
-        String dataValue="";
-        if(values.size() > 1){
-            validationData.setValidationStatus(false);
-            validationData.setRemarks("Only one address available");
-        }
-        for(OcrFieldValue value:values) {
-
-            if(addressComparator.compare(value.getValue(),dataValue).isResult()){
-                validationData.setValidationStatus(true);
-                validationData.setRemarks("");
-            }else{
+    private ValidationData compareBaseAddressWithOthers(String baseAddress, List<OcrFieldValue> values){
+        ValidationData validationData = new ValidationData();
+        for (OcrFieldValue fieldValue : values){
+            try {
+                if (!addressComparator.compare(baseAddress, fieldValue.getValue()).isResult()){
+                    validationData.setValidationStatus(false);
+                    validationData.setRemarks(getFailedRemarksMessage());
+                    break;
+                }else {
+                    validationData.setValidationStatus(true);
+                    validationData.setRemarks(getSuccessRemarksMessage());
+                }
+            } catch (AddressValidatingException e) {
                 validationData.setValidationStatus(false);
-                validationData.setRemarks("address not matched");
+                validationData.setValue(baseAddress);
+                validationData.setRemarks("Address type not supported. Please contact support");
+                LOGGER.warn("Error occurred while validating given address, address 1 {} address 2 ",
+                        baseAddress, fieldValue.getValue(), e);
                 break;
             }
-            valueCount++;
-            dataValue=value.getValue();
         }
-
-
-        return  validationData;
-    }catch (AddressValidatingException e)
-    {
-        throw new CustomValidationException("Address comparison exception",e);
+        return validationData;
     }
-    }
-
 }

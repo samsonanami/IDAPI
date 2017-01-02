@@ -20,6 +20,10 @@ public class DocumentVerificationFactory {
     @Qualifier("idDocFullValidator")
     private IdentificationDocumentFullVerification idDocFullValidator;
 
+    @Autowired
+    @Qualifier("addressDocFullValidator")
+    private AddressDocumentFullVerification addressDocFullValidator;
+
     public DocumentVerification getDocumentVerification(DocumentVerificationType type){
         DocumentVerification documentVerification = null;
         switch (type){
@@ -28,6 +32,9 @@ public class DocumentVerificationFactory {
                 break;
             case ID_DOC_FULL_VERIFICATIONS:
                     documentVerification = idDocFullValidator;
+                break;
+            case ADDRESS_DOC_FULL_VERIFICATIONS:
+                    documentVerification = addressDocFullValidator;
                 break;
         }
         return documentVerification;

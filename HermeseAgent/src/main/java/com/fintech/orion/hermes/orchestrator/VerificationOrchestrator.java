@@ -53,40 +53,43 @@ public class VerificationOrchestrator {
         try {
             oracleResults = oracleRequestProcessor.process(message);
         } catch (RequestProcessorException e) {
-            e.printStackTrace();
+            LOGGER.error("Unable to process oracle verification process ", e);
         }
 
-        while (!oracleResults.isDone()){
-            LOGGER.debug("Still processing and waiting");
+        if (oracleResults != null){
+            while (!oracleResults.isDone()){
+                LOGGER.debug("Still processing and waiting");
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
             try {
-                Thread.sleep(100);
+                LOGGER.debug("received results {}", oracleResults.get());
+                LOGGER.debug("Elapsed time to complete the processing : " + (System.currentTimeMillis() - start));
+                ProcessingRequest processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
+                String rawString = objectMapper.writeValueAsString(oracleResults.get());
+                ResponseProcessorResult result = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
+                updateLicenseStatus(rawString, processingMessage.getClientLicense());
+                for (Process process : processingRequest.getProcesses()){
+                    saveProcessResponse(rawString, result.getProcessedString(), process);
+                }
+
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error("Verification process orchestration interrupted ", e);
+            } catch (ExecutionException e) {
+                LOGGER.error("Verification process execution occurred ", e);
+            } catch (ItemNotFoundException e) {
+                LOGGER.error("Failed to find required data to complete the processing ", e);
+            } catch (JsonProcessingException e) {
+                LOGGER.error("Error occurred processing one or more json ", e);
+            } catch (HermeseResponseprocessorException e) {
+                LOGGER.error("Error while processing the response ", e);
             }
         }
 
-        try {
-            LOGGER.debug("received results {}", oracleResults.get());
-            LOGGER.debug("Elapsed time to complete the processing : " + (System.currentTimeMillis() - start));
-            ProcessingRequest processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
-            String rawString = objectMapper.writeValueAsString(oracleResults.get());
-            ResponseProcessorResult result = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
-            updateLicenseStatus(rawString, processingMessage.getClientLicense());
-            for (Process process : processingRequest.getProcesses()){
-                saveProcessResponse(rawString, result.getProcessedString(), process);
-            }
-
-        } catch (InterruptedException e) {
-            LOGGER.error("Verification process orchestration interrupted ", e);
-        } catch (ExecutionException e) {
-            LOGGER.error("Verification process execution occurred ", e);
-        } catch (ItemNotFoundException e) {
-            LOGGER.error("Failed to find required data to complete the processing ", e);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Error occurred processing one or more json ", e);
-        } catch (HermeseResponseprocessorException e) {
-            LOGGER.error("Error while processing the response ", e);
-        }
 
     }
 

@@ -1,7 +1,7 @@
 package com.fintech.orion.documentverification.custom.common;
 
+import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.documentverification.strategy.ValidationResult;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
@@ -15,6 +15,9 @@ import java.util.List;
 public class ValidationHelper {
 
     private boolean isCriticalValidation;
+    private String successRemarksMessage;
+    private String failedRemarksMessage;
+    private String ocrExtractionFieldName;
 
     public OcrFieldValue getFieldValueById(String id, OcrFieldData fieldData){
         OcrFieldValue fieldValue = new OcrFieldValue();
@@ -44,6 +47,30 @@ public class ValidationHelper {
         isCriticalValidation = criticalValidation;
     }
 
+    public String getSuccessRemarksMessage() {
+        return successRemarksMessage;
+    }
+
+    public void setSuccessRemarksMessage(String successRemarksMessage) {
+        this.successRemarksMessage = successRemarksMessage;
+    }
+
+    public String getFailedRemarksMessage() {
+        return failedRemarksMessage;
+    }
+
+    public void setFailedRemarksMessage(String failedRemarksMessage) {
+        this.failedRemarksMessage = failedRemarksMessage;
+    }
+
+    public String getOcrExtractionFieldName() {
+        return ocrExtractionFieldName;
+    }
+
+    public void setOcrExtractionFieldName(String ocrExtractionFieldName) {
+        this.ocrExtractionFieldName = ocrExtractionFieldName;
+    }
+
     public ValidationData validateData(List<OcrFieldValue> values) throws CustomValidationException
     { ValidationData  validationData= new  ValidationData();
         int valueCount = 1;
@@ -68,5 +95,43 @@ public class ValidationHelper {
 
 
        return  validationData;
+    }
+
+    public ValidationData isAllOcrFieldValueHasSameValueField(List<OcrFieldValue> values){
+        boolean isValuesEqual = true;
+        ValidationData validationData = new ValidationData();
+        String valueOfTheFirstObject = values.iterator().next().getValue();
+        if (values.size() > 1){
+            for (OcrFieldValue fieldValue : values){
+                if (!fieldValue.getValue().equalsIgnoreCase(valueOfTheFirstObject)){
+                    validationData.setRemarks(failedRemarksMessage);
+                    isValuesEqual = false;
+                }
+            }
+        }else {
+            validationData.setRemarks("Verification could not be performed : Only one document is present");
+            isValuesEqual = false;
+        }
+        validationData.setValue(valueOfTheFirstObject);
+        validationData.setValidationStatus(isValuesEqual);
+        return validationData;
+    }
+
+    public ValidationData validateInput(OcrFieldData fieldData){
+        ValidationData validationData = new ValidationData();
+        if (fieldData != null && fieldData.getValue() != null && !fieldData.getValue().isEmpty()) {
+            validationData.setValidationStatus(true);
+        } else {
+            validationData.setValue("Unknown");
+            validationData.setRemarks("Could not perform validation : Not enough data available to perform validation." +
+                    "Please contact support");
+            validationData.setValidationStatus(false);
+        }
+        return validationData;
+    }
+
+    public String getDocumentNameFromOcrFieldValueId(String fieldValueId){
+        String[] strings = fieldValueId.split("##");
+        return strings[0];
     }
 }
