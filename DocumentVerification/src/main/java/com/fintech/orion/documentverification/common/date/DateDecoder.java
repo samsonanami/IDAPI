@@ -28,9 +28,10 @@ public class DateDecoder {
         String year;
         String stringDate;
         DecimalFormat formatter = new DecimalFormat("00");
-        String regularExpression = "^(\\d{2})(\\w{3})\\/(\\w{3})(\\d{2})";
+        String regularExpression = "^(\\d{2})(\\w{3})(\\w{3})(\\d{2})";
         try{
             date = date.replace(" ","");
+            date = date.replace("/","");
             Pattern pattern = Pattern.compile(regularExpression);
             Matcher matcher = pattern.matcher(date);
             matcher.matches();
@@ -39,11 +40,11 @@ public class DateDecoder {
                 month = formatter.format(this.getMonthNumber(matcher.group(2).trim()));
                 year = this.getYear(matcher.group(4).trim());
                 stringDate = dateOfTheMonth + month + year;
-                DateFormat df = new SimpleDateFormat("ddmmyyyy");
+                DateFormat df = new SimpleDateFormat("ddMMyyyy");
                 dateResult = df.parse(stringDate);
 
             } else {
-                DateFormat df = new SimpleDateFormat("dd.mm.yyyy");
+                DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
                 dateResult = df.parse(date);
 
             }
@@ -77,7 +78,7 @@ public class DateDecoder {
         decadeDigitNow = Integer.parseInt(formattedDate.substring(0, 2));
 
 
-        if(yearDigitValue >= yearNow)
+        if(yearDigitValue > yearNow)
         {
             decadeDigit = Integer.toString(decadeDigitNow-1);
         }else
@@ -86,7 +87,7 @@ public class DateDecoder {
 
         }
 
-        fourDigitYear = decadeDigit+ Integer.toString(yearDigitValue);
+        fourDigitYear = decadeDigit+ new DecimalFormat("00").format(yearDigitValue);
 
 
         return fourDigitYear;
