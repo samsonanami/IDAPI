@@ -72,11 +72,13 @@
     </bean>
 
     <bean id="usersByUsernameQuery" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="SELECT USER_NAME as username, PASSWORD as password, enabled as enabled  FROM idapi.client WHERE USER_NAME=?"/>
+        <constructor-arg type="java.lang.String" value="SELECT USER_NAME as username, PASSWORD as password, enabled as
+        enabled  FROM #{systemProperties['OAUTH_DB']}.client WHERE USER_NAME=?"/>
     </bean>
 
     <bean id="authoritiesByUsernameQuery" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="SELECT USER_NAME as username, 'ADMIN' as role FROM idapi.client WHERE USER_NAME=?"/>
+        <constructor-arg type="java.lang.String" value="SELECT USER_NAME as username, 'ADMIN' as
+        role FROM #{systemProperties['OAUTH_DB']}.client WHERE USER_NAME=?"/>
     </bean>
 
 </beans>

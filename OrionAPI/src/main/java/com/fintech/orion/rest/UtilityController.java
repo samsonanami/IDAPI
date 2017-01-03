@@ -1,6 +1,7 @@
 package com.fintech.orion.rest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,12 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 public class UtilityController {
 
     @RequestMapping(value = "/v1/health", method = RequestMethod.GET)
+    @CrossOrigin
     @ResponseBody
     public Object getV1health(HttpServletRequest request, HttpServletResponse response){
         return "V1 health status ok";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
+    @CrossOrigin
     @ResponseBody
     public Object discover(HttpServletRequest request, HttpServletResponse response){
         return "Api discovery temporarily un available";
