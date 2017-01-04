@@ -170,7 +170,8 @@
     <bean id="addressValidation" class="com.fintech.orion.documentverification.custom.common.AddressValidation">
         <property name="successRemarksMessage" value="Address matching"/>
         <property name="failedRemarksMessage" value="Address not matching"/>
-        <property name="ocrExtractionFieldName" value="address"/>
+        <property name="ocrFieldBase" value="address_line"/>
+        <property name="addressLineCount" value="3"/>
         <property name="criticalValidation" value="false"/>
     </bean>
 
