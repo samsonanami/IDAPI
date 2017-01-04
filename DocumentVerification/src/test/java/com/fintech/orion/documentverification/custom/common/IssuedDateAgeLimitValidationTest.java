@@ -132,7 +132,7 @@ public class IssuedDateAgeLimitValidationTest {
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
-        dlFrontValue.setValue("20 JAN /JAN 04");
+        dlFrontValue.setValue("20.01.2004");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
         fieldValueList.add(passportValue);

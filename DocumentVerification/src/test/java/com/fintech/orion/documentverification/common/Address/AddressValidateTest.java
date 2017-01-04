@@ -66,10 +66,5 @@ public class AddressValidateTest {
         AddressType resultAddressType = validatedAddress.validate(address);
         Assert.assertEquals("2",resultAddressType.getType());
     }
-//    @Test
-//   public void Should_return_false_when_Address_is_Valid_TypeTwo() throws AddressValidatingException {
-//       String address = "42 Doncaster Road Braithwell ROTHERHAM S66 7BB";
-//        boolean addressValidationResult = validatedAddress.validate(address);
-//        Assert.assertTrue(addressValidationResult);
-//    }
+
 }

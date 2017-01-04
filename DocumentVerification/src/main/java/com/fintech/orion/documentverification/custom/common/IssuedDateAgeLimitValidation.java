@@ -39,7 +39,7 @@ public class IssuedDateAgeLimitValidation  extends ValidationHelper implements C
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()){
             try {
-                validationData = validateAgeLimit(fieldData);
+                validationData = validateIssuedDateAgeLimit(fieldData);
             } catch (DateComparatorException e) {
                 throw new CustomValidationException("Error Occurred while performing issued date age limit verification ", e);
             }
@@ -51,7 +51,7 @@ public class IssuedDateAgeLimitValidation  extends ValidationHelper implements C
         return validationData;
     }
 
-    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateIssuedDateAgeLimit(OcrFieldData ocrFieldData) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()){
