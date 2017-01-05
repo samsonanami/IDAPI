@@ -1,0 +1,32 @@
+
+
+plugins {
+    id "net.vivin.gradle-semantic-build-versioning" version "1.2.1"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.0.12.RELEASE'
+
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
+    compile group: 'javax.servlet.jsp', name: 'jsp-api', version:'2.1'
+
+
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-web', version: '4.3.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-orm', version: '4.3.2.RELEASE'
+
+    compile project (':OrionDataAbstraction')
+}
