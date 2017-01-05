@@ -11,4 +11,5 @@ include 'JobMessagingChannelHandler'
 include 'DataTransferObjects'
 
 include 'DocumentVerification'
+include 'OrionAuthAPI'
 

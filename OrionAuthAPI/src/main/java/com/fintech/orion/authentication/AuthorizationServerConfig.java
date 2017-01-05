@@ -1,4 +1,5 @@
-package com.fintech.orion.oauth;
+package com.fintech.orion.authentication;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,15 +12,25 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.approval.UserApprovalHandler;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 import javax.sql.DataSource;
 
+/**
+ * Created by Arip Hidayat on 12/03/2016.
+ */
 @Configuration
 @EnableAuthorizationServer
-public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+    public static final String RESOURCE_ID = "arip";
+
 
     @Autowired
     private String realm;
+
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     private TokenStore tokenStore;
@@ -28,16 +39,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private UserApprovalHandler userApprovalHandler;
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
-
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource);
-    }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -48,6 +51,13 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
         oauthServer.realm(realm + "/client");
+        oauthServer.checkTokenAccess("permitAll()");
     }
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer client) throws Exception {
+        client.jdbc(dataSource);
+    }
+
 
 }
