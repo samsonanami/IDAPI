@@ -35,11 +35,15 @@ public class IssuedDateAgeLimitValidation  extends ValidationHelper implements C
         }
 
         ValidationData validationData = new ValidationData();
-        OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
-        validationData = validateInput(fieldData);
+        OcrFieldData fieldDataIssuedDate = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
+        OcrFieldValue valueIssuedDate = getFieldValueById(resourceName.getName()+"##"+getOcrExtractionFieldName(),fieldDataIssuedDate);
+        OcrFieldData fieldDataDateOfBirth = getFieldDataById(dateofBirthString, ocrResponse);
+        OcrFieldValue valueDateOfBirth = getFieldValueById(resourceName.getName()+"##"+dateofBirthString,fieldDataDateOfBirth);
+
+        validationData = validateInput(fieldDataIssuedDate);
         if (validationData.getValidationStatus()){
             try {
-                validationData = validateAgeLimit(fieldData);
+             validationData = validateIssuedDateAgeLimit(valueIssuedDate,valueDateOfBirth);
             } catch (DateComparatorException e) {
                 throw new CustomValidationException("Error Occurred while performing issued date age limit verification ", e);
             }
@@ -51,30 +55,31 @@ public class IssuedDateAgeLimitValidation  extends ValidationHelper implements C
         return validationData;
     }
 
-    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate,OcrFieldValue ocrFieldValueDateOfBirth) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
-        for (OcrFieldValue fieldValue : ocrFieldData.getValue()){
-            Date date = dateDecoder.decodeDate(fieldValue.getValue());
-            Date dateOfBirthValue = dateDecoder.decodeDate(dateofBirthString);
-            LocalDate issuedDate = new LocalDate(date);
-            LocalDate dateOfBirth = new LocalDate(dateOfBirthValue);
-            Years age = Years.yearsBetween(dateOfBirth,issuedDate );
+        Date issuedDate = dateDecoder.decodeDate(ocrFieldValueIssuedDate.getValue());
+        Date dateOfBirth = dateDecoder.decodeDate(ocrFieldValueDateOfBirth.getValue());
 
-            if (age.getYears()>minimumAge && age.getYears()<maximumAge ){
-                validationData.setValidationStatus(true);
-                validationData.setValue(String.valueOf(age.getYears()));
-            }else {
-                validationData.setRemarks(getFailedRemarksMessage());
-                validationData.setValue(String.valueOf(age.getYears()));
-                validationData.setValidationStatus(false);
-                break;
-            }
-
+         int age=getAgeforIssueDate(issuedDate,dateOfBirth);
+        if (age>minimumAge && age<maximumAge ){
+            validationData.setValidationStatus(true);
+            validationData.setValue(String.valueOf(age));
+        }else {
+            validationData.setRemarks(getFailedRemarksMessage());
+            validationData.setValue(String.valueOf(age));
+            validationData.setValidationStatus(false);
         }
         return validationData;
     }
-
+     private int getAgeforIssueDate(Date dateIssueDate,Date dateDateOfBirth)
+     {
+         int age;
+         LocalDate issuedDate = new LocalDate(dateIssueDate);
+         LocalDate dateOfBirth = new LocalDate(dateDateOfBirth);
+         age = Years.yearsBetween(dateOfBirth,issuedDate).getYears();
+         return age;
+     }
     public void setMinimumAge(int minimumAge) {
         this.minimumAge = minimumAge;
     }

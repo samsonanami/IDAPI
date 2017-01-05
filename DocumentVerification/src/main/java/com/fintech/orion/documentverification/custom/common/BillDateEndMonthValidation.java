@@ -35,7 +35,7 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()){
             try {
-                validationData = validateAgeLimit(fieldData);
+                validationData = validateBillDateEndMonth(fieldData);
             } catch (DateComparatorException e) {
                 throw new CustomValidationException("Error Occurred while performing bill date end month verification ", e);
             }
@@ -47,7 +47,7 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         return validationData;
     }
 
-    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateBillDateEndMonth(OcrFieldData ocrFieldData) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();

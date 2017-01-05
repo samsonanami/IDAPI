@@ -27,7 +27,7 @@ public class DateOfIssueEndYearValidation  extends ValidationHelper implements C
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         if (validYearCount <= 0 || getOcrExtractionFieldName() == null){
-            throw new CustomValidationException("Valid year count field name parameters missing");
+            throw new CustomValidationException("Valid year count /field name parameters missing");
         }
 
 
@@ -36,7 +36,7 @@ public class DateOfIssueEndYearValidation  extends ValidationHelper implements C
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()){
             try {
-                validationData = validateAgeLimit(fieldData);
+                validationData = validateDateofIusseEndYear(fieldData);
             } catch (DateComparatorException e) {
                 throw new CustomValidationException("Error Occurred while performing issued date end year verification ", e);
             }
@@ -48,7 +48,7 @@ public class DateOfIssueEndYearValidation  extends ValidationHelper implements C
         return validationData;
     }
 
-    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateDateofIusseEndYear(OcrFieldData ocrFieldData) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
