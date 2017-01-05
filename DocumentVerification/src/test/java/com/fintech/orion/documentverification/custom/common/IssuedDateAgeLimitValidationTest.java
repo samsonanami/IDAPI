@@ -23,11 +23,13 @@ public class IssuedDateAgeLimitValidationTest {
 
     private OcrResponse ocrResponse;
     private OcrFieldData ocrFieldDataOfIssue;
+    private OcrFieldData ocrFieldDataOfBirth;
     private ResourceName resourceName;
 
     @Before
     public void setup()throws Exception{
         ocrFieldDataOfIssue = new OcrFieldData();
+        ocrFieldDataOfBirth = new OcrFieldData();
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
     }
@@ -42,22 +44,37 @@ public class IssuedDateAgeLimitValidationTest {
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("25.07.2004");
 
-        List<OcrFieldValue> fieldValueList = new ArrayList<>();
-        fieldValueList.add(passportValue);
-        fieldValueList.add(dlFrontValue);
+
+
+        List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
+        issuedDateFieldValueList.add(passportValue);
+        issuedDateFieldValueList.add(dlFrontValue);
+
 
         ocrFieldDataOfIssue.setId("date_of_issue");
-        ocrFieldDataOfIssue.setValue(fieldValueList);
+        ocrFieldDataOfIssue.setValue(issuedDateFieldValueList);
+
+        OcrFieldValue passportDateOfBirthValue = new OcrFieldValue();
+        passportDateOfBirthValue.setId("passport##date_of_birth");
+        passportDateOfBirthValue.setValue("25.07.1974");
+
+        List<OcrFieldValue> dateOfBirtheFieldValueList = new ArrayList<>();
+        dateOfBirtheFieldValueList.add(passportDateOfBirthValue);
+
+        ocrFieldDataOfBirth.setId("date_of_birth");
+        ocrFieldDataOfBirth.setValue(dateOfBirtheFieldValueList);
 
         List<OcrFieldData> fieldDataList = new ArrayList<>();
         fieldDataList.add(ocrFieldDataOfIssue);
+        fieldDataList.add(ocrFieldDataOfBirth);
 
         ocrResponse.setData(fieldDataList);
 
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("25.07.1974");
+        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertTrue(verificationData.getValidationStatus());
@@ -65,36 +82,53 @@ public class IssuedDateAgeLimitValidationTest {
 
     @Test
     public void should_return_false_if_age_in_any_document_below_than_age_limit()throws Exception{
+
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
-        passportValue.setValue("25.07.2014");
+        passportValue.setValue("25.07.1978");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("25.07.1978");
 
-        List<OcrFieldValue> fieldValueList = new ArrayList<>();
-        fieldValueList.add(passportValue);
-        fieldValueList.add(dlFrontValue);
+
+
+        List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
+        issuedDateFieldValueList.add(passportValue);
+        issuedDateFieldValueList.add(dlFrontValue);
+
 
         ocrFieldDataOfIssue.setId("date_of_issue");
-        ocrFieldDataOfIssue.setValue(fieldValueList);
+        ocrFieldDataOfIssue.setValue(issuedDateFieldValueList);
+
+        OcrFieldValue passportDateOfBirthValue = new OcrFieldValue();
+        passportDateOfBirthValue.setId("passport##date_of_birth");
+        passportDateOfBirthValue.setValue("25.07.1974");
+
+        List<OcrFieldValue> dateOfBirtheFieldValueList = new ArrayList<>();
+        dateOfBirtheFieldValueList.add(passportDateOfBirthValue);
+
+        ocrFieldDataOfBirth.setId("date_of_birth");
+        ocrFieldDataOfBirth.setValue(dateOfBirtheFieldValueList);
 
         List<OcrFieldData> fieldDataList = new ArrayList<>();
         fieldDataList.add(ocrFieldDataOfIssue);
+        fieldDataList.add(ocrFieldDataOfBirth);
 
         ocrResponse.setData(fieldDataList);
 
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("25.07.1974");
+        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        resourceName.setName("passport");
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertFalse(verificationData.getValidationStatus());
     }
 
     @Test
     public void should_return_false_if_age_in_any_document_greater_than_age_limit()throws Exception{
+
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
         passportValue.setValue("25.07.2004");
@@ -103,29 +137,45 @@ public class IssuedDateAgeLimitValidationTest {
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("25.07.2004");
 
-        List<OcrFieldValue> fieldValueList = new ArrayList<>();
-        fieldValueList.add(passportValue);
-        fieldValueList.add(dlFrontValue);
+
+
+        List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
+        issuedDateFieldValueList.add(passportValue);
+        issuedDateFieldValueList.add(dlFrontValue);
+
 
         ocrFieldDataOfIssue.setId("date_of_issue");
-        ocrFieldDataOfIssue.setValue(fieldValueList);
+        ocrFieldDataOfIssue.setValue(issuedDateFieldValueList);
+
+        OcrFieldValue passportDateOfBirthValue = new OcrFieldValue();
+        passportDateOfBirthValue.setId("passport##date_of_birth");
+        passportDateOfBirthValue.setValue("25.07.1904");
+
+        List<OcrFieldValue> dateOfBirtheFieldValueList = new ArrayList<>();
+        dateOfBirtheFieldValueList.add(passportDateOfBirthValue);
+
+        ocrFieldDataOfBirth.setId("date_of_birth");
+        ocrFieldDataOfBirth.setValue(dateOfBirtheFieldValueList);
 
         List<OcrFieldData> fieldDataList = new ArrayList<>();
         fieldDataList.add(ocrFieldDataOfIssue);
+        fieldDataList.add(ocrFieldDataOfBirth);
 
         ocrResponse.setData(fieldDataList);
 
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("25.07.1904");
-
+        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        resourceName.setName("passport");
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertFalse(verificationData.getValidationStatus());
     }
 
     @Test
     public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception{
+
+        //////////////////////////////////////////////////
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
         passportValue.setValue("20 JAN /JAN 04");
@@ -134,22 +184,37 @@ public class IssuedDateAgeLimitValidationTest {
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("20.01.2004");
 
-        List<OcrFieldValue> fieldValueList = new ArrayList<>();
-        fieldValueList.add(passportValue);
-        fieldValueList.add(dlFrontValue);
+
+
+        List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
+        issuedDateFieldValueList.add(passportValue);
+        issuedDateFieldValueList.add(dlFrontValue);
+
 
         ocrFieldDataOfIssue.setId("date_of_issue");
-        ocrFieldDataOfIssue.setValue(fieldValueList);
+        ocrFieldDataOfIssue.setValue(issuedDateFieldValueList);
+
+        OcrFieldValue passportDateOfBirthValue = new OcrFieldValue();
+        passportDateOfBirthValue.setId("passport##date_of_birth");
+        passportDateOfBirthValue.setValue("25.07.1974");
+
+        List<OcrFieldValue> dateOfBirtheFieldValueList = new ArrayList<>();
+        dateOfBirtheFieldValueList.add(passportDateOfBirthValue);
+
+        ocrFieldDataOfBirth.setId("date_of_birth");
+        ocrFieldDataOfBirth.setValue(dateOfBirtheFieldValueList);
 
         List<OcrFieldData> fieldDataList = new ArrayList<>();
         fieldDataList.add(ocrFieldDataOfIssue);
+        fieldDataList.add(ocrFieldDataOfBirth);
 
         ocrResponse.setData(fieldDataList);
 
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("25.07.1974");
+        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertTrue(verificationData.getValidationStatus());
@@ -159,30 +224,45 @@ public class IssuedDateAgeLimitValidationTest {
     public void should_throw_CustomValidationException_false_if_date_format_is_not_supported()throws Exception{
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
-        passportValue.setValue("25/07/1974");
+        passportValue.setValue("20/01/2004");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
-        dlFrontValue.setValue("25.07.1974");
+        dlFrontValue.setValue("20.01.2004");
 
-        List<OcrFieldValue> fieldValueList = new ArrayList<>();
-        fieldValueList.add(passportValue);
-        fieldValueList.add(dlFrontValue);
+
+
+        List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
+        issuedDateFieldValueList.add(passportValue);
+        issuedDateFieldValueList.add(dlFrontValue);
+
 
         ocrFieldDataOfIssue.setId("date_of_issue");
-        ocrFieldDataOfIssue.setValue(fieldValueList);
+        ocrFieldDataOfIssue.setValue(issuedDateFieldValueList);
+
+        OcrFieldValue passportDateOfBirthValue = new OcrFieldValue();
+        passportDateOfBirthValue.setId("passport##date_of_birth");
+        passportDateOfBirthValue.setValue("25.07.1974");
+
+        List<OcrFieldValue> dateOfBirtheFieldValueList = new ArrayList<>();
+        dateOfBirtheFieldValueList.add(passportDateOfBirthValue);
+
+        ocrFieldDataOfBirth.setId("date_of_birth");
+        ocrFieldDataOfBirth.setValue(dateOfBirtheFieldValueList);
 
         List<OcrFieldData> fieldDataList = new ArrayList<>();
         fieldDataList.add(ocrFieldDataOfIssue);
+        fieldDataList.add(ocrFieldDataOfBirth);
 
         ocrResponse.setData(fieldDataList);
 
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("25.07.1974");
+        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
-        assertFalse(verificationData.getValidationStatus());
+        assertTrue(verificationData.getValidationStatus());
     }
 }
