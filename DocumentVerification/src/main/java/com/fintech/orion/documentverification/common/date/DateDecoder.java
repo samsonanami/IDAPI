@@ -55,6 +55,10 @@ public class DateDecoder {
         {
             throw new DateComparatorException("Cannot parse given date"+date,e);
         }
+        catch (NullPointerException e)
+        {
+            throw new DateComparatorException("Cannot parse given date"+date,e);
+        }
     }
 
     public int getMonthNumber(String monthName)
