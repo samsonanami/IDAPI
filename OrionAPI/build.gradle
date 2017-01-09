@@ -3,7 +3,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'war'
 //apply plugin: 'jetty'
-//apply plugin: 'net.vivin.gradle-semantic-build-versioning'
+apply plugin: 'net.vivin.gradle-semantic-build-versioning'
 apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 
 
