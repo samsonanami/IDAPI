@@ -29,7 +29,6 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.2.RELEASE'
     compile group: 'org.springframework', name: 'spring-tx', version: '4.3.2.RELEASE'
     compile group: 'org.springframework', name: 'spring-orm', version: '4.3.2.RELEASE'
-// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
     compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.10.5.RELEASE'
 
 
