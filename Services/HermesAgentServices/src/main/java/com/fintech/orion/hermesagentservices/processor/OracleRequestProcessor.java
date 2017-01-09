@@ -5,6 +5,7 @@ import com.fintech.orion.common.exceptions.request.FailedRequestException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
@@ -149,13 +150,17 @@ public class OracleRequestProcessor implements VerificationProcessor {
     @Transactional
     private Map<String, Object> getRequestBodyContent(ProcessingRequest processingRequest){
         Map<String, Object> requestBodyContent = new HashMap<>();
-        for (Process p : processingRequest.getProcesses()){
+        List<Process> processList = verificationRequestDetailService
+                .getProcessListBelongsToProcessingRequest(processingRequest.getProcessingRequestIdentificationCode());
+        for (Process p : processList){
+            ProcessType processType = verificationRequestDetailService
+                    .getProcessTypeFromProcessCode(p.getProcessIdentificationCode());
             List<VerificationResource> resourceList = new ArrayList<>();
             for (Resource r : p.getResources()){
                 resourceList.add(getPayloadResource(r));
             }
 
-            requestBodyContent.put(p.getProcessType().getType(), resourceList);
+            requestBodyContent.put(processType.getType(), resourceList);
         }
         return  requestBodyContent;
     }

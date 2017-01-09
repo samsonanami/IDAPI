@@ -24,12 +24,18 @@ public class AppConfigurationProvider implements AppConfigurationProviderInterfa
     public AbstractApplicationContext getAppContext() {
         AbstractApplicationContext applicationContext;
 
-        if (appStateProvider.isAgentOnDebugState()) {
-            LOGGER.info("Since agent state is provided as debug, spring application context is taken from classpath");
-            applicationContext = new ClassPathXmlApplicationContext("classpath:" + SPRING_CONFIG_NAME);
+        if (appStateProvider.isContextFileLoadingFromFilePath()) {
+            LOGGER.info("Loading application context from file {} from file path {}",
+                    SPRING_CONFIG_NAME, System.getProperty("contextFilePath"));
+            applicationContext = new FileSystemXmlApplicationContext("file:" +
+                    System.getProperty("contextFilePath") +"/" +SPRING_CONFIG_NAME);
         } else {
-            LOGGER.info("Since agent state is not provided as debug, spring application context is taken from file system");
-            applicationContext = new FileSystemXmlApplicationContext("file:" + SPRING_CONFIG_NAME);
+            LOGGER.info("Loading application context from file {} in classpath. This is the default option. " +
+                    "If you want to load it " +
+                    "from a specific file location it can be do so by setting up env variable " +
+                    "-DapplicationContextFrom=\"file\" and -DcontextFilePath=\"<<your file location without " +
+                    "file name >>\"", SPRING_CONFIG_NAME );
+            applicationContext = new ClassPathXmlApplicationContext("classpath:" + SPRING_CONFIG_NAME);
         }
         return applicationContext;
     }

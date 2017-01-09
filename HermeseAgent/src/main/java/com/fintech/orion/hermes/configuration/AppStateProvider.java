@@ -5,10 +5,11 @@ package com.fintech.orion.hermes.configuration;
  * AppStateProvider
  */
 public class AppStateProvider implements AppStateProviderInterface {
-    public static final String ENV_DEBUG = "debug";
+    public static final String ENV_FILE = "file";
 
     @Override
-    public boolean isAgentOnDebugState() {
-        return System.getProperty("agentState") != null && ENV_DEBUG.equals(System.getProperty("agentState"));
+    public boolean isContextFileLoadingFromFilePath() {
+        return System.getProperty("applicationContextFrom") != null &&
+                ENV_FILE.equals(System.getProperty("applicationContextFrom"));
     }
 }

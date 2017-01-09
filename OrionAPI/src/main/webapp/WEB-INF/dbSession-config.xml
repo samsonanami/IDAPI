@@ -11,8 +11,8 @@
 
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="java:jboss/datasources/orion"/>
-        <property name="lookupOnStartup" value="false"/>
-        <property name="cache" value="false"/>
+        <property name="lookupOnStartup" value="true"/>
+        <property name="cache" value="true"/>
         <property name="proxyInterface" value="javax.sql.DataSource"/>
     </bean>
     <bean id="entityManagerFactory"
@@ -21,7 +21,9 @@
         <property name="packagesToScan" value="com.fintech.orion.dataabstraction.entities.orion" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="generateDdl" value="true" />
+                <property name="generateDdl" value="false" />
+                <property name="database" value="MYSQL"/>
+                <property name="showSql" value="false"/>
             </bean>
         </property>
     </bean>

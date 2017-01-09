@@ -4,6 +4,7 @@ import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
+import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,20 +31,21 @@ public class AddressDocumentFullVerification implements DocumentVerification {
     private ProcessingRequestRepositoryInterface processingRequestRepositoryInterface;
 
     @Autowired
+    private ProcessRepositoryInterface processRepositoryInterface;
+
+    @Autowired
     @Qualifier("addressDocCustomValidations")
     private List addressDocCustomValidations;
 
     @Override
+    @Transactional
     public List<Object> verifyExtractedDocumentResult(OcrResponse ocrResponse, Map<String, VerificationConfiguration> configurations) {
         ProcessingRequest processingRequest = processingRequestRepositoryInterface
                 .findProcessingRequestByProcessingRequestIdentificationCode(ocrResponse.getVerificationRequestId());
 
-        Process documentVerificationProcess = new Process();
-        for (Process process : processingRequest.getProcesses()){
-            if (process.getProcessType().getType().equalsIgnoreCase("addressVerification")){
-                documentVerificationProcess = process;
-            }
-        }
+        Process documentVerificationProcess = processRepositoryInterface
+                .findProcessByProcessingRequestAndProcessType(processingRequest.getProcessingRequestIdentificationCode(),
+                        "addressVerification");
 
         Resource addressVerificationResourceName = null;
         for (Resource resource : documentVerificationProcess.getResources()){

@@ -6,9 +6,9 @@ EXEC="/usr/bin/jsvc"
 
 FILE_PATH="/opt/orion/hermese"
 
-JAVA_HOME="/usr/java/jdk1.8.0_91"
+JAVA_HOME="/usr/java/jdk1.8.0_101"
 
-CLASS_PATH="/$FILE_PATH/HermeseAgent.jar:/$FILE_PATH/lib/commons-daemon-1.0.15.jar:/$FILE_PATH/lib/*:/$FILE_PATH/config/*:."
+CLASS_PATH="/$FILE_PATH/HermeseAgent-0.1.0-SNAPSHOT.jar:/$FILE_PATH/lib/commons-daemon-1.0.15.jar:/$FILE_PATH/lib/*:/$FILE_PATH/config/*:."
 
 CLASS="com.fintech.orion.hermes.service.Service"
 
@@ -32,7 +32,7 @@ JAVA_OPT="-Xms6g -Xmx6g -XX:MaxPermSize=256m"
 
 jsvc_exec() {
     cd /$FILE_PATH
-    $EXEC -home $JAVA_HOME -cp $CLASS_PATH -DagentState="debug" -user $USER $JAVA_OPT -outfile $LOG_OUT -errfile $LOG_ERR -pidfile $PID $1 $CLASS
+    $EXEC -home $JAVA_HOME -cp $CLASS_PATH -DapplicationContextFrom="file" -DcontextFilePath="/opt/orion/hermese/config" -user $USER $JAVA_OPT -outfile $LOG_OUT -errfile $LOG_ERR -pidfile $PID $1 $CLASS
 }
 
 case "$1" in

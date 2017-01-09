@@ -114,6 +114,9 @@
 
         <div class="login-page">
             <div class="form">
+                <div style="padding-bottom: 15px;font-size: 30px;font-weight: lighter;">
+                    LOGIN WITH ORION
+                </div>
                 <form class="login-form" role="form" action="j_spring_security_check" method="post">
                     <input type="text" name="j_username" placeholder="Username" required autofocus/>
                     <input type="password" name="j_password" placeholder="Password" required/>

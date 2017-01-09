@@ -31,7 +31,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 import javax.sql.DataSource;
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 

@@ -5,6 +5,7 @@ import com.fintech.orion.common.exceptions.HermeseResponseprocessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
+import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.documentverification.factory.DocumentVerification;
 import com.fintech.orion.documentverification.factory.DocumentVerificationFactory;
 import com.fintech.orion.documentverification.factory.DocumentVerificationType;
@@ -16,6 +17,8 @@ import com.fintech.orion.dto.response.api.ValidationData;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.configuration.VerificationConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -34,7 +37,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class HermeseResponseProcessor implements HermeseResponseProcessorInterface{
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(HermeseResponseProcessor.class);
 
     @Autowired
     private VerificationRequestDetailServiceInterface verificationRequestDetailService;
@@ -48,7 +51,6 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
 
     @Override
-    @Transactional
     public ResponseProcessorResult processAndUpdateRawResponse(String rawResponse, ProcessingRequest processingRequest) throws HermeseResponseprocessorException {
         try {
 
@@ -78,10 +80,12 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
 
         updateDataComparison(detailedResponse, ocrResponse);
-        if (getProcessByProcessId(processingRequest, "idVerification") != null){
+        if (isProcessTypeFoundInProcessingRequest(processingRequest.getProcessingRequestIdentificationCode(),
+                "idVerification")){
             updateIdDocumentFullValidation(detailedResponse, ocrResponse);
         }
-        if (getProcessByProcessId(processingRequest, "addressVerification") != null){
+        if (isProcessTypeFoundInProcessingRequest(processingRequest.getProcessingRequestIdentificationCode(),
+                "addressVerification")){
             updateAddressDocumentFullValidation(detailedResponse, ocrResponse);
         }
         setFinalProcessingStatus(detailedResponse);
@@ -146,15 +150,11 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
                 .collect(Collectors.toList());
     }
 
-    private Process getProcessByProcessId(ProcessingRequest processingRequest, String processType){
-        Process process = null;
-        for (Process p : processingRequest.getProcesses()){
-            if (p.getProcessType().getType().equalsIgnoreCase(processType)){
-                process = p;
-                break;
-            }
-        }
-        return process;
+
+
+    private boolean isProcessTypeFoundInProcessingRequest(String processingRequestId, String processType){
+        return verificationRequestDetailService.isVerificationProcessFoundInProcessingRequest(processingRequestId,
+                processType);
     }
 
 }

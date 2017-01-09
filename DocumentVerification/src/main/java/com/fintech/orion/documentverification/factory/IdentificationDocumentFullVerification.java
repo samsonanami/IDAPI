@@ -2,6 +2,7 @@ package com.fintech.orion.documentverification.factory;
 
 import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
+import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
 import com.fintech.orion.documentverification.common.checkdigit.CheckDigitResults;
 import com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation;
@@ -48,6 +49,9 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
     private PassportCheckDigitFormation passportCheckDigitFormation;
 
     @Autowired
+    private ProcessRepositoryInterface processRepositoryInterface;
+
+    @Autowired
     @Qualifier("idDocCustomValidations")
     private List idDocCustomValidations;
 
@@ -58,15 +62,13 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
         ProcessingRequest processingRequest = processingRequestRepositoryInterface
                 .findProcessingRequestByProcessingRequestIdentificationCode(ocrResponse.getVerificationRequestId());
 
-        Process documentVeriicationProcess = new Process();
-        for (Process process : processingRequest.getProcesses()){
-            if (process.getProcessType().getType().equalsIgnoreCase("idVerification")){
-                documentVeriicationProcess = process;
-            }
-        }
+
+        Process documentVerificationProcess = processRepositoryInterface
+                .findProcessByProcessingRequestAndProcessType(processingRequest.getProcessingRequestIdentificationCode(),
+                        "idVerification");
 
         Resource idVerificationResource = null;
-        for (Resource resource : documentVeriicationProcess.getResources()){
+        for (Resource resource : documentVerificationProcess.getResources()){
             if(idVerificationResource == null && (resource.getResourceName().getName().equalsIgnoreCase("passport")
                     || resource.getResourceName().getName().equalsIgnoreCase("drivingLicenseFront"))){
                 idVerificationResource = resource;

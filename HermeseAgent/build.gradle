@@ -15,6 +15,10 @@ dependencies {
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.4'
 
+    // https://mvnrepository.com/artifact/com.mchange/c3p0
+    compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.2'
+
+
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
 
@@ -23,17 +27,6 @@ dependencies {
     compile project(':DataTransferObjects')
 }
 
-task copyLibs(type: Copy) {
-    into "$buildDir/output/lib"
-    from configurations.runtime
-}
-
-task copyConfigs(type: Copy){
-    into "$buildDir/output/config"
-    from "src/main/resources"
-}
-
-/*
 jar {
     manifest {
         attributes(
@@ -47,7 +40,28 @@ sourceSets {
         resources {
             exclude '*.properties'
             exclude '*.xml'
-       }
+        }
     }
 }
-*/
+task copyLibs(type: Copy) {
+    into "$buildDir/output/lib"
+    from configurations.runtime
+}
+
+task copyConfigs(type: Copy){
+    into "$buildDir/output/config"
+    from "src/main/resources"
+}
+
+task bsxBuilder(type: Exec){
+
+    workingDir '../Deployment/executer'
+    commandLine './executer.sh'
+}
+
+
+task bsx(dependsOn :['clean', 'build', 'copyLibs', 'copyConfigs', 'bsxBuilder'])
+build.mustRunAfter clean
+copyLibs.mustRunAfter build
+copyConfigs.mustRunAfter copyLibs
+bsxBuilder {}.mustRunAfter copyConfigs

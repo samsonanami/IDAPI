@@ -9,7 +9,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/orion-api-debug.log</file>
+        <file>${LOG_HOME}/auth-api-debug.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %date %level [%thread] %logger{10} [%file : %line] %msg%n

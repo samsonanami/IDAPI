@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -43,7 +44,7 @@ public class VerificationOrchestrator {
     @Autowired
     private LicenseRepositoryInterface licenseRepositoryInterface;
 
-    @Transactional
+
     public void orchestrate(Object message){
         long start = System.currentTimeMillis();
         LOGGER.debug("Start orchestrating message {} ", message);
@@ -69,27 +70,35 @@ public class VerificationOrchestrator {
             try {
                 LOGGER.debug("received results {}", oracleResults.get());
                 LOGGER.debug("Elapsed time to complete the processing : " + (System.currentTimeMillis() - start));
-                ProcessingRequest processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
                 String rawString = objectMapper.writeValueAsString(oracleResults.get());
-                ResponseProcessorResult result = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
-                updateLicenseStatus(rawString, processingMessage.getClientLicense());
-                for (Process process : processingRequest.getProcesses()){
-                    saveProcessResponse(rawString, result.getProcessedString(), process);
-                }
+                processResponse(processingMessage, rawString);
 
             } catch (InterruptedException e) {
                 LOGGER.error("Verification process orchestration interrupted ", e);
             } catch (ExecutionException e) {
                 LOGGER.error("Verification process execution occurred ", e);
-            } catch (ItemNotFoundException e) {
-                LOGGER.error("Failed to find required data to complete the processing ", e);
             } catch (JsonProcessingException e) {
                 LOGGER.error("Error occurred processing one or more json ", e);
-            } catch (HermeseResponseprocessorException e) {
-                LOGGER.error("Error while processing the response ", e);
             }
         }
+    }
 
+    @Transactional
+    private void processResponse(ProcessingMessage processingMessage, String rawString){
+        try {
+            ProcessingRequest processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
+            ResponseProcessorResult result = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
+            updateLicenseStatus(rawString, processingMessage.getClientLicense());
+            List<Process> processList = verificationRequestDetailService
+                    .getProcessListBelongsToProcessingRequest(processingMessage.getVerificationRequestCode());
+            for (Process process : processList){
+                saveProcessResponse(rawString, result.getProcessedString(), process);
+            }
+        }catch (ItemNotFoundException e) {
+            LOGGER.error("Failed to find required data to complete the processing ", e);
+        }catch (HermeseResponseprocessorException e) {
+            LOGGER.error("Error while processing the response ", e);
+        }
 
     }
 
