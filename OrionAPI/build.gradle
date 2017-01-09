@@ -1,33 +1,34 @@
-
+plugins {
+    id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
+}
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'war'
 //apply plugin: 'jetty'
-
+apply plugin: 'net.vivin.gradle-semantic-build-versioning'
 apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 
 
-//project.version.with {
-//    snapshotSuffix  = ""
-//    preRelease {
-//        startingVersion = "0.0.0"
-//        bump { String version ->
-//            int firstNum = Integer.parseInt(version.split(/\./)[0])
-//            int secondNum = Integer.parseInt(version.split(/\./)[1])
-//            int thirdNum = Integer.parseInt(version.split(/\./)[2])
-//            if(thirdNum > 9){
-//                thirdNum = 0
-//                secondNum = secondNum + 1
-//            }else{
-//                thirdNum = thirdNum + 1
-//            }
-//            return "${firstNum}.${secondNum}.${thirdNum}"
-//        }
-//    }
-//
-//}
+project.version.with {
+    snapshotSuffix  = "-"
+    preRelease {
+        startingVersion = "0.0.0"
+        bump { String version ->
+            int firstNum = Integer.parseInt(version.split(/\./)[0])
+            int secondNum = Integer.parseInt(version.split(/\./)[1])
+            int thirdNum = Integer.parseInt(version.split(/\./)[2])
+            if(thirdNum > 9){
+                thirdNum = 0
+                secondNum = secondNum + 1
+            }else{
+                thirdNum = thirdNum + 1
+            }
+            return "${firstNum}.${secondNum}.${thirdNum}"
+        }
+    }
 
+}
 
 // JDK 8
 sourceCompatibility = 1.8
