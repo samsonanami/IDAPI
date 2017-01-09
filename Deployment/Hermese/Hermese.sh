@@ -52,7 +52,21 @@ case "$1" in
         echo "The $DESC has stopped."
 	    echo  "Please use ps aux | grep $FILE_PATH  to ensure no instances running"
     ;;
+    restart)
+        echo "Attempting to restart $DESC"
+        if [ -f "$PID" ]; then
+            echo "Restarting $DESC"
+            jsvc_exec "-stop"
+            sleep 10
+            jsvc_exec
+            echo "This will take few seconds ..."
+            sleep 15
+            echo "Please use ps aux | grep $FILE_PATH to check the service status"
+        else
+            echo "No hermese agent was running. No cation taken."
+        fi
+    ;;
     *)
-        echo "Usage: {start|stop}" >&2
+        echo "Usage: {start|stop|restart}" >&2
     ;;
 esac
