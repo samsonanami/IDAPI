@@ -1,7 +1,6 @@
 rootProject.name = 'Orion'
 
 include 'OrionDataAbstraction'
-include 'Services'
 include 'Services:CoreServices'
 include 'Services:APIServices'
 include 'Services:HermesAgentServices'
