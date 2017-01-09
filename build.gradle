@@ -50,8 +50,4 @@ subprojects {
         mavenLocal()
     }
 
-    configurations {
-        //runtime.exclude group: "commons-logging", module: "commons-logging"
-    }
-
 }
