@@ -60,8 +60,7 @@ task bsxBuilder(type: Exec){
 }
 
 
-task bsx(dependsOn :['clean', 'build', 'copyLibs', 'copyConfigs', 'bsxBuilder'])
-build.mustRunAfter clean
+task bsx(dependsOn :['copyLibs', 'copyConfigs', 'bsxBuilder'])
 copyLibs.mustRunAfter build
 copyConfigs.mustRunAfter copyLibs
 bsxBuilder {}.mustRunAfter copyConfigs
