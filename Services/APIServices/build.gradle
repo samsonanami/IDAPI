@@ -1,25 +1,4 @@
 
-project.version.with {
-    snapshotSuffix  = "-"
-    preRelease {
-        startingVersion = "0.0.0"
-        bump { String version ->
-            int firstNum = Integer.parseInt(version.split(/\./)[0])
-            int secondNum = Integer.parseInt(version.split(/\./)[1])
-            int thirdNum = Integer.parseInt(version.split(/\./)[2])
-            if(thirdNum > 9){
-                thirdNum = 0
-                secondNum = secondNum + 1
-            }else{
-                thirdNum = thirdNum + 1
-            }
-            return "${firstNum}.${secondNum}.${thirdNum}"
-        }
-    }
-
-}
-
-
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
