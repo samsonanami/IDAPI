@@ -1,6 +1,7 @@
 group 'com.fintech.orion'
 apply plugin: 'java'
 
+/*
 project.version.with {
     snapshotSuffix  = "-"
     preRelease {
@@ -20,6 +21,7 @@ project.version.with {
     }
 
 }
+*/
 
 
 dependencies {
