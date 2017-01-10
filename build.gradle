@@ -10,7 +10,10 @@ buildScan {
 allprojects {
     group = "com.fintech.orion"
     apply plugin: "idea"
-
+    apply plugin: 'java'
+    apply plugin: 'net.vivin.gradle-semantic-build-versioning'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
     project.version.with {
         snapshotSuffix  = "-"
         preRelease {
@@ -36,10 +39,7 @@ allprojects {
 
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'net.vivin.gradle-semantic-build-versioning'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+
 
     
 
