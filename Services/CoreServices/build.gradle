@@ -3,7 +3,7 @@ ext {
     generatedMapperSourcesDir = "${buildDir}/generated-src"
 }
 
-project.version.with {
+/*project.version.with {
     snapshotSuffix  = "-"
     preRelease {
         startingVersion = "0.0.0"
@@ -21,7 +21,7 @@ project.version.with {
         }
     }
 
-}
+}*/
 
 configurations {
     mapstruct

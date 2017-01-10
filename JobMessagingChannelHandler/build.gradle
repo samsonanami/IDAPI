@@ -1,4 +1,4 @@
-project.version.with {
+/*project.version.with {
     snapshotSuffix  = "-"
     preRelease {
         startingVersion = "0.0.0"
@@ -16,7 +16,7 @@ project.version.with {
         }
     }
 
-}
+}*/
 dependencies {
     compile group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
 

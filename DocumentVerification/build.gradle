@@ -1,3 +1,4 @@
+/*
 project.version.with {
     snapshotSuffix  = "-"
     preRelease {
@@ -17,6 +18,7 @@ project.version.with {
     }
 
 }
+*/
 
 
 

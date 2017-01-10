@@ -6,7 +6,7 @@ apply plugin: 'war'
 //apply plugin: 'net.vivin.gradle-semantic-build-versioning'
 apply from: 'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'
 
-
+/*
 project.version.with {
     snapshotSuffix  = "-"
     preRelease {
@@ -25,7 +25,7 @@ project.version.with {
         }
     }
 
-}
+}*/
 
 // JDK 8
 sourceCompatibility = 1.8
