@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by MudithaJ on 12/26/2016.
+ *
  */
 @Component
 public class GenderValidation extends ValidationHelper implements CustomValidation {
@@ -34,12 +35,12 @@ public class GenderValidation extends ValidationHelper implements CustomValidati
             Gender genderBaseValue = getGender(ocrFieldData.getValue().iterator().next().getValue());
             for (OcrFieldValue value : ocrFieldData.getValue()){
                 Gender compare = getGender(value.getValue());
-                if (!genderBaseValue.equals(compare)){
+                if (genderBaseValue == Gender.OTHER || !genderBaseValue.equals(compare)){
                     validationData.setRemarks(getFailedRemarksMessage());
                     validationData.setValidationStatus(false);
                     break;
                 }else {
-                    validationData.setRemarks(getSuccessRemarksMessage());
+                    validationData.setRemarks(getSuccessRemarksMessage() + genderBaseValue);
                     validationData.setValidationStatus(true);
                 }
             }

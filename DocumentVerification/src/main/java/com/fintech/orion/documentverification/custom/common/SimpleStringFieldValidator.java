@@ -42,7 +42,8 @@ public class SimpleStringFieldValidator extends ValidationHelper implements Cust
             validationData.setRemarks(getSuccessRemarksMessage());
         }else {
             validationData.setRemarks(getFailedRemarksMessage());
-            LOGGER.warn("Custom validation failed for field {} complete validation status is ", getOcrExtractionFieldName(),
+            LOGGER.warn("Custom validation "+verificationDisplayName+" failed for field {} complete validation " +
+                            "status is {}", getOcrExtractionFieldName(),
                     validationData);
         }
         validationData.setId(verificationDisplayName);

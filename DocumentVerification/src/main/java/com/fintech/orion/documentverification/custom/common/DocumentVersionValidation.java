@@ -27,12 +27,15 @@ public class DocumentVersionValidation extends ValidationHelper implements Custo
         if (fieldValue != null && fieldValue.getValue() != null && !fieldValue.getValue().isEmpty()){
             validationData.setValue(fieldValue.getValue());
             validationData.setOcrConfidence(fieldValue.getConfidence());
+            validationData.setRemarks(getSuccessRemarksMessage());
+            validationData.setValidationStatus(true);
         }else{
             validationData.setValue("Unknown");
-            validationData.setRemarks("Could not verify document version");
+            validationData.setRemarks("Could not verify document version No document number found in the given " +
+                    "document "+ resourceName.getName());
             validationData.setValidationStatus(false);
         }
-        validationData.setId("Document Version");
+        validationData.setId("Document Version Verification");
         return validationData;
     }
 }

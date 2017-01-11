@@ -41,13 +41,21 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
             try {
                 validationData = validateMinimumAge(fieldData);
             } catch (DateComparatorException e) {
-                throw new CustomValidationException("Error Occurred while performing minimum age verification ", e);
+                LOGGER.warn("Error occurred while performing an minimum age" +
+                        " validation for ocr response {} {}", ocrResponse, e);
+                validationData.setValue(null);
+                validationData.setOcrConfidence(null);
+                validationData.setValidationStatus(false);
+                validationData.setRemarks("Error occurred while performing the minimum age validation. " +
+                        "This is most likely " +
+                        "due to an unsupported date format. Supported date formats are," +
+                        "DD MM/MM YY or DD.MM.YYYY");
             }
         }
         if (!validationData.getValidationStatus()){
             validationData.setRemarks(getSuccessRemarksMessage());
         }
-        validationData.setId("Minimum age verification");
+        validationData.setId("Minimum Age Verification");
         return validationData;
     }
 

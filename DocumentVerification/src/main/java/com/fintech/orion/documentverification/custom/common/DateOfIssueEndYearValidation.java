@@ -11,15 +11,18 @@ import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
 /**
  * Created by MudithaJ on 1/2/2017.
+ *
  */
 public class DateOfIssueEndYearValidation  extends ValidationHelper implements CustomValidation {
 
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateOfIssueEndYearValidation.class);
     private int validYearCount;
 
 
@@ -38,7 +41,15 @@ public class DateOfIssueEndYearValidation  extends ValidationHelper implements C
             try {
                 validationData = validateDateofIusseEndYear(fieldData);
             } catch (DateComparatorException e) {
-                throw new CustomValidationException("Error Occurred while performing issued date end year verification ", e);
+                LOGGER.warn("Error occurred while performing an date of issue year validation for ocr response {} {}",
+                        ocrResponse, e);
+                validationData.setValue(null);
+                validationData.setOcrConfidence(null);
+                validationData.setValidationStatus(false);
+                validationData.setRemarks("Error occurred while performing the issue date year range validation. " +
+                        "This is most likely " +
+                        "due to an unsupported date format. Supported date formats are," +
+                        "DD MM/MM YY or DD.MM.YYYY");
             }
         }
         if (!validationData.getValidationStatus()){

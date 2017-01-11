@@ -18,9 +18,11 @@ import java.util.Date;
 
 /**
  * Created by MudithaJ on 1/2/2017.
+ *
  */
 public class AgeLimitValidation  extends ValidationHelper implements CustomValidation {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AgeLimitValidation.class);
 
     private int minimumAge;
     private int maximumAge;
@@ -43,11 +45,15 @@ public class AgeLimitValidation  extends ValidationHelper implements CustomValid
             try {
                 validationData = validateAgeLimit(fieldData);
             } catch (DateComparatorException e) {
-                throw new CustomValidationException("Error Occurred while performing age limit verification ", e);
+                LOGGER.warn("Error occurred while performing an age limit verification on ocr response {} {}"
+                        , ocrResponse, e);
+                validationData.setValue(null);
+                validationData.setRemarks("Error occurred while performing age limit verification. This is most likely " +
+                        "due to an unsupported date format. Supported date formats are," +
+                        "DD MM/MM YY or DD.MM.YYYY");
+                validationData.setOcrConfidence(null);
+                validationData.setValidationStatus(false);
             }
-        }
-        if (!validationData.getValidationStatus()){
-            validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Age limit verification");
         return validationData;

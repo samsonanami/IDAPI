@@ -11,16 +11,21 @@ import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 
 /**
  * Created by MudithaJ on 1/2/2017.
+ *
  */
 public class IssuedDateAgeLimitValidation  extends ValidationHelper implements CustomValidation {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(IssuedDateAgeLimitValidation.class);
     private int minimumAge;
     private int maximumAge;
-    private String dateofBirthString;
+    private String dateOfBirthOcrExtractionField;
 
 
 
@@ -37,21 +42,29 @@ public class IssuedDateAgeLimitValidation  extends ValidationHelper implements C
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldDataIssuedDate = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         OcrFieldValue valueIssuedDate = getFieldValueById(resourceName.getName()+"##"+getOcrExtractionFieldName(),fieldDataIssuedDate);
-        OcrFieldData fieldDataDateOfBirth = getFieldDataById(dateofBirthString, ocrResponse);
-        OcrFieldValue valueDateOfBirth = getFieldValueById(resourceName.getName()+"##"+dateofBirthString,fieldDataDateOfBirth);
+        OcrFieldData fieldDataDateOfBirth = getFieldDataById(dateOfBirthOcrExtractionField, ocrResponse);
+        OcrFieldValue valueDateOfBirth = getFieldValueById(resourceName.getName()+"##"+ dateOfBirthOcrExtractionField,fieldDataDateOfBirth);
 
         validationData = validateInput(fieldDataIssuedDate);
         if (validationData.getValidationStatus()){
             try {
              validationData = validateIssuedDateAgeLimit(valueIssuedDate,valueDateOfBirth);
             } catch (DateComparatorException e) {
-                throw new CustomValidationException("Error Occurred while performing issued date age limit verification ", e);
+                LOGGER.warn("Error occurred while performing an date of birth at issue date" +
+                                " validation for ocr response {} {}", ocrResponse, e);
+                validationData.setValue(null);
+                validationData.setOcrConfidence(null);
+                validationData.setValidationStatus(false);
+                validationData.setRemarks("Error occurred while performing the issue date year range validation. " +
+                        "This is most likely " +
+                        "due to an unsupported date format. Supported date formats are," +
+                        "DD MM/MM YY or DD.MM.YYYY");
             }
         }
         if (!validationData.getValidationStatus()){
             validationData.setRemarks(getSuccessRemarksMessage());
         }
-        validationData.setId("Issued date age limit verification");
+        validationData.setId("Date of Birth at Document Issue Date Validation");
         return validationData;
     }
 
@@ -65,6 +78,7 @@ public class IssuedDateAgeLimitValidation  extends ValidationHelper implements C
         if (age>minimumAge && age<maximumAge ){
             validationData.setValidationStatus(true);
             validationData.setValue(String.valueOf(age));
+            validationData.setRemarks(getSuccessRemarksMessage());
         }else {
             validationData.setRemarks(getFailedRemarksMessage());
             validationData.setValue(String.valueOf(age));
@@ -88,8 +102,8 @@ public class IssuedDateAgeLimitValidation  extends ValidationHelper implements C
         this.maximumAge = maximumAge;
     }
 
-    public void setDateofBirthString(String dateofBirthString) {
-        this.dateofBirthString = dateofBirthString;
+    public void setDateOfBirthOcrExtractionField(String dateOfBirthOcrExtractionField) {
+        this.dateOfBirthOcrExtractionField = dateOfBirthOcrExtractionField;
     }
 
 }

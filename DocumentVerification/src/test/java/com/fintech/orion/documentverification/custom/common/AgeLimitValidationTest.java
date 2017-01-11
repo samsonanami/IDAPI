@@ -152,8 +152,8 @@ public class AgeLimitValidationTest {
         assertTrue(verificationData.getValidationStatus());
     }
 
-    @Test(expected = CustomValidationException.class)
-    public void should_throw_CustomValidationException_false_if_date_format_is_not_supported()throws Exception{
+    @Test
+    public void should_return_false_if_date_format_is_not_supported()throws Exception{
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25/07/1974");

@@ -1,7 +1,6 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
-import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
@@ -91,13 +90,14 @@ public class NameUtilityBillValidationTest {
         fieldDataList.add(ocrFieldDatabillFullnname);
 
         ocrResponse.setData(fieldDataList);
-
+        List<String> resourceList = new ArrayList<>();
+        resourceList.add("passport");
+        resourceList.add("drivinglicense");
         nameUtilityBillValidation.setOcrExtractionFieldName("fullname");
-        nameUtilityBillValidation.setSurName("surname");
-        nameUtilityBillValidation.setGivenName("givenname");
-        nameUtilityBillValidation.setUitilityBillfullName("fullname");
-        nameUtilityBillValidation.setResourceDrvingLicense("drivinglicense");
-        nameUtilityBillValidation.setResoursePassport("passport");
+        nameUtilityBillValidation.setSurnameOcrExtractionFieldName("surname");
+        nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
+        nameUtilityBillValidation.setutilityBillNameOcrExtractionField("fullname");
+        nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
         resourceName.setName("bill");
 
 
@@ -159,13 +159,14 @@ public class NameUtilityBillValidationTest {
         fieldDataList.add(ocrFieldDatabillFullnname);
 
         ocrResponse.setData(fieldDataList);
-
+        List<String> resourceList = new ArrayList<>();
+        resourceList.add("passport");
+        resourceList.add("drivinglicense");
         nameUtilityBillValidation.setOcrExtractionFieldName("fullname");
-        nameUtilityBillValidation.setSurName("surname");
-        nameUtilityBillValidation.setGivenName("givenname");
-        nameUtilityBillValidation.setUitilityBillfullName("fullname");
-        nameUtilityBillValidation.setResourceDrvingLicense("drivinglicense");
-        nameUtilityBillValidation.setResoursePassport("passport");
+        nameUtilityBillValidation.setSurnameOcrExtractionFieldName("surname");
+        nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
+        nameUtilityBillValidation.setutilityBillNameOcrExtractionField("fullname");
+        nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
         resourceName.setName("bill");
 
 
@@ -220,13 +221,14 @@ public class NameUtilityBillValidationTest {
         fieldDataList.add(ocrFieldDatabillFullnname);
 
         ocrResponse.setData(fieldDataList);
-
+        List<String> resourceList = new ArrayList<>();
+        resourceList.add("passport");
+        resourceList.add("drivinglicense");
         nameUtilityBillValidation.setOcrExtractionFieldName("fullname");
-        nameUtilityBillValidation.setSurName("surname");
-        nameUtilityBillValidation.setGivenName("givenname");
-        nameUtilityBillValidation.setUitilityBillfullName("fullname");
-        nameUtilityBillValidation.setResourceDrvingLicense("drivinglicense");
-        nameUtilityBillValidation.setResoursePassport("passport");
+        nameUtilityBillValidation.setSurnameOcrExtractionFieldName("surname");
+        nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
+        nameUtilityBillValidation.setutilityBillNameOcrExtractionField("fullname");
+        nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
         resourceName.setName("bill");
 
 

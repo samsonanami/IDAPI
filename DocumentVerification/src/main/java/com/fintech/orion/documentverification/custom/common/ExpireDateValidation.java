@@ -9,6 +9,8 @@ import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -16,10 +18,11 @@ import java.util.Date;
 
 /**
  * Created by MudithaJ on 12/27/2016.
+ *
  */
 @Component
 public class ExpireDateValidation extends ValidationHelper implements CustomValidation {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExpireDateValidation.class);
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
@@ -30,7 +33,14 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
             try {
                 validationData = checkDocumentExpirationDate(fieldData);
             } catch (DateComparatorException e) {
-                throw new CustomValidationException("Error occurred while performing document expiry date verification ");
+                LOGGER.warn("Error occurred while performing an expire date validation for ocr response {} on " +
+                                "resource name {} {}", ocrResponse, resourceName.getName(), e);
+                validationData.setValue(null);
+                validationData.setOcrConfidence(null);
+                validationData.setValidationStatus(false);
+                validationData.setRemarks("Error occurred while performing . This is most likely " +
+                        "due to an unsupported date format. Supported date formats are," +
+                        "DD MM/MM YY or DD.MM.YYYY");
             }
         }
         if(validationData.getValidationStatus()){

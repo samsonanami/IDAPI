@@ -98,14 +98,21 @@ public class ValidationHelper {
     }
 
     public ValidationData isAllOcrFieldValueHasSameValueField(List<OcrFieldValue> values){
-        boolean isValuesEqual = true;
+        boolean isValuesEqual = false;
         ValidationData validationData = new ValidationData();
         String valueOfTheFirstObject = values.iterator().next().getValue();
+        if (valueOfTheFirstObject != null){
+            valueOfTheFirstObject = valueOfTheFirstObject.trim();
+        }
         if (values.size() > 1){
             for (OcrFieldValue fieldValue : values){
-                if (!fieldValue.getValue().equalsIgnoreCase(valueOfTheFirstObject)){
+                if (fieldValue.getValue() != null && fieldValue.getValue().trim().equalsIgnoreCase(valueOfTheFirstObject)){
+                    validationData.setRemarks(successRemarksMessage);
+                    isValuesEqual = true;
+                }else {
                     validationData.setRemarks(failedRemarksMessage);
                     isValuesEqual = false;
+                    break;
                 }
             }
         }else {

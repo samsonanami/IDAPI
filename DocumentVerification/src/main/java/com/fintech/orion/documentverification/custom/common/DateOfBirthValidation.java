@@ -43,7 +43,8 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
             validationData = compareRestOfTheDatesWithBaseDate(firstDateOfBirth, values);
         }else {
             validationData.setValidationStatus(false);
-            validationData.setRemarks("Not Enough date to complete the validation.");
+            validationData.setRemarks("Not Enough data to complete the validation. Need two or more date of births from" +
+                    "multiple documents to complete this verification.");
         }
         return validationData;
     }
@@ -53,10 +54,12 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
         for (OcrFieldValue value : values) {
             if (!dateComparator.doOperation(base, value.getValue()).isStatus()) {
                 validationData.setValidationStatus(false);
+                validationData.setValue(value.getValue());
                 validationData.setRemarks(getFailedRemarksMessage());
                 break;
             } else {
                 validationData.setValidationStatus(true);
+                validationData.setValue(base);
                 validationData.setRemarks(getSuccessRemarksMessage());
             }
         }

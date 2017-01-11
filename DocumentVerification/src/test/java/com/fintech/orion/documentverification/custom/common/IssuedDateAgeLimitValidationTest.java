@@ -73,7 +73,7 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
@@ -120,7 +120,7 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertFalse(verificationData.getValidationStatus());
@@ -166,7 +166,7 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertFalse(verificationData.getValidationStatus());
@@ -213,14 +213,14 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertTrue(verificationData.getValidationStatus());
     }
 
-    @Test(expected = CustomValidationException.class)
+    @Test
     public void should_throw_CustomValidationException_false_if_date_format_is_not_supported()throws Exception{
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
@@ -259,10 +259,10 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
-        assertTrue(verificationData.getValidationStatus());
+        assertFalse(verificationData.getValidationStatus());
     }
 }
