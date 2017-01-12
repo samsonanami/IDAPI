@@ -1,4 +1,4 @@
-package com.fintech.orion.dto.hermese.model.Oracle.response;
+package com.fintech.orion.dto.hermese.model.oracle.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;

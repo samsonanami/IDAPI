@@ -4,29 +4,23 @@ import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
-import com.fintech.orion.documentverification.common.checkdigit.CheckDigitResults;
 import com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation;
 import com.fintech.orion.documentverification.common.exception.*;
 import com.fintech.orion.documentverification.common.mrz.DrivingLicenseMZRDecodingStrategy;
-import com.fintech.orion.documentverification.common.mrz.MRZDecodeResults;
 import com.fintech.orion.documentverification.common.mrz.PassportMRZDecodingStrategy;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.configuration.VerificationConfiguration;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by sasitha on 12/26/16.

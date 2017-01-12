@@ -3,9 +3,9 @@ package com.fintech.orion.hermesagentservices.transmission.request.body.builder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fintech.orion.dto.hermese.model.Oracle.VerificationResource;
-import com.fintech.orion.dto.hermese.model.Oracle.VerificationProcess;
-import com.fintech.orion.dto.hermese.model.Oracle.VerificationRequest;
+import com.fintech.orion.dto.hermese.model.oracle.VerificationResource;
+import com.fintech.orion.dto.hermese.model.oracle.VerificationProcess;
+import com.fintech.orion.dto.hermese.model.oracle.VerificationRequest;
 
 import java.util.ArrayList;
 import java.util.Iterator;

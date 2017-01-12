@@ -9,7 +9,7 @@ import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositor
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.configuration.VerificationConfiguration;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -11,7 +11,7 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.LicenseRepositoryInterface;
 import com.fintech.orion.dto.hermese.ResponseProcessorResult;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.hermesagentservices.processor.OracleRequestProcessor;
 import com.fintech.orion.hermesagentservices.response.processor.HermeseResponseProcessor;

@@ -1,4 +1,4 @@
-package com.fintech.orion.dto.hermese.model.Oracle;
+package com.fintech.orion.dto.hermese.model.oracle;
 
 import java.util.List;
 
