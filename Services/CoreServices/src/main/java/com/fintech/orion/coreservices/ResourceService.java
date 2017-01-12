@@ -2,21 +2,15 @@ package com.fintech.orion.coreservices;
 
 import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
-import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
-import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.ClientRepositoryInterface;
-import com.fintech.orion.dataabstraction.repositories.ResourceNameRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ResourceTypeRepositoryInterface;
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.exception.ResourceCreationException;
-import com.fintech.orion.mapping.client.ClientMapper;
 import com.fintech.orion.mapping.resource.ResourceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.UUID;
 
@@ -39,11 +33,7 @@ public class ResourceService implements ResourceServiceInterface {
     private ResourceTypeRepositoryInterface resourceTypeRepositoryInterface;
 
 
-    @Transactional
-    @Override
-    public void update(String resourceId, int processId, String resourceName) throws ItemNotFoundException {
-        //resourceRepositoryInterface.update(resourceId, processId, resourceName);
-    }
+
 
     @Override
     public ResourceDTO createResourceForUser(String newFilename, String contentType, String clientName) throws ResourceCreationException {

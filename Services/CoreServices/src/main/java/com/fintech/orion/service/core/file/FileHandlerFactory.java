@@ -7,11 +7,9 @@ package com.fintech.orion.service.core.file;
 public class FileHandlerFactory {
 
     public FileHandler getFileHandler(FileStorage storage){
-        FileHandler fileHandler = null;
-        switch (storage){
-            case LOCAL:
-                fileHandler = new LocalFileHandler();
-                break;
+        FileHandler fileHandler = new LocalFileHandler();
+        if (storage == FileStorage.LOCAL){
+            fileHandler = new LocalFileHandler();
         }
         return fileHandler;
     }

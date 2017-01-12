@@ -4,11 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.request.FailedRequestException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
-import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponseType;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.dto.hermese.model.oracle.VerificationProcessResponse;
 import com.fintech.orion.dto.hermese.model.oracle.VerificationResource;
@@ -66,7 +65,8 @@ public class OracleRequestProcessor implements VerificationProcessor {
         try {
             processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
         } catch (ItemNotFoundException e) {
-            throw new RequestProcessorException("Could not found processing request with verification request code : " + processingMessage.getVerificationRequestCode());
+            throw new RequestProcessorException("Could not found processing request with verification request code : " +
+                    "" + processingMessage.getVerificationRequestCode(), e);
         }
 
         BaseRequest postRequest = buildPostRequest(processingRequest);
@@ -77,9 +77,11 @@ public class OracleRequestProcessor implements VerificationProcessor {
         } catch (FailedRequestException e) {
             throw new RequestProcessorException("Could not send request to oracle api", e);
         } catch (IOException e) {
-            throw new RequestProcessorException("Could not map response from oracle api to the post request : " + postRequest.toString());
+            throw new RequestProcessorException("Could not map response from oracle api to the post request : " +
+                    "" + postRequest.toString(), e);
         } catch (InterruptedException e) {
-            throw new RequestProcessorException("Interruption occurred while waiting to get the processed data from the oracle api ", e);
+            throw new RequestProcessorException("Interruption occurred while waiting to get the processed data " +
+                    "from the oracle api ", e);
         }
 
         return new AsyncResult<>(response);
@@ -125,7 +127,7 @@ public class OracleRequestProcessor implements VerificationProcessor {
         HttpResponse<String> response = null;
         OcrResponse ocrResponse = new OcrResponse();
         boolean continueCheck = true;
-        int maximumTimeToWait = (Integer.valueOf(maximumWaitingTimeInSeconds)/10);
+        int maximumTimeToWait = Integer.valueOf(maximumWaitingTimeInSeconds)/10;
         long startTime = System.currentTimeMillis();
         while (continueCheck && maximumTimeToWait >0){
             maximumTimeToWait--;
@@ -134,8 +136,8 @@ public class OracleRequestProcessor implements VerificationProcessor {
             if (response.getStatus() == 200){
                 ObjectMapper objectMapper = new ObjectMapper();
                 ocrResponse = objectMapper.readValue(response.getBody(), OcrResponse.class);
-                if (ocrResponse.getStatus().equals("processing_successful") ||
-                        ocrResponse.getStatus().equals("processing_failed")){
+                if (OcrResponseType.PROCESSING_SUCCESSFUL.getName().equals(ocrResponse.getStatus())||
+                        OcrResponseType.PROCESSING_FAILED.getName().equals(ocrResponse.getStatus())){
                     continueCheck = false;
                 }
             }else {

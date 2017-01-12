@@ -17,7 +17,7 @@ import java.io.IOException;
 public class FileHandlerService implements FileHandlerServiceInterface{
 
     @Override
-    public String persistFile(MultipartFile file, FileStorage storage, String filePath) throws FileHandlerException, IllegalArgumentException{
+    public String persistFile(MultipartFile file, FileStorage storage, String filePath) throws FileHandlerException{
         Assert.notNull(file, "Multipart file should not be null");
         Assert.notNull(storage, "Storage should not be null");
         Assert.notNull(filePath, "File path should not be null");

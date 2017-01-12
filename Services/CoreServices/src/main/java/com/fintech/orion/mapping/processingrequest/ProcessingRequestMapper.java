@@ -5,8 +5,6 @@ import com.fintech.orion.dto.processingrequest.ProcessingRequestDTO;
 import com.fintech.orion.mapping.process.ProcessSetToListMapper;
 import org.mapstruct.Mapper;
 
-import java.util.List;
-
 /**
  * ProcessingRequest entity mappings
  */

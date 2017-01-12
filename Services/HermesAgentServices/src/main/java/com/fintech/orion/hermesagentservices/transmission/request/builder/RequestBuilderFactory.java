@@ -12,11 +12,9 @@ public class RequestBuilderFactory {
 
     public RequestBuilder getRequestBuilder(BuilderType builderType){
         Assert.notNull(builderType, "Builder type cannot be null");
-        RequestBuilder requestBuilder = null;
-        switch (builderType){
-            case ORACLE:
-                requestBuilder = new OracleRequestBuilder();
-                break;
+        RequestBuilder requestBuilder = new OracleRequestBuilder();
+        if (builderType.equals(BuilderType.ORACLE)){
+            requestBuilder = new OracleRequestBuilder();
         }
         return requestBuilder;
     }

@@ -4,8 +4,6 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dto.processtype.ProcessTypeDTO;
 import org.mapstruct.Mapper;
 
-import java.util.List;
-
 /**
  * ProcessType entity mappings
  */
