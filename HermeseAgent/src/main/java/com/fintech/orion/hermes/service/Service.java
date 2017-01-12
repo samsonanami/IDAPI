@@ -4,7 +4,6 @@ import com.fintech.orion.hermes.configuration.AppConfigurationProvider;
 import com.fintech.orion.hermes.configuration.AppConfigurationProviderInterface;
 import com.fintech.orion.hermes.configuration.AppStateProvider;
 import com.fintech.orion.hermes.configuration.AppStateProviderInterface;
-import com.fintech.orion.messaging.job.JobConsumerInterface;
 import com.mashape.unirest.http.Unirest;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
@@ -13,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.jms.JMSException;
-import javax.jms.MessageListener;
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Created by TharinduMP on 10/10/2016.
@@ -53,21 +49,6 @@ public class Service implements Daemon {
         AppStateProviderInterface appStateProvider = new AppStateProvider();
         AppConfigurationProviderInterface appConfigurationProvider = new AppConfigurationProvider(appStateProvider);
         applicationContext = appConfigurationProvider.getAppContext();
-    }
-
-    /**
-     * Set Hermes Job Consumer
-     */
-    private static void setJobConsumer() {
-        LOGGER.info("Setting Job Listener...");
-        try {
-            JobConsumerInterface jobConsumer = (JobConsumerInterface) applicationContext.getBean("jobConsumer");
-            MessageListener jobListener = (MessageListener) applicationContext.getBean("jobListener");
-            jobConsumer.setJobConsumer(jobListener);
-            LOGGER.info("Setting Job Listener Successful.");
-        } catch (JMSException e) {
-            LOGGER.error("Setting Job Listener Failed.", e);
-        }
     }
 
     @Override

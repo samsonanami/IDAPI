@@ -3,7 +3,6 @@ package com.fintech.orion.messaging.job;
 import com.fintech.orion.common.exceptions.job.JobHandlerException;
 import com.fintech.orion.dto.messaging.GenericMapMessage;
 
-import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;

@@ -17,7 +17,7 @@ import javax.jms.Session;
 
 public class JobCommon implements JobCommonInterface {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(JobCommon.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobCommon.class);
 
     private SessionHandlerInterface sessionHandler;
     private DestinationHandlerInterface destinationHandler;

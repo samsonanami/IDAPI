@@ -63,7 +63,7 @@ public class VerificationOrchestrator {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Could not sleep thread an interruption occurred ",e);
                 }
             }
 
@@ -107,7 +107,7 @@ public class VerificationOrchestrator {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             OcrResponse response = objectMapper.readValue(rawString, OcrResponse.class);
-            if (response.getStatus().equalsIgnoreCase("processing_successful")){
+            if ("processing_successful".equalsIgnoreCase(response.getStatus())){
                 License license = licenseRepositoryInterface.findLicenseByLicenseKey(licenseKey);
                 int currentLicenseCount = license.getCurrentRequestCount();
                 currentLicenseCount = currentLicenseCount + 1;

@@ -17,12 +17,12 @@ public class HermesListener implements MessageDelegate {
     private static final Logger LOGGER = LoggerFactory.getLogger(HermesListener.class);
 
     @Autowired
-    private VerificationOrchestrator Orchestrator;
+    private VerificationOrchestrator orchestrator;
 
 
     @Override
     public void delegateMessage(Serializable message) {
         LOGGER.debug("Received message from job chanel {}", message);
-        Orchestrator.orchestrate(message);
+        orchestrator.orchestrate(message);
     }
 }

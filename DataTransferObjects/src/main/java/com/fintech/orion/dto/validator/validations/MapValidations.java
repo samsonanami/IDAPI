@@ -10,7 +10,9 @@ import java.util.Map;
  */
 public class MapValidations {
 
-
+    private MapValidations(){
+        throw new IllegalAccessError("Utility class instantiation is not allowed");
+    }
 
     public static void doesContainKeyWithNonEmptyValue(final Map<String, String> map, String key) throws ValidatorException {
         //check null
