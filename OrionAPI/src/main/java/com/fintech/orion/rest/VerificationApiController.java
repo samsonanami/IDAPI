@@ -5,14 +5,13 @@ import com.fintech.orion.api.service.exceptions.*;
 import com.fintech.orion.api.service.request.ProcessingRequestServiceInterface;
 import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInterface;
 import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorInterface;
-import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
 import com.fintech.orion.jobchanel.producer.MessageProducer;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +123,7 @@ public class VerificationApiController implements VerificationApi {
         Principal principal = request.getUserPrincipal();
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         try {
-            String licenseKey = clientService.getActiveLicenseOfClient(principal.getName());
+            clientService.getActiveLicenseOfClient(principal.getName());
             verificationResponse = processingRequestHandlerInterface.getDetailedResponse(principal.getName(), verificationId);
             responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
         } catch (ClientServiceException e) {

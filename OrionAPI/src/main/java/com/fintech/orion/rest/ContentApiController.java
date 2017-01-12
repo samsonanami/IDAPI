@@ -13,8 +13,7 @@ import com.fintech.orion.exception.FileHandlerException;
 import com.fintech.orion.exception.ResourceCreationException;
 import com.fintech.orion.service.core.file.FileHandlerServiceInterface;
 import com.fintech.orion.service.core.file.FileStorage;
-import io.swagger.annotations.*;
-import org.apache.commons.fileupload.FileUploadException;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.security.Principal;
 
 
@@ -59,7 +57,7 @@ public class ContentApiController implements ContentApi {
         Principal principal = request.getUserPrincipal();
 
         try {
-            String licenseKey = clientService.getActiveLicenseOfClient(principal.getName());
+            clientService.getActiveLicenseOfClient(principal.getName());
 
             ValidatorStatus validatorStatus = fileValidator.validateFile(file);
             if (!validatorStatus.isPassed()) {

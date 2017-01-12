@@ -4,7 +4,6 @@ import com.fintech.orion.dto.response.api.GenericErrorMessage;
 import org.apache.commons.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,7 +24,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-        ResponseEntity<Object> responseEntity = null;
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         Principal principal = request.getUserPrincipal();
         LOGGER.error("Illegal sate/argument detected for a request sent buy client  {}  the original request was {}"
@@ -38,7 +36,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = {FileUploadException.class})
     protected ResponseEntity<Object> handleFileUploadError(RuntimeException ex, WebRequest request){
-        ResponseEntity<Object> responseEntity = null;
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         Principal principal = request.getUserPrincipal();
         LOGGER.error("Unable to complete content upload by the client {} the original request was {} ",

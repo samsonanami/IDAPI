@@ -4,7 +4,6 @@ import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
 import io.swagger.annotations.*;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
