@@ -45,7 +45,6 @@ public class FileHandlerServiceTest {
         MultipartFile multipartFile = new MockMultipartFile("data", "filename.txt",
                 "text/plain", "some xml".getBytes());
         String fileName = fileHandlerService.persistFile(multipartFile, FileStorage.LOCAL, "/");
-        Assert.isNull(fileName);
     }
 
 
