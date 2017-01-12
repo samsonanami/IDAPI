@@ -25,14 +25,14 @@ public class AgeLimitValidationTest {
     private ResourceName resourceName;
 
     @Before
-    public void setup()throws Exception{
+    public void setup() throws Exception {
         ocrFieldDateOfBirth = new OcrFieldData();
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
     }
 
     @Test
-    public void should_return_true_if_age_in_every_document_is_within_age_limit()throws Exception{
+    public void should_return_true_if_age_in_every_document_is_within_age_limit() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25.07.1974");
@@ -62,7 +62,7 @@ public class AgeLimitValidationTest {
     }
 
     @Test
-     public void should_return_false_if_age_in_any_document_below_than_age_limit()throws Exception{
+    public void should_return_false_if_age_in_any_document_below_than_age_limit() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25.07.2014");
@@ -92,7 +92,7 @@ public class AgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_false_if_age_in_any_document_greater_than_age_limit()throws Exception{
+    public void should_return_false_if_age_in_any_document_greater_than_age_limit() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25.07.1914");
@@ -122,7 +122,7 @@ public class AgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception{
+    public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("20 JAN /JAN 59");
@@ -152,7 +152,7 @@ public class AgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_false_if_date_format_is_not_supported()throws Exception{
+    public void should_return_false_if_date_format_is_not_supported() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25/07/1974");

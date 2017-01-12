@@ -1,6 +1,9 @@
 package com.fintech.orion.documentverification.factory;
 
-import com.fintech.orion.documentverification.strategy.*;
+import com.fintech.orion.documentverification.strategy.DataValidationStrategy;
+import com.fintech.orion.documentverification.strategy.DataValidationStrategyProvider;
+import com.fintech.orion.documentverification.strategy.DocumentDataValidator;
+import com.fintech.orion.documentverification.strategy.ValidationResult;
 import com.fintech.orion.dto.configuration.DataValidationStrategyType;
 import com.fintech.orion.dto.configuration.VerificationConfiguration;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
@@ -19,13 +22,12 @@ import java.util.Map;
 
 /**
  * Created by sasitha on 12/25/16.
- *
  */
 public class DataComparator implements DocumentVerification {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataComparator.class);
 
-    private  Map<String, VerificationConfiguration> verificationConfigurationMap;
+    private Map<String, VerificationConfiguration> verificationConfigurationMap;
 
     private DataValidationStrategy validationStrategy;
 
@@ -35,15 +37,15 @@ public class DataComparator implements DocumentVerification {
     private DataValidationStrategyProvider dataValidationStrategyProvider;
 
     @Override
-    public List<Object> verifyExtractedDocumentResult(OcrResponse ocrResponse,  Map<String, VerificationConfiguration> configurations) {
+    public List<Object> verifyExtractedDocumentResult(OcrResponse ocrResponse, Map<String, VerificationConfiguration> configurations) {
         verificationConfigurationMap = configurations;
 
         List<Object> fieldDataList = new ArrayList<>();
-        for (OcrFieldData fieldData : ocrResponse.getData()){
+        for (OcrFieldData fieldData : ocrResponse.getData()) {
             FieldData responseFieldData = new FieldData();
             responseFieldData.setId(fieldData.getId());
             List<FieldDataValue> fieldDataValueList = new ArrayList<>();
-            for (OcrFieldValue value : fieldData.getValue()){
+            for (OcrFieldValue value : fieldData.getValue()) {
                 FieldDataValue responseFieldDataValue = new FieldDataValue();
                 responseFieldDataValue.setId(value.getId());
                 responseFieldDataValue.setValue(value.getValue());
@@ -57,26 +59,26 @@ public class DataComparator implements DocumentVerification {
         return fieldDataList;
     }
 
-    private boolean isComparisonsAlreadyHappens(String baseId, String compareId, List<FieldDataComparision> comparision){
+    private boolean isComparisonsAlreadyHappens(String baseId, String compareId, List<FieldDataComparision> comparision) {
         boolean isComparisionPresent = false;
-        for (FieldDataComparision c : comparision){
-            if (c.getId().equalsIgnoreCase(getComparisionId(baseId, compareId)) || c.getId().equalsIgnoreCase(getComparisionId(compareId, baseId))){
+        for (FieldDataComparision c : comparision) {
+            if (c.getId().equalsIgnoreCase(getComparisionId(baseId, compareId)) || c.getId().equalsIgnoreCase(getComparisionId(compareId, baseId))) {
                 isComparisionPresent = true;
             }
         }
         return isComparisionPresent;
     }
 
-    private String getComparisionId(String baseId, String compareId){
+    private String getComparisionId(String baseId, String compareId) {
         return baseId + "##VS##" + compareId;
     }
 
-    private List<FieldDataComparision> getFieldComparisonList(List<FieldDataValue> fieldDataValueList, String fieldName){
+    private List<FieldDataComparision> getFieldComparisonList(List<FieldDataValue> fieldDataValueList, String fieldName) {
         List<FieldDataComparision> fieldDataComparisions = new ArrayList<>();
         DataValidationStrategy strategy = verificationStrategy(fieldName);
-        if(strategy != null){
+        if (strategy != null) {
             validator = new DocumentDataValidator(strategy);
-            for (FieldDataValue fieldDataValue : fieldDataValueList){
+            for (FieldDataValue fieldDataValue : fieldDataValueList) {
                 fieldDataComparisions.addAll(compareValueWithOtherValues(fieldDataValue, fieldDataValueList));
             }
         }
@@ -84,10 +86,10 @@ public class DataComparator implements DocumentVerification {
         return fieldDataComparisions;
     }
 
-    private List<FieldDataComparision> compareValueWithOtherValues(FieldDataValue base, List<FieldDataValue> values){
+    private List<FieldDataComparision> compareValueWithOtherValues(FieldDataValue base, List<FieldDataValue> values) {
         List<FieldDataComparision> fieldDataComparision = new ArrayList<>();
-        for (FieldDataValue value : values){
-            if (!base.getId().equalsIgnoreCase(value.getId()) && !isComparisonsAlreadyHappens(base.getId(), value.getId(), fieldDataComparision)){
+        for (FieldDataValue value : values) {
+            if (!base.getId().equalsIgnoreCase(value.getId()) && !isComparisonsAlreadyHappens(base.getId(), value.getId(), fieldDataComparision)) {
                 ValidationResult result = validator.executeStrategy(base.getValue(), value.getValue());
                 FieldDataComparision comparision = new FieldDataComparision();
                 comparision.setId(getComparisionId(base.getId(), value.getId()));
@@ -98,16 +100,16 @@ public class DataComparator implements DocumentVerification {
         return fieldDataComparision;
     }
 
-    private DataValidationStrategy verificationStrategy(String field){
+    private DataValidationStrategy verificationStrategy(String field) {
         VerificationConfiguration verificationConfiguration = verificationConfigurationMap.get(field);
         DataValidationStrategyType type;
         DataValidationStrategy strategy = null;
-        try{
+        try {
             type = verificationConfiguration.getSameValueComparisonStrategyAcrossMultipleResources();
             strategy = dataValidationStrategyProvider.getValidationStrategy(type);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.warn("Could not find a same value comparison strategy across multiple resources for " +
-                    "extraction field {} the full configuration for this extraction field is {} ",
+                            "extraction field {} the full configuration for this extraction field is {} ",
                     field, verificationConfiguration);
         }
 

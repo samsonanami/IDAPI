@@ -7,7 +7,6 @@ import com.fintech.orion.dto.response.api.ValidationData;
 
 /**
  * Created by sasitha on 12/26/16.
- *
  */
 public interface CustomValidation {
 

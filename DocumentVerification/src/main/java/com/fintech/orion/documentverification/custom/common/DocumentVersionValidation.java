@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by sasitha on 12/26/16.
- *
  */
 @Component
 public class DocumentVersionValidation extends ValidationHelper implements CustomValidation {
@@ -22,16 +21,16 @@ public class DocumentVersionValidation extends ValidationHelper implements Custo
         ValidationData validationData = new ValidationData();
 
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
-        OcrFieldValue fieldValue = getFieldValueById(resourceName.getName()+"##" + getOcrExtractionFieldName(), fieldData);
-        if (fieldValue != null && fieldValue.getValue() != null && !fieldValue.getValue().isEmpty()){
+        OcrFieldValue fieldValue = getFieldValueById(resourceName.getName() + "##" + getOcrExtractionFieldName(), fieldData);
+        if (fieldValue != null && fieldValue.getValue() != null && !fieldValue.getValue().isEmpty()) {
             validationData.setValue(fieldValue.getValue());
             validationData.setOcrConfidence(fieldValue.getConfidence());
             validationData.setRemarks(getSuccessRemarksMessage());
             validationData.setValidationStatus(true);
-        }else{
+        } else {
             validationData.setValue("Unknown");
             validationData.setRemarks("Could not verify document version No document number found in the given " +
-                    "document "+ resourceName.getName());
+                    "document " + resourceName.getName());
             validationData.setValidationStatus(false);
         }
         validationData.setId("Document Version Verification");

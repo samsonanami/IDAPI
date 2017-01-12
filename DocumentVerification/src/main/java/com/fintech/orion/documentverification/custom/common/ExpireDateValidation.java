@@ -18,23 +18,23 @@ import java.util.Date;
 
 /**
  * Created by MudithaJ on 12/27/2016.
- *
  */
 @Component
 public class ExpireDateValidation extends ValidationHelper implements CustomValidation {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpireDateValidation.class);
+
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
 
-        OcrFieldData fieldData=getFieldDataById(getOcrExtractionFieldName(),ocrResponse);
+        OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
-        if (validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             try {
                 validationData = checkDocumentExpirationDate(fieldData);
             } catch (DateComparatorException e) {
                 LOGGER.warn("Error occurred while performing an expire date validation for ocr response {} on " +
-                                "resource name {} {}", ocrResponse, resourceName.getName(), e);
+                        "resource name {} {}", ocrResponse, resourceName.getName(), e);
                 validationData.setValue(null);
                 validationData.setOcrConfidence(null);
                 validationData.setValidationStatus(false);
@@ -43,7 +43,7 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
                         "DD MM/MM YY or DD.MM.YYYY");
             }
         }
-        if(validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Document Expiry Date Verification");
@@ -53,14 +53,14 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
     private ValidationData checkDocumentExpirationDate(OcrFieldData ocrFieldData) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
-        for (OcrFieldValue fieldValue : ocrFieldData.getValue()){
+        for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());
-            if (date.before(new Date())){
+            if (date.before(new Date())) {
                 validationData.setRemarks(getDocumentNameFromOcrFieldValueId(fieldValue.getId()) + getFailedRemarksMessage());
                 validationData.setValidationStatus(false);
                 validationData.setValue(date.toString());
                 break;
-            }else {
+            } else {
                 validationData.setValidationStatus(true);
             }
         }

@@ -1,4 +1,4 @@
-package com.fintech.orion.documentverification.common.Address;
+package com.fintech.orion.documentverification.common.address;
 
 /**
  * Created by MudithaJ on 12/22/2016.
@@ -14,12 +14,12 @@ public class AddressCompareResult {
 
     public AddressCompareResult() {
 
-        this.addressOne="";
-        this.addressTwo="";
-        this.addressOneType="";
-        this.addressTwoType="";
-        this.result=false;
-        this.message="";
+        this.addressOne = "";
+        this.addressTwo = "";
+        this.addressOneType = "";
+        this.addressTwoType = "";
+        this.result = false;
+        this.message = "";
     }
 
     public String getaddressTwoType() {

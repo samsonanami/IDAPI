@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 
 /**
  * Created by sasitha on 12/29/16.
- *
  */
 public class GenderValidationTest {
 
@@ -24,6 +23,7 @@ public class GenderValidationTest {
     private OcrFieldData ocrFieldDataSex;
     private ResourceName resourceName;
     private GenderValidation genderValidation;
+
     @Before
     public void setUp() throws Exception {
         genderValidation = new GenderValidation();
@@ -37,7 +37,7 @@ public class GenderValidationTest {
     }
 
     @Test
-    public void should_return_true_if_all_the_document_has_same_sex_mentioned()throws Exception{
+    public void should_return_true_if_all_the_document_has_same_sex_mentioned() throws Exception {
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##sex");
@@ -65,7 +65,7 @@ public class GenderValidationTest {
     }
 
     @Test
-    public void should_return_false_if_document_gender_is_not_matching()throws Exception{
+    public void should_return_false_if_document_gender_is_not_matching() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##sex");
         passportValue.setValue("Female");

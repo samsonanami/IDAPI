@@ -1,4 +1,4 @@
-package com.fintech.orion.documentverification.common.Address;
+package com.fintech.orion.documentverification.common.address;
 
 import com.fintech.orion.documentverification.common.exception.AddressValidatingException;
 

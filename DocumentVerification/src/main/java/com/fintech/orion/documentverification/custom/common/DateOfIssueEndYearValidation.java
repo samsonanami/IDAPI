@@ -18,18 +18,16 @@ import java.util.Date;
 
 /**
  * Created by MudithaJ on 1/2/2017.
- *
  */
-public class DateOfIssueEndYearValidation  extends ValidationHelper implements CustomValidation {
+public class DateOfIssueEndYearValidation extends ValidationHelper implements CustomValidation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DateOfIssueEndYearValidation.class);
     private int validYearCount;
 
 
-
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
-        if (validYearCount <= 0 || getOcrExtractionFieldName() == null){
+        if (validYearCount <= 0 || getOcrExtractionFieldName() == null) {
             throw new CustomValidationException("Valid year count /field name parameters missing");
         }
 
@@ -37,7 +35,7 @@ public class DateOfIssueEndYearValidation  extends ValidationHelper implements C
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
-        if (validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             try {
                 validationData = validateDateofIusseEndYear(fieldData);
             } catch (DateComparatorException e) {
@@ -52,7 +50,7 @@ public class DateOfIssueEndYearValidation  extends ValidationHelper implements C
                         "DD MM/MM YY or DD.MM.YYYY");
             }
         }
-        if (!validationData.getValidationStatus()){
+        if (!validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Issued date end year verification");
@@ -63,15 +61,15 @@ public class DateOfIssueEndYearValidation  extends ValidationHelper implements C
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
-        for (OcrFieldValue fieldValue : ocrFieldData.getValue()){
+        for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());
             LocalDate issuedDate = new LocalDate(date);
-           Years yearsFromIssued = Years.yearsBetween(issuedDate,today);
+            Years yearsFromIssued = Years.yearsBetween(issuedDate, today);
 
-            if (yearsFromIssued.getYears() <= validYearCount){
+            if (yearsFromIssued.getYears() <= validYearCount) {
                 validationData.setValidationStatus(true);
                 validationData.setValue(String.valueOf(issuedDate.getYear()));
-            }else {
+            } else {
                 validationData.setRemarks(getFailedRemarksMessage());
                 validationData.setValue(String.valueOf(issuedDate.getYear()));
                 validationData.setValidationStatus(false);

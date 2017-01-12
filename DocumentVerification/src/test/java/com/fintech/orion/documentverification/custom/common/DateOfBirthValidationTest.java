@@ -14,11 +14,11 @@ import org.mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by sasitha on 12/30/16.
- *
  */
 public class DateOfBirthValidationTest {
 
@@ -64,7 +64,7 @@ public class DateOfBirthValidationTest {
     }
 
     @Test
-    public void should_return_true_if_all_document_have_same_date_of_birth() throws Exception{
+    public void should_return_true_if_all_document_have_same_date_of_birth() throws Exception {
         validationResult.setStatus(true);
         Mockito.when(dateComparator.doOperation(Matchers.anyString(), Matchers.anyString())).thenReturn(validationResult);
 
@@ -73,7 +73,7 @@ public class DateOfBirthValidationTest {
     }
 
     @Test
-    public void should_return_false_if_one_of_the_dates_are_not_matching() throws Exception{
+    public void should_return_false_if_one_of_the_dates_are_not_matching() throws Exception {
         validationResult.setStatus(true);
         ValidationResult error = new ValidationResult(false);
         Mockito.when(dateComparator.doOperation("25.07.1974", "25.07.1974")).thenReturn(validationResult);

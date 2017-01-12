@@ -1,12 +1,11 @@
-package com.fintech.orion.documentverification.common.Address;
+package com.fintech.orion.documentverification.common.address;
 
 /**
  * Created by MudithaJ on 12/22/2016.
  */
 public class AddressHelper {
 
-    public AddressType mockAddressTypeOne()
-    {
+    public AddressType mockAddressTypeOne() {
         AddressType type = new AddressType();
 
         type.setType("1");
@@ -16,8 +15,7 @@ public class AddressHelper {
         return type;
     }
 
-    public AddressType mockAddressTypeTwo()
-    {
+    public AddressType mockAddressTypeTwo() {
         AddressType type = new AddressType();
 
         type.setType("2");
@@ -27,8 +25,7 @@ public class AddressHelper {
         return type;
     }
 
-    public AddressDecodeResults  getTypeOneCorrectAddress()
-    {
+    public AddressDecodeResults getTypeOneCorrectAddress() {
         AddressDecodeResults result = new AddressDecodeResults();
 
         result.setAddressType("1");
@@ -37,8 +34,7 @@ public class AddressHelper {
         return result;
     }
 
-    public AddressDecodeResults  getTypeTwoCorrectAddress()
-    {
+    public AddressDecodeResults getTypeTwoCorrectAddress() {
         AddressDecodeResults result = new AddressDecodeResults();
 
         result.setAddressType("2");

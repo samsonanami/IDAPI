@@ -9,7 +9,7 @@ public class OperationStringComparator implements DataValidationStrategy {
     public ValidationResult doOperation(String base, String compare) {
         ValidationResult result = new ValidationResult(false, "");
         if (base != null && compare != null &&
-                !base.isEmpty() && !compare.isEmpty() && base.equalsIgnoreCase(compare)){
+                !base.isEmpty() && !compare.isEmpty() && base.equalsIgnoreCase(compare)) {
             result.setStatus(true);
         }
         return result;

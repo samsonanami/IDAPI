@@ -1,7 +1,5 @@
 package com.fintech.orion.documentverification.common.checkdigit;
 
-import com.fintech.orion.documentverification.common.checkdigit.CheckDigitResults;
-import com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation;
 import com.fintech.orion.documentverification.common.exception.CheckDigitFormationException;
 import com.fintech.orion.documentverification.common.mrz.MRZItemProperty;
 import com.fintech.orion.documentverification.common.mrz.PassportMRZHelper;
@@ -26,10 +24,10 @@ public class PassportCheckDigitFormationTest {
     private String mrz;
 
     @Spy
-    private HashMap<String,MRZItemProperty> mrzItemProperty;
+    private HashMap<String, MRZItemProperty> mrzItemProperty;
 
     @Before
-    public void setup(){
+    public void setup() {
 
         formation = new PassportCheckDigitFormation();
         expectedResult = new CheckDigitResults();
@@ -38,8 +36,8 @@ public class PassportCheckDigitFormationTest {
         this.mockConfigProperties();
 
     }
-    public void mockConfigProperties()
-    {
+
+    public void mockConfigProperties() {
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("CheckDigitPraseOne")).thenReturn(helper.getMRZCalculateCheckDigitPraseOneSystemProperty());
         Mockito.when(mrzItemProperty.get("CheckDigitPraseTwo")).thenReturn(helper.getMRZCalculateCheckDigitPraseTwoSystemProperty());
@@ -47,39 +45,40 @@ public class PassportCheckDigitFormationTest {
         Mockito.when(mrzItemProperty.get("CheckDigitPraseFour")).thenReturn(helper.getMRZCalculateCheckDigitPraseFourSystemProperty());
         Mockito.when(mrzItemProperty.get("CheckDigitPraseFive")).thenReturn(helper.getMRZCalculateCheckDigitPraseFiveSystemProperty());
     }
+
     @Test
-    public void should_return_valid_Checkdigit_Prase_One() throws CheckDigitFormationException{
+    public void should_return_valid_Checkdigit_Prase_One() throws CheckDigitFormationException {
         CheckDigitResults results = formation.calculateCheckdigit(mrz);
         expectedResult.setCheckdigitPraseOne("2");
-        Assert.assertEquals(expectedResult.getCheckdigitPraseOne(),results.getCheckdigitPraseOne());
+        Assert.assertEquals(expectedResult.getCheckdigitPraseOne(), results.getCheckdigitPraseOne());
     }
 
     @Test
-    public void should_return_valid_Checkdigit_Prase_Two() throws CheckDigitFormationException{
+    public void should_return_valid_Checkdigit_Prase_Two() throws CheckDigitFormationException {
         CheckDigitResults results = formation.calculateCheckdigit(mrz);
         expectedResult.setCheckdigitPraseTwo("5");
-        Assert.assertEquals(expectedResult.getCheckdigitPraseTwo(),results.getCheckdigitPraseTwo());
+        Assert.assertEquals(expectedResult.getCheckdigitPraseTwo(), results.getCheckdigitPraseTwo());
     }
 
     @Test
-    public void should_return_valid_Checkdigit_Prase_Three() throws CheckDigitFormationException{
+    public void should_return_valid_Checkdigit_Prase_Three() throws CheckDigitFormationException {
         CheckDigitResults results = formation.calculateCheckdigit(mrz);
         expectedResult.setCheckdigitPraseThree("7");
-        Assert.assertEquals(expectedResult.getCheckdigitPraseThree(),results.getCheckdigitPraseThree());
+        Assert.assertEquals(expectedResult.getCheckdigitPraseThree(), results.getCheckdigitPraseThree());
     }
 
     @Test
-    public void should_return_valid_Checkdigit_Prase_Four() throws CheckDigitFormationException{
+    public void should_return_valid_Checkdigit_Prase_Four() throws CheckDigitFormationException {
         CheckDigitResults results = formation.calculateCheckdigit(mrz);
         expectedResult.setCheckdigitPraseFour("0");
-        Assert.assertEquals(expectedResult.getCheckdigitPraseFour(),results.getCheckdigitPraseFour());
+        Assert.assertEquals(expectedResult.getCheckdigitPraseFour(), results.getCheckdigitPraseFour());
     }
 
     @Test
-    public void should_return_valid_Checkdigit_Prase_Five() throws CheckDigitFormationException{
+    public void should_return_valid_Checkdigit_Prase_Five() throws CheckDigitFormationException {
         CheckDigitResults results = formation.calculateCheckdigit(mrz);
         expectedResult.setCheckdigitPraseFive("4");
-        Assert.assertEquals(expectedResult.getCheckdigitPraseFive(),results.getCheckdigitPraseFive());
+        Assert.assertEquals(expectedResult.getCheckdigitPraseFive(), results.getCheckdigitPraseFive());
     }
 
 

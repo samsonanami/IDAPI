@@ -12,7 +12,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by sasitha on 12/29/16.
@@ -22,6 +23,7 @@ public class SimpleStringFieldValidatorTest {
     private OcrFieldData ocrFieldDataSex;
     private ResourceName resourceName;
     private SimpleStringFieldValidator simpleStringFieldValidator;
+
     @Before
     public void setUp() throws Exception {
         simpleStringFieldValidator = new SimpleStringFieldValidator();
@@ -33,7 +35,7 @@ public class SimpleStringFieldValidatorTest {
 
 
     @Test
-    public void should_return_true_if_all_the_document_has_same_sex_mentioned()throws Exception{
+    public void should_return_true_if_all_the_document_has_same_sex_mentioned() throws Exception {
         simpleStringFieldValidator.setOcrExtractionFieldName("sex");
 
         OcrFieldValue passportValue = new OcrFieldValue();
@@ -60,7 +62,7 @@ public class SimpleStringFieldValidatorTest {
     }
 
     @Test(expected = CustomValidationException.class)
-    public void should_CustomValidationException_if_stringField_is_null() throws Exception{
+    public void should_CustomValidationException_if_stringField_is_null() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##surname");
         passportValue.setValue("M");
@@ -84,7 +86,7 @@ public class SimpleStringFieldValidatorTest {
     }
 
     @Test
-    public void should_return_false_if_valise_are_not_matching() throws Exception{
+    public void should_return_false_if_valise_are_not_matching() throws Exception {
         simpleStringFieldValidator.setOcrExtractionFieldName("surname");
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##surname");

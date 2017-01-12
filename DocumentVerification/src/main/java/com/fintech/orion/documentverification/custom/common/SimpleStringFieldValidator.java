@@ -11,17 +11,16 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Created by sasitha on 12/29/16.
- *
+ * <p>
  * Simple String Field Validator validate the values of a given ocr extraction field among multiple resources.
  * Example :
- *          if the string field is set to 'surname' this class will go through the given ocrResponse and string compare
- *          values extracted from different documents like passport, drivingLicenseFront
+ * if the string field is set to 'surname' this class will go through the given ocrResponse and string compare
+ * values extracted from different documents like passport, drivingLicenseFront
  * If verification is successful the success message will be returned with status. If the verification is failed
  * the failed remarks message will be return with the status
- *
+ * <p>
  * Usage is simple create a bean of this class with correct values. stringField,successRemarksMessage and
  * FailedRemarksMessage and add it to the verification list either idDocFullValidations or addressDocFullValidations
- *
  */
 public class SimpleStringFieldValidator extends ValidationHelper implements CustomValidation {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleStringFieldValidator.class);
@@ -35,14 +34,14 @@ public class SimpleStringFieldValidator extends ValidationHelper implements Cust
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
-        if (validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             validationData = isAllOcrFieldValueHasSameValueField(fieldData.getValue());
         }
-        if (validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
-        }else {
+        } else {
             validationData.setRemarks(getFailedRemarksMessage());
-            LOGGER.warn("Custom validation "+verificationDisplayName+" failed for field {} complete validation " +
+            LOGGER.warn("Custom validation " + verificationDisplayName + " failed for field {} complete validation " +
                             "status is {}", getOcrExtractionFieldName(),
                     validationData);
         }

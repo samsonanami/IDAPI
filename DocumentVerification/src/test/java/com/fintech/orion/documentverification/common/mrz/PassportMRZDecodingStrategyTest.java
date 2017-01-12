@@ -4,7 +4,10 @@ import com.fintech.orion.documentverification.common.exception.PassportMRZDecode
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 import java.util.HashMap;
 
@@ -19,12 +22,11 @@ public class PassportMRZDecodingStrategyTest {
     private String mrz;
 
 
-
     @Spy
-    private HashMap<String,MRZItemProperty> mrzItemProperty;
+    private HashMap<String, MRZItemProperty> mrzItemProperty;
 
     @Before
-    public void setup(){
+    public void setup() {
         strategy = new PassportMRZDecodingStrategy();
         expectedResult = new MRZDecodeResults();
         MockitoAnnotations.initMocks(this);
@@ -32,8 +34,7 @@ public class PassportMRZDecodingStrategyTest {
         this.mockConfigProperties();
     }
 
-    public void mockConfigProperties()
-    {
+    public void mockConfigProperties() {
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("SurName")).thenReturn(helper.getMRZSurNameSystemProperty());
         Mockito.when(mrzItemProperty.get("GivenNames")).thenReturn(helper.getMRZGivenNameSystemProperty());
@@ -52,16 +53,17 @@ public class PassportMRZDecodingStrategyTest {
     }
 
     @Test
-    public void should_return_valid_sur_name() throws PassportMRZDecodeException{
+    public void should_return_valid_sur_name() throws PassportMRZDecodeException {
         expectedResult.setSurname("SORRELL");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("SurName")).thenReturn(helper.getMRZSurNameSystemProperty());
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getSurname(), results.getSurname());
     }
-//
+
+    //
     @Test
-    public void should_return_valid_given_name()throws PassportMRZDecodeException{
+    public void should_return_valid_given_name() throws PassportMRZDecodeException {
         expectedResult.setGivenName("PHILIP MARK");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("GivenNames")).thenReturn(helper.getMRZGivenNameSystemProperty());
@@ -70,7 +72,7 @@ public class PassportMRZDecodingStrategyTest {
     }
 
     @Test
-    public void should_return_valid_passport_number() throws PassportMRZDecodeException{
+    public void should_return_valid_passport_number() throws PassportMRZDecodeException {
         expectedResult.setPassPortNumber("761335999");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("PassPortNumber")).thenReturn(helper.getMRZPassportNumberSystemProperty());
@@ -80,7 +82,7 @@ public class PassportMRZDecodingStrategyTest {
 
 
     @Test
-    public void should_return_valid_sex() throws PassportMRZDecodeException{
+    public void should_return_valid_sex() throws PassportMRZDecodeException {
         expectedResult.setSex("M");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("Sex")).thenReturn(helper.getMRZSexSystemProperty());
@@ -89,7 +91,7 @@ public class PassportMRZDecodingStrategyTest {
     }
 
     @Test
-    public void should_return_valid_dateOfBirth() throws PassportMRZDecodeException{
+    public void should_return_valid_dateOfBirth() throws PassportMRZDecodeException {
         expectedResult.setDateOfBirth("590120");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("DateOfBirth")).thenReturn(helper.getMRZDateOfBirthSystemProperty());
@@ -98,7 +100,7 @@ public class PassportMRZDecodingStrategyTest {
     }
 
     @Test
-    public void should_return_valid_dateOfExpire() throws PassportMRZDecodeException{
+    public void should_return_valid_dateOfExpire() throws PassportMRZDecodeException {
         expectedResult.setDateofExpire("221109");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("ExpireDate")).thenReturn(helper.getMRZDateofExpireSystemProperty());
@@ -108,7 +110,7 @@ public class PassportMRZDecodingStrategyTest {
 
 
     @Test
-    public void should_return_valid_place_of_issue()throws PassportMRZDecodeException {
+    public void should_return_valid_place_of_issue() throws PassportMRZDecodeException {
         expectedResult.setPlaceOfIssue("GBR");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("Nationality")).thenReturn(helper.getMRZPlaceOfissueSystemProperty());
@@ -118,39 +120,43 @@ public class PassportMRZDecodingStrategyTest {
     }
 
     @Test
-    public void should_return_valid_checkDigitPraseOne() throws PassportMRZDecodeException{
+    public void should_return_valid_checkDigitPraseOne() throws PassportMRZDecodeException {
         expectedResult.setCheckDigitPhraseOne("2");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("CheckDigitOne")).thenReturn(helper.getMRZCheckDigitPraseOneSystemProperty());
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getCheckDigitPhraseOne(), results.getCheckDigitPhraseOne());
     }
+
     @Test
-    public void should_return_valid_checkDigitPraseTwo() throws PassportMRZDecodeException{
+    public void should_return_valid_checkDigitPraseTwo() throws PassportMRZDecodeException {
         expectedResult.setCheckDigitPhraseTwo("5");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("CheckDigitTwo")).thenReturn(helper.getMRZCheckDigitPraseTwoSystemProperty());
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getCheckDigitPhraseTwo(), results.getCheckDigitPhraseTwo());
     }
+
     @Test
-    public void should_return_valid_checkDigitPraseThree() throws PassportMRZDecodeException{
+    public void should_return_valid_checkDigitPraseThree() throws PassportMRZDecodeException {
         expectedResult.setCheckDigitPhraseThree("7");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("CheckDigitThree")).thenReturn(helper.getMRZCheckDigitPraseThreeSystemProperty());
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getCheckDigitPhraseThree(), results.getCheckDigitPhraseThree());
     }
+
     @Test
-    public void should_return_valid_checkDigitPraseFour() throws PassportMRZDecodeException{
+    public void should_return_valid_checkDigitPraseFour() throws PassportMRZDecodeException {
         expectedResult.setCheckDigitPhraseFour("0");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("CheckDigitFour")).thenReturn(helper.getMRZCheckDigitPraseFourSystemProperty());
         MRZDecodeResults results = strategy.decode(mrz);
         Assert.assertEquals(expectedResult.getCheckDigitPhraseFour(), results.getCheckDigitPhraseFour());
     }
+
     @Test
-    public void should_return_valid_dateOfFive() throws PassportMRZDecodeException{
+    public void should_return_valid_dateOfFive() throws PassportMRZDecodeException {
         expectedResult.setCheckDigitPhraseFive("6");
         PassportMRZHelper helper = new PassportMRZHelper();
         Mockito.when(mrzItemProperty.get("CheckDigitFive")).thenReturn(helper.getMRZCheckDigitPraseFiveSystemProperty());

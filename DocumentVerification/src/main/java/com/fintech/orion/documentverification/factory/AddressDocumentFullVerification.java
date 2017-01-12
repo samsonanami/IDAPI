@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * Created by sasitha on 12/30/16.
- *
  */
 public class AddressDocumentFullVerification implements DocumentVerification {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddressDocumentFullVerification.class);
@@ -48,15 +47,15 @@ public class AddressDocumentFullVerification implements DocumentVerification {
                         "addressVerification");
 
         Resource addressVerificationResourceName = null;
-        for (Resource resource : documentVerificationProcess.getResources()){
-            if(addressVerificationResourceName == null && (resource.getResourceName().getName().equalsIgnoreCase("passport")
-                    || resource.getResourceName().getName().equalsIgnoreCase("drivingLicenseFront"))){
+        for (Resource resource : documentVerificationProcess.getResources()) {
+            if (addressVerificationResourceName == null && (resource.getResourceName().getName().equalsIgnoreCase("passport")
+                    || resource.getResourceName().getName().equalsIgnoreCase("drivingLicenseFront"))) {
                 addressVerificationResourceName = resource;
             }
         }
         ResourceName resourceName = new ResourceName();
-        if (addressVerificationResourceName != null){
-           resourceName = addressVerificationResourceName.getResourceName();
+        if (addressVerificationResourceName != null) {
+            resourceName = addressVerificationResourceName.getResourceName();
         }
 
         List<Object> idDocFullValidationList = new ArrayList<>();
@@ -64,11 +63,11 @@ public class AddressDocumentFullVerification implements DocumentVerification {
         errorDataSet.setRemarks("");
         errorDataSet.setId("critical_error_set");
         LOGGER.debug("Starting custom validation with resource name {} and ocr response {}", resourceName, ocrResponse);
-        for (CustomValidation validation : getCustomValidationList()){
+        for (CustomValidation validation : getCustomValidationList()) {
             try {
                 ValidationData validationData = validation.validate(resourceName, ocrResponse);
                 idDocFullValidationList.add(validationData);
-                if (!validationData.getValidationStatus() && validation.isCriticalValidation()){
+                if (!validationData.getValidationStatus() && validation.isCriticalValidation()) {
                     errorDataSet.setRemarks(errorDataSet.getRemarks() + validationData.getRemarks());
                 }
             } catch (CustomValidationException e) {
@@ -81,7 +80,7 @@ public class AddressDocumentFullVerification implements DocumentVerification {
         return idDocFullValidationList;
     }
 
-    private List<CustomValidation> getCustomValidationList(){
+    private List<CustomValidation> getCustomValidationList() {
         return addressDocCustomValidations;
     }
 }

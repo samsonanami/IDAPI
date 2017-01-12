@@ -1,7 +1,7 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
-import com.fintech.orion.documentverification.common.Address.AddressCompare;
+import com.fintech.orion.documentverification.common.address.AddressCompare;
 import com.fintech.orion.documentverification.common.exception.AddressValidatingException;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
@@ -20,7 +20,6 @@ import java.util.List;
 
 /**
  * Created by MudithaJ on 12/27/2016.
- *
  */
 @Component
 public class AddressValidation extends ValidationHelper implements CustomValidation {
@@ -39,37 +38,37 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
         if (ocrFieldBase == null || ocrFieldBase.isEmpty()) {
-            throw new CustomValidationException("Address field name should not be null");
+            throw new CustomValidationException("address field name should not be null");
         }
 
         String baseAddress = addressBuilder.buildSingleLineAddressFromOcrResponse(ocrResponse, resourceName.getName(),
                 ocrFieldBase, addressLineCount);
 
-        if (!baseAddress.isEmpty()){
+        if (!baseAddress.isEmpty()) {
             List<String> resourceList = getResourceListFromOcrResponse(ocrResponse);
             compareAddressWithBaseAddress(ocrResponse, validationData, baseAddress, resourceList);
-        }else {
+        } else {
             validationData.setValidationStatus(false);
             validationData.setValue("");
-            validationData.setRemarks("Could not perform address validation. Resource "+ resourceName.getName() + " " +
+            validationData.setRemarks("Could not perform address validation. Resource " + resourceName.getName() + " " +
                     "dose not have any address field to do the address verification");
         }
-        validationData.setId("Address Verification");
+        validationData.setId("address Verification");
         return validationData;
     }
 
     private void compareAddressWithBaseAddress(OcrResponse ocrResponse, ValidationData validationData,
                                                String baseAddress, List<String> resourceList) {
-        for (String resource : resourceList){
+        for (String resource : resourceList) {
             String address = addressBuilder.buildSingleLineAddressFromOcrResponse(ocrResponse, resource,
                     ocrFieldBase, addressLineCount);
             try {
-                if (!addressComparator.compare(baseAddress, address).isResult()){
+                if (!addressComparator.compare(baseAddress, address).isResult()) {
                     validationData.setValidationStatus(false);
                     validationData.setRemarks(getFailedRemarksMessage());
                     validationData.setValue(address);
                     break;
-                }else {
+                } else {
                     validationData.setValidationStatus(true);
                     validationData.setRemarks(getSuccessRemarksMessage());
                     validationData.setValue(baseAddress);
@@ -77,7 +76,7 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
             } catch (AddressValidatingException e) {
                 validationData.setValidationStatus(false);
                 validationData.setValue(address);
-                validationData.setRemarks("Address type not supported. Please contact support");
+                validationData.setRemarks("address type not supported. Please contact support");
                 LOGGER.warn("Error occurred while validating given address, address 1 {} address 2 ",
                         baseAddress, address, e);
                 break;
@@ -85,12 +84,12 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
         }
     }
 
-    private List<String> getResourceListFromOcrResponse(OcrResponse ocrResponse){
+    private List<String> getResourceListFromOcrResponse(OcrResponse ocrResponse) {
         List<String> resourceList = new ArrayList<>();
-        for (OcrFieldData fieldData : ocrResponse.getData()){
-            for (OcrFieldValue fieldValue : fieldData.getValue()){
+        for (OcrFieldData fieldData : ocrResponse.getData()) {
+            for (OcrFieldValue fieldValue : fieldData.getValue()) {
                 String[] splitArray = fieldValue.getId().split("##");
-                if (splitArray.length>0){
+                if (splitArray.length > 0) {
                     resourceList.add(splitArray[0]);
                 }
             }

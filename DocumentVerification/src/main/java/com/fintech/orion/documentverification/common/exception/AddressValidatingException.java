@@ -9,6 +9,6 @@ public class AddressValidatingException extends Exception {
     }
 
     public AddressValidatingException(String message, Exception exception) {
-        super(message,exception);
+        super(message, exception);
     }
 }

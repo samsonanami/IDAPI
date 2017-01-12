@@ -1,8 +1,8 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
-import com.fintech.orion.documentverification.common.Address.AddressCompare;
-import com.fintech.orion.documentverification.common.Address.AddressCompareResult;
+import com.fintech.orion.documentverification.common.address.AddressCompare;
+import com.fintech.orion.documentverification.common.address.AddressCompareResult;
 import com.fintech.orion.documentverification.common.exception.AddressValidatingException;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
@@ -16,7 +16,8 @@ import org.mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by sasitha on 12/29/16.
@@ -35,6 +36,7 @@ public class AddressValidationTest {
     private OcrFieldData ocrFieldAddressLine3;
     private ResourceName resourceName;
     private AddressCompareResult addressCompareResult;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -46,8 +48,8 @@ public class AddressValidationTest {
         addressCompareResult = new AddressCompareResult();
         addressValidation.setOcrFieldBase("address_line");
         addressValidation.setAddressLineCount(3);
-        addressValidation.setSuccessRemarksMessage("Address validation completed");
-        addressValidation.setFailedRemarksMessage("Address validation failed");
+        addressValidation.setSuccessRemarksMessage("address validation completed");
+        addressValidation.setFailedRemarksMessage("address validation failed");
 
         OcrFieldValue utilityBillLine1 = new OcrFieldValue();
         utilityBillLine1.setId("utilityBill##address_line1");
@@ -91,7 +93,7 @@ public class AddressValidationTest {
     }
 
     @Test
-    public void should_return_true_if_both_address_are_matching()throws Exception{
+    public void should_return_true_if_both_address_are_matching() throws Exception {
         addressCompareResult.setResult(true);
         Mockito.when(addressComparator.compare(Matchers.anyString(), Matchers.anyString()))
                 .thenReturn(addressCompareResult);
@@ -103,7 +105,7 @@ public class AddressValidationTest {
     }
 
     @Test
-    public void should_return_false_if_address_are_not_matching()throws Exception{
+    public void should_return_false_if_address_are_not_matching() throws Exception {
         addressCompareResult.setResult(false);
         resourceName.setName("utilityBill");
         Mockito.when(addressComparator.compare(Matchers.anyString(), Matchers.anyString()))
@@ -113,13 +115,13 @@ public class AddressValidationTest {
     }
 
     @Test(expected = CustomValidationException.class)
-    public void should_throw_CustomValidationException_if_addressFieldBase_is_not_set()throws Exception{
+    public void should_throw_CustomValidationException_if_addressFieldBase_is_not_set() throws Exception {
         addressValidation.setOcrFieldBase(null);
         ValidationData validationData = addressValidation.validate(resourceName, ocrResponse);
     }
 
     @Test
-    public void should_return_false_if_address_comparator_throws_an_exception()throws Exception{
+    public void should_return_false_if_address_comparator_throws_an_exception() throws Exception {
         addressCompareResult.setResult(false);
         resourceName.setName("utilityBill");
         Mockito.when(addressComparator.compare(Matchers.anyString(), Matchers.anyString()))
@@ -129,7 +131,7 @@ public class AddressValidationTest {
     }
 
     @Test
-    public void should_return_false_if_there_are_no_address_for_given_resource_name()throws Exception{
+    public void should_return_false_if_there_are_no_address_for_given_resource_name() throws Exception {
         resourceName.setName("passport");
         ValidationData validationData = addressValidation.validate(resourceName, ocrResponse);
         assertFalse(validationData.getValidationStatus());

@@ -26,7 +26,7 @@ public class IssuedDateAgeLimitValidationTest {
     private ResourceName resourceName;
 
     @Before
-    public void setup()throws Exception{
+    public void setup() throws Exception {
         ocrFieldDataOfIssue = new OcrFieldData();
         ocrFieldDataOfBirth = new OcrFieldData();
         ocrResponse = new OcrResponse();
@@ -34,7 +34,7 @@ public class IssuedDateAgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_true_if_age_in_every_document_is_within_age_limit()throws Exception{
+    public void should_return_true_if_age_in_every_document_is_within_age_limit() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
         passportValue.setValue("25.07.2004");
@@ -42,7 +42,6 @@ public class IssuedDateAgeLimitValidationTest {
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("25.07.2004");
-
 
 
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
@@ -80,7 +79,7 @@ public class IssuedDateAgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_false_if_age_in_any_document_below_than_age_limit()throws Exception{
+    public void should_return_false_if_age_in_any_document_below_than_age_limit() throws Exception {
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
@@ -89,7 +88,6 @@ public class IssuedDateAgeLimitValidationTest {
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("25.07.1978");
-
 
 
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
@@ -126,7 +124,7 @@ public class IssuedDateAgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_false_if_age_in_any_document_greater_than_age_limit()throws Exception{
+    public void should_return_false_if_age_in_any_document_greater_than_age_limit() throws Exception {
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
@@ -135,7 +133,6 @@ public class IssuedDateAgeLimitValidationTest {
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("25.07.2004");
-
 
 
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
@@ -172,7 +169,7 @@ public class IssuedDateAgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception{
+    public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception {
 
         //////////////////////////////////////////////////
         OcrFieldValue passportValue = new OcrFieldValue();
@@ -182,7 +179,6 @@ public class IssuedDateAgeLimitValidationTest {
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("20.01.2004");
-
 
 
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
@@ -220,7 +216,7 @@ public class IssuedDateAgeLimitValidationTest {
     }
 
     @Test
-    public void should_throw_CustomValidationException_false_if_date_format_is_not_supported()throws Exception{
+    public void should_throw_CustomValidationException_false_if_date_format_is_not_supported() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
         passportValue.setValue("20/01/2004");
@@ -228,7 +224,6 @@ public class IssuedDateAgeLimitValidationTest {
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("20.01.2004");
-
 
 
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();

@@ -29,9 +29,9 @@ public class DateDecoder {
         String stringDate;
         DecimalFormat formatter = new DecimalFormat("00");
         String regularExpression = "^(\\d{2})(\\w{3})(\\w{3})(\\d{2})";
-        try{
-            date = date.replace(" ","");
-            date = date.replace("/","");
+        try {
+            date = date.replace(" ", "");
+            date = date.replace("/", "");
             Pattern pattern = Pattern.compile(regularExpression);
             Matcher matcher = pattern.matcher(date);
             matcher.matches();
@@ -51,47 +51,41 @@ public class DateDecoder {
 
 
             return dateResult;
-        }catch (ParseException e)
-        {
-            throw new DateComparatorException("Cannot parse given date"+date,e);
-        }
-        catch (NullPointerException e)
-        {
-            throw new DateComparatorException("Cannot parse given date"+date,e);
+        } catch (ParseException e) {
+            throw new DateComparatorException("Cannot parse given date" + date, e);
+        } catch (NullPointerException e) {
+            throw new DateComparatorException("Cannot parse given date" + date, e);
         }
     }
 
-    public int getMonthNumber(String monthName)
-    {
-        DateTimeFormatter format  =  DateTimeFormat.forPattern("MMM");
-        DateTime instance        = format.withLocale(Locale.ENGLISH).parseDateTime(monthName);
+    public int getMonthNumber(String monthName) {
+        DateTimeFormatter format = DateTimeFormat.forPattern("MMM");
+        DateTime instance = format.withLocale(Locale.ENGLISH).parseDateTime(monthName);
 
-        return  instance.getMonthOfYear();
+        return instance.getMonthOfYear();
     }
-    public String getYear(String yearDigit)
-    {
+
+    public String getYear(String yearDigit) {
         int yearNow;
-        int yearDigitValue= Integer.parseInt(yearDigit);
+        int yearDigitValue = Integer.parseInt(yearDigit);
         String fourDigitYear;
         String decadeDigit;
         int decadeDigitNow;
 
         DateFormat df = new SimpleDateFormat("yyyy");
         String formattedDate = df.format(Calendar.getInstance().getTime());
-        yearNow = Integer.parseInt(formattedDate.substring(1,4));
+        yearNow = Integer.parseInt(formattedDate.substring(1, 4));
         decadeDigitNow = Integer.parseInt(formattedDate.substring(0, 2));
 
 
-        if(yearDigitValue > yearNow)
-        {
-            decadeDigit = Integer.toString(decadeDigitNow-1);
-        }else
-        {
-            decadeDigit=  Integer.toString(decadeDigitNow);
+        if (yearDigitValue > yearNow) {
+            decadeDigit = Integer.toString(decadeDigitNow - 1);
+        } else {
+            decadeDigit = Integer.toString(decadeDigitNow);
 
         }
 
-        fourDigitYear = decadeDigit+ new DecimalFormat("00").format(yearDigitValue);
+        fourDigitYear = decadeDigit + new DecimalFormat("00").format(yearDigitValue);
 
 
         return fourDigitYear;

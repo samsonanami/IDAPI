@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created by sasitha on 12/25/16.
- *
- *
  */
 @Service
 public class DocumentVerificationFactory {
@@ -24,17 +22,17 @@ public class DocumentVerificationFactory {
     @Qualifier("addressDocFullValidator")
     private AddressDocumentFullVerification addressDocFullValidator;
 
-    public DocumentVerification getDocumentVerification(DocumentVerificationType type){
+    public DocumentVerification getDocumentVerification(DocumentVerificationType type) {
         DocumentVerification documentVerification = null;
-        switch (type){
+        switch (type) {
             case DATA_COMPARISON:
-                    documentVerification =  dataComparator;
+                documentVerification = dataComparator;
                 break;
             case ID_DOC_FULL_VERIFICATIONS:
-                    documentVerification = idDocFullValidator;
+                documentVerification = idDocFullValidator;
                 break;
             case ADDRESS_DOC_FULL_VERIFICATIONS:
-                    documentVerification = addressDocFullValidator;
+                documentVerification = addressDocFullValidator;
                 break;
         }
         return documentVerification;

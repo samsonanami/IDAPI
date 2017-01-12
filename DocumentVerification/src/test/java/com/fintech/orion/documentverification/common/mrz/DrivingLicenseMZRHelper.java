@@ -5,8 +5,7 @@ package com.fintech.orion.documentverification.common.mrz;
  */
 public class DrivingLicenseMZRHelper {
 
-    public MRZItemProperty getMRZSurNameSystemProperty()
-    {
+    public MRZItemProperty getMRZSurNameSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -17,8 +16,8 @@ public class DrivingLicenseMZRHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZDecadeDigitOfBirthYearSystemProperty()
-    {
+
+    public MRZItemProperty getMRZDecadeDigitOfBirthYearSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -29,8 +28,8 @@ public class DrivingLicenseMZRHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getDateofBirthMonthSystemProperty()
-    {
+
+    public MRZItemProperty getDateofBirthMonthSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -41,8 +40,8 @@ public class DrivingLicenseMZRHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZRDateWithinTheBirthMonthSystemProperty()
-    {
+
+    public MRZItemProperty getMRZRDateWithinTheBirthMonthSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -53,8 +52,8 @@ public class DrivingLicenseMZRHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZDateofBirthYearSystemProperty()
-    {
+
+    public MRZItemProperty getMRZDateofBirthYearSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -65,8 +64,8 @@ public class DrivingLicenseMZRHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZInitialsOfTheFirstNameSystemProperty()
-    {
+
+    public MRZItemProperty getMRZInitialsOfTheFirstNameSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -77,8 +76,8 @@ public class DrivingLicenseMZRHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZRLenght()
-    {
+
+    public MRZItemProperty getMRZRLenght() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 

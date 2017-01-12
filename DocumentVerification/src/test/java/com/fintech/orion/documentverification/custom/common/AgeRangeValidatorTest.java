@@ -4,7 +4,6 @@ import org.junit.Before;
 
 /**
  * Created by sasitha on 12/30/16.
- *
  */
 public class AgeRangeValidatorTest {
 
@@ -12,7 +11,7 @@ public class AgeRangeValidatorTest {
 
 
     @Before
-    public void setup(){
+    public void setup() {
 
     }
 }

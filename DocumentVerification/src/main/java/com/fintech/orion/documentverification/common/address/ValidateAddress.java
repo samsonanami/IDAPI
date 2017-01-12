@@ -1,7 +1,6 @@
-package com.fintech.orion.documentverification.common.Address;
+package com.fintech.orion.documentverification.common.address;
 
 import com.fintech.orion.documentverification.common.exception.AddressValidatingException;
-import com.fintech.orion.documentverification.common.mrz.MRZItemProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -15,41 +14,36 @@ import java.util.regex.Pattern;
 public class ValidateAddress {
     @Autowired
     @Qualifier("addressConfigureList")
-    private HashMap<String,AddressType> AddressTypeProperty;
-    public AddressType validate(String address) throws AddressValidatingException
-    {
+    private HashMap<String, AddressType> addressTypeProperty;
+
+    public AddressType validate(String address) throws AddressValidatingException {
         AddressType validAddressType = new AddressType();
         validAddressType.setType("0");
-        AddressType[] addressTypes;
         try {
-            for(AddressType type:AddressTypeProperty.values())
-            {
-                if(this.checkAddressType(type,address))
-                {
+            for (AddressType type : addressTypeProperty.values()) {
+                if (this.checkAddressType(type, address)) {
                     validAddressType = type;
                     break;
                 }
             }
             return validAddressType;
-        }
-
-        catch (NullPointerException e)
-        {
-           throw new AddressValidatingException("Not well formatted address  or not well set configuration properties Exception. Address :"+address+"type:"+validAddressType.toString());
+        } catch (NullPointerException e) {
+            throw new AddressValidatingException("Not well formatted address or not well set configuration " +
+                    "properties Exception. address :" + address + "type:" + validAddressType.toString(), e);
 
         }
 
     }
 
-    private boolean checkAddressType(AddressType addressType,String address)
-    {   String regularExpression;
+    private boolean checkAddressType(AddressType addressType, String address) {
+        String regularExpression;
         boolean isAddressValidType;
         regularExpression = addressType.getValidateRegularExpression();
         Pattern pattern = Pattern.compile(regularExpression);
 
-        Matcher matcher =pattern.matcher(address);
+        Matcher matcher = pattern.matcher(address);
         isAddressValidType = matcher.find();
-        return  isAddressValidType;
+        return isAddressValidType;
 
     }
 

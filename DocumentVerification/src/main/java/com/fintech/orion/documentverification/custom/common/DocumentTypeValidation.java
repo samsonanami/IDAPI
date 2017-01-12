@@ -8,9 +8,8 @@ import com.fintech.orion.dto.response.api.ValidationData;
 
 /**
  * Created by sasitha on 12/26/16.
- *
  */
-public class DocumentTypeValidation extends ValidationHelper implements CustomValidation{
+public class DocumentTypeValidation extends ValidationHelper implements CustomValidation {
 
 
     @Override

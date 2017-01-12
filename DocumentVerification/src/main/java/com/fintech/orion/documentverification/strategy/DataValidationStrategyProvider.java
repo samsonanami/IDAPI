@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by sasitha on 12/25/16.
- *
  */
 public class DataValidationStrategyProvider {
 
@@ -18,11 +17,11 @@ public class DataValidationStrategyProvider {
     @Autowired
     private OperationDateComparator operationDateComparator;
 
-    public DataValidationStrategy getValidationStrategy(DataValidationStrategyType type){
+    public DataValidationStrategy getValidationStrategy(DataValidationStrategyType type) {
         DataValidationStrategy strategy = null;
-        switch (type){
+        switch (type) {
             case STRING:
-                strategy =  operationStringComparator;
+                strategy = operationStringComparator;
                 break;
             case DATE:
                 strategy = operationDateComparator;

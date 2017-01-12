@@ -23,13 +23,12 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
     private OperationDateComparator dateComparator;
 
 
-
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
-        if (validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             validationData = validateDateOfBirth(fieldData.getValue());
         }
         validationData.setId("Date of Birth Validation");
@@ -41,7 +40,7 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
         if (values.size() >= 1) {
             String firstDateOfBirth = values.iterator().next().getValue();
             validationData = compareRestOfTheDatesWithBaseDate(firstDateOfBirth, values);
-        }else {
+        } else {
             validationData.setValidationStatus(false);
             validationData.setRemarks("Not Enough data to complete the validation. Need two or more date of births from" +
                     "multiple documents to complete this verification.");
@@ -49,7 +48,7 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
         return validationData;
     }
 
-    private ValidationData compareRestOfTheDatesWithBaseDate(String base, List<OcrFieldValue> values){
+    private ValidationData compareRestOfTheDatesWithBaseDate(String base, List<OcrFieldValue> values) {
         ValidationData validationData = new ValidationData();
         for (OcrFieldValue value : values) {
             if (!dateComparator.doOperation(base, value.getValue()).isStatus()) {

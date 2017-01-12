@@ -7,6 +7,7 @@ import java.util.Map;
  */
 public interface ValidateMRZ {
     ValidateMRZResult validate(String mrz) throws Exception;
+
     String getValidationResultMessage(Map<String, String> validateMap);
 }
 

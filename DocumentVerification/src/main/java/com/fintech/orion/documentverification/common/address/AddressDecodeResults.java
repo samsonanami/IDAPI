@@ -1,4 +1,4 @@
-package com.fintech.orion.documentverification.common.Address;
+package com.fintech.orion.documentverification.common.address;
 
 /**
  * Created by MudithaJ on 12/16/2016.
@@ -14,12 +14,12 @@ public class AddressDecodeResults {
 
     public AddressDecodeResults() {
 
-        this.number="";
-        this.flatNumber="";
-        this.street="";
-        this.city ="";
-        this.postalCode="";
-        this.addressType="";
+        this.number = "";
+        this.flatNumber = "";
+        this.street = "";
+        this.city = "";
+        this.postalCode = "";
+        this.addressType = "";
     }
 
     public String getNumber() {

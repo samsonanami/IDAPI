@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class NameUtilityBillValidationTest {
 
-    private NameUtilityBillValidation  nameUtilityBillValidation = new  NameUtilityBillValidation();
+    private NameUtilityBillValidation nameUtilityBillValidation = new NameUtilityBillValidation();
 
     private OcrResponse ocrResponse;
     private OcrFieldData ocrFieldDataSurname;
@@ -28,16 +28,16 @@ public class NameUtilityBillValidationTest {
     private ResourceName resourceName;
 
     @Before
-    public void setup()throws Exception{
+    public void setup() throws Exception {
         ocrFieldDataSurname = new OcrFieldData();
-        ocrFieldDataGivenname =   new OcrFieldData();
-        ocrFieldDatabillFullnname  = new OcrFieldData();
+        ocrFieldDataGivenname = new OcrFieldData();
+        ocrFieldDatabillFullnname = new OcrFieldData();
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
     }
 
     @Test
-    public void should_return_true_if_fullname_in_bill_is_similar_to_every_documen_tsurname_and_lastname()throws Exception{
+    public void should_return_true_if_fullname_in_bill_is_similar_to_every_documen_tsurname_and_lastname() throws Exception {
         OcrFieldValue passportSurNameValue = new OcrFieldValue();
         passportSurNameValue.setId("passport##surname");
         passportSurNameValue.setValue("tribiyani");
@@ -59,8 +59,6 @@ public class NameUtilityBillValidationTest {
         OcrFieldValue billFullNameValue = new OcrFieldValue();
         billFullNameValue.setId("bill##fullname");
         billFullNameValue.setValue("tribiyani joey");
-
-
 
 
         List<OcrFieldValue> surNamefieldValueList = new ArrayList<>();
@@ -101,12 +99,12 @@ public class NameUtilityBillValidationTest {
         resourceName.setName("bill");
 
 
-        ValidationData verificationData = nameUtilityBillValidation.validate(resourceName,ocrResponse);
+        ValidationData verificationData = nameUtilityBillValidation.validate(resourceName, ocrResponse);
         assertTrue(verificationData.getValidationStatus());
     }
 
     @Test
-    public void should_return_false_if_fullname_in_bill_is_different_to_one_document_surname_and_lastname()throws Exception{
+    public void should_return_false_if_fullname_in_bill_is_different_to_one_document_surname_and_lastname() throws Exception {
         OcrFieldValue passportSurNameValue = new OcrFieldValue();
         passportSurNameValue.setId("passport##surname");
         passportSurNameValue.setValue("tribiyani");
@@ -130,8 +128,6 @@ public class NameUtilityBillValidationTest {
         billFullNameValue.setValue("tribiyani joey");
 
 
-
-
         List<OcrFieldValue> surNamefieldValueList = new ArrayList<>();
         surNamefieldValueList.add(passportSurNameValue);
         surNamefieldValueList.add(drivingLicenseSurNameValue);
@@ -170,12 +166,12 @@ public class NameUtilityBillValidationTest {
         resourceName.setName("bill");
 
 
-        ValidationData verificationData = nameUtilityBillValidation.validate(resourceName,ocrResponse);
+        ValidationData verificationData = nameUtilityBillValidation.validate(resourceName, ocrResponse);
         assertFalse(verificationData.getValidationStatus());
     }
 
     @Test
-    public void should_return_true_if_fullname_in_bill_is_similar_to_one_document_surname_and_lastname_and_only_one_docuemnt_availabe()throws Exception{
+    public void should_return_true_if_fullname_in_bill_is_similar_to_one_document_surname_and_lastname_and_only_one_docuemnt_availabe() throws Exception {
         OcrFieldValue passportSurNameValue = new OcrFieldValue();
         passportSurNameValue.setId("passport##surname");
         passportSurNameValue.setValue("tribiyani");
@@ -186,12 +182,9 @@ public class NameUtilityBillValidationTest {
         passportGivenNameValue.setValue("joey");
 
 
-
         OcrFieldValue billFullNameValue = new OcrFieldValue();
         billFullNameValue.setId("bill##fullname");
         billFullNameValue.setValue("tribiyani joey");
-
-
 
 
         List<OcrFieldValue> surNamefieldValueList = new ArrayList<>();
@@ -232,7 +225,7 @@ public class NameUtilityBillValidationTest {
         resourceName.setName("bill");
 
 
-        ValidationData verificationData = nameUtilityBillValidation.validate(resourceName,ocrResponse);
+        ValidationData verificationData = nameUtilityBillValidation.validate(resourceName, ocrResponse);
         assertTrue(verificationData.getValidationStatus());
     }
 }
