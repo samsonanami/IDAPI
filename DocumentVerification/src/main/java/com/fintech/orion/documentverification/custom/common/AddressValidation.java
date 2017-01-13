@@ -84,19 +84,6 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
         }
     }
 
-    private List<String> getResourceListFromOcrResponse(OcrResponse ocrResponse) {
-        List<String> resourceList = new ArrayList<>();
-        for (OcrFieldData fieldData : ocrResponse.getData()) {
-            for (OcrFieldValue fieldValue : fieldData.getValue()) {
-                String[] splitArray = fieldValue.getId().split("##");
-                if (splitArray.length > 0) {
-                    resourceList.add(splitArray[0]);
-                }
-            }
-        }
-        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<String>(resourceList);
-        return new ArrayList<>(linkedHashSet);
-    }
 
     public void setOcrFieldBase(String ocrFieldBase) {
         this.ocrFieldBase = ocrFieldBase;
