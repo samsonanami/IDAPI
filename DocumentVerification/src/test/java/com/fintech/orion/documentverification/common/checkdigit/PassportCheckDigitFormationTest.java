@@ -31,7 +31,9 @@ public class PassportCheckDigitFormationTest {
 
         formation = new PassportCheckDigitFormation();
         expectedResult = new CheckDigitResults();
-        mrz = "P<GBRSORRELL<<PHILIP<MARK<<<<<<<<<<<<<<<<<<<7613359992GBR5901205M2211097<<<<<<<<<<<<<<O4";
+       // mrz = "P<GBRSORRELL<<PHILIP<MARK<<<<<<<<<<<<<<<<<<<7613359992GBR5901205M2211097<<<<<<<<<<<<<<O4";
+        //mrz = "P<GBRKULARATNE<<PARINDA<SANJAYA<<<<<<<<<<<<<5127790629GBR7407251M2211226<<<<<<<<<<<<<<O4";
+        mrz = "P<GBRKULARATNE<<SUREKHA<PRAHARSHINI<<<<<<<<<5127835573GBR7412235F2211226<<<<<<<<<<<<<<06";
         MockitoAnnotations.initMocks(this);
         this.mockConfigProperties();
 
@@ -49,8 +51,8 @@ public class PassportCheckDigitFormationTest {
     @Test
     public void should_return_valid_Checkdigit_Prase_One() throws CheckDigitFormationException {
         CheckDigitResults results = formation.calculateCheckdigit(mrz);
-        expectedResult.setCheckdigitPraseOne("2");
-        Assert.assertEquals(expectedResult.getCheckdigitPraseOne(), results.getCheckdigitPraseOne());
+        expectedResult.setCheckdigitPraseOne("3");
+        Assert.assertEquals(expectedResult.getCheckdigitPraseOne(),results.getCheckdigitPraseOne());
     }
 
     @Test
@@ -63,8 +65,8 @@ public class PassportCheckDigitFormationTest {
     @Test
     public void should_return_valid_Checkdigit_Prase_Three() throws CheckDigitFormationException {
         CheckDigitResults results = formation.calculateCheckdigit(mrz);
-        expectedResult.setCheckdigitPraseThree("7");
-        Assert.assertEquals(expectedResult.getCheckdigitPraseThree(), results.getCheckdigitPraseThree());
+        expectedResult.setCheckdigitPraseThree("6");
+        Assert.assertEquals(expectedResult.getCheckdigitPraseThree(),results.getCheckdigitPraseThree());
     }
 
     @Test
@@ -77,8 +79,8 @@ public class PassportCheckDigitFormationTest {
     @Test
     public void should_return_valid_Checkdigit_Prase_Five() throws CheckDigitFormationException {
         CheckDigitResults results = formation.calculateCheckdigit(mrz);
-        expectedResult.setCheckdigitPraseFive("4");
-        Assert.assertEquals(expectedResult.getCheckdigitPraseFive(), results.getCheckdigitPraseFive());
+        expectedResult.setCheckdigitPraseFive("6");
+        Assert.assertEquals(expectedResult.getCheckdigitPraseFive(),results.getCheckdigitPraseFive());
     }
 
 

@@ -218,19 +218,24 @@ public class PassportCheckDigitFormation {
         checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
         return Integer.toString(checkDigitPrase);
     }
+    public String  getCheckdigitPraseFive(String mrz,Range[] range)
+    {
+        String checkDigitPraseFive;
+        int checkDigitPrase;
 
-    public String getCheckdigitPraseFive(String mrz, Range[] range) {
-        int checkDigitPraseFirst;
-        int checkDigitPraseTwo;
-        int checkDigitPraseThree;
-        int checkDigitPraseFinal;
+        checkDigitPraseFive =  mrz.substring(range[0].getStart(),range[0].getEnd())
+                               +getCheckdigitPraseOne(mrz, range[0])
+                                +mrz.substring(range[1].getStart(),range[1].getEnd())
+                                +getCheckdigitPraseTwo(mrz, range[1])
+                +mrz.substring(range[2].getStart(),range[2].getEnd())
+                +getCheckdigitPraseTwo(mrz, range[2])
+                +mrz.substring(range[3].getStart(),range[3].getEnd())
+                +getCheckdigitPraseTwo(mrz, range[3]);
 
-
-        checkDigitPraseFirst = Integer.parseInt(this.getCheckdigitPraseOne(mrz, range[0]));
-        checkDigitPraseTwo = Integer.parseInt(this.getCheckdigitPraseTwo(mrz, range[1]));
-        checkDigitPraseThree = Integer.parseInt(this.getCheckdigitPraseThree(mrz, range[2]));
-        checkDigitPraseFinal = (checkDigitPraseFirst + checkDigitPraseTwo + checkDigitPraseThree) % this.moduler;
-
-        return Integer.toString(checkDigitPraseFinal);
+        Range rangeForCheckdigitPrase = new Range();
+        rangeForCheckdigitPrase.setStart(0);
+        rangeForCheckdigitPrase.setEnd(checkDigitPraseFive.length()-1);
+        checkDigitPrase = this.calculateCheckDigit(checkDigitPraseFive,rangeForCheckdigitPrase);
+        return Integer.toString(checkDigitPrase);
     }
 }
