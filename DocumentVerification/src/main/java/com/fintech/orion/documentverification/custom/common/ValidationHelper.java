@@ -74,7 +74,6 @@ public class ValidationHelper {
 
     public ValidationData validateData(List<OcrFieldValue> values) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
-        int valueCount = 1;
         String dataValue = "";
         if (values.size() > 1) {
             validationData.setValidationStatus(false);
@@ -90,7 +89,6 @@ public class ValidationHelper {
                 validationData.setRemarks("Documents data not matched");
                 break;
             }
-            valueCount++;
             dataValue = value.getValue();
         }
 

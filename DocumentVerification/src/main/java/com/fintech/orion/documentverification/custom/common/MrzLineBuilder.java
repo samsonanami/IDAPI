@@ -1,7 +1,6 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 
 import java.util.ArrayList;
