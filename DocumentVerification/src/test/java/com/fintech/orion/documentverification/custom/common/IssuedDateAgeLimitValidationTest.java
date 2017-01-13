@@ -1,10 +1,9 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
-import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class IssuedDateAgeLimitValidationTest {
     private ResourceName resourceName;
 
     @Before
-    public void setup()throws Exception{
+    public void setup() throws Exception {
         ocrFieldDataOfIssue = new OcrFieldData();
         ocrFieldDataOfBirth = new OcrFieldData();
         ocrResponse = new OcrResponse();
@@ -35,7 +34,7 @@ public class IssuedDateAgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_true_if_age_in_every_document_is_within_age_limit()throws Exception{
+    public void should_return_true_if_age_in_every_document_is_within_age_limit() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
         passportValue.setValue("25.07.2004");
@@ -43,7 +42,6 @@ public class IssuedDateAgeLimitValidationTest {
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("25.07.2004");
-
 
 
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
@@ -73,7 +71,7 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
@@ -81,7 +79,7 @@ public class IssuedDateAgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_false_if_age_in_any_document_below_than_age_limit()throws Exception{
+    public void should_return_false_if_age_in_any_document_below_than_age_limit() throws Exception {
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
@@ -92,7 +90,6 @@ public class IssuedDateAgeLimitValidationTest {
         dlFrontValue.setValue("25.07.1978");
 
 
-
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
         issuedDateFieldValueList.add(passportValue);
         issuedDateFieldValueList.add(dlFrontValue);
@@ -120,14 +117,14 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertFalse(verificationData.getValidationStatus());
     }
 
     @Test
-    public void should_return_false_if_age_in_any_document_greater_than_age_limit()throws Exception{
+    public void should_return_false_if_age_in_any_document_greater_than_age_limit() throws Exception {
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
@@ -136,7 +133,6 @@ public class IssuedDateAgeLimitValidationTest {
         OcrFieldValue dlFrontValue = new OcrFieldValue();
         dlFrontValue.setId("drivingLicenseFront##date_of_issue");
         dlFrontValue.setValue("25.07.2004");
-
 
 
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
@@ -166,14 +162,14 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertFalse(verificationData.getValidationStatus());
     }
 
     @Test
-    public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception{
+    public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception {
 
         //////////////////////////////////////////////////
         OcrFieldValue passportValue = new OcrFieldValue();
@@ -185,7 +181,6 @@ public class IssuedDateAgeLimitValidationTest {
         dlFrontValue.setValue("20.01.2004");
 
 
-
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
         issuedDateFieldValueList.add(passportValue);
         issuedDateFieldValueList.add(dlFrontValue);
@@ -213,15 +208,15 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
         assertTrue(verificationData.getValidationStatus());
     }
 
-    @Test(expected = CustomValidationException.class)
-    public void should_throw_CustomValidationException_false_if_date_format_is_not_supported()throws Exception{
+    @Test
+    public void should_throw_CustomValidationException_false_if_date_format_is_not_supported() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
         passportValue.setValue("20/01/2004");
@@ -231,7 +226,6 @@ public class IssuedDateAgeLimitValidationTest {
         dlFrontValue.setValue("20.01.2004");
 
 
-
         List<OcrFieldValue> issuedDateFieldValueList = new ArrayList<>();
         issuedDateFieldValueList.add(passportValue);
         issuedDateFieldValueList.add(dlFrontValue);
@@ -259,10 +253,10 @@ public class IssuedDateAgeLimitValidationTest {
         issuedDateAgeLimitValidation.setOcrExtractionFieldName("date_of_issue");
         issuedDateAgeLimitValidation.setMinimumAge(18);
         issuedDateAgeLimitValidation.setMaximumAge(90);
-        issuedDateAgeLimitValidation.setDateofBirthString("date_of_birth");
+        issuedDateAgeLimitValidation.setDateOfBirthOcrExtractionField("date_of_birth");
         resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
-        assertTrue(verificationData.getValidationStatus());
+        assertFalse(verificationData.getValidationStatus());
     }
 }

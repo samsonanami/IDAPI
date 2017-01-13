@@ -2,6 +2,8 @@ package com.fintech.orion.messaging.job;
 
 import com.fintech.orion.messaging.connection.DestinationHandlerInterface;
 import com.fintech.orion.messaging.connection.SessionHandlerInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
@@ -12,7 +14,7 @@ import javax.jms.MessageListener;
  * Implementation of Job Consumer
  */
 public class JobConsumer extends JobCommon implements JobConsumerInterface, JobCommonInterface {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobConsumer.class);
     private MessageConsumer consumer;
 
     public JobConsumer(String queueName, DestinationHandlerInterface destinationHandler, SessionHandlerInterface sessionHandler) {

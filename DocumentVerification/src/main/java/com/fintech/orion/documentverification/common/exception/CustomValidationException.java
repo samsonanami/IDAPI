@@ -5,15 +5,15 @@ package com.fintech.orion.documentverification.common.exception;
  */
 public class CustomValidationException extends Exception {
 
-    public CustomValidationException(String s){
+    public CustomValidationException(String s) {
         super(s);
     }
 
-    public CustomValidationException(String s, Exception e){
+    public CustomValidationException(String s, Exception e) {
         super(s, e);
     }
 
-    public CustomValidationException(Exception e){
+    public CustomValidationException(Exception e) {
         super(e);
     }
 }

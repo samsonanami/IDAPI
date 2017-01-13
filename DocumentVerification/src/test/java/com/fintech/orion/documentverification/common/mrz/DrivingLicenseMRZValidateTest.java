@@ -1,6 +1,5 @@
 package com.fintech.orion.documentverification.common.mrz;
 
-import com.fintech.orion.documentverification.common.exception.CheckDigitFormationException;
 import com.fintech.orion.documentverification.common.exception.DirivingLicenseMRZValidatingException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,10 +24,10 @@ public class DrivingLicenseMRZValidateTest {
     private PassportMRZDecodingStrategy strategy;
 
     @Spy
-    private HashMap<String,MRZItemProperty> mrzItemProperty;
+    private HashMap<String, MRZItemProperty> mrzItemProperty;
 
     @Before
-    public void setup(){
+    public void setup() {
 
         validateDrivingLicenceMRZ = new ValidateDrivingLicence();
         MockitoAnnotations.initMocks(this);
@@ -37,23 +36,21 @@ public class DrivingLicenseMRZValidateTest {
 
     }
 
-    private void mockConfiguration()
-    {
+    private void mockConfiguration() {
         DrivingLicenseMZRHelper helper = new DrivingLicenseMZRHelper();
         Mockito.when(mrzItemProperty.get("MZRLength")).thenReturn(helper.getMRZRLenght());
     }
+
     @Test
-    public void shouldReturnValidateTrueForValidMRZ() throws DirivingLicenseMRZValidatingException
-    {
-        Assert.assertEquals(validateDrivingLicenceMRZ.validate(mrz).getValidationResult(),"true");
+    public void shouldReturnValidateTrueForValidMRZ() throws DirivingLicenseMRZValidatingException {
+        Assert.assertEquals(validateDrivingLicenceMRZ.validate(mrz).getValidationResult(), "true");
     }
 
 
     @Test
-    public void shouldReturnValidateFalseForShortMRZ() throws DirivingLicenseMRZValidatingException
-    {
-        mrz =  "KULAR757254PS9R";
-        Assert.assertEquals(validateDrivingLicenceMRZ.validate(mrz).getValidationResult(),"false");
+    public void shouldReturnValidateFalseForShortMRZ() throws DirivingLicenseMRZValidatingException {
+        mrz = "KULAR757254PS9R";
+        Assert.assertEquals(validateDrivingLicenceMRZ.validate(mrz).getValidationResult(), "false");
     }
 
 }

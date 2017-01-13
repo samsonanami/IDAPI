@@ -4,19 +4,19 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
        <bean id="addressConfigureList" class="java.util.HashMap">
               <constructor-arg>
-                     <map   key-type="java.lang.String" value-type="com.fintech.orion.documentverification.common.Address.AddressType">
+                     <map   key-type="java.lang.String" value-type="com.fintech.orion.documentverification.common.address.AddressType">
                             <entry key = "AddressTypeOne" value-ref="idAddressTypeOne"/>
                             <entry key = "AddressTypeTwo" value-ref="idAddressTypeTwo"/>
                      </map>
               </constructor-arg>
        </bean>
-       <bean id="idAddressTypeOne" class="com.fintech.orion.documentverification.common.Address.AddressType">
+       <bean id="idAddressTypeOne" class="com.fintech.orion.documentverification.common.address.AddressType">
               <property name="type" value="1"></property>
               <property name="validateRegularExpression" value ="^([^,]*,){3}[^,]*$"></property>
               <property name="decodeRegularExpression" value="(.+?),(.+?),(.+?),([^,]*$)"></property>
               <property name="description" value="Address contains property number"></property>
        </bean>
-       <bean id="idAddressTypeTwo" class="com.fintech.orion.documentverification.common.Address.AddressType">
+       <bean id="idAddressTypeTwo" class="com.fintech.orion.documentverification.common.address.AddressType">
               <property name="type" value="2"></property>
               <property name="validateRegularExpression" value ="^([^,]*,){4}[^,]*$"></property>
               <property name="decodeRegularExpression" value="(.+?),(.+?),(.+?),(.+?),([^,]*$)"></property>

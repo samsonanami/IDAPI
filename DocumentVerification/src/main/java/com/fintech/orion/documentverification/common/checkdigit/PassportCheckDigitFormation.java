@@ -1,15 +1,11 @@
 package com.fintech.orion.documentverification.common.checkdigit;
 
 
-
 import com.fintech.orion.documentverification.common.exception.CheckDigitFormationException;
 import com.fintech.orion.documentverification.common.mrz.MRZItemProperty;
 import com.fintech.orion.documentverification.common.mrz.Range;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -21,14 +17,14 @@ import java.util.HashMap;
 public class PassportCheckDigitFormation {
 
     private int moduler;
-    private int  checkDigitAphabteStartValue;
+    private int checkDigitAphabteStartValue;
     private int checkDigitAphabteENDValue;
     private int secondStringStartIndex;
     private int mrzFirstLineCharacterCount;
 
     @Autowired
     @Qualifier("passportMRZConfigureList")
-    private HashMap<String,MRZItemProperty> mrzItemProperty;
+    private HashMap<String, MRZItemProperty> mrzItemProperty;
 
     public PassportCheckDigitFormation() {
         this.setCheckDigitAphabteStartValue(6);
@@ -36,76 +32,68 @@ public class PassportCheckDigitFormation {
         this.setSecondStringStartIndex(44);
     }
 
-    public CheckDigitResults calculateCheckdigit(String mrz) throws CheckDigitFormationException
-    {
+    public CheckDigitResults calculateCheckdigit(String mrz) throws CheckDigitFormationException {
         try {
             this.mrzFirstLineCharacterCount = 44;
             Range[] checkDigitRangeArray = this.getCheckDigitRangeParameters();
-            mrz = this.getfixedMRZ(mrz);
+            String fixedMRX = this.getfixedMRZ(mrz);
 
             CheckDigitResults results = new CheckDigitResults();
 
-            results.setCheckdigitPraseOne(getCheckdigitPraseOne(mrz, checkDigitRangeArray[0]));
-            results.setCheckdigitPraseTwo(getCheckdigitPraseTwo(mrz, checkDigitRangeArray[1]));
-            results.setCheckdigitPraseThree(getCheckdigitPraseThree(mrz, checkDigitRangeArray[2]));
-            results.setCheckdigitPraseFour(getCheckdigitPraseFour(mrz, checkDigitRangeArray[3]));
-            results.setCheckdigitPraseFive(getCheckdigitPraseFive(mrz, checkDigitRangeArray));
+            results.setCheckdigitPraseOne(getCheckdigitPraseOne(fixedMRX, checkDigitRangeArray[0]));
+            results.setCheckdigitPraseTwo(getCheckdigitPraseTwo(fixedMRX, checkDigitRangeArray[1]));
+            results.setCheckdigitPraseThree(getCheckdigitPraseThree(fixedMRX, checkDigitRangeArray[2]));
+            results.setCheckdigitPraseFour(getCheckdigitPraseFour(fixedMRX, checkDigitRangeArray[3]));
+            results.setCheckdigitPraseFive(getCheckdigitPraseFive(fixedMRX, checkDigitRangeArray));
 
 
             return results;
-        }
-        catch(NullPointerException e)
-        {
-            throw new CheckDigitFormationException("Not well formatted passport MRZ or not well set configuration properties",e);
+        } catch (NullPointerException e) {
+            throw new CheckDigitFormationException("Not well formatted passport MRZ or not well set configuration properties", e);
         }
     }
 
-    private String getfixedMRZ(String mrz)
-    {
-        return   mrz.replaceAll("\\s+", "");
+    private String getfixedMRZ(String mrz) {
+        return mrz.replaceAll("\\s+", "");
     }
 
 
-    private Range convertConfigPropertiesToProcessableProperties(String key)
-    {
+    private Range convertConfigPropertiesToProcessableProperties(String key) {
         MRZItemProperty property = this.getItemProperties(key);
         Range range = new Range();
-        if(property.getMrzLineNumber() ==2 )
-        {
-            range.setStart(property.getStartIndex() +this.mrzFirstLineCharacterCount-1);
-            range.setEnd(property.getEndIndex()+this.mrzFirstLineCharacterCount);
-        }else
-        {
-            range.setStart(property.getStartIndex()-1);
+        if (property.getMrzLineNumber() == 2) {
+            range.setStart(property.getStartIndex() + this.mrzFirstLineCharacterCount - 1);
+            range.setEnd(property.getEndIndex() + this.mrzFirstLineCharacterCount);
+        } else {
+            range.setStart(property.getStartIndex() - 1);
             range.setEnd(property.getEndIndex());
         }
 
-        return  range;
+        return range;
     }
 
-    private MRZItemProperty getItemProperties(String key)
-    {
-        MRZItemProperty property  = mrzItemProperty.get(key);
+    private MRZItemProperty getItemProperties(String key) {
+        return mrzItemProperty.get(key);
 
-        return property;
     }
-    private Range[] getCheckDigitRangeParameters()
-    {
 
-            Range[] checkDigitRangeArray = new Range[4];
+    private Range[] getCheckDigitRangeParameters() {
 
-            checkDigitRangeArray[0] = this.convertConfigPropertiesToProcessableProperties("CheckDigitPraseOne");
+        Range[] checkDigitRangeArray = new Range[4];
 
-            checkDigitRangeArray[1] = this.convertConfigPropertiesToProcessableProperties("CheckDigitPraseTwo");
+        checkDigitRangeArray[0] = this.convertConfigPropertiesToProcessableProperties("CheckDigitPraseOne");
 
-            checkDigitRangeArray[2] =this.convertConfigPropertiesToProcessableProperties("CheckDigitPraseThree");
+        checkDigitRangeArray[1] = this.convertConfigPropertiesToProcessableProperties("CheckDigitPraseTwo");
 
-            checkDigitRangeArray[3] = this.convertConfigPropertiesToProcessableProperties("CheckDigitPraseFour");
+        checkDigitRangeArray[2] = this.convertConfigPropertiesToProcessableProperties("CheckDigitPraseThree");
 
-            return checkDigitRangeArray;
+        checkDigitRangeArray[3] = this.convertConfigPropertiesToProcessableProperties("CheckDigitPraseFour");
+
+        return checkDigitRangeArray;
 
 
     }
+
     public void setSecondStringStartIndex(int secondStringStartIndex) {
         this.secondStringStartIndex = secondStringStartIndex;
     }
@@ -122,18 +110,23 @@ public class PassportCheckDigitFormation {
         this.checkDigitAphabteENDValue = checkDigitAphabteENDValue;
     }
 
+    public int getCheckDigitAphabteENDValue() {
+        return checkDigitAphabteENDValue;
+    }
+
+    public int getSecondStringStartIndex() {
+        return secondStringStartIndex;
+    }
 
     private int calculateCharacterDigitValue(char character) {
         int value;
         int subtituedValue;
 
-        if(Character.isDigit(character)) {
+        if (Character.isDigit(character)) {
             return Character.getNumericValue(character);
-        }else if(character == '<')
-        {
+        } else if (character == '<') {
             return 0;
-        }
-        else {
+        } else {
             subtituedValue = (int) Character.toUpperCase('A') - this.checkDigitAphabteStartValue;
 
             value = (int) Character.toUpperCase(character) - subtituedValue;
@@ -142,84 +135,87 @@ public class PassportCheckDigitFormation {
 
     }
 
-    private int calculateWeight(int position)
-    {
+    private int calculateWeight(int position) {
         int positionWeightFactor;
         int value;
 
-        positionWeightFactor = position%3;
+        positionWeightFactor = position % 3;
 
-        switch(positionWeightFactor) {
+        switch (positionWeightFactor) {
             case 1:
-                value = 7; break;
+                value = 7;
+                break;
             case 2:
-                value = 3; break;
+                value = 3;
+                break;
             case 0:
-                value = 1; break;
+                value = 1;
+                break;
             default:
-                value = 0; break;
+                value = 0;
+                break;
 
 
         }
 
         return value;
     }
-    private int calculateCheckDigit(String mrz,Range rangeObject)
-    {
 
-            String mrzPortion = mrz.substring(rangeObject.getStart(),rangeObject.getEnd());
-            int index = 1;
-            int checkDigit = 0;
-            int checkDigitPerIndex = 0;
+    private int calculateCheckDigit(String mrz, Range rangeObject) {
 
-            for (char c : mrzPortion.toCharArray()) {
-                checkDigitPerIndex = this.calculateCharacterDigitValue(c) * this.calculateWeight(index);
-                checkDigit = checkDigit + checkDigitPerIndex;
+        String mrzPortion = mrz.substring(rangeObject.getStart(), rangeObject.getEnd());
+        int index = 1;
+        int checkDigit = 0;
+        int checkDigitPerIndex = 0;
 
-                index++;
-            }
+        for (char c : mrzPortion.toCharArray()) {
+            checkDigitPerIndex = this.calculateCharacterDigitValue(c) * this.calculateWeight(index);
+            checkDigit = checkDigit + checkDigitPerIndex;
 
-            return checkDigit % this.moduler;
+            index++;
+        }
+
+        return checkDigit % this.moduler;
     }
-    public String  getCheckdigitPraseOne(String mrz,Range digitRange)
-    {
-           int checkDigitPrase;
-              Range rangeForCheckdigitPrase = new Range();
-              rangeForCheckdigitPrase.setStart(digitRange.getStart());
-              rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
 
-        checkDigitPrase = this.calculateCheckDigit(mrz,rangeForCheckdigitPrase);
-        return Integer.toString(checkDigitPrase);
-    }
-    public String  getCheckdigitPraseTwo(String mrz,Range digitRange)
-    {
+    public String getCheckdigitPraseOne(String mrz, Range digitRange) {
         int checkDigitPrase;
         Range rangeForCheckdigitPrase = new Range();
         rangeForCheckdigitPrase.setStart(digitRange.getStart());
         rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
 
-        checkDigitPrase = this.calculateCheckDigit(mrz,rangeForCheckdigitPrase);
+        checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
         return Integer.toString(checkDigitPrase);
-
     }
-    public String  getCheckdigitPraseThree(String mrz,Range digitRange)
-    {
+
+    public String getCheckdigitPraseTwo(String mrz, Range digitRange) {
         int checkDigitPrase;
         Range rangeForCheckdigitPrase = new Range();
         rangeForCheckdigitPrase.setStart(digitRange.getStart());
         rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
 
-        checkDigitPrase = this.calculateCheckDigit(mrz,rangeForCheckdigitPrase);
+        checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
         return Integer.toString(checkDigitPrase);
+
     }
-    public String  getCheckdigitPraseFour(String mrz,Range digitRange)
-    {
+
+    public String getCheckdigitPraseThree(String mrz, Range digitRange) {
         int checkDigitPrase;
         Range rangeForCheckdigitPrase = new Range();
         rangeForCheckdigitPrase.setStart(digitRange.getStart());
         rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
 
-        checkDigitPrase = this.calculateCheckDigit(mrz,rangeForCheckdigitPrase);
+        checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
+        return Integer.toString(checkDigitPrase);
+    }
+
+    public String getCheckdigitPraseFour(String mrz, Range digitRange) {
+        int checkDigitPrase;
+        Range rangeForCheckdigitPrase = new Range();
+        rangeForCheckdigitPrase.setStart(digitRange.getStart());
+        rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
+
+        checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
         return Integer.toString(checkDigitPrase);
     }
     public String  getCheckdigitPraseFive(String mrz,Range[] range)

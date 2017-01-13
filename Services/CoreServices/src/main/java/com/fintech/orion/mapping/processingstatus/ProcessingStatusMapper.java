@@ -4,8 +4,6 @@ import com.fintech.orion.dataabstraction.entities.orion.ProcessingStatus;
 import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
 import org.mapstruct.Mapper;
 
-import java.util.List;
-
 /**
  * ProcessingStatus entity mappings
  */

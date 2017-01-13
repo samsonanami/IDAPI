@@ -5,7 +5,7 @@ package com.fintech.orion.documentverification.custom.common;
  */
 public class TestDataProvider {
 
-    public static String ocrResponseString  ="{\n" +
+    public static String ocrResponseString = "{\n" +
             "  \"verificationRequestId\": \"58d74245-75f0-470a-be32-3287d5950993\",\n" +
             "  \"status\": \"processing_successful\",\n" +
             "  \"data\": [\n" +

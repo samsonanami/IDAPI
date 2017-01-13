@@ -5,9 +5,9 @@ import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.common.exception.DateComparatorException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
@@ -19,8 +19,9 @@ import java.util.Date;
 /**
  * Created by MudithaJ on 1/2/2017.
  */
-public class AgeLimitValidation  extends ValidationHelper implements CustomValidation {
+public class AgeLimitValidation extends ValidationHelper implements CustomValidation {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AgeLimitValidation.class);
 
     private int minimumAge;
     private int maximumAge;
@@ -28,26 +29,30 @@ public class AgeLimitValidation  extends ValidationHelper implements CustomValid
 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
-        if (minimumAge <= 0 || getOcrExtractionFieldName() == null){
+        if (minimumAge <= 0 || getOcrExtractionFieldName() == null) {
             throw new CustomValidationException("Minimum age / extraction field name parameters missing");
         }
 
-        if (maximumAge <= 0 || getOcrExtractionFieldName() == null){
+        if (maximumAge <= 0 || getOcrExtractionFieldName() == null) {
             throw new CustomValidationException("Maximum age / extraction field name parameters missing");
         }
 
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
-        if (validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             try {
                 validationData = validateAgeLimit(fieldData);
             } catch (DateComparatorException e) {
-                throw new CustomValidationException("Error Occurred while performing age limit verification ", e);
+                LOGGER.warn("Error occurred while performing an age limit verification on ocr response {} {}"
+                        , ocrResponse, e);
+                validationData.setValue(null);
+                validationData.setRemarks("Error occurred while performing age limit verification. This is most likely " +
+                        "due to an unsupported date format. Supported date formats are," +
+                        "DD MM/MM YY or DD.MM.YYYY");
+                validationData.setOcrConfidence(null);
+                validationData.setValidationStatus(false);
             }
-        }
-        if (!validationData.getValidationStatus()){
-            validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Age limit verification");
         return validationData;
@@ -57,15 +62,15 @@ public class AgeLimitValidation  extends ValidationHelper implements CustomValid
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
-        for (OcrFieldValue fieldValue : ocrFieldData.getValue()){
+        for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());
             LocalDate birthday = new LocalDate(date);
             Years age = Years.yearsBetween(birthday, today);
 
-            if (age.getYears()>minimumAge && age.getYears()<maximumAge ){
+            if (age.getYears() > minimumAge && age.getYears() < maximumAge) {
                 validationData.setValidationStatus(true);
                 validationData.setValue(String.valueOf(age.getYears()));
-            }else {
+            } else {
                 validationData.setRemarks(getFailedRemarksMessage());
                 validationData.setValue(String.valueOf(age.getYears()));
                 validationData.setValidationStatus(false);

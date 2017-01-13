@@ -1,0 +1,42 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:security="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <context:component-scan
+            base-package="com.fintech.orion.authentication"/>
+
+    <mvc:annotation-driven/>
+    <context:annotation-config/>
+
+    <import resource="dbSession-config.xml"/>
+
+    <bean id="securityTokenHeaderName" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="Authorization:Basic"/>
+    </bean>
+
+    <bean id="usersByUsernameQuery" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="SELECT USER_NAME as username, PASSWORD as password, enabled as
+        enabled  FROM #{systemProperties['OAUTH_DB']}.client WHERE USER_NAME=?"/>
+    </bean>
+
+    <bean id="authoritiesByUsernameQuery" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="SELECT USER_NAME as username, 'CLIENT' as
+        role FROM #{systemProperties['OAUTH_DB']}.client WHERE USER_NAME=?"/>
+    </bean>
+
+    <bean id="realm" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="ZONE_OAUTH_REALM" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+</beans>

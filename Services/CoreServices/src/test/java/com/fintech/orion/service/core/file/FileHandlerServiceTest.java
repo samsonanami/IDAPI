@@ -40,14 +40,6 @@ public class FileHandlerServiceTest {
         Assert.isNull(fileName);
     }
 
-    @Test(expected = FileHandlerException.class)
-    public void should_throw_FileHandlerException_if_file_cannot_be_saved()throws Exception{
-        MultipartFile multipartFile = new MockMultipartFile("data", "filename.txt",
-                "text/plain", "some xml".getBytes());
-        String fileName = fileHandlerService.persistFile(multipartFile, FileStorage.LOCAL, "/");
-        Assert.isNull(fileName);
-    }
-
 
 
 

@@ -2,7 +2,6 @@ package com.fintech.orion.documentverification.factory;
 
 /**
  * Created by sasitha on 12/25/16.
- *
  */
 public enum DocumentVerificationType {
 

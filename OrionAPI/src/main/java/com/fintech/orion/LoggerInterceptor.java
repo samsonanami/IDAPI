@@ -21,7 +21,6 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         LOGGER.info("After handling the request");
-        response.addHeader("Access-Control-Allow-Origin", "*");
         super.postHandle(request, response, handler, modelAndView);
     }
 

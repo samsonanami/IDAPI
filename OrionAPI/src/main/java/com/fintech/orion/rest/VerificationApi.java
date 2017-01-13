@@ -20,6 +20,7 @@ public interface VerificationApi {
         @ApiResponse(code = 200, message = "successful operation", response = VerificationRequestResponse.class),
         @ApiResponse(code = 400, message = "Bad request", response = VerificationRequestResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized request", response = VerificationRequestResponse.class) })
+    @CrossOrigin
     @RequestMapping(value = "/v1/verification",
         produces = { "application/json" }, 
         consumes = { "application/json" },
@@ -37,6 +38,7 @@ public interface VerificationApi {
         @ApiResponse(code = 400, message = "Bad request", response = VerificationProcessDetailedResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized request", response = VerificationProcessDetailedResponse.class),
         @ApiResponse(code = 404, message = "Requested procesisng request is not found", response = VerificationProcessDetailedResponse.class) })
+    @CrossOrigin
     @RequestMapping(value = "/v1/verification/{verificationId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)

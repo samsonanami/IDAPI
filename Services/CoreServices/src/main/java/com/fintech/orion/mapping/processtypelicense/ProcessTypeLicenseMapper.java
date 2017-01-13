@@ -12,9 +12,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProcessTypeLicenseMapper {
 
-    ProcessTypeLicenseDTO processTypeLicenseToProcessTypeLicenseDTO(ProcessTypeLicense ProcessTypeLicense);
+    ProcessTypeLicenseDTO processTypeLicenseToProcessTypeLicenseDTO(ProcessTypeLicense processTypeLicense);
 
-    ProcessTypeLicense processTypeLicenseDTOToProcessTypeLicense(ProcessTypeLicenseDTO ProcessTypeLicenseDTO);
+    ProcessTypeLicense processTypeLicenseDTOToProcessTypeLicense(ProcessTypeLicenseDTO processTypeLicenseDTO);
 
-    List<ProcessTypeLicenseDTO> processTypeLicensesToProcessTypeLicenseDTOs(List<ProcessTypeLicense> ProcessTypeLicenses);
+    List<ProcessTypeLicenseDTO> processTypeLicensesToProcessTypeLicenseDTOs(List<ProcessTypeLicense> processTypeLicenses);
 }

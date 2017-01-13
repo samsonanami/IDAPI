@@ -5,7 +5,7 @@ package com.fintech.orion.documentverification.common.exception;
  */
 public class MRZDecodingConfigurationException extends Exception {
 
-    public MRZDecodingConfigurationException(String message){
+    public MRZDecodingConfigurationException(String message) {
         super(message);
     }
 }

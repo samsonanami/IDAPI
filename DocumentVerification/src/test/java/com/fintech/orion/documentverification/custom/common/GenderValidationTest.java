@@ -1,9 +1,9 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 
 /**
  * Created by sasitha on 12/29/16.
- *
  */
 public class GenderValidationTest {
 
@@ -24,6 +23,7 @@ public class GenderValidationTest {
     private OcrFieldData ocrFieldDataSex;
     private ResourceName resourceName;
     private GenderValidation genderValidation;
+
     @Before
     public void setUp() throws Exception {
         genderValidation = new GenderValidation();
@@ -37,7 +37,7 @@ public class GenderValidationTest {
     }
 
     @Test
-    public void should_return_true_if_all_the_document_has_same_sex_mentioned()throws Exception{
+    public void should_return_true_if_all_the_document_has_same_sex_mentioned() throws Exception {
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##sex");
@@ -65,7 +65,7 @@ public class GenderValidationTest {
     }
 
     @Test
-    public void should_return_false_if_document_gender_is_not_matching()throws Exception{
+    public void should_return_false_if_document_gender_is_not_matching() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##sex");
         passportValue.setValue("Female");

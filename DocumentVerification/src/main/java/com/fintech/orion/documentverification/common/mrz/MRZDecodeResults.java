@@ -52,7 +52,7 @@ public class MRZDecodeResults {
     }
 
     public void setDateofBirthMonth(String dateofBirthMonth) {
-        this. dateofBirthMonth =  dateofBirthMonth;
+        this.dateofBirthMonth = dateofBirthMonth;
     }
 
     public String getDateofBirthYear() {

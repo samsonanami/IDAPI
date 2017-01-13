@@ -1,6 +1,29 @@
 group 'com.fintech.orion'
 apply plugin: 'java'
 
+/*
+project.version.with {
+    snapshotSuffix  = "-"
+    preRelease {
+        startingVersion = "0.0.0"
+        bump { String version ->
+            int firstNum = Integer.parseInt(version.split(/\./)[0])
+            int secondNum = Integer.parseInt(version.split(/\./)[1])
+            int thirdNum = Integer.parseInt(version.split(/\./)[2])
+            if(thirdNum > 9){
+                thirdNum = 0
+                secondNum = secondNum + 1
+            }else{
+                thirdNum = thirdNum + 1
+            }
+            return "${firstNum}.${secondNum}.${thirdNum}"
+        }
+    }
+
+}
+*/
+
+
 dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     compile group: 'org.springframework', name: 'spring-beans', version: '4.3.2.RELEASE'

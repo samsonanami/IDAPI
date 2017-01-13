@@ -11,9 +11,9 @@ public class ValidateMRZResult {
     private String item;
 
     public ValidateMRZResult() {
-        this.MRZType="";
-        this.validationResult="";
-        this.message="";
+        this.MRZType = "";
+        this.validationResult = "";
+        this.message = "";
 
     }
 

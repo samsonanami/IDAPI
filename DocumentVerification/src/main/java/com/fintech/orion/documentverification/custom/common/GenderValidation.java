@@ -3,9 +3,9 @@ package com.fintech.orion.documentverification.custom.common;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.springframework.stereotype.Component;
 
@@ -21,25 +21,25 @@ public class GenderValidation extends ValidationHelper implements CustomValidati
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
-        if (validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             validationData = validateGender(fieldData);
         }
         validationData.setId("Gender Verification");
         return validationData;
     }
 
-    private ValidationData validateGender(OcrFieldData ocrFieldData){
+    private ValidationData validateGender(OcrFieldData ocrFieldData) {
         ValidationData validationData = new ValidationData();
-        if(ocrFieldData.getValue().size() >= 1){
+        if (ocrFieldData.getValue().size() >= 1) {
             Gender genderBaseValue = getGender(ocrFieldData.getValue().iterator().next().getValue());
-            for (OcrFieldValue value : ocrFieldData.getValue()){
+            for (OcrFieldValue value : ocrFieldData.getValue()) {
                 Gender compare = getGender(value.getValue());
-                if (!genderBaseValue.equals(compare)){
+                if (genderBaseValue == Gender.OTHER || !genderBaseValue.equals(compare)) {
                     validationData.setRemarks(getFailedRemarksMessage());
                     validationData.setValidationStatus(false);
                     break;
-                }else {
-                    validationData.setRemarks(getSuccessRemarksMessage());
+                } else {
+                    validationData.setRemarks(getSuccessRemarksMessage() + genderBaseValue);
                     validationData.setValidationStatus(true);
                 }
             }

@@ -9,8 +9,8 @@
     </bean>
 
     <bean id="clientServiceInterface" class="com.fintech.orion.coreservices.ClientService"/>
-    <bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
-    <bean id="processTypeLicenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
+    <!--<bean id="licenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>
+    <bean id="processTypeLicenseServiceInterface" class="com.fintech.orion.coreservices.LicenseService"/>-->
     <bean id="resourceServiceInterface" class="com.fintech.orion.coreservices.ResourceService"/>
     <bean id="resourceTypeServiceInterface" class="com.fintech.orion.coreservices.ResourceTypeService"/>
     <bean id="processingStatusServiceInterface" class="com.fintech.orion.coreservices.ProcessingStatusService"/>
@@ -47,9 +47,9 @@
 
 
     <util:map id="supportedFilesAndSizes" value-type="java.lang.Integer">
-        <entry key="jpeg" value="5242880"/>
-        <entry key="jpg" value="5242880"/>
-        <entry key="json" value="5242880"/>
+        <entry key="jpeg" value="10485760"/>
+        <entry key="jpg" value="10485760"/>
+        <entry key="json" value="2097152"/>
         <entry key="mp4" value="2097152" />
     </util:map>
 

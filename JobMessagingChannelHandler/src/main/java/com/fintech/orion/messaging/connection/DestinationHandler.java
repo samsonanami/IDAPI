@@ -12,7 +12,7 @@ import javax.jms.Session;
  * Created by TharinduMP on 10/7/2016.
  */
 public class DestinationHandler implements DestinationHandlerInterface {
-    static final Logger LOGGER = LoggerFactory.getLogger(DestinationHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DestinationHandler.class);
 
     @Override
     public Destination provideDestination(Session session, String queueName) throws DestinationHandlerException {

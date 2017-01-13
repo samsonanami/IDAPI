@@ -1,17 +1,14 @@
 package com.fintech.orion.common.service;
 
-import com.fintech.orion.dataabstraction.entities.orion.Client;
+import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
-import com.fintech.orion.dataabstraction.entities.orion.Response;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dataabstraction.repositories.ClientRepositoryInterface;
-import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
-import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
-import com.fintech.orion.dataabstraction.repositories.ResponseRepositoryInterface;
+import com.fintech.orion.dataabstraction.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by sasitha on 12/19/16.
@@ -26,6 +23,12 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
 
     @Autowired
     private ResponseRepositoryInterface responseRepositoryInterface;
+
+    @Autowired
+    private ProcessRepositoryInterface processRepositoryInterface;
+
+    @Autowired
+    private ProcessTypeRepositoryInterface processTypeRepositoryInterface;
 
     @Override
     @Transactional
@@ -47,4 +50,24 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
         responseRepositoryInterface.save(response);
     }
 
+    @Override
+    @Transactional
+    public boolean isVerificationProcessFoundInProcessingRequest(String processingRequestCode, String processType) {
+        Process process = processRepositoryInterface.findProcessByProcessingRequestAndProcessType(processingRequestCode,
+                processType);
+        return process != null;
+    }
+
+
+    @Override
+    @Transactional
+    public List<Process> getProcessListBelongsToProcessingRequest(String processingRequestCode) {
+        return processRepositoryInterface.findProcessByProcessingRequest(processingRequestCode);
+    }
+
+    @Override
+    @Transactional
+    public ProcessType getProcessTypeFromProcessCode(String processIdentificationCode) {
+        return processRepositoryInterface.test(processIdentificationCode);
+    }
 }

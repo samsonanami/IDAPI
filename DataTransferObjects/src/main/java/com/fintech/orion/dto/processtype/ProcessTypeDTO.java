@@ -26,12 +26,18 @@ public class ProcessTypeDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         ProcessTypeDTO that = (ProcessTypeDTO) o;
 
-        if (id != that.id) return false;
+        if (id != that.id) {
+            return false;
+        }
         return type.equals(that.type);
 
     }

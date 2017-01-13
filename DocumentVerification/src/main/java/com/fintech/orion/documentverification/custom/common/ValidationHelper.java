@@ -1,10 +1,9 @@
 package com.fintech.orion.documentverification.custom.common;
 
-import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 
 import java.util.List;
@@ -19,20 +18,20 @@ public class ValidationHelper {
     private String failedRemarksMessage;
     private String ocrExtractionFieldName;
 
-    public OcrFieldValue getFieldValueById(String id, OcrFieldData fieldData){
+    public OcrFieldValue getFieldValueById(String id, OcrFieldData fieldData) {
         OcrFieldValue fieldValue = new OcrFieldValue();
-        for (OcrFieldValue f : fieldData.getValue()){
-            if (f.getId().equalsIgnoreCase(id)){
+        for (OcrFieldValue f : fieldData.getValue()) {
+            if (f.getId().equalsIgnoreCase(id)) {
                 fieldValue = f;
             }
         }
         return fieldValue;
     }
 
-    public OcrFieldData getFieldDataById(String id, OcrResponse ocrResponse){
+    public OcrFieldData getFieldDataById(String id, OcrResponse ocrResponse) {
         OcrFieldData data = new OcrFieldData();
-        for (OcrFieldData fieldData : ocrResponse.getData()){
-            if (fieldData.getId().equalsIgnoreCase(id)){
+        for (OcrFieldData fieldData : ocrResponse.getData()) {
+            if (fieldData.getId().equalsIgnoreCase(id)) {
                 data = fieldData;
             }
         }
@@ -71,44 +70,51 @@ public class ValidationHelper {
         this.ocrExtractionFieldName = ocrExtractionFieldName;
     }
 
-    public ValidationData validateData(List<OcrFieldValue> values) throws CustomValidationException
-    { ValidationData  validationData= new  ValidationData();
+    public ValidationData validateData(List<OcrFieldValue> values) throws CustomValidationException {
+        ValidationData validationData = new ValidationData();
         int valueCount = 1;
-        String dataValue="";
-        if(values.size() > 1){
+        String dataValue = "";
+        if (values.size() > 1) {
             validationData.setValidationStatus(false);
             validationData.setRemarks("Only one documentation available");
         }
-        for(OcrFieldValue value:values) {
+        for (OcrFieldValue value : values) {
 
-                if(value.getValue().equals(dataValue)){
-                    validationData.setValidationStatus(true);
-                    validationData.setRemarks("");
-                }else{
-                    validationData.setValidationStatus(false);
-                    validationData.setRemarks("Documents data not matched");
-                    break;
-                }
-            valueCount++;
-            dataValue=value.getValue();
+            if (value.getValue().equals(dataValue)) {
+                validationData.setValidationStatus(true);
+                validationData.setRemarks("");
+            } else {
+                validationData.setValidationStatus(false);
+                validationData.setRemarks("Documents data not matched");
+                break;
             }
+            valueCount++;
+            dataValue = value.getValue();
+        }
 
 
-       return  validationData;
+        return validationData;
     }
 
-    public ValidationData isAllOcrFieldValueHasSameValueField(List<OcrFieldValue> values){
-        boolean isValuesEqual = true;
+    public ValidationData isAllOcrFieldValueHasSameValueField(List<OcrFieldValue> values) {
+        boolean isValuesEqual = false;
         ValidationData validationData = new ValidationData();
         String valueOfTheFirstObject = values.iterator().next().getValue();
-        if (values.size() > 1){
-            for (OcrFieldValue fieldValue : values){
-                if (!fieldValue.getValue().equalsIgnoreCase(valueOfTheFirstObject)){
+        if (valueOfTheFirstObject != null) {
+            valueOfTheFirstObject = valueOfTheFirstObject.trim();
+        }
+        if (values.size() > 1) {
+            for (OcrFieldValue fieldValue : values) {
+                if (fieldValue.getValue() != null && fieldValue.getValue().trim().equalsIgnoreCase(valueOfTheFirstObject)) {
+                    validationData.setRemarks(successRemarksMessage);
+                    isValuesEqual = true;
+                } else {
                     validationData.setRemarks(failedRemarksMessage);
                     isValuesEqual = false;
+                    break;
                 }
             }
-        }else {
+        } else {
             validationData.setRemarks("Verification could not be performed : Only one document is present");
             isValuesEqual = false;
         }
@@ -117,7 +123,7 @@ public class ValidationHelper {
         return validationData;
     }
 
-    public ValidationData validateInput(OcrFieldData fieldData){
+    public ValidationData validateInput(OcrFieldData fieldData) {
         ValidationData validationData = new ValidationData();
         if (fieldData != null && fieldData.getValue() != null && !fieldData.getValue().isEmpty()) {
             validationData.setValidationStatus(true);
@@ -130,7 +136,7 @@ public class ValidationHelper {
         return validationData;
     }
 
-    public String getDocumentNameFromOcrFieldValueId(String fieldValueId){
+    public String getDocumentNameFromOcrFieldValueId(String fieldValueId) {
         String[] strings = fieldValueId.split("##");
         return strings[0];
     }

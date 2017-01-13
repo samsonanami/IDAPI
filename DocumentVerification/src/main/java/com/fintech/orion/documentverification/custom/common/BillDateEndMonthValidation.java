@@ -5,9 +5,9 @@ import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.common.exception.DateComparatorException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
@@ -25,7 +25,7 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
-        if (validMonthCount <= 0 || getOcrExtractionFieldName() == null){
+        if (validMonthCount <= 0 || getOcrExtractionFieldName() == null) {
             throw new CustomValidationException("Valid month count field name parameters missing");
         }
 
@@ -33,14 +33,14 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
-        if (validationData.getValidationStatus()){
+        if (validationData.getValidationStatus()) {
             try {
                 validationData = validateBillDateEndMonth(fieldData);
             } catch (DateComparatorException e) {
                 throw new CustomValidationException("Error Occurred while performing bill date end month verification ", e);
             }
         }
-        if (!validationData.getValidationStatus()){
+        if (!validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Bill date end month verification");
@@ -51,15 +51,15 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
-        for (OcrFieldValue fieldValue : ocrFieldData.getValue()){
+        for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());
             LocalDate issuedDate = new LocalDate(date);
-            Months monthsFromIssued = Months.monthsBetween(issuedDate,today);
+            Months monthsFromIssued = Months.monthsBetween(issuedDate, today);
 
-            if (monthsFromIssued.getMonths() <= validMonthCount){
+            if (monthsFromIssued.getMonths() <= validMonthCount) {
                 validationData.setValidationStatus(true);
                 validationData.setValue(String.valueOf(issuedDate.getMonthOfYear()));
-            }else {
+            } else {
                 validationData.setRemarks(getFailedRemarksMessage());
                 validationData.setValue(String.valueOf(issuedDate.getMonthOfYear()));
                 validationData.setValidationStatus(false);

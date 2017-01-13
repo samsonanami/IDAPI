@@ -3,9 +3,11 @@ package com.fintech.orion.hermesagentservices.transmission.request.body.builder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fintech.orion.dto.hermese.model.Oracle.VerificationResource;
-import com.fintech.orion.dto.hermese.model.Oracle.VerificationProcess;
-import com.fintech.orion.dto.hermese.model.Oracle.VerificationRequest;
+import com.fintech.orion.dto.hermese.model.oracle.VerificationResource;
+import com.fintech.orion.dto.hermese.model.oracle.VerificationProcess;
+import com.fintech.orion.dto.hermese.model.oracle.VerificationRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,7 +19,7 @@ import java.util.Map;
  *
  */
 public class OracleRequestBodyBuilder implements RequestBodyBuilder{
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(OracleRequestBodyBuilder.class);
     @Override
     public String getRequestBody(Map<String, Object> bodyContent) {
         VerificationRequest verificationRequest = new VerificationRequest();
@@ -37,7 +39,7 @@ public class OracleRequestBodyBuilder implements RequestBodyBuilder{
         try {
             bodyString = objectMapper.writeValueAsString(verificationRequest);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            LOGGER.error("Unable to parse the json " ,e);
         }
         return bodyString;
     }

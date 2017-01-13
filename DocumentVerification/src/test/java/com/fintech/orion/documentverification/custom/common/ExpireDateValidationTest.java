@@ -1,9 +1,9 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +11,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by sasitha on 12/29/16.
@@ -23,7 +24,7 @@ public class ExpireDateValidationTest {
     private ResourceName resourceName;
 
     @Before
-    public void setup()throws Exception{
+    public void setup() throws Exception {
         ocrFieldDataSex = new OcrFieldData();
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
@@ -31,7 +32,7 @@ public class ExpireDateValidationTest {
     }
 
     @Test
-    public void should_return_true_if_all_documents_not_expired()throws Exception{
+    public void should_return_true_if_all_documents_not_expired() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##expire_date");
         passportValue.setValue("25.07.2017");
@@ -57,7 +58,7 @@ public class ExpireDateValidationTest {
     }
 
     @Test
-    public void should_return_false_if_one_of_the_document_is_expired()throws Exception{
+    public void should_return_false_if_one_of_the_document_is_expired() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##expire_date");
         passportValue.setValue("25.07.2010");

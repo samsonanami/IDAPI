@@ -8,16 +8,14 @@ import java.util.HashMap;
 public class PassportMRZHelper {
 
 
-
-    private HashMap<String,MRZItemProperty> mrzItemProperty;
+    private HashMap<String, MRZItemProperty> mrzItemProperty;
 
     public PassportMRZHelper() {
 
-       // mrzItemProperty.put("SurName",getMRZSurNameSystemProperty());
+        // mrzItemProperty.put("SurName",getMRZSurNameSystemProperty());
     }
 
-    public MRZItemProperty getMRZSurNameSystemProperty()
-    {
+    public MRZItemProperty getMRZSurNameSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -28,6 +26,7 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
+
     public HashMap<String, MRZItemProperty> getMrzItemProperty() {
         return mrzItemProperty;
     }
@@ -35,8 +34,8 @@ public class PassportMRZHelper {
     public void setMrzItemProperty(HashMap<String, MRZItemProperty> mrzItemProperty) {
         this.mrzItemProperty = mrzItemProperty;
     }
-    public MRZItemProperty getMRZGivenNameSystemProperty()
-    {
+
+    public MRZItemProperty getMRZGivenNameSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -48,8 +47,7 @@ public class PassportMRZHelper {
         return mrzItemProperty;
     }
 
-    public MRZItemProperty getMRZPassportNumberSystemProperty()
-    {
+    public MRZItemProperty getMRZPassportNumberSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -60,8 +58,8 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZSexSystemProperty()
-    {
+
+    public MRZItemProperty getMRZSexSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -72,8 +70,8 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZDateofExpireSystemProperty()
-    {
+
+    public MRZItemProperty getMRZDateofExpireSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -85,8 +83,7 @@ public class PassportMRZHelper {
         return mrzItemProperty;
     }
 
-    public MRZItemProperty getMRZPlaceOfissueSystemProperty()
-    {
+    public MRZItemProperty getMRZPlaceOfissueSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -98,8 +95,7 @@ public class PassportMRZHelper {
         return mrzItemProperty;
     }
 
-    public MRZItemProperty getMRZDateOfBirthSystemProperty()
-    {
+    public MRZItemProperty getMRZDateOfBirthSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -111,8 +107,7 @@ public class PassportMRZHelper {
         return mrzItemProperty;
     }
 
-    public MRZItemProperty getMRZCheckDigitPraseOneSystemProperty()
-    {
+    public MRZItemProperty getMRZCheckDigitPraseOneSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -124,8 +119,7 @@ public class PassportMRZHelper {
         return mrzItemProperty;
     }
 
-    public MRZItemProperty getMRZCheckDigitPraseTwoSystemProperty()
-    {
+    public MRZItemProperty getMRZCheckDigitPraseTwoSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -137,8 +131,7 @@ public class PassportMRZHelper {
         return mrzItemProperty;
     }
 
-    public MRZItemProperty getMRZCheckDigitPraseThreeSystemProperty()
-    {
+    public MRZItemProperty getMRZCheckDigitPraseThreeSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -150,8 +143,7 @@ public class PassportMRZHelper {
         return mrzItemProperty;
     }
 
-    public MRZItemProperty getMRZCheckDigitPraseFourSystemProperty()
-    {
+    public MRZItemProperty getMRZCheckDigitPraseFourSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -162,8 +154,8 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZCheckDigitPraseFiveSystemProperty()
-    {
+
+    public MRZItemProperty getMRZCheckDigitPraseFiveSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -174,8 +166,8 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZFirstLineLengthSystemProperty()
-    {
+
+    public MRZItemProperty getMRZFirstLineLengthSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -186,20 +178,20 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZSecondLineLengthSystemProperty()
-    {
+
+    public MRZItemProperty getMRZSecondLineLengthSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
         mrzItemProperty.setItemName("MRZSecondLineLength");
-                mrzItemProperty.setStartIndex(0);
+        mrzItemProperty.setStartIndex(0);
         mrzItemProperty.setEndIndex(44);
         mrzItemProperty.setMrzLineNumber(2);
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZCalculateCheckDigitPraseOneSystemProperty()
-    {
+
+    public MRZItemProperty getMRZCalculateCheckDigitPraseOneSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -210,8 +202,8 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZCalculateCheckDigitPraseTwoSystemProperty()
-    {
+
+    public MRZItemProperty getMRZCalculateCheckDigitPraseTwoSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -222,8 +214,8 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZCalculateCheckDigitPraseThreeSystemProperty()
-    {
+
+    public MRZItemProperty getMRZCalculateCheckDigitPraseThreeSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -234,8 +226,8 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZCalculateCheckDigitPraseFourSystemProperty()
-    {
+
+    public MRZItemProperty getMRZCalculateCheckDigitPraseFourSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 
@@ -246,8 +238,8 @@ public class PassportMRZHelper {
 
         return mrzItemProperty;
     }
-    public MRZItemProperty getMRZCalculateCheckDigitPraseFiveSystemProperty()
-    {
+
+    public MRZItemProperty getMRZCalculateCheckDigitPraseFiveSystemProperty() {
 
         MRZItemProperty mrzItemProperty = new MRZItemProperty();
 

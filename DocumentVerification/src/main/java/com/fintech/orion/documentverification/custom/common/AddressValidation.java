@@ -1,24 +1,25 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
-import com.fintech.orion.documentverification.common.Address.AddressCompare;
+import com.fintech.orion.documentverification.common.address.AddressCompare;
 import com.fintech.orion.documentverification.common.exception.AddressValidatingException;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
  * Created by MudithaJ on 12/27/2016.
- *
  */
 @Component
 public class AddressValidation extends ValidationHelper implements CustomValidation {
@@ -28,62 +29,80 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
     @Autowired
     private AddressCompare addressComparator;
 
+    private AddressBuilder addressBuilder = new AddressBuilder();
 
+    private String ocrFieldBase;
+    private int addressLineCount;
 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
-        if (getOcrExtractionFieldName() == null || getOcrExtractionFieldName().isEmpty()) {
-            throw new CustomValidationException("Address field name should not be null");
+        if (ocrFieldBase == null || ocrFieldBase.isEmpty()) {
+            throw new CustomValidationException("address field name should not be null");
         }
-        OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
-        validationData = validateInput(fieldData);
-        if (validationData.getValidationStatus()){
-            validationData = validateAddress(fieldData.getValue());
-        }
-        if (validationData.getValidationStatus()){
-            validationData.setRemarks(getSuccessRemarksMessage());
-        }else {
-            validationData.setRemarks(getFailedRemarksMessage());
-            LOGGER.warn("Address verification failed. Full result set obtained from ocr response is {}", fieldData);
-        }
-        validationData.setId("Address Verification");
-        return validationData;
-    }
 
-    private ValidationData validateAddress(List<OcrFieldValue> values) throws CustomValidationException {
-        ValidationData validationData = new ValidationData();
-        if (values.size() >= 1) {
-            String baseAddress = values.iterator().next().getValue();
-            validationData = compareBaseAddressWithOthers(baseAddress, values);
+        String baseAddress = addressBuilder.buildSingleLineAddressFromOcrResponse(ocrResponse, resourceName.getName(),
+                ocrFieldBase, addressLineCount);
+
+        if (!baseAddress.isEmpty()) {
+            List<String> resourceList = getResourceListFromOcrResponse(ocrResponse);
+            compareAddressWithBaseAddress(ocrResponse, validationData, baseAddress, resourceList);
         } else {
             validationData.setValidationStatus(false);
-            validationData.setRemarks("Not Enough date to complete the validation.");
+            validationData.setValue("");
+            validationData.setRemarks("Could not perform address validation. Resource " + resourceName.getName() + " " +
+                    "dose not have any address field to do the address verification");
         }
+        validationData.setId("address Verification");
         return validationData;
     }
 
-    private ValidationData compareBaseAddressWithOthers(String baseAddress, List<OcrFieldValue> values){
-        ValidationData validationData = new ValidationData();
-        for (OcrFieldValue fieldValue : values){
+    private void compareAddressWithBaseAddress(OcrResponse ocrResponse, ValidationData validationData,
+                                               String baseAddress, List<String> resourceList) {
+        for (String resource : resourceList) {
+            String address = addressBuilder.buildSingleLineAddressFromOcrResponse(ocrResponse, resource,
+                    ocrFieldBase, addressLineCount);
             try {
-                if (!addressComparator.compare(baseAddress, fieldValue.getValue()).isResult()){
+                if (!addressComparator.compare(baseAddress, address).isResult()) {
                     validationData.setValidationStatus(false);
                     validationData.setRemarks(getFailedRemarksMessage());
+                    validationData.setValue(address);
                     break;
-                }else {
+                } else {
                     validationData.setValidationStatus(true);
                     validationData.setRemarks(getSuccessRemarksMessage());
+                    validationData.setValue(baseAddress);
                 }
             } catch (AddressValidatingException e) {
                 validationData.setValidationStatus(false);
-                validationData.setValue(baseAddress);
-                validationData.setRemarks("Address type not supported. Please contact support");
+                validationData.setValue(address);
+                validationData.setRemarks("address type not supported. Please contact support");
                 LOGGER.warn("Error occurred while validating given address, address 1 {} address 2 ",
-                        baseAddress, fieldValue.getValue(), e);
+                        baseAddress, address, e);
                 break;
             }
         }
-        return validationData;
+    }
+
+    private List<String> getResourceListFromOcrResponse(OcrResponse ocrResponse) {
+        List<String> resourceList = new ArrayList<>();
+        for (OcrFieldData fieldData : ocrResponse.getData()) {
+            for (OcrFieldValue fieldValue : fieldData.getValue()) {
+                String[] splitArray = fieldValue.getId().split("##");
+                if (splitArray.length > 0) {
+                    resourceList.add(splitArray[0]);
+                }
+            }
+        }
+        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<String>(resourceList);
+        return new ArrayList<>(linkedHashSet);
+    }
+
+    public void setOcrFieldBase(String ocrFieldBase) {
+        this.ocrFieldBase = ocrFieldBase;
+    }
+
+    public void setAddressLineCount(int addressLineCount) {
+        this.addressLineCount = addressLineCount;
     }
 }

@@ -3,6 +3,8 @@ package com.fintech.orion.messaging.job;
 import com.fintech.orion.common.exceptions.job.JobProducerException;
 import com.fintech.orion.messaging.connection.DestinationHandlerInterface;
 import com.fintech.orion.messaging.connection.SessionHandlerInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
 
@@ -11,7 +13,7 @@ import javax.jms.*;
  * Implementation of Job Producer
  */
 public class JobProducer extends JobCommon implements JobProducerInterface, JobCommonInterface {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(JobProducer.class);
     private MessageProducer producer;
     private static final long MESSAGE_TIME_TO_LIVE_MILLISECONDS = 0;
 

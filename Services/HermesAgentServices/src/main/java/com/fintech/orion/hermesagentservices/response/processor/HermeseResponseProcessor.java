@@ -3,23 +3,19 @@ package com.fintech.orion.hermesagentservices.response.processor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.HermeseResponseprocessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
-import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.documentverification.factory.DocumentVerification;
 import com.fintech.orion.documentverification.factory.DocumentVerificationFactory;
 import com.fintech.orion.documentverification.factory.DocumentVerificationType;
+import com.fintech.orion.dto.configuration.VerificationConfiguration;
 import com.fintech.orion.dto.hermese.ResponseProcessorResult;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrFieldValue;
-import com.fintech.orion.dto.response.api.DataValidation;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.FieldData;
 import com.fintech.orion.dto.response.api.ValidationData;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
-import com.fintech.orion.dto.hermese.model.Oracle.response.OcrResponse;
-import com.fintech.orion.dto.configuration.VerificationConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -35,6 +31,7 @@ import java.util.stream.Collectors;
 @Service
 public class HermeseResponseProcessor implements HermeseResponseProcessorInterface{
 
+    private static final String STATUS_FAILD = "Failed";
 
     @Autowired
     private VerificationRequestDetailServiceInterface verificationRequestDetailService;
@@ -48,12 +45,10 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
 
     @Override
-    @Transactional
     public ResponseProcessorResult processAndUpdateRawResponse(String rawResponse, ProcessingRequest processingRequest) throws HermeseResponseprocessorException {
         try {
 
-            ResponseProcessorResult processedResponse = getProcessedJson(null, rawResponse, processingRequest);
-            return processedResponse;
+            return getProcessedJson(null, rawResponse, processingRequest);
         } catch (IOException e) {
             throw new HermeseResponseprocessorException("Error mapping object to json ", e);
         }
@@ -78,17 +73,19 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
 
         updateDataComparison(detailedResponse, ocrResponse);
-        if (getProcessByProcessId(processingRequest, "idVerification") != null){
+        if (isProcessTypeFoundInProcessingRequest(processingRequest.getProcessingRequestIdentificationCode(),
+                "idVerification")){
             updateIdDocumentFullValidation(detailedResponse, ocrResponse);
         }
-        if (getProcessByProcessId(processingRequest, "addressVerification") != null){
+        if (isProcessTypeFoundInProcessingRequest(processingRequest.getProcessingRequestIdentificationCode(),
+                "addressVerification")){
             updateAddressDocumentFullValidation(detailedResponse, ocrResponse);
         }
         setFinalProcessingStatus(detailedResponse);
         ResponseProcessorResult result = new ResponseProcessorResult();
         result.setFinalProcessingStatus(true);
         result.setProcessedString(objectMapper.writeValueAsString(detailedResponse));
-        if (detailedResponse.getStatus().equalsIgnoreCase("Failed")){
+        if (STATUS_FAILD.equalsIgnoreCase(detailedResponse.getStatus())){
             result.setFinalProcessingStatus(false);
         }
 
@@ -98,13 +95,13 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
     private void setFinalProcessingStatus(VerificationProcessDetailedResponse detailedResponse){
         for (ValidationData validation : detailedResponse.getIdDocFullValidations()){
-            if(validation.getId().equalsIgnoreCase("critical_error_set") && !validation.getRemarks().isEmpty()){
-                detailedResponse.setStatus("Failed");
+            if("critical_error_set".equalsIgnoreCase(validation.getId()) && !validation.getRemarks().isEmpty()){
+                detailedResponse.setStatus(STATUS_FAILD);
             }
         }
         for (ValidationData validation : detailedResponse.getAddressDocFullValidations()){
-            if(validation.getId().equalsIgnoreCase("critical_error_set") && !validation.getRemarks().isEmpty()){
-                detailedResponse.setStatus("Failed");
+            if("critical_error_set".equalsIgnoreCase(validation.getId())&& !validation.getRemarks().isEmpty()){
+                detailedResponse.setStatus(STATUS_FAILD);
             }
         }
     }
@@ -146,15 +143,11 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
                 .collect(Collectors.toList());
     }
 
-    private Process getProcessByProcessId(ProcessingRequest processingRequest, String processType){
-        Process process = null;
-        for (Process p : processingRequest.getProcesses()){
-            if (p.getProcessType().getType().equalsIgnoreCase(processType)){
-                process = p;
-                break;
-            }
-        }
-        return process;
+
+
+    private boolean isProcessTypeFoundInProcessingRequest(String processingRequestId, String processType){
+        return verificationRequestDetailService.isVerificationProcessFoundInProcessingRequest(processingRequestId,
+                processType);
     }
 
 }

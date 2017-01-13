@@ -14,7 +14,7 @@ import javax.jms.Session;
  */
 public class SessionHandler implements SessionHandlerInterface {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(SessionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionHandler.class);
     private static final Boolean NON_TRANSACTED = false;
 
     private ConnectionFactory connectionFactory;

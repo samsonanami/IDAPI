@@ -9,11 +9,29 @@
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
     <jpa:repositories base-package="com.fintech.orion.dataabstraction.repositories" />
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://10.101.15.212:3306/idapi"/>
         <property name="username" value="root"/>
         <property name="password" value="zone@123"/>
+    </bean>-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://10.101.15.212:3306/idapi"/>
+        <property name="user" value="root"/>
+        <property name="password" value="zone@123"/>
+       <!-- <property name="password" value="89P3$98Pd46ghnWGC3p"/>-->
+
+        <property name="acquireIncrement" value="5"/>
+        <property name="initialPoolSize" value="5"/>
+        <property name="minPoolSize" value="5"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="maxStatements" value="50"/>
+
+        <property name="checkoutTimeout" value="1000"/>
+        <property name="automaticTestTable" value="C3P0_TEST_TABLE"/>
+        <property name="testConnectionOnCheckin" value="true"/>
+        <property name="idleConnectionTestPeriod" value="10"/>
     </bean>
 
     <bean id="entityManagerFactory"
@@ -22,7 +40,7 @@
         <property name="packagesToScan" value="com.fintech.orion.dataabstraction.entities.orion" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="generateDdl" value="true" />
+                <property name="generateDdl" value="false" />
             </bean>
         </property>
     </bean>

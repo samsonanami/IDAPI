@@ -4,8 +4,6 @@ import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dto.client.ClientDTO;
 import org.mapstruct.Mapper;
 
-import java.util.List;
-
 /**
  * Client entity mappings
  */

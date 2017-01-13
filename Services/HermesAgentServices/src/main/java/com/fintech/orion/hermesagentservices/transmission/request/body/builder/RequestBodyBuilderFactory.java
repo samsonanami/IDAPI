@@ -10,11 +10,9 @@ public class RequestBodyBuilderFactory {
 
     public RequestBodyBuilder getRequestBodyBuilder(RequestBodyType type){
         Assert.notNull(type, "Request body type cannot be null");
-        RequestBodyBuilder builder = null;
-        switch (type){
-            case ORACLE:
-                builder = new OracleRequestBodyBuilder();
-                break;
+        RequestBodyBuilder builder = new OracleRequestBodyBuilder();
+        if (type.equals(RequestBodyType.ORACLE)){
+            builder = new OracleRequestBodyBuilder();
         }
         return builder;
     }
