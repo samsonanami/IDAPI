@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  * Created by sasitha on 12/29/16.
+ *
  */
 public class GenderValidationTest {
 
@@ -89,6 +90,34 @@ public class GenderValidationTest {
         ValidationData validationData = genderValidation.validate(resourceName, ocrResponse);
         assertFalse(validationData.getValidationStatus());
         assertEquals(validationData.getValue(), "FEMALE");
+    }
+
+    @Test
+    public void should_return_true_if_first_document_gender_value_is_empty_but_second_document_has_any_value()
+            throws Exception{
+        OcrFieldValue passportValue = new OcrFieldValue();
+        passportValue.setId("passport##sex");
+        passportValue.setValue("");
+
+        OcrFieldValue dlFrontValue = new OcrFieldValue();
+        dlFrontValue.setId("drivingLicenseFront##sex");
+        dlFrontValue.setValue("M");
+
+        List<OcrFieldValue> fieldValueList = new ArrayList<>();
+        fieldValueList.add(passportValue);
+        fieldValueList.add(dlFrontValue);
+
+        ocrFieldDataSex.setId("sex");
+        ocrFieldDataSex.setValue(fieldValueList);
+
+        List<OcrFieldData> fieldDataList = new ArrayList<>();
+        fieldDataList.add(ocrFieldDataSex);
+
+        ocrResponse.setData(fieldDataList);
+
+        ValidationData validationData = genderValidation.validate(resourceName, ocrResponse);
+        assertTrue(validationData.getValidationStatus());
+        assertEquals(validationData.getValue(), "MALE");
     }
 
 }
