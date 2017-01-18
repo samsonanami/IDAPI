@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.common.exception;
 /**
  * Created by MudithaJ on 12/19/2016.
  */
-public class PassPortMRZValidateException extends Exception {
+public class PassPortMRZValidateException extends MRZValidatingException {
     public PassPortMRZValidateException(String message) {
         super(message);
     }

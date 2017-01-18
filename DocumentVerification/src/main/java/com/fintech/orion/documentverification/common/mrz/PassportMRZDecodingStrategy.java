@@ -25,46 +25,46 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
     @Override
     public MRZDecodeResults decode(String mrz) throws PassportMRZDecodeException {
         MRZDecodeResults results = new MRZDecodeResults();
-        MRZItemProperty items = new MRZItemProperty();
         this.mrzFirstLineCharacterCount = 44;
+        String mrzToProcess = "";
         try {
-            mrz = mrz.replaceAll("\\s+", "");
-            mrz = this.fixCharacterMismatchinOCR(mrz);
+            mrzToProcess = mrz.replaceAll("\\s+", "");
+            mrzToProcess = this.fixCharacterMismatchinOCR(mrzToProcess);
             Range rangeSurName = convertConfigPropertiesToProcessableProperties("SurName");
-            results.setSurname(decodeSurName(mrz, rangeSurName));
+            results.setSurname(decodeSurName(mrzToProcess, rangeSurName));
 
             Range rangeGivenName = convertConfigPropertiesToProcessableProperties("GivenNames");
-            results.setGivenName(decodeGivenName(mrz, rangeGivenName));
+            results.setGivenName(decodeGivenName(mrzToProcess, rangeGivenName));
 
             Range rangePassportNumber = convertConfigPropertiesToProcessableProperties("PassPortNumber");
-            results.setPassPortNumber(decodePassportNumber(mrz, rangePassportNumber));
+            results.setPassPortNumber(decodePassportNumber(mrzToProcess, rangePassportNumber));
 
             Range sexRange = convertConfigPropertiesToProcessableProperties("Sex");
-            results.setSex(decodeSex(mrz, sexRange));
+            results.setSex(decodeSex(mrzToProcess, sexRange));
 
             Range dateOfExpireRange = convertConfigPropertiesToProcessableProperties("ExpireDate");
-            results.setDateofExpire(decodeDateOfExpire(mrz, dateOfExpireRange));
+            results.setDateofExpire(decodeDateOfExpire(mrzToProcess, dateOfExpireRange));
 
             Range placeOfIssueRange = convertConfigPropertiesToProcessableProperties("Nationality");
-            results.setPlaceOfIssue(decodePlaceOfIssue(mrz, placeOfIssueRange));
+            results.setPlaceOfIssue(decodePlaceOfIssue(mrzToProcess, placeOfIssueRange));
 
             Range dateOfBirthRange = convertConfigPropertiesToProcessableProperties("DateOfBirth");
-            results.setDateOfBirth(decodeDateOfBirth(mrz, dateOfBirthRange));
+            results.setDateOfBirth(decodeDateOfBirth(mrzToProcess, dateOfBirthRange));
 
             Range checkDigitOneRange = convertConfigPropertiesToProcessableProperties("CheckDigitOne");
-            results.setCheckDigitPhraseOne(decodeCheckDigitPraseOne(mrz, checkDigitOneRange));
+            results.setCheckDigitPhraseOne(decodeCheckDigitPraseOne(mrzToProcess, checkDigitOneRange));
 
             Range checkDigitTwoRange = convertConfigPropertiesToProcessableProperties("CheckDigitTwo");
-            results.setCheckDigitPhraseTwo(decodeCheckDigitPraseTwo(mrz, checkDigitTwoRange));
+            results.setCheckDigitPhraseTwo(decodeCheckDigitPraseTwo(mrzToProcess, checkDigitTwoRange));
 
             Range checkDigitThreeRange = convertConfigPropertiesToProcessableProperties("CheckDigitThree");
-            results.setCheckDigitPhraseThree(decodeCheckDigitPraseThree(mrz, checkDigitThreeRange));
+            results.setCheckDigitPhraseThree(decodeCheckDigitPraseThree(mrzToProcess, checkDigitThreeRange));
 
             Range checkDigitFourRange = convertConfigPropertiesToProcessableProperties("CheckDigitFour");
-            results.setCheckDigitPhraseFour(decodeCheckDigitPraseFour(mrz, checkDigitFourRange));
+            results.setCheckDigitPhraseFour(decodeCheckDigitPraseFour(mrzToProcess, checkDigitFourRange));
 
             Range checkDigitFiveRange = convertConfigPropertiesToProcessableProperties("CheckDigitFive");
-            results.setCheckDigitPhraseFive(decodeCheckDigitPraseFive(mrz, checkDigitFiveRange));
+            results.setCheckDigitPhraseFive(decodeCheckDigitPraseFive(mrzToProcess, checkDigitFiveRange));
 
 
         } catch (MRZDecodingConfigurationException e) {
@@ -130,7 +130,7 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
         givenName = mrz.substring(start, end);
         int fillerCharacterIndex = givenName.indexOf("<");
         givenName = givenName.substring(fillerCharacterIndex + 2, givenName.length());
-        String names[] = givenName.split("<");
+        String[] names = givenName.split("<");
         givenName = "";
         for (String name : names) {
             if (name.isEmpty()) {
@@ -213,7 +213,6 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
     private String decodeCheckDigitPraseTwo(String mrz, Range range) {
         String checkDigitPraseTwo;
         int start = range.getStart();
-        int end = range.getEnd();
 
         checkDigitPraseTwo = String.valueOf(mrz.charAt(start));
         return checkDigitPraseTwo;
@@ -222,7 +221,6 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
     private String decodeCheckDigitPraseThree(String mrz, Range range) {
         String checkDigitPraseThree;
         int start = range.getStart();
-        int end = range.getEnd();
 
         checkDigitPraseThree = String.valueOf(mrz.charAt(start));
         return checkDigitPraseThree;
@@ -231,7 +229,6 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
     private String decodeCheckDigitPraseFour(String mrz, Range range) {
         String checkDigitPraseFour;
         int start = range.getStart();
-        int end = range.getEnd();
 
         checkDigitPraseFour = String.valueOf(mrz.charAt(start));
         return checkDigitPraseFour;
@@ -240,7 +237,6 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
     private String decodeCheckDigitPraseFive(String mrz, Range range) {
         String checkDigitPraseFive;
         int start = range.getStart();
-        int end = range.getEnd();
 
         checkDigitPraseFive = String.valueOf(mrz.charAt(start));
         return checkDigitPraseFive;

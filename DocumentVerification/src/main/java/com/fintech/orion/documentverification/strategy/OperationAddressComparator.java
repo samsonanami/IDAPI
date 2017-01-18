@@ -21,11 +21,11 @@ public class OperationAddressComparator implements DataValidationStrategy {
         try {
             AddressCompareResult result = addressCompare.compare(base, compare);
             if (result.isResult()) {
-                validationResult.setStatus(Boolean.valueOf(result.isResult()));
+                validationResult.setStatus(result.isResult());
                 validationResult.setRemarks(result.getMessage());
             }
         } catch (AddressValidatingException e) {
-            LOGGER.warn("Error validating address1 {} and address2 {}", base, compare);
+            LOGGER.warn("Error validating address1 {} and address2 {}", base, compare, e);
         }
         return validationResult;
     }

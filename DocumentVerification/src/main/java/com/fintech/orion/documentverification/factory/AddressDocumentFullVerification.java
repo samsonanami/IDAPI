@@ -26,6 +26,8 @@ import java.util.Map;
  */
 public class AddressDocumentFullVerification implements DocumentVerification {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddressDocumentFullVerification.class);
+    private static final String PASSPORT = "passport";
+    private static final String DRIVING_LICENSE_FRONT = "drivingLicenseFront";
     @Autowired
     private ProcessingRequestRepositoryInterface processingRequestRepositoryInterface;
 
@@ -48,8 +50,8 @@ public class AddressDocumentFullVerification implements DocumentVerification {
 
         Resource addressVerificationResourceName = null;
         for (Resource resource : documentVerificationProcess.getResources()) {
-            if (addressVerificationResourceName == null && (resource.getResourceName().getName().equalsIgnoreCase("passport")
-                    || resource.getResourceName().getName().equalsIgnoreCase("drivingLicenseFront"))) {
+            if (addressVerificationResourceName == null && (PASSPORT.equalsIgnoreCase(resource.getResourceName().getName())
+                    || DRIVING_LICENSE_FRONT.equalsIgnoreCase(resource.getResourceName().getName()))) {
                 addressVerificationResourceName = resource;
             }
         }
@@ -71,7 +73,7 @@ public class AddressDocumentFullVerification implements DocumentVerification {
                     errorDataSet.setRemarks(errorDataSet.getRemarks() + validationData.getRemarks());
                 }
             } catch (CustomValidationException e) {
-                LOGGER.error("Unable to execute custom validation {}", validation);
+                LOGGER.error("Unable to execute custom validation {}", validation, e);
             }
         }
 
