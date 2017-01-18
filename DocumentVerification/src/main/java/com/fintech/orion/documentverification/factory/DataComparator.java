@@ -29,8 +29,6 @@ public class DataComparator implements DocumentVerification {
 
     private Map<String, VerificationConfiguration> verificationConfigurationMap;
 
-    private DataValidationStrategy validationStrategy;
-
     private DocumentDataValidator validator;
 
     @Autowired
@@ -110,7 +108,7 @@ public class DataComparator implements DocumentVerification {
         } catch (Exception e) {
             LOGGER.warn("Could not find a same value comparison strategy across multiple resources for " +
                             "extraction field {} the full configuration for this extraction field is {} ",
-                    field, verificationConfiguration);
+                    field, verificationConfiguration, e);
         }
 
         return strategy;
