@@ -11,7 +11,7 @@ import java.util.Map;
  * Created by MudithaJ on 12/14/2016.
  */
 public class ValidatePassPortMRZ implements ValidateMRZ {
-
+    private static final String FALSE = "false";
     @Autowired
     @Qualifier("passportMRZConfigureList")
     private HashMap<String, MRZItemProperty> mrzItemProperty;
@@ -29,16 +29,14 @@ public class ValidatePassPortMRZ implements ValidateMRZ {
     @Override
     public ValidateMRZResult validate(String mrz) throws PassPortMRZValidateException {
         try {
-
-            String message;
             Map<String, String> validateMap = new HashMap<String, String>();
             ValidateMRZResult validMRZ = new ValidateMRZResult();
             validateMap.put("checkMRZLength", String.valueOf(this.checkMRZLength(mrz)));
             validMRZ.setMRZType("PassPort");
             validMRZ.setItem(mrz);
 
-            if (validateMap.containsValue("false")) {
-                validMRZ.setValidationResult("false");
+            if (validateMap.containsValue(FALSE)) {
+                validMRZ.setValidationResult(FALSE);
                 validMRZ.setMessage(this.getValidationResultMessage(validateMap));
             } else {
                 validMRZ.setValidationResult("true");
@@ -52,18 +50,16 @@ public class ValidatePassPortMRZ implements ValidateMRZ {
     }
 
     public MRZItemProperty getConfigValue(String key) {
-        MRZItemProperty property = mrzItemProperty.get(key);
-        return property;
+        return mrzItemProperty.get(key);
     }
 
     public String getValidationResultMessage(Map<String, String> validateMap) {
-        String message = "";
+        String validationResultMessage = "";
         for (Map.Entry<String, String> e : validateMap.entrySet()) {
-            if (e.getValue() == "false") {
-                message = message + e.getKey() + "<<";
+            if (FALSE.equalsIgnoreCase(e.getValue())) {
+                validationResultMessage = validationResultMessage + e.getKey() + "<<";
             }
         }
-
 
         return message;
     }
@@ -78,13 +74,5 @@ public class ValidatePassPortMRZ implements ValidateMRZ {
 
         return validate;
 
-    }
-
-    private boolean isPassportMRZ(String mrz) {
-        if (mrz.charAt(0) == 'P') {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

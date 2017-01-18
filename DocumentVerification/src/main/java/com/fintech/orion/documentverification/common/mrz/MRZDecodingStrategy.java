@@ -1,9 +1,12 @@
 package com.fintech.orion.documentverification.common.mrz;
 
+import com.fintech.orion.documentverification.common.exception.MRZDecodingException;
+
 /**
  * Created by MudithaJ on 11/24/2016.
+ *
  */
 public interface MRZDecodingStrategy {
 
-    MRZDecodeResults decode(String mrz) throws Exception;
+    MRZDecodeResults decode(String mrz) throws MRZDecodingException;
 }

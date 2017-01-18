@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.common.exception;
 /**
  * Created by MudithaJ on 12/19/2016.
  */
-public class DirivingLicenseMRZValidatingException extends Exception {
+public class DirivingLicenseMRZValidatingException extends MRZValidatingException {
 
     public DirivingLicenseMRZValidatingException(String message) {
         super(message);

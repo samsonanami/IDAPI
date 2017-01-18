@@ -11,8 +11,8 @@ import java.util.Map;
  * Created by MudithaJ on 12/16/2016.
  */
 public class ValidateDrivingLicence implements ValidateMRZ {
+    private static final String FALSE = "false";
 
-    private String message;
     @Autowired
     @Qualifier("addressConfigureList")
     private HashMap<String, MRZItemProperty> mrzItemProperty;
@@ -29,8 +29,8 @@ public class ValidateDrivingLicence implements ValidateMRZ {
             validateMap.put("checkMRZLength", String.valueOf(this.checkMRZLength(mrz)));
 
 
-            if (validateMap.containsValue("false")) {
-                validMRZ.setValidationResult("false");
+            if (validateMap.containsValue(FALSE)) {
+                validMRZ.setValidationResult(FALSE);
                 validMRZ.setMessage(this.getValidationResultMessage(validateMap));
             } else {
                 validMRZ.setValidationResult("true");
@@ -67,8 +67,7 @@ public class ValidateDrivingLicence implements ValidateMRZ {
     }
 
     public MRZItemProperty getConfigValue(String key) {
-        MRZItemProperty property = mrzItemProperty.get(key);
-        return property;
+        return mrzItemProperty.get(key);
     }
 
 }
