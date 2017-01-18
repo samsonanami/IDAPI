@@ -12,6 +12,8 @@ import java.util.Iterator;
  */
 @Component
 public class AddressCompare implements Address {
+    private static final String FALSE = "false";
+    private static final String TRUE = "false";
 
     @Autowired
     private AddressDecoding addressDecoder;
@@ -43,7 +45,7 @@ public class AddressCompare implements Address {
                 HashMap.Entry set = (HashMap.Entry) i.next();
                 message = message + set.getKey() + ":" + set.getValue() + ",";
             }
-            if (resultMap.containsValue("false")) {
+            if (resultMap.containsValue(FALSE)) {
                 result.setResult(false);
             } else {
                 result.setResult(true);
@@ -57,16 +59,16 @@ public class AddressCompare implements Address {
     }
 
     public String addressNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        String compare = "false";
+        String compare = FALSE;
         if (addressOne.getNumber().equals(addressTwo.getNumber())) {
-            compare = "true";
+            compare = TRUE;
         }
 
         return compare;
     }
 
     public String addressFlatNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        String compare = "false";
+        String compare = FALSE;
         if (addressOne.getFlatNumber().equals(addressTwo.getFlatNumber())) {
             compare = "true";
         }
@@ -75,18 +77,18 @@ public class AddressCompare implements Address {
     }
 
     public String addressPostalCodeCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        String compare = "false";
+        String compare = FALSE;
         if (addressOne.getPostalCode().equals(addressTwo.getPostalCode())) {
-            compare = "true";
+            compare = TRUE;
         }
 
         return compare;
     }
 
     public String addressTypeCompare(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        String compare = "false";
+        String compare = FALSE;
         if (addressOne.getAddressType().equals(addressTwo.getAddressType())) {
-            compare = "true";
+            compare = TRUE;
         }
 
         return compare;

@@ -34,6 +34,9 @@ public class DocumentVerificationFactory {
             case ADDRESS_DOC_FULL_VERIFICATIONS:
                 documentVerification = addressDocFullValidator;
                 break;
+            default:
+                documentVerification = dataComparator;
+                break;
         }
         return documentVerification;
     }

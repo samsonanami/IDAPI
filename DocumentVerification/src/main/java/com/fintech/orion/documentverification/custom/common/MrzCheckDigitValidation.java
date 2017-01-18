@@ -76,25 +76,25 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
     private ValidationData compareCheckDigits(CheckDigitResults checkDigitResults, MRZDecodeResults mrzDecodeResults){
         ValidationData validationData = new ValidationData();
         validationData.setValidationStatus(false);
-        if (!checkDigitResults.getCheckdigitPraseOne().equals(mrzDecodeResults.getCheckDigitPhraseOne())){
+        if (!checkDigitResults.getCheckDigitPraseOne().equals(mrzDecodeResults.getCheckDigitPhraseOne())){
             validationData.setRemarks(getCheckDigitMissmatchErrorMessage("one",
-                    checkDigitResults.getCheckdigitPraseOne(), mrzDecodeResults.getCheckDigitPhraseOne()));
+                    checkDigitResults.getCheckDigitPraseOne(), mrzDecodeResults.getCheckDigitPhraseOne()));
 
-        }else if (!checkDigitResults.getCheckdigitPraseTwo().equals(mrzDecodeResults.getCheckDigitPhraseTwo())){
+        }else if (!checkDigitResults.getCheckDigitPraseTwo().equals(mrzDecodeResults.getCheckDigitPhraseTwo())){
             validationData.setRemarks(getCheckDigitMissmatchErrorMessage("two",
-                    checkDigitResults.getCheckdigitPraseTwo(), mrzDecodeResults.getCheckDigitPhraseTwo()));
+                    checkDigitResults.getCheckDigitPraseTwo(), mrzDecodeResults.getCheckDigitPhraseTwo()));
 
-        }else if(!checkDigitResults.getCheckdigitPraseThree().equals(mrzDecodeResults.getCheckDigitPhraseThree())){
+        }else if(!checkDigitResults.getCheckDigitPraseThree().equals(mrzDecodeResults.getCheckDigitPhraseThree())){
             validationData.setRemarks(getCheckDigitMissmatchErrorMessage("three",
-                    checkDigitResults.getCheckdigitPraseThree(), mrzDecodeResults.getCheckDigitPhraseThree()));
+                    checkDigitResults.getCheckDigitPraseThree(), mrzDecodeResults.getCheckDigitPhraseThree()));
 
-        }else if(!checkDigitResults.getCheckdigitPraseFour().equals(mrzDecodeResults.getCheckDigitPhraseFour())){
+        }else if(!checkDigitResults.getCheckDigitPraseFour().equals(mrzDecodeResults.getCheckDigitPhraseFour())){
             validationData.setRemarks(getCheckDigitMissmatchErrorMessage("four",
-                    checkDigitResults.getCheckdigitPraseFour(), mrzDecodeResults.getCheckDigitPhraseFour()));
+                    checkDigitResults.getCheckDigitPraseFour(), mrzDecodeResults.getCheckDigitPhraseFour()));
 
-        }else if(!checkDigitResults.getCheckdigitPraseFive().equals(mrzDecodeResults.getCheckDigitPhraseFive())){
+        }else if(!checkDigitResults.getCheckDigitPraseFive().equals(mrzDecodeResults.getCheckDigitPhraseFive())){
             validationData.setRemarks(getCheckDigitMissmatchErrorMessage("five",
-                    checkDigitResults.getCheckdigitPraseFive(), mrzDecodeResults.getCheckDigitPhraseFive()));
+                    checkDigitResults.getCheckDigitPraseFive(), mrzDecodeResults.getCheckDigitPhraseFive()));
 
         }else {
             validationData.setRemarks(getSuccessRemarksMessage());

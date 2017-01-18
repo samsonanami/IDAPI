@@ -28,6 +28,10 @@ public class DataValidationStrategyProvider {
                 break;
             case ADDRESS:
                 strategy = operationAddressComparator;
+                break;
+            default:
+                strategy = operationStringComparator;
+                break;
         }
         return strategy;
     }

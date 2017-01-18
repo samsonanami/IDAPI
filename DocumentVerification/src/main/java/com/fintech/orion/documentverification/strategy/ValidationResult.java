@@ -8,7 +8,9 @@ public class ValidationResult {
     String remarks;
 
     public ValidationResult() {
-
+        /*
+         * Default constructor
+         */
     }
 
     public ValidationResult(boolean status) {
