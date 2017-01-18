@@ -46,7 +46,9 @@ public class GenderValidation extends ValidationHelper implements CustomValidati
                     validationData.setValidationStatus(false);
                 }
             }
-            validationData.setValue(genderBaseValue.toString());
+            if (genderBaseValue != null) {
+                validationData.setValue(genderBaseValue.toString());
+            }
         }
 
         return validationData;
