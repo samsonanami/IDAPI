@@ -13,7 +13,6 @@ import java.util.Iterator;
 @Component
 public class AddressCompare implements Address {
     private static final String FALSE = "false";
-    private static final String TRUE = "false";
 
     @Autowired
     private AddressDecoding addressDecoder;
@@ -61,7 +60,7 @@ public class AddressCompare implements Address {
     public String addressNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
         String compare = FALSE;
         if (addressOne.getNumber().equals(addressTwo.getNumber())) {
-            compare = TRUE;
+            compare = "true";
         }
 
         return compare;
@@ -79,7 +78,7 @@ public class AddressCompare implements Address {
     public String addressPostalCodeCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
         String compare = FALSE;
         if (addressOne.getPostalCode().equals(addressTwo.getPostalCode())) {
-            compare = TRUE;
+            compare = "true";
         }
 
         return compare;
@@ -88,7 +87,7 @@ public class AddressCompare implements Address {
     public String addressTypeCompare(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
         String compare = FALSE;
         if (addressOne.getAddressType().equals(addressTwo.getAddressType())) {
-            compare = TRUE;
+            compare = "true";
         }
 
         return compare;
