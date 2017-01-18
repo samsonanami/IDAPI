@@ -32,7 +32,7 @@ public class DateDecoder {
         String dateToProcess = "";
         try {
             dateToProcess = date.replace(" ", "");
-            dateToProcess = date.replace("/", "");
+            dateToProcess = dateToProcess.replace("/", "");
             Pattern pattern = Pattern.compile(regularExpression);
             Matcher matcher = pattern.matcher(dateToProcess);
             matcher.matches();
