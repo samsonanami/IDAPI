@@ -8,10 +8,18 @@ public class OperationStringComparator implements DataValidationStrategy {
     @Override
     public ValidationResult doOperation(String base, String compare) {
         ValidationResult result = new ValidationResult(false, "");
-        if (base != null && compare != null &&
-                !base.isEmpty() && !compare.isEmpty() && base.equalsIgnoreCase(compare)) {
+        if (isInputNotNull(base, compare) && isInputEmpty(base, compare) && base.equalsIgnoreCase(compare)) {
             result.setStatus(true);
         }
         return result;
     }
+
+    private boolean isInputEmpty(String base, String compare) {
+        return !base.isEmpty() && !compare.isEmpty();
+    }
+
+    private boolean isInputNotNull(String base, String compare) {
+        return base != null && compare != null;
+    }
+
 }

@@ -5,49 +5,49 @@ package com.fintech.orion.documentverification.common.checkdigit;
  */
 public class CheckDigitResults {
 
-    private String CheckdigitPraseOne;
-    private String CheckdigitPraseTwo;
-    private String CheckdigitPraseThree;
-    private String CheckdigitPraseFour;
-    private String CheckdigitPraseFive;
+    private String checkDigitPraseOne;
+    private String checkDigitPraseTwo;
+    private String checkDigitPraseThree;
+    private String checkDigitPraseFour;
+    private String checkDigitPraseFive;
 
-    public String getCheckdigitPraseOne() {
-        return CheckdigitPraseOne;
+    public String getCheckDigitPraseOne() {
+        return checkDigitPraseOne;
     }
 
-    public void setCheckdigitPraseOne(String checkdigitPraseOne) {
-        CheckdigitPraseOne = checkdigitPraseOne;
+    public void setCheckDigitPraseOne(String checkDigitPraseOne) {
+        this.checkDigitPraseOne = checkDigitPraseOne;
     }
 
-    public String getCheckdigitPraseTwo() {
-        return CheckdigitPraseTwo;
+    public String getCheckDigitPraseTwo() {
+        return checkDigitPraseTwo;
     }
 
-    public void setCheckdigitPraseTwo(String checkdigitPraseTwo) {
-        CheckdigitPraseTwo = checkdigitPraseTwo;
+    public void setCheckDigitPraseTwo(String checkDigitPraseTwo) {
+        this.checkDigitPraseTwo = checkDigitPraseTwo;
     }
 
-    public String getCheckdigitPraseThree() {
-        return CheckdigitPraseThree;
+    public String getCheckDigitPraseThree() {
+        return checkDigitPraseThree;
     }
 
-    public void setCheckdigitPraseThree(String checkdigitPraseThree) {
-        CheckdigitPraseThree = checkdigitPraseThree;
+    public void setCheckDigitPraseThree(String checkDigitPraseThree) {
+        this.checkDigitPraseThree = checkDigitPraseThree;
     }
 
-    public String getCheckdigitPraseFour() {
-        return CheckdigitPraseFour;
+    public String getCheckDigitPraseFour() {
+        return checkDigitPraseFour;
     }
 
-    public void setCheckdigitPraseFour(String checkdigitPraseFour) {
-        CheckdigitPraseFour = checkdigitPraseFour;
+    public void setCheckDigitPraseFour(String checkDigitPraseFour) {
+        this.checkDigitPraseFour = checkDigitPraseFour;
     }
 
-    public String getCheckdigitPraseFive() {
-        return CheckdigitPraseFive;
+    public String getCheckDigitPraseFive() {
+        return checkDigitPraseFive;
     }
 
-    public void setCheckdigitPraseFive(String checkdigitPraseFive) {
-        CheckdigitPraseFive = checkdigitPraseFive;
+    public void setCheckDigitPraseFive(String checkDigitPraseFive) {
+        this.checkDigitPraseFive = checkDigitPraseFive;
     }
 }

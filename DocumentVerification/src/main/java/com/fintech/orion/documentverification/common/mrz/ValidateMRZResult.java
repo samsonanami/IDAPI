@@ -5,24 +5,24 @@ package com.fintech.orion.documentverification.common.mrz;
  */
 public class ValidateMRZResult {
 
-    private String MRZType;
+    private String mrztype;
     private String validationResult;
     private String message;
     private String item;
 
     public ValidateMRZResult() {
-        this.MRZType = "";
+        this.mrztype = "";
         this.validationResult = "";
         this.message = "";
 
     }
 
     public String getMRZType() {
-        return MRZType;
+        return mrztype;
     }
 
-    public void setMRZType(String MRZType) {
-        this.MRZType = MRZType;
+    public void setMRZType(String mrztype) {
+        this.mrztype = mrztype;
     }
 
     public String getValidationResult() {
