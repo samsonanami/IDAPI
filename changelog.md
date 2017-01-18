@@ -1,6 +1,16 @@
 Orion - Changelog
 =================
 
+1.0.1-0.0.2 (2017-01-18 13:00:02 +0530)
+---------------------------------------
+(2017-01-18 13:00:02 +0530	) Update gender verification to handle null values
+ Null pointer exeption was occured if there are no value was there for the gender value
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-16 12:48:36 +0530	) [ci-skip] updated changelog
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 1.0.1-0.0.1 (2017-01-15 13:05:05 +0530)
 ---------------------------------------
 (2017-01-15 13:05:05 +0530	) Taking license handler implementation to a service layer class
