@@ -1,6 +1,16 @@
 Orion - Changelog
 =================
 
+Unreleased
+----------
+(2017-01-18 17:06:06 +0530	) Sonar issue fixes
+ Fixed sonar issues in document verification module
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 13:06:22 +0530	) [ci-skip] updated changelog files
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 1.0.1-0.0.2 (2017-01-18 13:00:02 +0530)
 ---------------------------------------
 (2017-01-18 13:00:02 +0530	) Update gender verification to handle null values
