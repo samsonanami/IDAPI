@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.concurrent.*;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * Created by sasitha on 12/19/16.
