@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+
 
 /**
  * Created by sasitha on 12/19/16.
@@ -55,16 +55,7 @@ public class VerificationOrchestrator {
             LOGGER.error("Unable to process oracle verification process ", e);
         }
 
-        if (oracleResults != null){
-            while (!oracleResults.isDone()){
-                LOGGER.debug("Still processing and waiting");
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    LOGGER.error("Could not sleep thread an interruption occurred ",e);
-                }
-            }
-
+        if (oracleResults != null) {
             try {
                 LOGGER.debug("received results {}", oracleResults.get());
                 LOGGER.debug("Elapsed time to complete the processing : " + (System.currentTimeMillis() - start));
@@ -78,6 +69,10 @@ public class VerificationOrchestrator {
             } catch (JsonProcessingException e) {
                 LOGGER.error("Error occurred processing one or more json ", e);
             }
+        } else {
+            LOGGER.error("Error occurred while trying to process the request. oracle request processor async result " +
+                    "received as null");
+            processResponse(processingMessage, "");
         }
     }
 

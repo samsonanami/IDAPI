@@ -3,6 +3,78 @@ Orion - Changelog
 
 Unreleased
 ----------
+(2017-01-20 11:39:05 +0530	) removed thread sleep from verification orchestrator
+ removed thread sleep and added asynch method call and return
+feature object to wait untill the processing is completed
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-19 13:06:37 +0530	) Accepting hermes agent spring context file name as a java system veriable
+ -DcontextFileName="applicationContext.xml" can be used to specify the file name of the
+application context file.
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-19 12:29:11 +0530	) add hermese deployment scripts
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 18:44:48 +0530	) Merge branch 'sonar-issue-fixes' into 'develop'
+ [ci-skip] Sonar issue fixes
+
+
+
+See merge request !38
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 18:43:48 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into sonar-issue-fixes
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 18:43:40 +0530	) [ci-skip] build error fixes in test classes
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 18:32:42 +0530	) Merge branch 'sonar-issue-fixes' into 'develop'
+ [ci-skip] Sonar issue fixes
+
+
+
+See merge request !37
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 18:31:49 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into sonar-issue-fixes
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 18:31:41 +0530	) [ci-skip] sonar code smell fixes
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 18:00:44 +0530	) Merge branch 'sonar-issue-fixes' into 'develop'
+ Sonar issue fixes
+
+
+
+See merge request !36
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 18:00:17 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into sonar-issue-fixes
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 17:59:11 +0530	) Sonar defect fixes
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 17:23:56 +0530	) Merge branch 'sonar-issue-fixes' into 'develop'
+ [ci-skip] Sonar issue fixes
+
+
+
+See merge request !35
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 17:22:53 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into sonar-issue-fixes
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 17:22:21 +0530	) [ci-skip] fixed build errors in test cases
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-18 17:08:01 +0530	) Merge branch 'sonar-issue-fixes' into 'develop'
+ Sonar issue fixes
+
+Fixed sonar issues in document verification module
+
+See merge request !34
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
 (2017-01-18 17:06:06 +0530	) Sonar issue fixes
  Fixed sonar issues in document verification module
 

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
@@ -40,8 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String authoritiesByUsernameQuery;
 
     @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
+        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(encoder)
                 .usersByUsernameQuery(usersByUsernameQuery)
                 .authoritiesByUsernameQuery(authoritiesByUsernameQuery);
     }
