@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 
 /**
+ * This class will decode the Passport MRZ to elements.
  * Created by MudithaJ on 11/24/2016.
  */
 @Component

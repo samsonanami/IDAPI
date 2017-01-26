@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
+ * This class compares the decoded address elements.
  * Created by MudithaJ on 12/22/2016.
  */
 @Component

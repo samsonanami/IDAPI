@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This class validates the passport MRZ.
  * Created by MudithaJ on 12/14/2016.
  */
 public class ValidatePassPortMRZ implements ValidateMRZ {

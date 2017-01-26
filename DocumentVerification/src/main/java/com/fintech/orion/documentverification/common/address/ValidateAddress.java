@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * This call validates address is validate or not.
  * Created by MudithaJ on 12/16/2016.
  */
 public class ValidateAddress {

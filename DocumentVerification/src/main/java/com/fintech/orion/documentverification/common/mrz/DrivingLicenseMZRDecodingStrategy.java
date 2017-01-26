@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 
 /**
+ * This class decodes the Driving license number in to elements.
  * Created by MudithaJ on 12/15/2016.
  */
 @Component

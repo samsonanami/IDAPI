@@ -1,6 +1,8 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 /**
+ * This class with contains the properties of range.
+ * Range is some portion of a MRZ.
  * Created by MudithaJ on 11/28/2016.
  */
 public class Range {

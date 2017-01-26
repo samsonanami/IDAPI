@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 
 /**
+ * This Class calculates the all five check digits in passport MRZ
  * Created by MudithaJ on 11/28/2016.
- * This Class will calculate the all five check digit and return it in check digit result set
+ *
  */
 @Component
 public class PassportCheckDigitFormation {

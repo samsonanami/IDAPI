@@ -48,7 +48,7 @@ public class DateOfIsssueEndYearValidationTest {
         ocrFieldDataDateOfIssue.setId("date_of_issue");
         ocrFieldDataDateOfIssue.setValue(fieldValueList);
 
-        List<OcrFieldData> fieldDataList = new ArrayList<>();
+        List<OcrFieldData> fieldDataList = new ArrayList();
         fieldDataList.add(ocrFieldDataDateOfIssue);
 
         ocrResponse.setData(fieldDataList);

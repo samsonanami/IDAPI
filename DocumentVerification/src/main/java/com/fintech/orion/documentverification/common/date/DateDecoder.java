@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * This class deocdes the data in to elements Month,Year and Date
  * Created by sasitha on 12/29/16.
  */
 public class DateDecoder {

@@ -1,6 +1,7 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 /**
+ * This call contains the MRZ decoded elements.
  * Created by MudithaJ on 11/24/2016.
  */
 public class MRZDecodeResults {
