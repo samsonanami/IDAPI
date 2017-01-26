@@ -66,7 +66,7 @@ public class DateOfBirthValidationTest {
     @Test
     public void should_return_true_if_all_document_have_same_date_of_birth() throws Exception {
         validationResult.setStatus(true);
-        Mockito.when(dateComparator.doOperation(Matchers.anyString(), Matchers.anyString())).thenReturn(validationResult);
+        Mockito.when(dateComparator.doDataValidationOperation(Matchers.anyString(), Matchers.anyString())).thenReturn(validationResult);
 
         ValidationData validationData = dateOfBirthValidation.validate(resourceName, ocrResponse);
         assertTrue(validationData.getValidationStatus());
@@ -76,8 +76,8 @@ public class DateOfBirthValidationTest {
     public void should_return_false_if_one_of_the_dates_are_not_matching() throws Exception {
         validationResult.setStatus(true);
         ValidationResult error = new ValidationResult(false);
-        Mockito.when(dateComparator.doOperation("25.07.1974", "25.07.1974")).thenReturn(validationResult);
-        Mockito.when(dateComparator.doOperation("25.07.1974", "25.07.1975")).thenReturn(error);
+        Mockito.when(dateComparator.doDataValidationOperation("25.07.1974", "25.07.1974")).thenReturn(validationResult);
+        Mockito.when(dateComparator.doDataValidationOperation("25.07.1974", "25.07.1975")).thenReturn(error);
 
         ValidationData validationData = dateOfBirthValidation.validate(resourceName, ocrResponse);
         assertFalse(validationData.getValidationStatus());

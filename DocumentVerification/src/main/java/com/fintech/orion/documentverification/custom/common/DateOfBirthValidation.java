@@ -51,7 +51,7 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
     private ValidationData compareRestOfTheDatesWithBaseDate(String base, List<OcrFieldValue> values) {
         ValidationData validationData = new ValidationData();
         for (OcrFieldValue value : values) {
-            if (!dateComparator.doOperation(base, value.getValue()).isStatus()) {
+            if (!dateComparator.doDataValidationOperation(base, value.getValue()).isStatus()) {
                 validationData.setValidationStatus(false);
                 validationData.setValue(value.getValue());
                 validationData.setRemarks(getFailedRemarksMessage());

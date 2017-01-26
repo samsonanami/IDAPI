@@ -13,6 +13,6 @@ public class DocumentDataValidator {
     }
 
     public ValidationResult executeStrategy(String base, String compare) {
-        return strategy.doOperation(base, compare);
+        return strategy.doDataValidationOperation(base, compare);
     }
 }

@@ -11,7 +11,7 @@ import java.util.Date;
 public class OperationDateComparator extends DateDecoder implements DataValidationStrategy {
 
     @Override
-    public ValidationResult doOperation(String base, String compare) {
+    public ValidationResult doDataValidationOperation(String base, String compare) {
         ValidationResult
                 result = new ValidationResult(false, "");
         Date baseDate = null;
