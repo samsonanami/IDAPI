@@ -22,7 +22,7 @@ public class AddressCompare implements Address {
             AddressCompareResult result = new AddressCompareResult();
             AddressDecodeResults addressOneresult;
             AddressDecodeResults addressTwoResult;
-            HashMap<String, String> resultMap = new HashMap<String, String>();
+            HashMap<String, Boolean> resultMap = new HashMap<String, Boolean>();
             String message = "";
             addressOneresult = addressDecoder.decode(addressOne);
             addressTwoResult = addressDecoder.decode(addressTwo);
@@ -43,7 +43,7 @@ public class AddressCompare implements Address {
                 HashMap.Entry set = (HashMap.Entry) i.next();
                 message = message + set.getKey() + ":" + set.getValue() + ",";
             }
-            if (resultMap.containsValue("false")) {
+            if (resultMap.containsValue(false)) {
                 result.setResult(false);
             } else {
                 result.setResult(true);
@@ -56,37 +56,37 @@ public class AddressCompare implements Address {
         }
     }
 
-    public String addressNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        String compare = "false";
+    public Boolean addressNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
+        Boolean compare = false;
         if (addressOne.getNumber().equals(addressTwo.getNumber())) {
-            compare = "true";
+            compare = true;
         }
 
         return compare;
     }
 
-    public String addressFlatNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        String compare = "false";
+    public Boolean addressFlatNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
+        Boolean compare = false;
         if (addressOne.getFlatNumber().equals(addressTwo.getFlatNumber())) {
-            compare = "true";
+            compare = true;
         }
 
         return compare;
     }
 
-    public String addressPostalCodeCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        String compare = "false";
+    public Boolean addressPostalCodeCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
+        Boolean compare = false;
         if (addressOne.getPostalCode().equals(addressTwo.getPostalCode())) {
-            compare = "true";
+            compare = true;
         }
 
         return compare;
     }
 
-    public String addressTypeCompare(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        String compare = "false";
+    public Boolean addressTypeCompare(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
+        Boolean compare = false;
         if (addressOne.getAddressType().equals(addressTwo.getAddressType())) {
-            compare = "true";
+            compare = true;
         }
 
         return compare;
