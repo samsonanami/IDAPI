@@ -73,7 +73,7 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
         if (idVerificationResource != null) {
             resourceName = idVerificationResource.getResourceName();
         }
-        List<Object> idDocFullValidationList = new ArrayList<>();
+        List<Object> idDocFullValidationList = new ArrayList();
         ValidationData errorDataSet = new ValidationData();
         errorDataSet.setRemarks("");
         errorDataSet.setId("critical_error_set");
@@ -151,7 +151,7 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
             }else if(resourceName.equalsIgnoreCase("drivingLicenseFront")){
                 mrzDecodeResults = drivingLicenseMRZDecodingStrategy.decode(completeMRZLine);
             }
-            CheckDigitResults checkDigitResults = passportCheckDigitFormation.calculateCheckdigit(completeMRZLine);
+            CheckDigitResults checkDigitResults = passportCheckDigitFormation.calculateCheckDigit(completeMRZLine);
             if (checkDigitResults.getCheckdigitPraseOne().equals(mrzDecodeResults.getCheckDigitPhraseOne()) &&
                     checkDigitResults.getCheckdigitPraseTwo().equals(mrzDecodeResults.getCheckDigitPhraseTwo()) &&
                     checkDigitResults.getCheckdigitPraseThree().equals(mrzDecodeResults.getCheckDigitPhraseThree()) &&

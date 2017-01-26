@@ -50,14 +50,14 @@ public class DateOfBirthValidationTest {
         dlFrontValue.setId("drivingLicenseFront##date_of_birth");
         dlFrontValue.setValue("25.07.1975");
 
-        List<OcrFieldValue> fieldValueList = new ArrayList<>();
+        List<OcrFieldValue> fieldValueList = new ArrayList();
         fieldValueList.add(passportValue);
         fieldValueList.add(dlFrontValue);
 
         ocrFieldDataSex.setId("date_of_birth");
         ocrFieldDataSex.setValue(fieldValueList);
 
-        List<OcrFieldData> fieldDataList = new ArrayList<>();
+        List<OcrFieldData> fieldDataList = new ArrayList();
         fieldDataList.add(ocrFieldDataSex);
 
         ocrResponse.setData(fieldDataList);
