@@ -52,7 +52,7 @@ public class AddressCompare implements Address {
             result.setMessage(message);
 
             return result;
-        } catch (NullPointerException e) {
+        } catch (AddressValidatingException e) {
             throw new AddressValidatingException("Not well formatted address  or not well set configuration properties Exception", e);
         }
     }

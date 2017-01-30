@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This call decodes the address in to element.
  * Created by MudithaJ on 12/16/2016.
  */
 public class AddressDecoding {
@@ -27,7 +26,7 @@ public class AddressDecoding {
             }
 
             return results;
-        } catch (NullPointerException e) {
+        } catch (AddressValidatingException e) {
             throw new AddressValidatingException("address validating failed number" + results.getAddressType(), e);
         }
     }
