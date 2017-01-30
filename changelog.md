@@ -1,8 +1,21 @@
 Orion - Changelog
 =================
 
-Unreleased
-----------
+1.0.2-0.0.0 (2017-01-30 16:32:19 +0530)
+---------------------------------------
+(2017-01-30 16:32:19 +0530	) changed execution permissions
+ 
+ (Manthila Mendis)(manthila.mendis@kohls.com)
+(2017-01-24 13:17:19 +0530	) Merge branch 'code-review-updates-by-sasitha' into 'develop'
+ Code review updates by sasitha
+
+
+
+See merge request !39
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-24 13:15:18 +0530	) BCrypt encoding enabled for passwords
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
 (2017-01-20 11:39:05 +0530	) removed thread sleep from verification orchestrator
  removed thread sleep and added asynch method call and return
 feature object to wait untill the processing is completed
