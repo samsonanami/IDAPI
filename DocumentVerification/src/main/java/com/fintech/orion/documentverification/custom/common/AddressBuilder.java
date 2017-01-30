@@ -1,7 +1,6 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 
 import java.util.ArrayList;
@@ -20,20 +19,11 @@ public class AddressBuilder extends ValidationHelper {
                                                         String ocrFieldBase, int maximumNumberOfAddressLines) {
         String address = "";
         List<OcrFieldData> addressLineFieldDataList = new ArrayList<>();
-        for (int i = 0; i <= maximumNumberOfAddressLines; i++) {
+        for (int i = 1; i <= maximumNumberOfAddressLines; i++) {
             OcrFieldData ocrFieldData = getFieldDataById(ocrFieldBase + String.valueOf(i), ocrResponse);
             addressLineFieldDataList.add(ocrFieldData);
         }
-
-        for (OcrFieldData fieldData : addressLineFieldDataList) {
-            OcrFieldValue fieldValue = getFieldValueById(resourceName + "##" + fieldData.getId(), fieldData);
-            String addressValue = fieldValue.getValue();
-            if (addressValue != null && !addressValue.isEmpty()) {
-                addressValue = addressValue.trim();
-                address = address + addressValue + LINE_SEPARATOR;
-            }
-
-        }
+        address = getSingleValueStringFromMultipleFields(resourceName, addressLineFieldDataList, LINE_SEPARATOR);
         if (address.endsWith(LINE_SEPARATOR)) {
             address = address.substring(0, address.length() - 2);
         }

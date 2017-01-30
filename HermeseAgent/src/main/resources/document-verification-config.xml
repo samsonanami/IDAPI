@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="addressCompare" class="com.fintech.orion.documentverification.common.address.AddressCompare"/>
     <bean id="addressDecoding" class="com.fintech.orion.documentverification.common.address.AddressDecoding"/>
@@ -83,6 +83,7 @@
                 <ref bean="genderVerification"/>
                 <ref bean="minimumAgeVerification"/>
                 <ref bean="dateOfBirthVerification"/>
+                <ref bean="mrzCheckDigitValidation"/>
             </array>
         </constructor-arg>
     </bean>
@@ -143,5 +144,12 @@
         <property name="failedRemarksMessage" value="Date of birth is not similar"/>
         <property name="successRemarksMessage" value="Date of birth verified successfully"/>
         <property name="ocrExtractionFieldName" value="date_of_birth"/>
+    </bean>
+
+    <bean id="mrzCheckDigitValidation" class="com.fintech.orion.documentverification.custom.common.MrzCheckDigitValidation">
+        <property name="ocrFieldBase" value="MRZ_Line"/>
+        <property name="mrzLineCount" value="2"/>
+        <property name="resourceNameToCheckMRZ" value="passport"/>
+        <property name="successRemarksMessage" value="MRZ check digit validation successful."/>
     </bean>
 </beans>

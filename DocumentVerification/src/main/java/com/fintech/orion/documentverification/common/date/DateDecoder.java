@@ -30,11 +30,12 @@ public class DateDecoder {
         String stringDate;
         DecimalFormat formatter = new DecimalFormat("00");
         String regularExpression = "^(\\d{2})(\\w{3})(\\w{3})(\\d{2})";
+        String dateToProcess = "";
         try {
-            date = date.replace(" ", "");
-            date = date.replace("/", "");
+            dateToProcess = date.replace(" ", "");
+            dateToProcess = dateToProcess.replace("/", "");
             Pattern pattern = Pattern.compile(regularExpression);
-            Matcher matcher = pattern.matcher(date);
+            Matcher matcher = pattern.matcher(dateToProcess);
             matcher.matches();
             if (matcher.matches()) {
                 dateOfTheMonth = matcher.group(1).trim();
@@ -46,16 +47,16 @@ public class DateDecoder {
 
             } else {
                 DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-                dateResult = df.parse(date);
+                dateResult = df.parse(dateToProcess);
 
             }
 
 
             return dateResult;
         } catch (ParseException e) {
-            throw new DateComparatorException("Cannot parse given date" + date, e);
+            throw new DateComparatorException("Cannot parse given date" + dateToProcess, e);
         } catch (NullPointerException e) {
-            throw new DateComparatorException("Cannot parse given date" + date, e);
+            throw new DateComparatorException("Cannot parse given date" + dateToProcess, e);
         }
     }
 

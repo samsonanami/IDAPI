@@ -12,7 +12,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 public class AppConfigurationProvider implements AppConfigurationProviderInterface {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationProvider.class);
-    private static final String SPRING_CONFIG_NAME = "applicationContext.xml";
+    private static final String CONTEXT_FILE_NAME_SYSTEM_PROPERTY = "contextFileName";
 
     private AppStateProviderInterface appStateProvider;
 
@@ -26,16 +26,17 @@ public class AppConfigurationProvider implements AppConfigurationProviderInterfa
 
         if (appStateProvider.isContextFileLoadingFromFilePath()) {
             LOGGER.info("Loading application context from file {} from file path {}",
-                    SPRING_CONFIG_NAME, System.getProperty("contextFilePath"));
+                    System.getProperty(CONTEXT_FILE_NAME_SYSTEM_PROPERTY), System.getProperty("contextFilePath"));
             applicationContext = new FileSystemXmlApplicationContext("file:" +
-                    System.getProperty("contextFilePath") +"/" +SPRING_CONFIG_NAME);
+                    System.getProperty("contextFilePath") +"/" + System.getProperty(CONTEXT_FILE_NAME_SYSTEM_PROPERTY));
         } else {
             LOGGER.info("Loading application context from file {} in classpath. This is the default option. " +
                     "If you want to load it " +
                     "from a specific file location it can be do so by setting up env variable " +
                     "-DapplicationContextFrom=\"file\" and -DcontextFilePath=\"<<your file location without " +
-                    "file name >>\"", SPRING_CONFIG_NAME );
-            applicationContext = new ClassPathXmlApplicationContext("classpath:" + SPRING_CONFIG_NAME);
+                    "file name >>\"", System.getProperty(CONTEXT_FILE_NAME_SYSTEM_PROPERTY) );
+            applicationContext = new ClassPathXmlApplicationContext("classpath:" +
+                    System.getProperty(CONTEXT_FILE_NAME_SYSTEM_PROPERTY));
         }
         return applicationContext;
     }

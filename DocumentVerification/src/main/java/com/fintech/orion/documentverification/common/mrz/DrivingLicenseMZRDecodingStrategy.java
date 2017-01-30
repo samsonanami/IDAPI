@@ -23,24 +23,24 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
         MRZDecodeResults results = new MRZDecodeResults();
         try {
             this.mrzFirstLineCharacterCount = 0;
-            mrz = mrz.replaceAll("\\s+", "");
+            String mrzToProcess = mrz.replaceAll("\\s+", "");
             Range rangeSurName = this.convertConfigPropertiesToProcessableProperties("SurName");
-            results.setSurname(this.decodeFirstnamesOfSurName(mrz, rangeSurName));
+            results.setSurname(this.decodeFirstnamesOfSurName(mrzToProcess, rangeSurName));
 
             Range rangeDecadeDigitOfBirthYear = this.convertConfigPropertiesToProcessableProperties("DecadeDigitOfBirthYear");
-            results.setDecadeDigitOfBirthYear(this.decodeDecadeDigitFromYearOfBirth(mrz, rangeDecadeDigitOfBirthYear));
+            results.setDecadeDigitOfBirthYear(this.decodeDecadeDigitFromYearOfBirth(mrzToProcess, rangeDecadeDigitOfBirthYear));
 
             Range rangeDateofBirthMonth = this.convertConfigPropertiesToProcessableProperties("DateofBirthMonth");
-            results.setDateofBirthMonth(this.decodeDateofBirthMonth(mrz, rangeDateofBirthMonth));
+            results.setDateofBirthMonth(this.decodeDateofBirthMonth(mrzToProcess, rangeDateofBirthMonth));
 
             Range rangeDateWithinTheBirthMonth = this.convertConfigPropertiesToProcessableProperties("DateWithinTheBirthMonth");
-            results.setDateWithinTheBirthMonth(this.decodeDateWithinTheBirthMonth(mrz, rangeDateWithinTheBirthMonth));
+            results.setDateWithinTheBirthMonth(this.decodeDateWithinTheBirthMonth(mrzToProcess, rangeDateWithinTheBirthMonth));
 
             Range rangeDateofBirthYear = this.convertConfigPropertiesToProcessableProperties("DateofBirthYear");
-            results.setDateofBirthYear(this.decodeDateofBirthYear(mrz, rangeDateofBirthYear));
+            results.setDateofBirthYear(this.decodeDateofBirthYear(mrzToProcess, rangeDateofBirthYear));
 
             Range rangeInitialsOfTheFirstName = this.convertConfigPropertiesToProcessableProperties("InitialsOfTheFirstName");
-            results.setInitialsOfTheFirstName(this.decodeInitialsOfFirstName(mrz, rangeInitialsOfTheFirstName));
+            results.setInitialsOfTheFirstName(this.decodeInitialsOfFirstName(mrzToProcess, rangeInitialsOfTheFirstName));
 
         } catch (NullPointerException e) {
             throw new DrivingLicenseMRZDecodingException("Not well formatted drivingLicense MRZ or not well set configuration properties Exception " + mrz, e);
@@ -63,9 +63,7 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
     }
 
     private MRZItemProperty getItemProperties(String key) {
-        MRZItemProperty property = mrzItemProperty.get(key);
-
-        return property;
+        return mrzItemProperty.get(key);
     }
 
     private String decodeFirstnamesOfSurName(String mrz, Range range) {
@@ -79,9 +77,7 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
     private String decodeDecadeDigitFromYearOfBirth(String mrz, Range range) {
 
         int start = range.getStart();
-        int end = range.getEnd();
-        String decadeDigit = String.valueOf(mrz.charAt(start));
-        return decadeDigit;
+        return String.valueOf(mrz.charAt(start));
     }
 
     private String decodeDateofBirthMonth(String mrz, Range range) {
@@ -100,24 +96,19 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
 
         int start = range.getStart();
         int end = range.getEnd();
-        String date = mrz.substring(start, end);
-
-        return date;
+        return mrz.substring(start, end);
     }
 
     private String decodeDateofBirthYear(String mrz, Range range) {
 
         int start = range.getStart();
-        int end = range.getEnd();
-        String year = String.valueOf(mrz.charAt(start));
-        return year;
+        return String.valueOf(mrz.charAt(start));
     }
 
     private String decodeInitialsOfFirstName(String mrz, Range range) {
         int start = range.getStart();
         int end = range.getEnd();
-        String initials = mrz.substring(start, end);
-        return initials;
+        return mrz.substring(start, end);
     }
 
 

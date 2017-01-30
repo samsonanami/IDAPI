@@ -6,6 +6,8 @@ import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -72,7 +74,6 @@ public class ValidationHelper {
 
     public ValidationData validateData(List<OcrFieldValue> values) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
-        int valueCount = 1;
         String dataValue = "";
         if (values.size() > 1) {
             validationData.setValidationStatus(false);
@@ -88,7 +89,6 @@ public class ValidationHelper {
                 validationData.setRemarks("Documents data not matched");
                 break;
             }
-            valueCount++;
             dataValue = value.getValue();
         }
 
@@ -140,4 +140,34 @@ public class ValidationHelper {
         String[] strings = fieldValueId.split("##");
         return strings[0];
     }
+
+    public List<String> getResourceListFromOcrResponse(OcrResponse ocrResponse) {
+        List<String> resourceList = new ArrayList<>();
+        for (OcrFieldData fieldData : ocrResponse.getData()) {
+            for (OcrFieldValue fieldValue : fieldData.getValue()) {
+                String[] splitArray = fieldValue.getId().split("##");
+                if (splitArray.length > 0) {
+                    resourceList.add(splitArray[0]);
+                }
+            }
+        }
+        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<String>(resourceList);
+        return new ArrayList<>(linkedHashSet);
+    }
+
+    public String getSingleValueStringFromMultipleFields(String resourceName, List<OcrFieldData> ocrFieldDataList,
+                                                         String lineSeparator){
+        String singleValueString = "";
+        for (OcrFieldData fieldData : ocrFieldDataList) {
+            OcrFieldValue fieldValue = getFieldValueById(resourceName + "##" + fieldData.getId(), fieldData);
+            String value = fieldValue.getValue();
+            if (value != null && !value.isEmpty()) {
+                value = value.trim();
+                singleValueString = singleValueString + value + lineSeparator;
+            }
+
+        }
+        return singleValueString;
+    }
+
 }

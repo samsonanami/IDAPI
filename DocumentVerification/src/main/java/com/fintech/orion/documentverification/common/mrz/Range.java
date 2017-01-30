@@ -11,14 +11,14 @@ public class Range {
     private int end;
 
     public int getLineNumber() {
-        return LineNumber;
+        return lineNumber;
     }
 
     public void setLineNumber(int lineNumber) {
-        LineNumber = lineNumber;
+        this.lineNumber = lineNumber;
     }
 
-    private int LineNumber;
+    private int lineNumber;
 
     public int getStart() {
         return start;

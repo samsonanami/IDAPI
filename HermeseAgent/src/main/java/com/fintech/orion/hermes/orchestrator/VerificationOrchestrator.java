@@ -3,16 +3,15 @@ package com.fintech.orion.hermes.orchestrator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.HermeseResponseprocessorException;
+import com.fintech.orion.common.exceptions.license.LicenseHandlerException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailService;
-import com.fintech.orion.dataabstraction.entities.orion.License;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dataabstraction.repositories.LicenseRepositoryInterface;
 import com.fintech.orion.dto.hermese.ResponseProcessorResult;
-import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
+import com.fintech.orion.hermesagentservices.license.LicenseHandlerInterface;
 import com.fintech.orion.hermesagentservices.processor.OracleRequestProcessor;
 import com.fintech.orion.hermesagentservices.response.processor.HermeseResponseProcessor;
 import org.slf4j.Logger;
@@ -20,10 +19,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+
 
 /**
  * Created by sasitha on 12/19/16.
@@ -42,7 +40,7 @@ public class VerificationOrchestrator {
     private HermeseResponseProcessor hermeseResponseProcessor;
 
     @Autowired
-    private LicenseRepositoryInterface licenseRepositoryInterface;
+    private LicenseHandlerInterface licenseHandler;
 
 
     public void orchestrate(Object message){
@@ -57,16 +55,7 @@ public class VerificationOrchestrator {
             LOGGER.error("Unable to process oracle verification process ", e);
         }
 
-        if (oracleResults != null){
-            while (!oracleResults.isDone()){
-                LOGGER.debug("Still processing and waiting");
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    LOGGER.error("Could not sleep thread an interruption occurred ",e);
-                }
-            }
-
+        if (oracleResults != null) {
             try {
                 LOGGER.debug("received results {}", oracleResults.get());
                 LOGGER.debug("Elapsed time to complete the processing : " + (System.currentTimeMillis() - start));
@@ -80,6 +69,10 @@ public class VerificationOrchestrator {
             } catch (JsonProcessingException e) {
                 LOGGER.error("Error occurred processing one or more json ", e);
             }
+        } else {
+            LOGGER.error("Error occurred while trying to process the request. oracle request processor async result " +
+                    "received as null");
+            processResponse(processingMessage, "");
         }
     }
 
@@ -88,7 +81,7 @@ public class VerificationOrchestrator {
         try {
             ProcessingRequest processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
             ResponseProcessorResult result = hermeseResponseProcessor.processAndUpdateRawResponse(rawString, processingRequest);
-            updateLicenseStatus(rawString, processingMessage.getClientLicense());
+            licenseHandler.updateLicense(processingMessage.getClientLicense(), rawString);
             List<Process> processList = verificationRequestDetailService
                     .getProcessListBelongsToProcessingRequest(processingMessage.getVerificationRequestCode());
             for (Process process : processList){
@@ -98,26 +91,12 @@ public class VerificationOrchestrator {
             LOGGER.error("Failed to find required data to complete the processing ", e);
         }catch (HermeseResponseprocessorException e) {
             LOGGER.error("Error while processing the response ", e);
+        } catch (LicenseHandlerException e) {
+            LOGGER.error("Unable to update the license with license key {}", processingMessage.getClientLicense(), e);
         }
 
     }
 
-    @Transactional
-    private void updateLicenseStatus(String rawString, String licenseKey) throws ItemNotFoundException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            OcrResponse response = objectMapper.readValue(rawString, OcrResponse.class);
-            if ("processing_successful".equalsIgnoreCase(response.getStatus())){
-                License license = licenseRepositoryInterface.findLicenseByLicenseKey(licenseKey);
-                int currentLicenseCount = license.getCurrentRequestCount();
-                currentLicenseCount = currentLicenseCount + 1;
-                license.setCurrentRequestCount(currentLicenseCount);
-                licenseRepositoryInterface.save(license);
-            }
-        } catch (IOException e) {
-            LOGGER.error("Error while trying to update license key", e);
-        }
-    }
     @Transactional
     private void saveProcessResponse(String rawResponse, String processedString, Process process){
         verificationRequestDetailService.saveResponse(rawResponse, processedString, process);

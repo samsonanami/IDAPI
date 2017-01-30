@@ -39,11 +39,11 @@ public class PassportCheckDigitFormation {
 
             CheckDigitResults results = new CheckDigitResults();
 
-            results.setCheckdigitPraseOne(getCheckDigitParseOne(fixedMRX, checkDigitRangeArray[0]));
-            results.setCheckdigitPraseTwo(getCheckDigitParseTwo(fixedMRX, checkDigitRangeArray[1]));
-            results.setCheckdigitPraseThree(getCheckDigitParseThree(fixedMRX, checkDigitRangeArray[2]));
-            results.setCheckdigitPraseFour(getCheckDigitParseFour(fixedMRX, checkDigitRangeArray[3]));
-            results.setCheckdigitPraseFive(getCheckDigitParseFive(fixedMRX, checkDigitRangeArray));
+            results.setCheckDigitPraseOne(getCheckDigitParseOne(fixedMRX, checkDigitRangeArray[0]));
+            results.setCheckDigitPraseTwo(getCheckDigitParseTwo(fixedMRX, checkDigitRangeArray[1]));
+            results.setCheckDigitPraseThree(getCheckDigitParseThree(fixedMRX, checkDigitRangeArray[2]));
+            results.setCheckDigitPraseFour(getCheckDigitParseFour(fixedMRX, checkDigitRangeArray[3]));
+            results.setCheckDigitPraseFive(getCheckDigitParseFive(fixedMRX, checkDigitRangeArray));
 
 
             return results;

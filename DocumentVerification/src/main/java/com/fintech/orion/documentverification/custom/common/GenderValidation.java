@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by MudithaJ on 12/26/2016.
+ *
  */
 @Component
 public class GenderValidation extends ValidationHelper implements CustomValidation {
@@ -30,35 +31,36 @@ public class GenderValidation extends ValidationHelper implements CustomValidati
 
     private ValidationData validateGender(OcrFieldData ocrFieldData) {
         ValidationData validationData = new ValidationData();
-        if (ocrFieldData.getValue().size() >= 1) {
-            Gender genderBaseValue = getGender(ocrFieldData.getValue().iterator().next().getValue());
+        if (!ocrFieldData.getValue().isEmpty()) {
+            Gender genderBaseValue = null;
             for (OcrFieldValue value : ocrFieldData.getValue()) {
                 Gender compare = getGender(value.getValue());
-                if (genderBaseValue == Gender.OTHER || !genderBaseValue.equals(compare)) {
-                    validationData.setRemarks(getFailedRemarksMessage());
-                    validationData.setValidationStatus(false);
-                    break;
-                } else {
+                if (genderBaseValue == null && compare != null){
+                    genderBaseValue = compare;
+                }
+                if (genderBaseValue != null && genderBaseValue.equals(compare)) {
                     validationData.setRemarks(getSuccessRemarksMessage() + genderBaseValue);
                     validationData.setValidationStatus(true);
+                } else {
+                    validationData.setRemarks(getFailedRemarksMessage());
+                    validationData.setValidationStatus(false);
                 }
             }
-            validationData.setValue(genderBaseValue.toString());
+            if (genderBaseValue != null) {
+                validationData.setValue(genderBaseValue.toString());
+            }
         }
 
         return validationData;
     }
 
     private Gender getGender(String gender) {
-        Gender ge = Gender.OTHER;
-        if (gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male")) {
+        Gender ge = null;
+        if ("M".equalsIgnoreCase(gender) || "Male".equalsIgnoreCase(gender)) {
             ge = Gender.MALE;
-        } else if (gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female")) {
+        } else if ("F".equalsIgnoreCase(gender) || "Female".equalsIgnoreCase(gender)) {
             ge = Gender.FEMALE;
-        } else {
-            ge = Gender.OTHER;
         }
-
         return ge;
     }
 }

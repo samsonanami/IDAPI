@@ -37,7 +37,7 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
 
     private ValidationData validateDateOfBirth(List<OcrFieldValue> values) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
-        if (values.size() >= 1) {
+        if (!values.isEmpty()) {
             String firstDateOfBirth = values.iterator().next().getValue();
             validationData = compareRestOfTheDatesWithBaseDate(firstDateOfBirth, values);
         } else {

@@ -1,7 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Gradle template
 .gradle
-build/
 HermeseAgent/build/
 OrionAPI/build/
 OrionDataAbstraction/build/
@@ -10,7 +9,13 @@ Services/build/
 Services/APIServices/build/
 Services/CoreServices/build/
 Services/HermesAgentServices/build/
-
+DataTransferObjects/build/
+DocumentVerification/build/
+JobMessagingChannelHandler/build/
+OrionAuthAPI/build/
+installer/
+release/
+hermese.tar
 # ignoring out directories
 out/
 
