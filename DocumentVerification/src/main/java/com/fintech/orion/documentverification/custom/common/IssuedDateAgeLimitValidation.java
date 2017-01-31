@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.custom.common;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -47,7 +47,7 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
         if (validationData.getValidationStatus()) {
             try {
                 validationData = validateIssuedDateAgeLimit(valueIssuedDate, valueDateOfBirth);
-            } catch (DateComparatorException e) {
+            } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an date of birth at issue date" +
                         " validation for ocr response {} {}", ocrResponse, e);
                 validationData.setValue(null);
@@ -66,7 +66,7 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
         return validationData;
     }
 
-    private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate, OcrFieldValue ocrFieldValueDateOfBirth) throws DateComparatorException {
+    private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate, OcrFieldValue ocrFieldValueDateOfBirth) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
         Date issuedDate = dateDecoder.decodeDate(ocrFieldValueIssuedDate.getValue());
