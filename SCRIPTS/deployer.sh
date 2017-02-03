@@ -8,6 +8,9 @@ unzip *.zip > /dev/null
 
 /opt/wildfly/10.0.0/bin/jboss-cli.sh --connect --commands="ls deployment" > /opt/wildfly/10.0.0/temp/temp_running_war.file
 
+echo "################## Files Running On Wildfly ######################"
+cat /opt/wildfly/10.0.0/temp/temp_running_war.file
+
 unzip -l /tmp/ORION/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | cut -d'-' -f1 > /opt/wildfly/10.0.0/temp/temp_zipped_war.file
 
 lines=$(/opt/wildfly/10.0.0/bin/jboss-cli.sh --connect --commands="ls deployment" | wc -l)
@@ -29,3 +32,7 @@ while IFS='' read -r lines4 || [[ -n "$lines4" ]]; do
 done < /opt/wildfly/10.0.0/temp/temp_zipped_war.file
 
 rm -rf  /opt/wildfly/10.0.0/temp/
+
+
+
+
