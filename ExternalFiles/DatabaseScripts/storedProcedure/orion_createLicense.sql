@@ -22,7 +22,7 @@
 *	                          Copyright (c) 2016 zone24x7
 *
 */
-USE orion;
+USE idapi;
 DROP PROCEDURE IF EXISTS `orion_createLicense`              ;
 DELIMITER //
 
