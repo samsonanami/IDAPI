@@ -105,6 +105,8 @@ dependencies {
 //    daemon = true
 //}
 
+/*
 gretty {
     port = 8089
 }
+*/

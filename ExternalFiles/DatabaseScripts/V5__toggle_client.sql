@@ -16,7 +16,7 @@
 *
 */
 
-USE idapi;
+
 DROP PROCEDURE IF EXISTS orion_toggleClient;
 DELIMITER //
 CREATE PROCEDURE orion_toggleClient

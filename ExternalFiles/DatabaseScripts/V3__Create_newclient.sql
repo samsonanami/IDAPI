@@ -20,7 +20,7 @@
 *													Copyright (c) 2016 zone24x7
 *
 */
-USE idapi;
+
 DROP PROCEDURE IF EXISTS `orion_createClient`;
 DELIMITER //
 
