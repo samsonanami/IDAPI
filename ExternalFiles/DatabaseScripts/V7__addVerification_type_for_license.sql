@@ -17,7 +17,7 @@
 *
 */
 
-USE idapi;
+
 DROP PROCEDURE IF EXISTS  `orion_addVerificationTypeForLicense`           ;
 
 DELIMITER //

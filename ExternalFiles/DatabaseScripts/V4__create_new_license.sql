@@ -22,7 +22,7 @@
 *	                          Copyright (c) 2016 zone24x7
 *
 */
-USE idapi;
+
 DROP PROCEDURE IF EXISTS `orion_createLicense`              ;
 DELIMITER //
 
@@ -104,7 +104,7 @@ license_process:BEGIN
 END //
 DELIMITER ;
 
-DROP FUNCTION IF EXISTS `orion`.`validate_date`;
+DROP FUNCTION IF EXISTS `validate_date`;
 DELIMITER //
 CREATE FUNCTION validate_date(d VARCHAR(255))
 	RETURNS INT

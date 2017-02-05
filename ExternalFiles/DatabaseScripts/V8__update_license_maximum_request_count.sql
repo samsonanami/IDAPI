@@ -17,7 +17,7 @@
 */
 
 
-USE idapi;
+
 DROP PROCEDURE IF EXISTS orion_updateLicenseMaximumRequestCount;
 DELIMITER //
 CREATE PROCEDURE orion_updateLicenseMaximumRequestCount
