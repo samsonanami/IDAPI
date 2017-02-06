@@ -3,7 +3,7 @@
 #Wildfly hosted location
 WILDFLY_LOC=/opt/wildfly/10.0.0
 
-#Wildfly build copy locastion
+#Wildfly build copy location
 COPY_LOC=/tmp/ORION
 
 HERMES_BACKUP=/opt/orion/hermese-backup
@@ -121,7 +121,7 @@ hermese_deletebackup()
 	fi
 }
 
-hermese_backup ()
+hermese_temp_backup ()
 {
 	mkdir -p $HERMESE_APP_LOC/temp
     cp $HERMESE_APP_LOC/$BUILD_NAME/config/spring-beans.xml $HERMESE_APP_LOC/temp/.
@@ -129,7 +129,6 @@ hermese_backup ()
     cp $HERMESE_APP_LOC/$BUILD_NAME/config/spring-datasource.xml $HERMESE_APP_LOC/temp/.
     cp $HERMESE_APP_LOC/$BUILD_NAME/config/applicationContext.xml $HERMESE_APP_LOC/temp/.
 }
-
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
@@ -139,6 +138,7 @@ fi
 if [ "$3" == "true" ]
 then
     echo "Stopping java application"; hermese stop
+    echo "Backing up config files"; hermese_temp_backup
     echo "Backing up java application"; hermese_backup
     echo "Deleting old backup files"; hermese_deletebackup
     echo "Starting java application"; hermese start
