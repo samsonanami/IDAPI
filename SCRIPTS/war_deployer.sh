@@ -110,13 +110,13 @@ hermese_backup ()
 
 hermese_deletebackup()
 {
-	COUNT=`ls -1 $BK_LOC| wc -l`
+	COUNT=`ls -1 $HERMES_BACKUP| wc -l`
 
 	if [ $COUNT -lt 4 ]
 	then    
 	        echo "Less than 3 backups remaining"
 	else    
-	     	rm -rf `ls -dt $BK_LOC/* | awk 'NR>3'`
+	     	rm -rf `ls -dt $HERMES_BACKUP/* | awk 'NR>3'`
 		echo "Deleted old backups sucessfully"
 	fi
 }
