@@ -1,5 +1,6 @@
 #!/bin/sh
 
+rm -rf  /opt/wildfly/10.0.0/temp/
 mkdir -p /opt/wildfly/10.0.0/temp/zip
 
 cp /tmp/ORION/dev/*.zip  /opt/wildfly/10.0.0/temp/zip/.
