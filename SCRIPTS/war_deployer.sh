@@ -10,6 +10,8 @@ HERMES_BACKUP=/opt/orion/hermese-backup
 
 HERMESE_APP_LOC=/opt/orion
 
+BUILD_NAME=hermese
+
 # =================================================================== 
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
