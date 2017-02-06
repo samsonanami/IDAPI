@@ -76,5 +76,5 @@ war_deploy()
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
-    echo "Deploying War Engine"; war_deploy
+    echo "Deploying War Engine"; war_deploy $1 $2
 fi
