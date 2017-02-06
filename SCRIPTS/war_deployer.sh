@@ -77,6 +77,7 @@ war_deploy()
 java_process()
 {
     /opt/orion/hermese/Hermese.sh $1
+    ps aux | grep /opt/orion/hermese
     
 }
 
