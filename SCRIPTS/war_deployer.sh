@@ -74,7 +74,18 @@ war_deploy()
 	rm -rf  $WILDFLY_LOC/temp/
 }
 
+java_process
+{
+    /opt/orion/hermese/Hermese.sh $1
+    
+}
+
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
     echo "Deploying War Engine"; war_deploy $1 $2
+fi
+
+if [ "$3" == "true" ]
+then
+    echo "Stopping java application"; java_process stop
 fi
