@@ -10,7 +10,7 @@ COPY_LOC=/tmp/ORION
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
 
-war_deploy
+war_deploy()
 {
 	rm -rf  $WILDFLY_LOC/temp/
 	mkdir -p $WILDFLY_LOC/temp/zip
