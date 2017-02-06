@@ -85,9 +85,8 @@ war_deploy()
 
 hermese()
 {
-	/opt/orion/hermese/Hermese.sh $1
-	ps aux | grep /opt/orion/hermese
-    
+	$HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh $1
+	ps aux | grep $HERMESE_APP_LOC/$BUILD_NAME
 }
 
 hermese_backup ()
@@ -109,6 +108,20 @@ hermese_backup ()
 	fi
 }
 
+hermese_deletebackup()
+{
+	COUNT=`ls -1 $BK_LOC| wc -l`
+
+	if [ $COUNT -lt 4 ]
+	then    
+	        echo "Less than 3 backups remaining"
+	else    
+	     	rm -rf `ls -dt $BK_LOC/* | awk 'NR>3'`
+		echo "Deleted old backups sucessfully"
+	fi
+}
+
+
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
     echo "Deploying War Engine"; war_deploy $1 $2
@@ -118,5 +131,6 @@ if [ "$3" == "true" ]
 then
     echo "Stopping java application"; hermese stop
     echo "Backing up java application"; hermese_backup
+    echo "Deleting old backup files"; hermese_deletebackup()
     echo "Starting java application"; hermese start
 fi
