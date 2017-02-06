@@ -131,6 +131,6 @@ if [ "$3" == "true" ]
 then
     echo "Stopping java application"; hermese stop
     echo "Backing up java application"; hermese_backup
-    echo "Deleting old backup files"; hermese_deletebackup()
+    echo "Deleting old backup files"; hermese_deletebackup
     echo "Starting java application"; hermese start
 fi
