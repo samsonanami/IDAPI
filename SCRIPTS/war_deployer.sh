@@ -12,6 +12,9 @@ HERMESE_APP_LOC=/opt/orion
 
 BUILD_NAME=hermese
 
+#Date in which the script is run,used in backing up
+DATE=`date +%F-%T`
+
 # =================================================================== 
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
