@@ -6,6 +6,10 @@ WILDFLY_LOC=/opt/wildfly/10.0.0
 #Wildfly build copy locastion
 COPY_LOC=/tmp/ORION
 
+HERMES_BACKUP=/opt/orion/hermese-backup
+
+HERMESE_APP_LOC=/opt/orion
+
 # =================================================================== 
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
@@ -81,6 +85,25 @@ java_process()
     
 }
 
+backup ()
+{
+	if [ -d $HERMES_BACKUP ]
+	then
+        	echo "Backup folder exists" > /dev/null
+	else
+        	mkdir -p $HERMES_BACKUP
+	fi	
+
+	if [ -d $HERMESE_APP_LOC/$BUILD_NAME ]
+	then
+		cd $HERMESE_APP_LOC
+		tar -zcf $HERMES_BACKUP/$BUILD_NAME-$DATE.tgz $BUILD_NAME
+		echo "Backup taken sucessfully"
+	else
+		echo "No Files to backup"
+	fi
+}
+
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
     echo "Deploying War Engine"; war_deploy $1 $2
@@ -90,4 +113,5 @@ if [ "$3" == "true" ]
 then
     echo "Stopping java application"; java_process stop
     echo "Starting java application"; java_process start
+    echo "Backing up java application"; backup
 fi
