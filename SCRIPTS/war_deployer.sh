@@ -60,4 +60,4 @@ while IFS='' read -r lines4 || [[ -n "$lines4" ]]; do
     fi
 done < $WILDFLY_LOC/temp/temp_zipped_war.file
 
-#rm -rf  $WILDFLY_LOC/temp/
+rm -rf  $WILDFLY_LOC/temp/
