@@ -74,7 +74,7 @@ war_deploy()
 	rm -rf  $WILDFLY_LOC/temp/
 }
 
-java_process
+java_process()
 {
     /opt/orion/hermese/Hermese.sh $1
     
