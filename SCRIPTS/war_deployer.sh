@@ -42,7 +42,15 @@ while IFS='' read -r lines3 || [[ -n "$lines3" ]]; do
 	$WILDFLY_LOC/bin/jboss-cli.sh --connect --command="undeploy '$lines3'"
 done < $WILDFLY_LOC/temp/temp_undeploy.file
 
-unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war'> $WILDFLY_LOC/temp/temp_zipped_war.file
+if [ "$1" == "true" ]
+then
+    unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAPI' > $WILDFLY_LOC/temp/temp_zipped_war.file
+fi
+
+if [ "$2" == "true" ]
+then
+    unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAuthAPI' >> $WILDFLY_LOC/temp/temp_zipped_war.file
+fi
 
 while IFS='' read -r lines4 || [[ -n "$lines4" ]]; do
 	$WILDFLY_LOC/bin/jboss-cli.sh --connect --command="deploy --force $WILDFLY_LOC/temp/zip/$lines4"
