@@ -13,7 +13,7 @@
 *
 *                           Date:             Comment:
 *                           2017/02/03        Initial Script
-*
+*                           2017/02/06        Console output after script
 */
 
 
@@ -31,5 +31,9 @@ CREATE PROCEDURE orion_toggleLicense
         SET ENABLED = togle
       WHERE LICENSE_KEY = license_key;
     SET SQL_SAFE_UPDATES = 1;
+    SELECT
+      'Toggled license enable / disable status ' AS 'MESSAGE',
+      LICENSE_KEY AS 'LICENSE KEY', ENABLED AS 'NEW STATUS'
+    FROM license where LICENSE_KEY = license_key;
   END //
 DELIMITER ;

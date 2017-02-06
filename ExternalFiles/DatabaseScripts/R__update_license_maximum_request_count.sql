@@ -13,7 +13,7 @@
 *
 *                           Date:             Comment:
 *                           2017/02/03        Initial Script
-*
+*                           2017/02/06        Console output after script
 */
 
 
@@ -31,5 +31,14 @@ CREATE PROCEDURE orion_updateLicenseMaximumRequestCount
         SET MAXIMUM_REQUEST_COUNT = maximum_request_count
       WHERE LICENSE_KEY = license_key;
     SET SQL_SAFE_UPDATES = 1;
+
+    SELECT
+      'Updated maximum request count of the license' AS 'MESSAGE',
+      license.LICENSE_KEY,  license.MAXIMUM_REQUEST_COUNT AS 'MAXIMUM REQUEST COUNT ALLOWED',
+      client.USER_NAME AS 'CLIENT NAME', client.EMAIL AS 'CLIENT EMAIL ADDRESS',
+      license.START_DATE AS 'LICENSE STARTING DATE', license.END_DATE AS 'LICENSE ENDING DATE',
+      license.ENABLED AS 'LICENSE STATUS'
+    FROM license
+      INNER JOIN client ON license.CLIENT = client.ID WHERE license.LICENSE_KEY = license_key;
   END //
 DELIMITER ;

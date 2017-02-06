@@ -17,7 +17,7 @@
 *	
 *		                        Date:			      Comment:
 *		                        2016/10/26		  Initial script
-*
+*                           2017/02/06      Console output after script
 *
 *	                          Copyright (c) 2016 zone24x7
 *
@@ -101,6 +101,13 @@ license_process:BEGIN
       FROM tmp_inputs t
       INNER JOIN `client` c ON c.EMAIL = t.C_EMAIL;
     END IF;
+    SELECT
+      'Successfully created a new license' AS 'MESSAGE',
+      license.LICENSE_KEY,  client.USER_NAME AS 'CLIENT NAME', client.EMAIL AS 'CLIENT EMAIL ADDRESS',
+      license.START_DATE AS 'LICENSE STARTING DATE', license.END_DATE AS 'LICENSE ENDING DATE',
+      license.MAXIMUM_REQUEST_COUNT AS 'MAXIMUM REQUEST COUNT ALLOWED', license.ENABLED AS 'LICENSE STATUS'
+    FROM license
+      INNER JOIN client ON license.CLIENT = client.ID WHERE client.EMAIL = client_email;
 END //
 DELIMITER ;
 

@@ -13,7 +13,7 @@
 *
 *                           Date:             Comment:
 *                           2017/02/03        Initial Script
-*
+*                           2017/02/06        Console output after script
 */
 
 
@@ -30,5 +30,9 @@ CREATE PROCEDURE orion_toggleClient
     SET ENABLED = toggle
     WHERE EMAIL = client_email_address;
     SET SQL_SAFE_UPDATES = 1;
+    SELECT
+      'Toggled client enable / disable status' AS 'MESSAGE',
+      EMAIL AS 'CLIENT EMAIL ADDRESS', USER_NAME AS 'CLIENT USER NAME', ENABLED AS 'NEW STATUS'
+      FROM `client` where `client`.EMAIL = client_email_address;
   END //
 DELIMITER ;

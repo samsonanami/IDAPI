@@ -14,7 +14,7 @@
 *
 *                           Date:             Comment:
 *                           2017/02/03        Initial Script
-*
+*                           2017/02/06        Console output after script
 */
 
 
@@ -42,6 +42,8 @@ CREATE PROCEDURE orion_addVerificationTypeForLicense
         process_type_id,
         license_id
       );
-
+    SELECT
+      'Added verification type for license' AS 'MESSAGE',
+      licnese_key AS 'LICENSE KEY', verification_process_type AS 'VERIFICATION PROCESS TYPE';
   END //
 DELIMITER ;
