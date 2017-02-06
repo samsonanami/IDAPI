@@ -22,5 +22,5 @@ fi
 
 if [ "$2" == "true" ]
 then
-	unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAPI' | cut -d'-' -f1 >> $WILDFLY_LOC/temp/temp_zipped_war.file
+	unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAuthAPI' | cut -d'-' -f1 >> $WILDFLY_LOC/temp/temp_zipped_war.file
 fi
