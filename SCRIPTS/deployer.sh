@@ -36,7 +36,7 @@ while IFS='' read -r lines4 || [[ -n "$lines4" ]]; do
     then
         echo "Successfully Deployed $lines4"
     else
-        echo "$lines4 Unsuccessfull" >&2
+        echo "$lines4 Deployment Unsuccessfull" >&2
     fi
 done < /opt/wildfly/10.0.0/temp/temp_zipped_war.file
 
