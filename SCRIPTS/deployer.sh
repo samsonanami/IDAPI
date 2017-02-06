@@ -26,6 +26,7 @@ done < /opt/wildfly/10.0.0/temp/temp_running_war.file
 
 while IFS='' read -r lines3 || [[ -n "$lines3" ]]; do
 	/opt/wildfly/10.0.0/bin/jboss-cli.sh --connect --command="undeploy '$lines3'"
+	echo $?
 done < /opt/wildfly/10.0.0/temp/temp_undeploy.file
 
 unzip -l /tmp/ORION/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war'> /opt/wildfly/10.0.0/temp/temp_zipped_war.file
