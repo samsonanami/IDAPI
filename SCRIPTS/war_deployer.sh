@@ -71,7 +71,7 @@ war_deploy()
 		fi
 	done < $WILDFLY_LOC/temp/temp_zipped_war.file
 
-	# -rf  $WILDFLY_LOC/temp/
+	rm -rf  $WILDFLY_LOC/temp/
 }
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
