@@ -83,14 +83,14 @@ war_deploy()
 	rm -rf  $WILDFLY_LOC/temp/
 }
 
-java_process()
+hermese()
 {
 	/opt/orion/hermese/Hermese.sh $1
 	ps aux | grep /opt/orion/hermese
     
 }
 
-backup ()
+hermese_backup ()
 {
 	if [ -d $HERMES_BACKUP ]
 	then
@@ -116,7 +116,7 @@ fi
 
 if [ "$3" == "true" ]
 then
-    echo "Stopping java application"; java_process stop
-    echo "Starting java application"; java_process start
-    echo "Backing up java application"; backup
+    echo "Stopping java application"; hermese stop
+    echo "Backing up java application"; hermese_backup
+    echo "Starting java application"; hermese start
 fi
