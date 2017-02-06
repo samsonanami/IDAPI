@@ -89,4 +89,5 @@ fi
 if [ "$3" == "true" ]
 then
     echo "Stopping java application"; java_process stop
+    echo "Starting java application"; java_process start
 fi
