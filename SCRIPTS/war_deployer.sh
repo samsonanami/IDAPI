@@ -130,7 +130,7 @@ hermes_app_deploy()
     cp $COPY_LOC/$ENV/*.zip $HERMESE_APP_LOC/temp/.
     cd $HERMESE_APP_LOC/temp
     unzip *.zip
-    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/*.xml $HERMESE_APP_LOC/$BUILD_NAME/config/.
+    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/*.xml $HERMESE_APP_LOC/$BUILD_NAME/.
     cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/Hermese.sh $HERMESE_APP_LOC/$BUILD_NAME/.
     chmod u+x $HERMESE_APP_LOC/temp/SERVER_CONFIGS/Hermese.sh
     #$HERMESE_APP_LOC/temp/hermese.bsx
