@@ -27,11 +27,7 @@ wildfly_check()
 {
 	RUNNING=$(lsof -i:9990)
 
-	if [ -z "$RUNNING" ]; then
-		echo "Wildfly Not Running!"
-	else
-		echo "Wildfly Running!"
-	fi  
+
 }
 
 wildfly_deploy()
