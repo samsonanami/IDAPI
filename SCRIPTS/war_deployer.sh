@@ -15,6 +15,8 @@ BUILD_NAME=hermese
 #Date in which the script is run,used in backing up
 DATE=`date +%F-%T`
 
+ENV=dev
+
 # =================================================================== 
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
@@ -24,9 +26,9 @@ war_deploy()
 	rm -rf  $WILDFLY_LOC/temp/
 	mkdir -p $WILDFLY_LOC/temp/zip
 
-	cp $COPY_LOC/dev/*.zip  $WILDFLY_LOC/temp/zip/.
+	cp $COPY_LOC/$ENV/*.zip  $WILDFLY_LOC/temp/zip/.
 	cd $WILDFLY_LOC/temp/zip
-	unzip *.zip > /dev/null
+	unzip *.zip
 
 	$WILDFLY_LOC/bin/jboss-cli.sh --connect --commands="ls deployment" > $WILDFLY_LOC/temp/temp_running_war.file
 
@@ -35,12 +37,12 @@ war_deploy()
 
 	if [ "$1" == "true" ]
 	then
-		unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAPI' | cut -d'-' -f1 > $WILDFLY_LOC/temp/temp_zipped_war.file
+		unzip -l $COPY_LOC/$ENV/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAPI' | cut -d'-' -f1 > $WILDFLY_LOC/temp/temp_zipped_war.file
 	fi
 
 	if [ "$2" == "true" ]
 	then
-		unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAuthAPI' | cut -d'-' -f1 >> $WILDFLY_LOC/temp/temp_zipped_war.file
+		unzip -l $COPY_LOC/$ENV/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAuthAPI' | cut -d'-' -f1 >> $WILDFLY_LOC/temp/temp_zipped_war.file
 	fi
 
 	echo "################## Files To Be Deployed On Wildfly ######################" 
@@ -62,12 +64,12 @@ war_deploy()
 
 	if [ "$1" == "true" ]
 	then
-		unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAPI' > $WILDFLY_LOC/temp/temp_zipped_war.file
+		unzip -l $COPY_LOC/$ENV/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAPI' > $WILDFLY_LOC/temp/temp_zipped_war.file
 	fi
 
 	if [ "$2" == "true" ]
 	then
-		unzip -l $COPY_LOC/dev/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAuthAPI' >> $WILDFLY_LOC/temp/temp_zipped_war.file
+		unzip -l $COPY_LOC/$ENV/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAuthAPI' >> $WILDFLY_LOC/temp/temp_zipped_war.file
 	fi
 
 	while IFS='' read -r lines4 || [[ -n "$lines4" ]]; do
@@ -125,6 +127,9 @@ hermes_app_deploy()
 {
     rm -rf $HERMESE_APP_LOC/temp 
     mkdir -p $HERMESE_APP_LOC/temp
+    cp $COPY_LOC/$ENV/*.zip $HERMESE_APP_LOC/temp/.
+    cd $HERMESE_APP_LOC/temp
+    unzip *.zip
 
 }
 
