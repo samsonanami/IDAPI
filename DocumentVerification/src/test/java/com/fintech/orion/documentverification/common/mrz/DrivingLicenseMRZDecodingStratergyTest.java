@@ -94,4 +94,12 @@ public class DrivingLicenseMRZDecodingStratergyTest {
         Assert.assertEquals(expectedResult.getInitialsOfTheFirstName(), results.getInitialsOfTheFirstName());
     }
 
+    @Test
+    public void should_Return_Valid_sex() throws DrivingLicenseMRZDecodingException {
+        expectedResult.setSex("F");
+        MRZDecodeResults results = strategy.decode(mrz);
+        Assert.assertEquals(expectedResult.getSex(), results.getSex());
+    }
+
+
 }
