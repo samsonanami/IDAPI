@@ -23,23 +23,27 @@ ENV=dev
 
 wildfly_deploy()
 {
+	#Makes a temporary folder in the WILDFLY directory , copies the build zip and unzips it
 	rm -rf  $WILDFLY_LOC/temp/
 	mkdir -p $WILDFLY_LOC/temp/zip
 
 	cp $COPY_LOC/$ENV/*.zip  $WILDFLY_LOC/temp/zip/.
 	cd $WILDFLY_LOC/temp/zip
 	unzip *.zip
-
+	
+	#Lists the war engines currently running into a file
 	$WILDFLY_LOC/bin/jboss-cli.sh --connect --commands="ls deployment" > $WILDFLY_LOC/temp/temp_running_war.file
 
 	echo "################## Files Running On Wildfly ######################"
 	cat $WILDFLY_LOC/temp/temp_running_war.file
 
+	#Checks if OrionAPI is to be deployed, checks if it's there in the build zip then copies the name to a file
 	if [ "$1" == "true" ]
 	then
 		unzip -l $COPY_LOC/$ENV/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAPI' | cut -d'-' -f1 > $WILDFLY_LOC/temp/temp_zipped_war.file
 	fi
 
+	#Checks if OrionAuthAPI is to be deployed, checks if it's there in the build zip then copies the name to a file without versioning
 	if [ "$2" == "true" ]
 	then
 		unzip -l $COPY_LOC/$ENV/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAuthAPI' | cut -d'-' -f1 >> $WILDFLY_LOC/temp/temp_zipped_war.file
@@ -48,30 +52,34 @@ wildfly_deploy()
 	echo "################## Files To Be Deployed On Wildfly ######################" 
 	cat $WILDFLY_LOC/temp/temp_zipped_war.file
 
-	lines=$($WILDFLY_LOC/bin/jboss-cli.sh --connect --commands="ls deployment" | wc -l)
-
+	#Lists war engines needed to be undeployed into a file
 	while IFS='' read -r lines1 || [[ -n "$lines1" ]]; do
 		while IFS='' read -r lines2 || [[ -n "$lines2" ]]; do
 			echo "$lines1" | grep "$lines2" >>  $WILDFLY_LOC/temp/temp_undeploy.file
 		done < $WILDFLY_LOC/temp/temp_zipped_war.file
 	done < $WILDFLY_LOC/temp/temp_running_war.file
 
+	#Undeploys the war engines by reading the undeploy file
 	while IFS='' read -r lines3 || [[ -n "$lines3" ]]; do
 		$WILDFLY_LOC/bin/jboss-cli.sh --connect --command="undeploy '$lines3'"
 	done < $WILDFLY_LOC/temp/temp_undeploy.file
 
+	#removes file containing the list of zipped war engines
 	rm -rf $WILDFLY_LOC/temp/temp_zipped_war.file
 
+	#Checks if OrionAPI is to be deployed, checks if it's there in the build zip then copies the name to a file with versioning
 	if [ "$1" == "true" ]
 	then
 		unzip -l $COPY_LOC/$ENV/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAPI' > $WILDFLY_LOC/temp/temp_zipped_war.file
 	fi
 
+	#Checks if OrionAuthAPI is to be deployed, checks if it's there in the build zip then copies the name to a file with versioning
 	if [ "$2" == "true" ]
 	then
 		unzip -l $COPY_LOC/$ENV/*.zip | sed -n '4,$p' | head -n -2 |awk '{ print $4 }'| grep 'war' | grep 'OrionAuthAPI' >> $WILDFLY_LOC/temp/temp_zipped_war.file
 	fi
 
+	#Deploys the application and checks if its deployed successfully
 	while IFS='' read -r lines4 || [[ -n "$lines4" ]]; do
 		$WILDFLY_LOC/bin/jboss-cli.sh --connect --command="deploy --force $WILDFLY_LOC/temp/zip/$lines4"
 		if [ $? -eq 0 ]
