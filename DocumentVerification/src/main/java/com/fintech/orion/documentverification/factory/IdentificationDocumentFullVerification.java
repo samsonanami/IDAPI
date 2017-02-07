@@ -81,7 +81,7 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
         LOGGER.debug("Starting custom validation with resource name {} and ocr response {}", resourceName, ocrResponse);
         for (CustomValidation validation : getCustomValidationList()) {
             try {
-                ValidationData validationData = validation.validate(resourceName, ocrResponse);
+                ValidationData validationData = (ValidationData) validation.validate(resourceName, ocrResponse);
                 idDocFullValidationList.add(validationData);
                 if (!validationData.getValidationStatus() && validation.isCriticalValidation()) {
                     errorDataSet.setRemarks(errorDataSet.getRemarks() + validationData.getRemarks());

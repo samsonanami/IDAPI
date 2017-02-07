@@ -14,6 +14,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -24,6 +25,9 @@ import java.util.Date;
 public class MinimumAgeValidation extends ValidationHelper implements CustomValidation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MinimumAgeValidation.class);
+
+    @Autowired
+    private DateDecoder dateDecoder;
 
     private int minimumAge;
 
@@ -60,7 +64,6 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
 
     private ValidationData validateMinimumAge(OcrFieldData ocrFieldData) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = null;

@@ -5,5 +5,5 @@ package com.fintech.orion.documentverification.factory;
  */
 public enum DocumentVerificationType {
 
-    DATA_COMPARISON, ID_DOC_FULL_VERIFICATIONS, ADDRESS_DOC_FULL_VERIFICATIONS
+    DATA_COMPARISON, ID_DOC_FULL_VERIFICATIONS, ADDRESS_DOC_FULL_VERIFICATIONS, DATA_VALIDATIONS
 }

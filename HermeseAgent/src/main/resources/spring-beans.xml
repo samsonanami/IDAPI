@@ -44,17 +44,19 @@
     </bean>
 
     <bean id="maximumWaitingTimeInSeconds" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="60"/>
+        <constructor-arg type="java.lang.String" value="120"/>
     </bean>
 
     <bean id="maximumNumberOfTimeShouldRetry" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="10"/>
     </bean>
 
+    <bean id="dateDecoder" class="com.fintech.orion.documentverification.common.date.DateDecoder"/>
     <bean id="dateTypeConfigurationList" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
-
+                <ref bean="ukPassportDateConfigurations"/>
+                <ref bean="basicDateConfiguration"/>
             </array>
         </constructor-arg>
     </bean>

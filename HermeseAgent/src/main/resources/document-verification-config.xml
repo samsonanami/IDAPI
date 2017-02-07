@@ -17,6 +17,7 @@
     <bean id="dataComparator" class="com.fintech.orion.documentverification.factory.DataComparator"/>
     <bean id="idDocFullValidator" class="com.fintech.orion.documentverification.factory.IdentificationDocumentFullVerification"/>
     <bean id="addressDocFullValidator" class="com.fintech.orion.documentverification.factory.AddressDocumentFullVerification"/>
+    <bean id="documentDataValidator" class="com.fintech.orion.documentverification.factory.DataValidations"/>
 
     <bean id="verificationConfigurationMap" class="java.util.HashMap" scope="prototype">
         <constructor-arg>
@@ -78,7 +79,6 @@
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
                 <ref bean="documentTypeValidation"/>
-                <ref bean="documentVersionValidation"/>
                 <ref bean="surNameValidation"/>
                 <ref bean="genderVerification"/>
                 <ref bean="minimumAgeVerification"/>
@@ -151,5 +151,83 @@
         <property name="mrzLineCount" value="2"/>
         <property name="resourceNameToCheckMRZ" value="passport"/>
         <property name="successRemarksMessage" value="MRZ check digit validation successful."/>
+    </bean>
+
+
+    <bean id="dataValidations" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
+                <ref bean="surnameVizMrzValidation"/>
+                <ref bean="dateOfBirthVizMrzValidation"/>
+                <ref bean="documentNumberVizMrzValidation"/>
+                <ref bean="genderVizMrzValidation"/>
+                <ref bean="givenNameVizMrzValidation"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="surnameVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.SurnameVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="surname"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate surname mrz and viz values"/>
+        <property name="successRemarksMessage" value="Successfully validated surname mrz and viz values"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+    </bean>
+
+    <bean id="dateOfBirthVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.DateOfBirthVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="date_of_birth"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate date of birth"/>
+        <property name="successRemarksMessage" value="date of birth is validated"/>
+        <property name="dataValidationStrategyType" value="DATE"/>
+    </bean>
+
+    <bean id="documentNumberVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.DocumentNumberVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="passport_number"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate "/>
+        <property name="successRemarksMessage" value="Verified"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+    </bean>
+
+    <bean id="genderVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.GenderVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="sex"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate "/>
+        <property name="successRemarksMessage" value="Verified"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+    </bean>
+
+    <bean id="givenNameVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.GivenNamesVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="given_names"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate "/>
+        <property name="successRemarksMessage" value="Verified"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+    </bean>
+
+
+
+    <bean id="documentMrzDecodingConfigurations" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
+                <ref bean="passportMrzDecodingConfigurations"/>
+                <ref bean="drivingLicenseMrzDecodingConfigurations"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="passportMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
+        <property name="documentName" value="passport"/>
+        <property name="mrzOcrExtractionFieldBase" value="MRZ_Line"/>
+        <property name="mrzDecodingStrategy" ref="passportMRZDecodingStrategy"/>
+        <property name="mrzLineCount" value="2"/>
+    </bean>
+
+    <bean id="drivingLicenseMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
+        <property name="documentName" value="drivingLicenseFront"/>
+        <property name="mrzOcrExtractionFieldBase" value="MRZ_Line"/>
+        <property name="mrzLineCount" value="1"/>
+        <property name="mrzDecodingStrategy" ref="drivingLicenseMRZDecodingStrategy"/>
     </bean>
 </beans>

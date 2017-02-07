@@ -4,14 +4,18 @@ import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
 /**
  * Created by MudithaJ on 12/26/2016.
  */
-public class OperationDateComparator extends DateDecoder implements DataValidationStrategy {
+public class OperationDateComparator implements DataValidationStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationDateComparator.class);
+    @Autowired
+    private DateDecoder dateDecoder;
+
     @Override
     public ValidationResult doOperation(String base, String compare) {
         ValidationResult
@@ -20,8 +24,8 @@ public class OperationDateComparator extends DateDecoder implements DataValidati
         Date compareDate = null;
 
         try {
-            baseDate = this.decodeDate(base);
-            compareDate = this.decodeDate(compare);
+            baseDate = dateDecoder.decodeDate(base);
+            compareDate = dateDecoder.decodeDate(compare);
             if (baseDate.equals(compareDate)) {
                 result.setStatus(true);
             }

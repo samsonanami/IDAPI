@@ -22,6 +22,10 @@ public class DocumentVerificationFactory {
     @Qualifier("addressDocFullValidator")
     private AddressDocumentFullVerification addressDocFullValidator;
 
+    @Autowired
+    @Qualifier("documentDataValidator")
+    private DataValidations documentDataValidator;
+
     public DocumentVerification getDocumentVerification(DocumentVerificationType type) {
         DocumentVerification documentVerification = null;
         switch (type) {
@@ -33,6 +37,9 @@ public class DocumentVerificationFactory {
                 break;
             case ADDRESS_DOC_FULL_VERIFICATIONS:
                 documentVerification = addressDocFullValidator;
+                break;
+            case DATA_VALIDATIONS:
+                documentVerification = documentDataValidator;
                 break;
             default:
                 documentVerification = dataComparator;
