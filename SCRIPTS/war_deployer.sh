@@ -25,6 +25,7 @@ set -e
 
 wildfly_check()
 {
+    echo $1
 	RUNNING=$( ps -ef | grep -e $1 | grep -e Standalone)
 
 	if [ -z "$RUNNING" ]; then
