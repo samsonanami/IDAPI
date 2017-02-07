@@ -17,6 +17,9 @@ DATE=`date +%F-%T`
 
 ENV=dev
 
+WILDFLY_ADMIN_PORT=9990
+
+
 # =================================================================== 
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
@@ -25,15 +28,17 @@ set -e
 
 wildfly_check()
 {
-    echo $1
-	RUNNING=$($WILDFLY_LOC/bin/jboss-cli.sh --connect --commands="ls" | grep -e "Failed to connect to the controller:")
-    echo $RUNNING
+    RUNNING=`netstat -an | grep $WILDFLY_ADMIN_PORT | grep -v grep | wc -l`
     
-	if [ -z "$RUNNING" ]; then
-		echo "Wildfly Not Running!"
-	else
-		echo "Wildfly Running!"
-	fi  
+    if [[ "$RUNNING" != "0" ]]; then
+        echo "###############################################"
+        echo "JBoss Application Server is Up!! And Running.!!"
+        echo "###############################################"
+    else
+        echo "##################################"
+        echo "JBoss Application Server is Down!!"
+        echo "##################################"
+    fi;
 }
 
 wildfly_deploy()
