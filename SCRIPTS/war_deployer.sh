@@ -129,7 +129,7 @@ hermese_temp_backup()
     cp $HERMESE_APP_LOC/$BUILD_NAME/config/spring-config.xml $HERMESE_APP_LOC/temp/.
     cp $HERMESE_APP_LOC/$BUILD_NAME/config/spring-datasource.xml $HERMESE_APP_LOC/temp/.
     cp $HERMESE_APP_LOC/$BUILD_NAME/config/applicationContext.xml $HERMESE_APP_LOC/temp/.
-    cp $HERMESE_APP_LOC/$BUILD_NAME/Hermes.sh $HERMESE_APP_LOC/temp/.
+    cp $HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh $HERMESE_APP_LOC/temp/.
 }
 
 hermes_app_deploy()
@@ -139,6 +139,7 @@ hermes_app_deploy()
     rm -rf $HERMESE_APP_LOC/temp/*.war
     unzip *.zip
     rm -rf $HERMESE_APP_LOC/$BUILD_NAME
+    chmod u+x $HERMESE_APP_LOC/temp/*.bsx
     $HERMESE_APP_LOC/temp/*.bsx
 }
 
