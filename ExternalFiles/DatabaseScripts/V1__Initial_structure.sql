@@ -1,14 +1,6 @@
+-- MySQL dump 10.13  Distrib 5.7.17, for Linux (x86_64)
 --
--- initial database script
--- this script contain schema creation and table creation script
---
-
-
-CREATE DATABASE  IF NOT EXISTS `orion` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `orion`;
--- MySQL dump 10.13  Distrib 5.7.16, for Linux (x86_64)
---
--- Host: 0.0.0.0    Database: orion
+-- Host: 10.101.15.212    Database: idapi
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.1.17-MariaDB
 
@@ -24,6 +16,18 @@ USE `orion`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `C3P0_TEST_TABLE`
+--
+
+DROP TABLE IF EXISTS `C3P0_TEST_TABLE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `C3P0_TEST_TABLE` (
+  `a` char(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `client`
 --
 
@@ -35,12 +39,14 @@ CREATE TABLE `client` (
   `EMAIL` varchar(256) NOT NULL,
   `REGISTERED_ON` date NOT NULL,
   `USER_NAME` varchar(45) NOT NULL,
-  `PASSWORD` varchar(256) NOT NULL,
+  `PASSWORD` varchar(512) NOT NULL,
   `ENABLED` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `EMAIL_UNIQUE` (`EMAIL`),
-  UNIQUE KEY `USER_NAME_UNIQUE` (`USER_NAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `USER_NAME_UNIQUE` (`USER_NAME`),
+  UNIQUE KEY `UK71jccfcj21ifcli4a0qa590d5` (`EMAIL`),
+  UNIQUE KEY `UKs3t9dk48yubrtv97fu74e5q5p` (`USER_NAME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +69,7 @@ CREATE TABLE `license` (
   PRIMARY KEY (`ID`),
   KEY `fk_license_client1_idx` (`CLIENT`),
   CONSTRAINT `fk_license_client1` FOREIGN KEY (`CLIENT`) REFERENCES `client` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,7 +89,7 @@ CREATE TABLE `oauth_access_token` (
   `authentication` blob,
   `refresh_token` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +128,7 @@ CREATE TABLE `oauth_refresh_token` (
   `token` blob,
   `authentication` blob,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,20 +154,17 @@ DROP TABLE IF EXISTS `ocr_process`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ocr_process` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PROCESS_TYPE` int(11) NOT NULL,
-  `PROCESSING_REQUEST` int(11) NOT NULL,
-  `RESOURCE` int(11) NOT NULL,
-  `PROCESSING_STATUS` int(11) NOT NULL,
+  `PROCESS_TYPE` int(11) DEFAULT NULL,
+  `PROCESSING_REQUEST` int(11) DEFAULT NULL,
+  `PROCESSING_STATUS` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `fk_ocr_process_ocr_process_type_idx` (`PROCESS_TYPE`),
   KEY `fk_ocr_process_ocr_processing_request1_idx` (`PROCESSING_REQUEST`),
-  KEY `fk_ocr_process_resource1_idx` (`RESOURCE`),
   KEY `fk_ocr_process_ocr_processing_status1_idx` (`PROCESSING_STATUS`),
+  KEY `fk_ocr_process_ocr_process_type_idx` (`PROCESS_TYPE`),
   CONSTRAINT `fk_ocr_process_ocr_process_type` FOREIGN KEY (`PROCESS_TYPE`) REFERENCES `ocr_process_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ocr_process_ocr_processing_request1` FOREIGN KEY (`PROCESSING_REQUEST`) REFERENCES `ocr_processing_request` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ocr_process_ocr_processing_status1` FOREIGN KEY (`PROCESSING_STATUS`) REFERENCES `ocr_processing_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ocr_process_resource1` FOREIGN KEY (`RESOURCE`) REFERENCES `resource` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_ocr_process_ocr_processing_status1` FOREIGN KEY (`PROCESSING_STATUS`) REFERENCES `ocr_processing_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,11 +189,11 @@ DROP TABLE IF EXISTS `ocr_processing_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ocr_processing_request` (
-  `ID` int(11) NOT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `RECEIVED_ON` timestamp NULL DEFAULT NULL,
   `PROCESSING_REQUEST_CODE` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,35 +211,25 @@ CREATE TABLE `ocr_processing_status` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `ocr_results`
+-- Table structure for table `ocr_result`
 --
 
-DROP TABLE IF EXISTS `ocr_results`;
+DROP TABLE IF EXISTS `ocr_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ocr_results` (
+CREATE TABLE `ocr_result` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PROCESS` int(11) NOT NULL,
-  `FIELD` int(11) NOT NULL,
-  `KEYED_VALUE` varchar(45) DEFAULT NULL,
-  `ID_VALUE` varchar(45) DEFAULT NULL,
-  `ID_OCR_CONFIDENCE` varchar(45) DEFAULT NULL,
-  `UTILITY_BILL_VALUE` varchar(45) DEFAULT NULL,
-  `UTILITY_BILL_OCR_CONFIDENCE` varchar(45) DEFAULT NULL,
-  `PASSPORT_VIZ` varchar(45) DEFAULT NULL,
-  `PASSPORT_VIZ_OCR_CONFIDENCE` varchar(45) DEFAULT NULL,
-  `PASSPORT_MRZ` varchar(45) DEFAULT NULL,
-  `PASSPORT_MRZ_OCR_CONFIDENCE` varchar(45) DEFAULT NULL,
-  `DRIVING_LICENSE_VIZ` varchar(45) DEFAULT NULL,
-  `DRIVING_LICENSE_VIZ_OCR_CONFIDENCE` varchar(45) DEFAULT NULL,
-  `DRIVING_LICENSE_MRZ` varchar(45) DEFAULT NULL,
-  `DRIVING_LICENSE_MRZ_OCR_CONFIDENCE` varchar(45) DEFAULT NULL,
+  `VALUE` varchar(256) DEFAULT NULL,
+  `OCR_CONFIDENCE` double DEFAULT NULL,
+  `RESULT_NAME` varchar(45) DEFAULT NULL,
+  `OCR_EXTRACTION_FIELD` int(11) DEFAULT NULL,
+  `OCR_PROCESS` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `fk_ocr_results_ocr_process1_idx` (`PROCESS`),
-  KEY `fk_ocr_results_ocr_extraction_field1_idx` (`FIELD`),
-  CONSTRAINT `fk_ocr_results_ocr_extraction_field1` FOREIGN KEY (`FIELD`) REFERENCES `ocr_extraction_field` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ocr_results_ocr_process1` FOREIGN KEY (`PROCESS`) REFERENCES `ocr_process` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `fk_ocr_result_ocr_process1_idx` (`OCR_PROCESS`),
+  KEY `fk_ocr_result_resource_name_ocr_extraction_field1_idx` (`OCR_EXTRACTION_FIELD`),
+  CONSTRAINT `fk_ocr_result_ocr_process1` FOREIGN KEY (`OCR_PROCESS`) REFERENCES `ocr_process` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ocr_result_resource_name_ocr_extraction_field1` FOREIGN KEY (`OCR_EXTRACTION_FIELD`) REFERENCES `resource_name_ocr_extraction_field` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,18 +243,18 @@ CREATE TABLE `process` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `REQUEST_SENT_ON` timestamp NULL DEFAULT NULL,
   `RESPONSE_RECEIVED_ON` timestamp NULL DEFAULT NULL,
-  `PROCESSING_REQUEST` int(11) NOT NULL,
-  `PROCESS_TYPE` int(11) NOT NULL,
-  `PROCESS_IDENTIFICATION_CODE` varchar(40) NOT NULL,
-  `PROCESSING_STATUS` int(11) NOT NULL,
+  `PROCESSING_REQUEST` int(11) DEFAULT NULL,
+  `PROCESS_TYPE` int(11) DEFAULT NULL,
+  `PROCESS_IDENTIFICATION_CODE` varchar(40) DEFAULT NULL,
+  `PROCESSING_STATUS` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_process_process_type1_idx` (`PROCESS_TYPE`),
-  KEY `fk_process_processing_request1_idx` (`PROCESSING_REQUEST`),
   KEY `fk_process_processing_status1_idx` (`PROCESSING_STATUS`),
+  KEY `fk_process_processing_request1_idx` (`PROCESSING_REQUEST`),
   CONSTRAINT `fk_process_process_type1` FOREIGN KEY (`PROCESS_TYPE`) REFERENCES `process_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_process_processing_request1` FOREIGN KEY (`PROCESSING_REQUEST`) REFERENCES `processing_request` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_process_processing_status1` FOREIGN KEY (`PROCESSING_STATUS`) REFERENCES `processing_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,9 +301,9 @@ CREATE TABLE `process_type_license` (
   PRIMARY KEY (`ID`),
   KEY `fk_process_type_has_license_license1_idx` (`LICENSE`),
   KEY `fk_process_type_has_license_process_type1_idx` (`PROCESS_TYPE`),
-  CONSTRAINT `fk_process_type_has_license_license1` FOREIGN KEY (`LICENSE`) REFERENCES `license` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_process_type_has_license_license1` FOREIGN KEY (`LICENSE`) REFERENCES `license` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_process_type_has_license_process_type1` FOREIGN KEY (`PROCESS_TYPE`) REFERENCES `process_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,12 +316,12 @@ DROP TABLE IF EXISTS `processing_request`;
 CREATE TABLE `processing_request` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `RECEIVED_ON` timestamp NULL DEFAULT NULL,
-  `CLIENT` int(11) NOT NULL,
-  `PROCESSING_REQUEST_IDENTIFICATION_CODE` varchar(40) NOT NULL,
+  `CLIENT` int(11) DEFAULT NULL,
+  `PROCESSING_REQUEST_IDENTIFICATION_CODE` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_processing_request_client1_idx` (`CLIENT`),
   CONSTRAINT `fk_processing_request_client1` FOREIGN KEY (`CLIENT`) REFERENCES `client` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -355,20 +348,28 @@ DROP TABLE IF EXISTS `resource`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `resource` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LOCATION` varchar(128) NOT NULL,
-  `RESOURCE_TYPE` int(11) NOT NULL,
-  `RESOURCE_NAME` varchar(50) DEFAULT NULL,
-  `CLIENT` int(11) NOT NULL,
-  `RESOURCE_IDENTIFICATION_CODE` varchar(40) NOT NULL,
+  `LOCATION` varchar(128) DEFAULT NULL,
+  `RESOURCE_TYPE` int(11) DEFAULT NULL,
+  `CLIENT` int(11) DEFAULT NULL,
+  `RESOURCE_IDENTIFICATION_CODE` varchar(40) DEFAULT NULL,
   `PROCESS` int(11) DEFAULT NULL,
+  `OCR_PROCESS` int(11) DEFAULT NULL,
+  `RESOURCE_NAME` int(11) DEFAULT NULL,
+  `OCR_PROCESSING_STATUS` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `fk_resource_client1_idx` (`CLIENT`),
   KEY `fk_resource_resource_type1_idx` (`RESOURCE_TYPE`),
   KEY `fk_resource_process1_idx` (`PROCESS`),
+  KEY `fk_resource_ocr_process1_idx` (`OCR_PROCESS`),
+  KEY `fk_resource_resource_name1_idx` (`RESOURCE_NAME`),
+  KEY `fk_resource_ocr_processing_status1_idx` (`OCR_PROCESSING_STATUS`),
   CONSTRAINT `fk_resource_client1` FOREIGN KEY (`CLIENT`) REFERENCES `client` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_resource_ocr_process1` FOREIGN KEY (`OCR_PROCESS`) REFERENCES `ocr_process` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_resource_ocr_processing_status1` FOREIGN KEY (`OCR_PROCESSING_STATUS`) REFERENCES `ocr_processing_status` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_resource_process1` FOREIGN KEY (`PROCESS`) REFERENCES `process` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_resource_resource_name1` FOREIGN KEY (`RESOURCE_NAME`) REFERENCES `resource_name` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_resource_resource_type1` FOREIGN KEY (`RESOURCE_TYPE`) REFERENCES `resource_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -385,6 +386,41 @@ CREATE TABLE `resource_metadata` (
   PRIMARY KEY (`RESOURCE`,`KEY`),
   CONSTRAINT `fk_resource_metadata_resource1` FOREIGN KEY (`RESOURCE`) REFERENCES `resource` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `resource_name`
+--
+
+DROP TABLE IF EXISTS `resource_name`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_name` (
+  `ID` int(11) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CONFIG_FILE_PATH` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `resource_name_ocr_extraction_field`
+--
+
+DROP TABLE IF EXISTS `resource_name_ocr_extraction_field`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_name_ocr_extraction_field` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `resource_name_ID` int(11) DEFAULT NULL,
+  `ocr_extraction_field_ID` int(11) DEFAULT NULL,
+  `minimum_acceptable_ocr_confidence` int(3) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_resource_name_has_ocr_extraction_field_resource_name1_idx` (`resource_name_ID`),
+  KEY `fk_resource_name_has_ocr_extraction_field_ocr_extraction_field1` (`ocr_extraction_field_ID`),
+  CONSTRAINT `fk_resource_name_has_ocr_extraction_field_ocr_extraction_field1` FOREIGN KEY (`ocr_extraction_field_ID`) REFERENCES `ocr_extraction_field` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_resource_name_has_ocr_extraction_field_resource_name1` FOREIGN KEY (`resource_name_ID`) REFERENCES `resource_name` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -426,3 +462,4 @@ CREATE TABLE `response` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2017-02-04  9:57:22
