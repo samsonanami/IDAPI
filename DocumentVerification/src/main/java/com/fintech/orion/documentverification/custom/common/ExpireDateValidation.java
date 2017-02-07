@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.custom.common;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -32,7 +32,7 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
         if (validationData.getValidationStatus()) {
             try {
                 validationData = checkDocumentExpirationDate(fieldData);
-            } catch (DateComparatorException e) {
+            } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an expire date validation for ocr response {} on " +
                         "resource name {} {}", ocrResponse, resourceName.getName(), e);
                 validationData.setValue(null);
@@ -50,7 +50,7 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
         return validationData;
     }
 
-    private ValidationData checkDocumentExpirationDate(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData checkDocumentExpirationDate(OcrFieldData ocrFieldData) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
         DateDecoder dateDecoder = new DateDecoder();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
