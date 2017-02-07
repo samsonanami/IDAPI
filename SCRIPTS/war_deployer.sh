@@ -21,6 +21,8 @@ ENV=dev
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
 
+set -e
+
 wildfly_deploy()
 {
 	#Makes a temporary folder in the WILDFLY directory , copies the build zip and unzips it
