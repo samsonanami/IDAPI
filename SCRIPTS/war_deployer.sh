@@ -132,7 +132,7 @@ hermese_temp_backup()
     cp $HERMESE_APP_LOC/$BUILD_NAME/Hermes.sh $HERMESE_APP_LOC/temp/.
 }
 
-app_deploy()
+hermes_app_deploy()
 {
 	yes | cp -rf $COPY_LOC/dev/*.zip  $HERMESE_APP_LOC/temp/.
     cd $HERMESE_APP_LOC/temp/
@@ -153,5 +153,6 @@ then
     echo "Backing up config files"; hermese_temp_backup
     echo "Backing up java application"; hermese_backup
     echo "Deleting old backup files"; hermese_deletebackup
+    echo "Deleting old backup files"; hermes_app_deploy
     echo "Starting java application"; hermese start
 fi
