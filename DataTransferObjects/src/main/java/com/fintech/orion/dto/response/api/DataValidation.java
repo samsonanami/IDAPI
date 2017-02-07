@@ -16,7 +16,7 @@ public class DataValidation   {
   @JsonProperty("id")
   private String id = null;
 
-  @JsonProperty("value")
+  @JsonProperty("validations")
   private List<DataValidationValue> value = new ArrayList<DataValidationValue>();
 
   public DataValidation id(String id) {
