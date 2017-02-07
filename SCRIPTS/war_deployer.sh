@@ -123,16 +123,9 @@ hermese_deletebackup()
 
 hermes_app_deploy()
 {
+    rm -rf $HERMESE_APP_LOC/temp 
     mkdir -p $HERMESE_APP_LOC/temp
-	yes | cp -rf $COPY_LOC/dev/*.zip  $HERMESE_APP_LOC/temp/.
-    cd $HERMESE_APP_LOC/temp/
-    unzip *.zip
-    rm -rf $HERMESE_APP_LOC/temp/*.war
-    rm -rf $HERMESE_APP_LOC/$BUILD_NAME
-    chmod u+x $HERMESE_APP_LOC/temp/*.bsx
-    cp $HERMESE_APP_LOC/temp/SERVER_CONFIGS/Hermes.sh $HERMESE_APP_LOC/$BUILD_NAME/.
-    cp -r $HERMESE_APP_LOC/temp/SERVER_CONFIGS/*.xml $HERMESE_APP_LOC/$BUILD_NAME/config/.
-    $HERMESE_APP_LOC/temp/*.bsx
+
 }
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
