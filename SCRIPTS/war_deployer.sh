@@ -6,17 +6,22 @@ WILDFLY_LOC=/opt/wildfly/10.0.0
 #Wildfly build copy location
 COPY_LOC=/tmp/ORION
 
+#Hermes backup location
 HERMES_BACKUP=/opt/orion/hermese-backup
 
+#Location of the hermese application
 HERMESE_APP_LOC=/opt/orion
 
+#Name of the folder in which the hermese application resides
 BUILD_NAME=hermese
 
 #Date in which the script is run,used in backing up
 DATE=`date +%F-%T`
 
+#Environment to be deployed in.
 ENV=dev
 
+#Wildfly web portal access port
 WILDFLY_ADMIN_PORT=9990
 
 
@@ -170,7 +175,7 @@ hermes_app_deploy()
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
     echo "Checking Wether wildfly is running or not"; wildfly_check $4
-    #echo "Deploying War Engine"; wildfly_deploy $1 $2
+    echo "Deploying War Engine"; wildfly_deploy $1 $2
 fi
 
 if [ "$3" == "true" ]
