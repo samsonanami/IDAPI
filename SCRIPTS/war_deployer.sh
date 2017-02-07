@@ -38,6 +38,7 @@ wildfly_check()
         echo "##################################"
         echo "JBoss Application Server is Down!!"
         echo "##################################"
+        exit 1
     fi;
 }
 
