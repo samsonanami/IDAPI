@@ -23,6 +23,17 @@ ENV=dev
 
 set -e
 
+wildfly_check()
+{
+	RUNNING=$(lsof -i:9990)
+
+	if [ -z "$RUNNING" ]; then
+		echo "Wildfly Not Running!"
+	else
+		echo "Wildfly Running!"
+	fi  
+}
+
 wildfly_deploy()
 {
 	#Makes a temporary folder in the WILDFLY directory , copies the build zip and unzips it
@@ -150,7 +161,8 @@ hermes_app_deploy()
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
-    echo "Deploying War Engine"; wildfly_deploy $1 $2
+    echo "Checking Wether wildfly is running or not"; wildfly_check
+    #echo "Deploying War Engine"; wildfly_deploy $1 $2
 fi
 
 if [ "$3" == "true" ]
