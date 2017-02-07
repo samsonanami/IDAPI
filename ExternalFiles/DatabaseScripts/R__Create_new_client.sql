@@ -12,15 +12,16 @@
 *																														https://www.dailycred.com/article/bcrypt-calculator
 *                                                           and insert value as the password
 *	Revision History						:
-*	
+*
 *																			Date:						Comment:
 *																			2016/10/26			Initial script
 *                                     2017/01/24      AES ENCRYPTION to password
+*                                     2017/02/06      Console output after adding a user
 *
 *													Copyright (c) 2016 zone24x7
 *
 */
-USE idapi;
+
 DROP PROCEDURE IF EXISTS `orion_createClient`;
 DELIMITER //
 
@@ -49,6 +50,7 @@ CREATE PROCEDURE orion_createClient
         client_password,
         0
       );
+    SELECT 'Successfully added a new user with following details' AS 'MESSAGE',
+      EMAIL, USER_NAME, REGISTERED_ON, ENABLED FROM client WHERE EMAIL = client_email AND USER_NAME = client_name;
   END //
 DELIMITER ;
-            

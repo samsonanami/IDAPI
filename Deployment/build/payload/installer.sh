@@ -1,11 +1,12 @@
 #!/bin/bash
 echo "Initializing installer ..."
 
-INSTALL_PATH="/opt/orion/hermese"
+INSTALL_PATH=$1
 
 echo "Done initializing installer .."
 
-echo -n "Searching existing directory location"
+echo "Searching existing directory location in file path " $1
+
 
 if [ -d $INSTALL_PATH ];
 then
@@ -15,10 +16,10 @@ then
         read -p "Do you want to continue? [y/n]" yn
         case $yn in
             Y | y | yes | Yes | YES ) echo -n "Discarding existing installation ... "
-                                if rm -rf /opt/orion/hermese; then
+                                if rm -rf ${INSTALL_PATH}; then
                                     echo "Done"
                                     echo -n "Installing... "
-                                    mkdir -vp /opt/orion/hermese
+                                    mkdir -vp ${INSTALL_PATH}
                                 else
                                     echo "Unable to discard existing directory"
                                     echo "Are you root ?"
@@ -34,7 +35,7 @@ else
     echo "No existing installation found"
     echo "Proceeding with new installation"
     echo "Creating directory structure"
-    mkdir -vp /opt/orion/hermese
+    mkdir -vp ${INSTALL_PATH}
 fi
 
 if [ $ABORT ];
@@ -42,7 +43,7 @@ then
     echo "Deployment procedure aborted te "
 else
     echo -n "Installing hermese ... "
-    if tar -xvf hermese.tar -C /opt/orion/hermese; then
+    if tar -xvf hermese.tar -C ${INSTALL_PATH}; then
         echo "Done"
         echo "Installation completed"
     else
