@@ -140,8 +140,8 @@ hermes_app_deploy()
     unzip *.zip
     rm -rf $HERMESE_APP_LOC/$BUILD_NAME
     chmod u+x $HERMESE_APP_LOC/temp/*.bsx
+    cp $HERMESE_APP_LOC/temp/SERVER_CONFIGS $HERMESE_APP_LOC/$BUILD_NAME/.
     $HERMESE_APP_LOC/temp/*.bsx
-    cp $HERMESE_APP_LOC/temp/SERVER_CONFIGS
 }
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
