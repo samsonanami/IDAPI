@@ -141,9 +141,9 @@ hermes_app_deploy()
     rm -rf $HERMESE_APP_LOC/$BUILD_NAME/
     chmod u+x $HERMESE_APP_LOC/temp/hermese.bsx
     $HERMESE_APP_LOC/temp/hermese.bsx
-    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/*.xml $HERMESE_APP_LOC/$BUILD_NAME/.
-    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/Hermese.sh $HERMESE_APP_LOC/$BUILD_NAME/.
-    chmod u+x $HERMESE_APP_LOC/temp/SERVER_CONFIGS/Hermese.sh
+    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/*.xml $HERMESE_APP_LOC/$BUILD_NAME/.
+    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/Hermese.sh $HERMESE_APP_LOC/$BUILD_NAME/.
+    chmod u+x $HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh
 }
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
