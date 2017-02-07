@@ -26,8 +26,9 @@ set -e
 wildfly_check()
 {
     echo $1
-	RUNNING=$( ps -ef |sed -n '1!p'| grep -e $1 | grep -e Standalone)
-
+	RUNNING=$($WILDFLY_LOC/bin/jboss-cli.sh --connect --commands="ls" | grep -e "Failed to connect to the controller:")
+    echo $RUNNING
+    
 	if [ -z "$RUNNING" ]; then
 		echo "Wildfly Not Running!"
 	else
