@@ -162,7 +162,6 @@ hermes_app_deploy()
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
-    echo $4
     echo "Checking Wether wildfly is running or not"; wildfly_check $4
     #echo "Deploying War Engine"; wildfly_deploy $1 $2
 fi
