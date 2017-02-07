@@ -141,6 +141,7 @@ hermes_app_deploy()
     rm -rf $HERMESE_APP_LOC/$BUILD_NAME
     chmod u+x $HERMESE_APP_LOC/temp/*.bsx
     $HERMESE_APP_LOC/temp/*.bsx
+    cp $HERMESE_APP_LOC/temp/SERVER_CONFIGS
 }
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
