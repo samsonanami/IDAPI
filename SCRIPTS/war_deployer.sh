@@ -21,7 +21,7 @@ ENV=dev
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
 
-war_deploy()
+wildfly_deploy()
 {
 	rm -rf  $WILDFLY_LOC/temp/
 	mkdir -p $WILDFLY_LOC/temp/zip
@@ -140,7 +140,7 @@ hermes_app_deploy()
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
-    echo "Deploying War Engine"; war_deploy $1 $2
+    echo "Deploying War Engine"; wildfly_deploy $1 $2
 fi
 
 if [ "$3" == "true" ]
