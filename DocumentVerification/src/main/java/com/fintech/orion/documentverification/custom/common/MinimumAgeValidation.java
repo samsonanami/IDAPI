@@ -4,6 +4,7 @@ import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -62,7 +63,12 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
         DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
-            Date date = dateDecoder.decodeDate(fieldValue.getValue());
+            Date date = null;
+            try {
+                date = dateDecoder.decodeDate(fieldValue.getValue());
+            } catch (DateDecoderException e) {
+                throw new DateComparatorException("Unable to decode the given date " , e);
+            }
             LocalDate birthday = new LocalDate(date);
             Years age = Years.yearsBetween(birthday, today);
             if (age.getYears() < minimumAge) {

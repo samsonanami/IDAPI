@@ -1,7 +1,7 @@
 package com.fintech.orion.documentverification.strategy;
 
 import com.fintech.orion.documentverification.common.date.DateDecoder;
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class OperationDateComparator extends DateDecoder implements DataValidati
                 result.setStatus(true);
             }
 
-        } catch (DateComparatorException e) {
+        } catch (DateDecoderException e) {
             LOGGER.error("Error occurred while comparing following dates : base {} compare {}", base, compare, e);
         }
 
