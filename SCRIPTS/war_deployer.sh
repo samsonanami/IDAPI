@@ -172,7 +172,7 @@ hermes_app_deploy()
     $HERMESE_APP_LOC/temp/hermese.bsx
  
     cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/*.xml $HERMESE_APP_LOC/$BUILD_NAME/config/.
-    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/*.xml $HERMESE_APP_LOC/$BUILD_NAME/.
+    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/logback.xml $HERMESE_APP_LOC/$BUILD_NAME/.
     cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/Hermese.sh $HERMESE_APP_LOC/$BUILD_NAME/.
     
     AGENT_VER=$(ls $HERMESE_APP_LOC/$BUILD_NAME/HermeseAgent* | xargs -n 1 basename)
