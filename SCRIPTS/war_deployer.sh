@@ -210,7 +210,7 @@ then
     echo "Stopping java application"; hermese stop
     echo "Backing up java application"; hermese_backup
     echo "Deleting old backup files"; hermese_deletebackup
-    echo "Deleting old backup files"; hermes_app_deploy
+    echo "Deleting old backup files"; hermese_app_deploy
     echo "Starting java application"; hermese start
     echo "Checking java application"; hermese_check
 fi
