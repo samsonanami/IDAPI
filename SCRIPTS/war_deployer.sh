@@ -157,7 +157,7 @@ hermese_deletebackup()
 	fi
 }
 
-hermes_app_deploy()
+hermese_app_deploy()
 {
     rm -rf $HERMESE_APP_LOC/temp 
     mkdir -p $HERMESE_APP_LOC/temp
@@ -212,5 +212,5 @@ then
     echo "Deleting old backup files"; hermese_deletebackup
     echo "Deleting old backup files"; hermes_app_deploy
     echo "Starting java application"; hermese start
-    echo "Starting java application"; hermese_check start
+    echo "Checking java application"; hermese_check
 fi
