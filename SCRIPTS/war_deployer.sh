@@ -113,6 +113,7 @@ wildfly_deploy()
 			echo "Successfully Deployed $lines4"
 		else
 			echo "$lines4 Deployment Unsuccessfull" >&2
+			exit 1
 		fi
 	done < $WILDFLY_LOC/temp/temp_zipped_war.file
 
