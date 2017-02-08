@@ -162,14 +162,23 @@ hermes_app_deploy()
 {
     rm -rf $HERMESE_APP_LOC/temp 
     mkdir -p $HERMESE_APP_LOC/temp
+ 
     cp $COPY_LOC/$ENV/*.zip $HERMESE_APP_LOC/temp/.
     cd $HERMESE_APP_LOC/temp
     unzip *.zip
+ 
     rm -rf $HERMESE_APP_LOC/$BUILD_NAME/
+
     chmod u+x $HERMESE_APP_LOC/temp/hermese.bsx
     $HERMESE_APP_LOC/temp/hermese.bsx
+ 
     cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/*.xml $HERMESE_APP_LOC/$BUILD_NAME/config/.
+    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/*.xml $HERMESE_APP_LOC/$BUILD_NAME/.
     cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/Hermese.sh $HERMESE_APP_LOC/$BUILD_NAME/.
+    
+    AGENT_VER=$(ls HermeseAgent*)
+    sed -i "s/HermeseAgent/$AGENT_VER/g" $HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh
+    
     chmod u+x $HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh
 }
 
