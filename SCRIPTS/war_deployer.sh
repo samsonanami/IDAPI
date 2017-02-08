@@ -188,13 +188,19 @@ hermese_check()
         HERMES_CHECK=$(ps `cat $HERMESE_APP_LOC/$BUILD_NAME/Hermese.pid` | sed -n '1!p')
         if [ -z "$HERMES_CHECK" ];
         then
-            echo "Hermes Is Not Running================!!"
+            echo "#########################"         
+            echo "Hermes Is Not Running!!"         
+            echo "#########################"
             exit 1
         else
-            echo "Hermes Is Running!!"
+            echo "####################"         
+            echo "Hermes Is Running!!"         
+            echo "####################"
         fi
     else
-        echo "Hermes Is Not Running!!"
+        echo "########################"         
+        echo "Hermes Is Not Running!!"         
+        echo "########################"
         exit 1
     fi
 }
