@@ -11,6 +11,7 @@ import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -23,6 +24,8 @@ import java.util.Date;
 public class ExpireDateValidation extends ValidationHelper implements CustomValidation {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpireDateValidation.class);
 
+    @Autowired
+    private DateDecoder dateDecoder;
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
@@ -52,7 +55,6 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
 
     private ValidationData checkDocumentExpirationDate(OcrFieldData ocrFieldData) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());
             if (date.before(new Date())) {

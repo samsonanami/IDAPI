@@ -13,6 +13,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -23,6 +24,9 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DateOfIssueEndYearValidation.class);
     private int validYearCount;
+
+    @Autowired
+    private DateDecoder dateDecoder;
 
 
     @Override
@@ -59,7 +63,6 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
 
     private ValidationData validateDateofIusseEndYear(OcrFieldData ocrFieldData) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());
