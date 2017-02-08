@@ -29,7 +29,6 @@ WILDFLY_ADMIN_PORT=9990
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
 
-#set -e
 
 wildfly_check()
 {
