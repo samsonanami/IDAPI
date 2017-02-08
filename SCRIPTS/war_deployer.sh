@@ -181,7 +181,7 @@ hermese_app_deploy()
     chmod u+x $HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh
 }
 
-hermes_check()
+hermese_check()
 {
     if [ -f "$HERMESE_APP_LOC/$BUILD_NAME/Hermese.pid" ];
     then
