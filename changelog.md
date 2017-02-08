@@ -3,6 +3,104 @@ Orion - Changelog
 
 Unreleased
 ----------
+(2017-02-07 23:59:34 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:59:09 +0530	) [ci-skip] build error fix
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:41:52 +0530	) Merge branch 'verification-implementation' into 'develop'
+ Verification implementation
+
+
+
+See merge request !46
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:40:14 +0530	) updated method accessing date decoder after changing the date decoder
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:10:37 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:10:13 +0530	) Merge branch 'date-format-update' into 'develop'
+ Date format update
+
+Updated date decoder  to handle given dates based on regular expressions
+
+See merge request !45
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:08:56 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into date-format-update
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:08:18 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:06:41 +0530	) VIZ and MRZ value validation
+ for given set of ocr extraction fields VIZ (visual inspection zone) values
+and MRZ (magnetic read zone) values will be compared in given documents
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:06:27 +0530	) Merge branch 'mrz-decoding' into 'develop'
+ Add Sex decoding for DL and test
+
+Decode sex from driving license MRZ
+
+See merge request !44
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 18:16:25 +0530	) Add Sex decoding for DL and test Decode sex from driving license MRZ
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-02-07 16:28:28 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 16:24:10 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 16:20:11 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 16:18:23 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:59:58 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:24:58 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:22:59 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:22:07 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:19:43 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:18:58 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:57:47 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:57:04 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:42:14 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:33:37 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:03:59 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 13:55:34 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 13:11:37 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
 (2017-02-07 12:55:44 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into develop
  
  (Sasitha Gunadasa)(sasithag@zone24x7.com)
@@ -260,6 +358,14 @@ See merge request !42
 (2017-02-03 11:25:29 +0530	) Add new directory
  
  (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-01-31 10:43:41 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into date-format-update
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-31 10:42:01 +0530	) Date decoder change to accept different strategy to decode the date.
+ Date decoder will decide based on the configurations which decoding strategy must be used
+to decode a given date
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
 (2017-01-30 16:38:29 +0530	) [ci-skip] Updated changelog
  
  (Jenkins)(Jenkins app@zone24x7.com)

@@ -11,6 +11,7 @@ import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -21,6 +22,9 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
 
 
     private int validMonthCount;
+
+    @Autowired
+    private DateDecoder dateDecoder;
 
 
     @Override
@@ -49,7 +53,6 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
 
     private ValidationData validateBillDateEndMonth(OcrFieldData ocrFieldData) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());

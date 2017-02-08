@@ -1,13 +1,19 @@
 package com.fintech.orion.documentverification.custom.common;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
+import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,21 +24,30 @@ import static org.junit.Assert.assertTrue;
  * Created by sasitha on 12/29/16.
  */
 public class ExpireDateValidationTest {
+    @InjectMocks
     private ExpireDateValidation expireDateValidation;
+
+    @Mock
+    private DateDecoder dateDecoder;
+
     private OcrResponse ocrResponse;
     private OcrFieldData ocrFieldDataSex;
     private ResourceName resourceName;
+    private SimpleDateFormat dateFormat;
 
     @Before
     public void setup() throws Exception {
+        MockitoAnnotations.initMocks(this);
         ocrFieldDataSex = new OcrFieldData();
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
-        expireDateValidation = new ExpireDateValidation();
+        dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     }
 
     @Test
     public void should_return_true_if_all_documents_not_expired() throws Exception {
+
+        Mockito.when(dateDecoder.decodeDate("25.07.2017")).thenReturn(dateFormat.parse("07/25/2017"));
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##expire_date");
         passportValue.setValue("25.07.2017");
@@ -59,6 +74,9 @@ public class ExpireDateValidationTest {
 
     @Test
     public void should_return_false_if_one_of_the_document_is_expired() throws Exception {
+        Mockito.when(dateDecoder.decodeDate("25.07.2010")).thenReturn(dateFormat.parse("07/25/2010"));
+        Mockito.when(dateDecoder.decodeDate("25.07.2017")).thenReturn(dateFormat.parse("07/25/2017"));
+
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##expire_date");
         passportValue.setValue("25.07.2010");

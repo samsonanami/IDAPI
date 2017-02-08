@@ -13,6 +13,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -26,6 +27,8 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
     private int maximumAge;
     private String dateOfBirthOcrExtractionField;
 
+    @Autowired
+    private DateDecoder dateDecoder;
 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
@@ -68,7 +71,6 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
 
     private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate, OcrFieldValue ocrFieldValueDateOfBirth) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         Date issuedDate = dateDecoder.decodeDate(ocrFieldValueIssuedDate.getValue());
         Date dateOfBirth = dateDecoder.decodeDate(ocrFieldValueDateOfBirth.getValue());
 
