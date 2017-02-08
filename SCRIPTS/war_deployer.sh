@@ -181,6 +181,24 @@ hermes_app_deploy()
     chmod u+x $HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh
 }
 
+hermes_check()
+{
+    if [ -f "$HERMESE_APP_LOC/$BUILD_NAME/Hermese.pid" ];
+    then
+        hu=$(ps `cat Hermese.pid` | sed -n '1!p')
+        if [ -z "$VAR" ];
+        then
+            echo "Hermes Is Not Running!!"
+            exit 1
+        else
+            echo "Hermes Is Running!!"
+        fi
+    else
+        echo "Hermes Is Not Running!!"
+        exit 1
+    fi
+}
+
 if [ "$1" == "true" ] || [ "$2" == "true" ]
 then
     echo "Checking Wether wildfly is running or not"; wildfly_check $4
@@ -194,4 +212,5 @@ then
     echo "Deleting old backup files"; hermese_deletebackup
     echo "Deleting old backup files"; hermes_app_deploy
     echo "Starting java application"; hermese start
+    echo "Starting java application"; hermese_check start
 fi
