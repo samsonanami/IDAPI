@@ -188,7 +188,7 @@ hermese_check()
         hu=$(ps `cat Hermese.pid` | sed -n '1!p')
         if [ -z "$VAR" ];
         then
-            echo "Hermes Is Not Running!!"
+            echo "Hermes Is Not Running================!!"
             exit 1
         else
             echo "Hermes Is Running!!"
