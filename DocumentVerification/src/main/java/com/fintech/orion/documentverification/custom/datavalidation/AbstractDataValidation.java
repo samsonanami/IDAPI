@@ -4,7 +4,10 @@ import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.common.exception.MRZDecodingException;
+import com.fintech.orion.documentverification.common.exception.MRZValidatingException;
 import com.fintech.orion.documentverification.common.mrz.MRZDecodeResults;
+import com.fintech.orion.documentverification.common.mrz.ValidateMRZ;
+import com.fintech.orion.documentverification.common.mrz.ValidateMRZResult;
 import com.fintech.orion.documentverification.custom.common.MrzLineBuilder;
 import com.fintech.orion.documentverification.custom.common.ValidationHelper;
 import com.fintech.orion.documentverification.strategy.DataValidationStrategy;
@@ -17,6 +20,8 @@ import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.DataValidation;
 import com.fintech.orion.dto.response.api.DataValidationValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -26,8 +31,8 @@ import java.util.List;
 /**
  * Created by sasitha on 2/7/17.
  */
-public abstract class AbstractDataValidation extends ValidationHelper {
-
+public class AbstractDataValidation extends ValidationHelper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDataValidation.class);
     @Autowired
     @Qualifier("documentMrzDecodingConfigurations")
     private List documentMrzDecodingConfigurations;
@@ -46,12 +51,15 @@ public abstract class AbstractDataValidation extends ValidationHelper {
             DataValidationValue dataValidationValue = new DataValidationValue();
             dataValidationValue.setDocumentName(documentName);
             dataValidationValue.setVizValue(getVizValue(getOcrExtractionFieldName(), documentName, ocrResponse));
-
+            dataValidationValue.setMrzValue("");
+            dataValidationValue.setRemarks(getFailedRemarksMessage());
             try {
                 MRZDecodeResults mrzDecodeResults = decodeMrz(getOcrExtractionFieldName(), documentName, ocrResponse);
                 dataValidationValue.setMrzValue(getMrzValueForOcrExtractionField(getOcrExtractionFieldName(), mrzDecodeResults));
+            }catch (MRZValidatingException e){
+                LOGGER.error("Error validating mrz line {}", e);
             } catch (MRZDecodingException e) {
-                throw new CustomValidationException("Unable to decode mrz line", e);
+                LOGGER.error("Error decoding the mrz line {}", e);
             }
             dataValidationValue.setRemarks(getFailedRemarksMessage());
 
@@ -76,7 +84,7 @@ public abstract class AbstractDataValidation extends ValidationHelper {
         return fieldValue.getValue();
     }
 
-    public MRZDecodeResults decodeMrz(String extractionFieldName, String documentName, OcrResponse ocrResponse) throws MRZDecodingException {
+    private MRZDecodeResults decodeMrz(String extractionFieldName, String documentName, OcrResponse ocrResponse) throws MRZDecodingException, MRZValidatingException {
         MRZDecodeResults decodeResults = new MRZDecodeResults();
         MrzLineBuilder mrzLineBuilder = new MrzLineBuilder();
         for (DocumentMrzDecodingConfigurations configuration : getDocumentMrzDecodingConfigurations()){
@@ -84,14 +92,21 @@ public abstract class AbstractDataValidation extends ValidationHelper {
                 String singleMrzLine = mrzLineBuilder.buildSingleLineMRZ(ocrResponse, documentName,
                         configuration.getMrzOcrExtractionFieldBase(),
                         configuration.getMrzLineCount());
-                decodeResults = configuration.getMrzDecodingStrategy().decode(singleMrzLine);
+                ValidateMRZResult validateMRZResult = validateMrz(singleMrzLine, configuration.getMrzValidationStrategy());
+                if ("true".equalsIgnoreCase(validateMRZResult.getValidationResult())){
+                    decodeResults = configuration.getMrzDecodingStrategy().decode(singleMrzLine);
+                }
             }
         }
 
         return decodeResults;
     }
 
-    public List<DocumentMrzDecodingConfigurations> getDocumentMrzDecodingConfigurations() {
+    private ValidateMRZResult validateMrz(String mrz, ValidateMRZ mrzValidator) throws MRZValidatingException {
+        return mrzValidator.validate(mrz);
+    }
+
+    private List<DocumentMrzDecodingConfigurations> getDocumentMrzDecodingConfigurations() {
         return documentMrzDecodingConfigurations;
     }
 
