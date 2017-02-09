@@ -34,7 +34,7 @@ public class OperationDateComparatorTest {
 
     @Test
 
-    ublic void should_Return_True_for_similar_date_type_one() throws ParseException, DateDecoderException {
+    public  void should_Return_True_for_similar_date_type_one() throws ParseException, DateDecoderException {
         Mockito.when(dateDecoder.decodeDate("23 jan/ jan 89")).thenReturn(df.parse("01/23/1989"));
         result = comparator.doDataValidationOperation("23 jan/ jan 89", "23 jan/ jan 89");
 
