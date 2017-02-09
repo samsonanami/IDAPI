@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.custom.common;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -13,6 +13,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -27,6 +28,8 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
     private int maximumAge;
 
 
+    @Autowired
+    private DateDecoder dateDecoder;
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         if (minimumAge <= 0 || getOcrExtractionFieldName() == null) {
@@ -43,7 +46,7 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
         if (validationData.getValidationStatus()) {
             try {
                 validationData = validateAgeLimit(fieldData);
-            } catch (DateComparatorException e) {
+            } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an age limit verification on ocr response {} {}"
                         , ocrResponse, e);
                 validationData.setValue(null);
@@ -58,9 +61,8 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
         return validationData;
     }
 
-    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());

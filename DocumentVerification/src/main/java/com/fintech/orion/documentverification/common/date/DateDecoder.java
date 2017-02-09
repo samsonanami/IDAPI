@@ -1,95 +1,39 @@
 package com.fintech.orion.documentverification.common.date;
 
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy;
+import com.fintech.orion.documentverification.common.date.strategy.DateDecodingStrategy;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * This class deocdes the data in to elements Month,Year and Date
  * Created by sasitha on 12/29/16.
+ *
  */
 public class DateDecoder {
 
-    public Date decodeDate(String date) throws DateComparatorException {
+    @Autowired
+    private List<DateTypeConfiguration> dateTypeConfigurationList;
 
-        Date dateResult;
-        String month;
-        String dateOfTheMonth;
-        String year;
-        String stringDate;
-        DecimalFormat formatter = new DecimalFormat("00");
-        String regularExpression = "^(\\d{2})(\\w{3})(\\w{3})(\\d{2})";
-        String dateToProcess = "";
-        try {
-            dateToProcess = date.replace(" ", "");
-            dateToProcess = dateToProcess.replace("/", "");
-            Pattern pattern = Pattern.compile(regularExpression);
-            Matcher matcher = pattern.matcher(dateToProcess);
-            matcher.matches();
-            if (matcher.matches()) {
-                dateOfTheMonth = matcher.group(1).trim();
-                month = formatter.format(this.getMonthNumber(matcher.group(2).trim()));
-                year = this.getYear(matcher.group(4).trim());
-                stringDate = dateOfTheMonth + month + year;
-                DateFormat df = new SimpleDateFormat("ddMMyyyy");
-                dateResult = df.parse(stringDate);
+    public Date decodeDate(String date) throws DateDecoderException {
+        DateDecodingStrategy decodingStrategy = getDateDecodingStrategy(date);
+        return decodingStrategy.decodeDate(date);
+    }
 
-            } else {
-                DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-                dateResult = df.parse(dateToProcess);
-
+    private DateDecodingStrategy getDateDecodingStrategy(String givenDate){
+        DateDecodingStrategy strategy = new BasicDateDecodingStrategy();
+        for (DateTypeConfiguration dateTypeConfiguration : dateTypeConfigurationList){
+            Pattern pattern = Pattern.compile(dateTypeConfiguration.getDateTypeRegex());
+            Matcher matcher = pattern.matcher(givenDate);
+            if(matcher.matches()){
+                strategy = dateTypeConfiguration.getStrategy();
             }
-
-
-            return dateResult;
-        } catch (ParseException e) {
-            throw new DateComparatorException("Cannot parse given date" + dateToProcess, e);
-        } catch (NullPointerException e) {
-            throw new DateComparatorException("Cannot parse given date" + dateToProcess, e);
         }
-    }
-
-    public int getMonthNumber(String monthName) {
-        DateTimeFormatter format = DateTimeFormat.forPattern("MMM");
-        DateTime instance = format.withLocale(Locale.ENGLISH).parseDateTime(monthName);
-
-        return instance.getMonthOfYear();
-    }
-
-    public String getYear(String yearDigit) {
-        int yearNow;
-        int yearDigitValue = Integer.parseInt(yearDigit);
-        String fourDigitYear;
-        String decadeDigit;
-        int decadeDigitNow;
-
-        DateFormat df = new SimpleDateFormat("yyyy");
-        String formattedDate = df.format(Calendar.getInstance().getTime());
-        yearNow = Integer.parseInt(formattedDate.substring(1, 4));
-        decadeDigitNow = Integer.parseInt(formattedDate.substring(0, 2));
-
-
-        if (yearDigitValue > yearNow) {
-            decadeDigit = Integer.toString(decadeDigitNow - 1);
-        } else {
-            decadeDigit = Integer.toString(decadeDigitNow);
-
-        }
-
-        fourDigitYear = decadeDigit + new DecimalFormat("00").format(yearDigitValue);
-
-
-        return fourDigitYear;
+        return strategy;
     }
 }

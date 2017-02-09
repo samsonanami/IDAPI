@@ -11,136 +11,89 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-18T09:12:11.427Z")
 
 public class DataValidationValue {
-    @JsonProperty("idDocVizValue")
-    private String idDocVizValue = null;
+    @JsonProperty("documentName")
+    private String documentName = null;
 
-    @JsonProperty("idDocMrzValue")
-    private String idDocMrzValue = null;
+    @JsonProperty("mrzValue")
+    private String mrzValue = null;
 
-    @JsonProperty("idDocConfidence")
-    private Integer idDocConfidence = null;
+    @JsonProperty("vizValue")
+    private String vizValue = null;
 
-    @JsonProperty("addressVizValue")
-    private String addressVizValue = null;
+    @JsonProperty("remarks")
+    private String remarks = null;
 
-    @JsonProperty("addressMrzvalue")
-    private String addressMrzvalue = null;
+    @JsonProperty("status")
+    private boolean status = false;
 
-    @JsonProperty("addressDocConfidence")
-    private Integer addressDocConfidence = null;
+    /**
+     * Get documentName
+     *
+     * @return documentName
+     **/
+    @ApiModelProperty(value = "")
+    public String getDocumentName() {
+        return documentName;
+    }
 
-    public DataValidationValue idDocVizValue(String idDocVizValue) {
-        this.idDocVizValue = idDocVizValue;
-        return this;
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
     }
 
     /**
-     * Get idDocVizValue
+     * Get mrzValue
      *
-     * @return idDocVizValue
+     * @return mrzValue
      **/
     @ApiModelProperty(value = "")
-    public String getIdDocVizValue() {
-        return idDocVizValue;
+    public String getMrzValue() {
+        return mrzValue;
     }
 
-    public void setIdDocVizValue(String idDocVizValue) {
-        this.idDocVizValue = idDocVizValue;
-    }
-
-    public DataValidationValue idDocMrzValue(String idDocMrzValue) {
-        this.idDocMrzValue = idDocMrzValue;
-        return this;
+    public void setMrzValue(String mrzValue) {
+        this.mrzValue = mrzValue;
     }
 
     /**
-     * Get idDocMrzValue
+     * Get vizValue
      *
-     * @return idDocMrzValue
+     * @return vizValue
      **/
     @ApiModelProperty(value = "")
-    public String getIdDocMrzValue() {
-        return idDocMrzValue;
+    public String getVizValue() {
+        return vizValue;
     }
 
-    public void setIdDocMrzValue(String idDocMrzValue) {
-        this.idDocMrzValue = idDocMrzValue;
-    }
-
-    public DataValidationValue idDocConfidence(Integer idDocConfidence) {
-        this.idDocConfidence = idDocConfidence;
-        return this;
+    public void setVizValue(String vizValue) {
+        this.vizValue = vizValue;
     }
 
     /**
-     * Get idDocConfidence
+     * Get remarks
      *
-     * @return idDocConfidence
+     * @return remarks
      **/
     @ApiModelProperty(value = "")
-    public Integer getIdDocConfidence() {
-        return idDocConfidence;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setIdDocConfidence(Integer idDocConfidence) {
-        this.idDocConfidence = idDocConfidence;
-    }
-
-    public DataValidationValue addressVizValue(String addressVizValue) {
-        this.addressVizValue = addressVizValue;
-        return this;
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     /**
-     * Get addressVizValue
+     * Get status
      *
-     * @return addressVizValue
+     * @return status
      **/
     @ApiModelProperty(value = "")
-    public String getAddressVizValue() {
-        return addressVizValue;
+    public boolean getStatus() {
+        return status;
     }
 
-    public void setAddressVizValue(String addressVizValue) {
-        this.addressVizValue = addressVizValue;
-    }
-
-    public DataValidationValue addressMrzvalue(String addressMrzvalue) {
-        this.addressMrzvalue = addressMrzvalue;
-        return this;
-    }
-
-    /**
-     * Get addressMrzvalue
-     *
-     * @return addressMrzvalue
-     **/
-    @ApiModelProperty(value = "")
-    public String getAddressMrzvalue() {
-        return addressMrzvalue;
-    }
-
-    public void setAddressMrzvalue(String addressMrzvalue) {
-        this.addressMrzvalue = addressMrzvalue;
-    }
-
-    public DataValidationValue addressDocConfidence(Integer addressDocConfidence) {
-        this.addressDocConfidence = addressDocConfidence;
-        return this;
-    }
-
-    /**
-     * Get addressDocConfidence
-     *
-     * @return addressDocConfidence
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getAddressDocConfidence() {
-        return addressDocConfidence;
-    }
-
-    public void setAddressDocConfidence(Integer addressDocConfidence) {
-        this.addressDocConfidence = addressDocConfidence;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
 
@@ -157,20 +110,19 @@ public class DataValidationValue {
     }
 
     private boolean isIdDocValueEqual(DataValidationValue dataValidationValue) {
-        return Objects.equals(this.idDocMrzValue, dataValidationValue.idDocMrzValue) &&
-                Objects.equals(this.idDocVizValue, dataValidationValue.idDocVizValue) &&
-                Objects.equals(this.idDocConfidence, dataValidationValue.idDocConfidence);
+        return Objects.equals(this.mrzValue, dataValidationValue.mrzValue) &&
+                Objects.equals(this.documentName, dataValidationValue.documentName) &&
+                Objects.equals(this.vizValue, dataValidationValue.vizValue);
     }
 
     private boolean isAddressDocValueEqual(DataValidationValue dataValidationValue) {
-        return Objects.equals(this.addressVizValue, dataValidationValue.addressVizValue) &&
-                Objects.equals(this.addressMrzvalue, dataValidationValue.addressMrzvalue) &&
-                Objects.equals(this.addressDocConfidence, dataValidationValue.addressDocConfidence);
+        return Objects.equals(this.remarks, dataValidationValue.remarks) &&
+                Objects.equals(this.status, dataValidationValue.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idDocVizValue, idDocMrzValue, idDocConfidence, addressVizValue, addressMrzvalue, addressDocConfidence);
+        return Objects.hash(documentName, mrzValue, vizValue, remarks, status);
     }
 
     @Override
@@ -178,12 +130,11 @@ public class DataValidationValue {
         StringBuilder sb = new StringBuilder();
         sb.append("class DataValidationValue {\n");
 
-        sb.append("    idDocVizValue: ").append(toIndentedString(idDocVizValue)).append("\n");
-        sb.append("    idDocMrzValue: ").append(toIndentedString(idDocMrzValue)).append("\n");
-        sb.append("    idDocConfidence: ").append(toIndentedString(idDocConfidence)).append("\n");
-        sb.append("    addressVizValue: ").append(toIndentedString(addressVizValue)).append("\n");
-        sb.append("    addressMrzvalue: ").append(toIndentedString(addressMrzvalue)).append("\n");
-        sb.append("    addressDocConfidence: ").append(toIndentedString(addressDocConfidence)).append("\n");
+        sb.append("    documentName: ").append(toIndentedString(documentName)).append("\n");
+        sb.append("    mrzValue: ").append(toIndentedString(mrzValue)).append("\n");
+        sb.append("    vizValue: ").append(toIndentedString(vizValue)).append("\n");
+        sb.append("    remarks: ").append(toIndentedString(remarks)).append("\n");
+        sb.append("    status: ").append(toIndentedString(status)).append("\n");
         sb.append("}");
         return sb.toString();
     }

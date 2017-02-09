@@ -42,6 +42,9 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
             Range rangeInitialsOfTheFirstName = this.convertConfigPropertiesToProcessableProperties("InitialsOfTheFirstName");
             results.setInitialsOfTheFirstName(this.decodeInitialsOfFirstName(mrzToProcess, rangeInitialsOfTheFirstName));
 
+            Range rangeSex = this.convertConfigPropertiesToProcessableProperties("DateofBirthMonth");
+            results.setSex(this.decodeSex(mrzToProcess, rangeSex));
+
         } catch (NullPointerException e) {
             throw new DrivingLicenseMRZDecodingException("Not well formatted drivingLicense MRZ or not well set configuration properties Exception " + mrz, e);
         }
@@ -111,5 +114,14 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
         return mrz.substring(start, end);
     }
 
+    private String decodeSex(String mrz,Range range)
+    {
+        String sexMRZ= mrz.substring( range.getStart(), range.getEnd());
+        String sex ="M";
+        if (Integer.parseInt(sexMRZ) > 12) {
+            sex = "F";
+        }
+        return sex;
+    }
 
 }

@@ -1,17 +1,21 @@
 package com.fintech.orion.documentverification.strategy;
 
 import com.fintech.orion.documentverification.common.date.DateDecoder;
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
 /**
  * Created by MudithaJ on 12/26/2016.
  */
-public class OperationDateComparator extends DateDecoder implements DataValidationStrategy {
+public class OperationDateComparator implements DataValidationStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationDateComparator.class);
+    @Autowired
+    private DateDecoder dateDecoder;
+
     @Override
     public ValidationResult doDataValidationOperation(String base, String compare) {
         ValidationResult
@@ -20,13 +24,13 @@ public class OperationDateComparator extends DateDecoder implements DataValidati
         Date compareDate = null;
 
         try {
-            baseDate = this.decodeDate(base);
-            compareDate = this.decodeDate(compare);
+            baseDate = dateDecoder.decodeDate(base);
+            compareDate = dateDecoder.decodeDate(compare);
             if (baseDate.equals(compareDate)) {
                 result.setStatus(true);
             }
 
-        } catch (DateComparatorException e) {
+        } catch (DateDecoderException e) {
             LOGGER.error("Error occurred while comparing following dates : base {} compare {}", base, compare, e);
         }
 

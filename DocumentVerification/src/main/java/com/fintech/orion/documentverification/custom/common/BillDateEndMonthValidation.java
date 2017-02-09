@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.custom.common;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -11,6 +11,7 @@ import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -21,6 +22,9 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
 
 
     private int validMonthCount;
+
+    @Autowired
+    private DateDecoder dateDecoder;
 
 
     @Override
@@ -36,7 +40,7 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         if (validationData.getValidationStatus()) {
             try {
                 validationData = validateBillDateEndMonth(fieldData);
-            } catch (DateComparatorException e) {
+            } catch (DateDecoderException e) {
                 throw new CustomValidationException("Error Occurred while performing bill date end month verification ", e);
             }
         }
@@ -47,9 +51,8 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         return validationData;
     }
 
-    private ValidationData validateBillDateEndMonth(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateBillDateEndMonth(OcrFieldData ocrFieldData) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());

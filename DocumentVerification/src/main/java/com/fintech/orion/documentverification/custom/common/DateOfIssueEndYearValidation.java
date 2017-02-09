@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.custom.common;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -13,6 +13,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -23,6 +24,9 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DateOfIssueEndYearValidation.class);
     private int validYearCount;
+
+    @Autowired
+    private DateDecoder dateDecoder;
 
 
     @Override
@@ -38,7 +42,7 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
         if (validationData.getValidationStatus()) {
             try {
                 validationData = validateDateofIusseEndYear(fieldData);
-            } catch (DateComparatorException e) {
+            } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an date of issue year validation for ocr response {} {}",
                         ocrResponse, e);
                 validationData.setValue(null);
@@ -57,9 +61,8 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
         return validationData;
     }
 
-    private ValidationData validateDateofIusseEndYear(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateDateofIusseEndYear(OcrFieldData ocrFieldData) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue());

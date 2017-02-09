@@ -29,7 +29,6 @@ WILDFLY_ADMIN_PORT=9990
 # DO NOT EDIT BELOW THIS LINE UNLESS    YOU KNOW WHAT YOU ARE DOING
 # ===================================================================
 
-#set -e
 
 wildfly_check()
 {
@@ -113,6 +112,7 @@ wildfly_deploy()
 			echo "Successfully Deployed $lines4"
 		else
 			echo "$lines4 Deployment Unsuccessfull" >&2
+			exit 1
 		fi
 	done < $WILDFLY_LOC/temp/temp_zipped_war.file
 
@@ -157,19 +157,52 @@ hermese_deletebackup()
 	fi
 }
 
-hermes_app_deploy()
+hermese_app_deploy()
 {
     rm -rf $HERMESE_APP_LOC/temp 
     mkdir -p $HERMESE_APP_LOC/temp
+ 
     cp $COPY_LOC/$ENV/*.zip $HERMESE_APP_LOC/temp/.
     cd $HERMESE_APP_LOC/temp
     unzip *.zip
+ 
     rm -rf $HERMESE_APP_LOC/$BUILD_NAME/
+
     chmod u+x $HERMESE_APP_LOC/temp/hermese.bsx
     $HERMESE_APP_LOC/temp/hermese.bsx
-    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/*.xml $HERMESE_APP_LOC/$BUILD_NAME/.
+ 
+    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/*.xml $HERMESE_APP_LOC/$BUILD_NAME/config/.
+    cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/logback.xml $HERMESE_APP_LOC/$BUILD_NAME/.
     cp -rf $HERMESE_APP_LOC/temp/SERVER_CONFIGS/$ENV/Hermese.sh $HERMESE_APP_LOC/$BUILD_NAME/.
+    
+    AGENT_VER=$(ls $HERMESE_APP_LOC/$BUILD_NAME/HermeseAgent* | xargs -n 1 basename)
+    sed -i "s/HermeseAgent*.jar/$AGENT_VER/g" $HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh
+    
     chmod u+x $HERMESE_APP_LOC/$BUILD_NAME/Hermese.sh
+}
+
+hermese_check()
+{
+    if [ -f "$HERMESE_APP_LOC/$BUILD_NAME/Hermese.pid" ];
+    then
+        HERMES_CHECK=$(ps `cat $HERMESE_APP_LOC/$BUILD_NAME/Hermese.pid` | sed -n '1!p')
+        if [ -z "$HERMES_CHECK" ];
+        then
+            echo "#########################"         
+            echo "Hermes Is Not Running!!"         
+            echo "#########################"
+            exit 1
+        else
+            echo "####################"         
+            echo "Hermes Is Running!!"         
+            echo "####################"
+        fi
+    else
+        echo "########################"         
+        echo "Hermes Is Not Running!!"         
+        echo "########################"
+        exit 1
+    fi
 }
 
 if [ "$1" == "true" ] || [ "$2" == "true" ]
@@ -183,6 +216,7 @@ then
     echo "Stopping java application"; hermese stop
     echo "Backing up java application"; hermese_backup
     echo "Deleting old backup files"; hermese_deletebackup
-    echo "Deleting old backup files"; hermes_app_deploy
+    echo "Deleting old backup files"; hermese_app_deploy
     echo "Starting java application"; hermese start
+    echo "Checking java application"; hermese_check
 fi

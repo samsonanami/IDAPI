@@ -1,8 +1,374 @@
 Orion - Changelog
 =================
 
-1.0.2-0.0.0 (2017-01-30 16:32:19 +0530)
----------------------------------------
+Unreleased
+----------
+(2017-02-07 23:59:34 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:59:09 +0530	) [ci-skip] build error fix
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:41:52 +0530	) Merge branch 'verification-implementation' into 'develop'
+ Verification implementation
+
+
+
+See merge request !46
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:40:14 +0530	) updated method accessing date decoder after changing the date decoder
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:10:37 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:10:13 +0530	) Merge branch 'date-format-update' into 'develop'
+ Date format update
+
+Updated date decoder  to handle given dates based on regular expressions
+
+See merge request !45
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:08:56 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into date-format-update
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:08:18 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:06:41 +0530	) VIZ and MRZ value validation
+ for given set of ocr extraction fields VIZ (visual inspection zone) values
+and MRZ (magnetic read zone) values will be compared in given documents
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 23:06:27 +0530	) Merge branch 'mrz-decoding' into 'develop'
+ Add Sex decoding for DL and test
+
+Decode sex from driving license MRZ
+
+See merge request !44
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 18:16:25 +0530	) Add Sex decoding for DL and test Decode sex from driving license MRZ
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-02-07 16:28:28 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 16:24:10 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 16:20:11 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 16:18:23 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:59:58 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:24:58 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:22:59 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:22:07 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:19:43 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 15:18:58 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:57:47 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:57:04 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:42:14 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:33:37 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 14:03:59 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 13:55:34 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 13:11:37 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 12:55:44 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into develop
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 12:54:57 +0530	) Hermes bsx get extraction path as an argument to the script
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-07 12:32:52 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 12:22:29 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 12:20:35 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 12:17:08 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 12:15:25 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 12:11:15 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 12:05:45 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:57:27 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:50:52 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:50:41 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:50:33 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:50:23 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:47:30 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:43:20 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:09:29 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 11:09:13 +0530	) Add new directory
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 10:37:48 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 10:33:42 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-07 10:27:47 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 17:08:26 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 17:01:44 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 16:55:50 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 16:25:00 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 16:23:06 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 16:22:41 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 16:17:09 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 16:13:22 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 16:11:53 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 16:09:29 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:53:45 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:51:30 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:50:30 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:49:55 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:48:51 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:48:16 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:42:17 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:31:28 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:28:27 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:26:14 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 15:22:04 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:29:07 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:25:58 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:25:42 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:22:43 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:13:27 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:12:31 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:09:19 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:08:43 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:06:53 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:05:52 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:01:10 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 14:00:45 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 13:38:36 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 13:37:51 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 13:25:09 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into develop
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-06 13:24:21 +0530	) console output after sotred procedure execution
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-06 11:35:04 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 11:20:22 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 11:11:40 +0530	) Update SERVER_KEY.pem
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 11:09:24 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 11:03:03 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 10:49:14 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 10:41:54 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 10:41:30 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 10:40:22 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 10:31:30 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 10:26:57 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 10:25:18 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-06 10:09:54 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-05 11:35:22 +0530	) Merge branch 'flyway-migration-schema' into 'develop'
+ [ci-skip] flyway migration
+
+[ci-skip] database schema management will be done by flyway. initial scripts
+[ci-skip] are re arranged to support flyway migrations
+
+See merge request !43
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-05 11:32:40 +0530	) flyway migration
+ database schema management will be done by flyway. initial scripts
+are re arranged to support flyway migrations
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-03 23:20:58 +0530	) Merge branch 'sp_update' into 'develop'
+ Sp update
+
+
+
+See merge request !42
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-03 18:22:01 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into sp_update
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-03 18:21:18 +0530	) stored procedures created to manipulate users and license
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-03 15:25:20 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-03 12:12:50 +0530	) Update deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-03 12:02:46 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-03 11:56:32 +0530	) Add new directory
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-03 11:29:15 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-03 11:25:29 +0530	) Add new directory
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-01-31 10:43:41 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into date-format-update
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-31 10:42:01 +0530	) Date decoder change to accept different strategy to decode the date.
+ Date decoder will decide based on the configurations which decoding strategy must be used
+to decode a given date
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-01-30 16:38:29 +0530	) [ci-skip] Updated changelog
+ 
+ (Jenkins)(Jenkins app@zone24x7.com)
 (2017-01-30 16:32:19 +0530	) changed execution permissions
  
  (Manthila Mendis)(manthila.mendis@kohls.com)

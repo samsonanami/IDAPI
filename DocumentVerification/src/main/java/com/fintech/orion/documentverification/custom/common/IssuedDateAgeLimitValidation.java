@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.custom.common;
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
-import com.fintech.orion.documentverification.common.exception.DateComparatorException;
+import com.fintech.orion.documentverification.common.exception.DateDecoderException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -13,6 +13,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -26,6 +27,8 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
     private int maximumAge;
     private String dateOfBirthOcrExtractionField;
 
+    @Autowired
+    private DateDecoder dateDecoder;
 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
@@ -47,7 +50,7 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
         if (validationData.getValidationStatus()) {
             try {
                 validationData = validateIssuedDateAgeLimit(valueIssuedDate, valueDateOfBirth);
-            } catch (DateComparatorException e) {
+            } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an date of birth at issue date" +
                         " validation for ocr response {} {}", ocrResponse, e);
                 validationData.setValue(null);
@@ -66,9 +69,8 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
         return validationData;
     }
 
-    private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate, OcrFieldValue ocrFieldValueDateOfBirth) throws DateComparatorException {
+    private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate, OcrFieldValue ocrFieldValueDateOfBirth) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
-        DateDecoder dateDecoder = new DateDecoder();
         Date issuedDate = dateDecoder.decodeDate(ocrFieldValueIssuedDate.getValue());
         Date dateOfBirth = dateDecoder.decodeDate(ocrFieldValueDateOfBirth.getValue());
 

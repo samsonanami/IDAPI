@@ -10,9 +10,7 @@ import com.fintech.orion.documentverification.factory.DocumentVerificationType;
 import com.fintech.orion.dto.configuration.VerificationConfiguration;
 import com.fintech.orion.dto.hermese.ResponseProcessorResult;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
-import com.fintech.orion.dto.response.api.FieldData;
-import com.fintech.orion.dto.response.api.ValidationData;
-import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
+import com.fintech.orion.dto.response.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -73,6 +71,7 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
 
 
         updateDataComparison(detailedResponse, ocrResponse);
+        updateDataValidations(detailedResponse, ocrResponse);
         if (isProcessTypeFoundInProcessingRequest(processingRequest.getProcessingRequestIdentificationCode(),
                 "idVerification")){
             updateIdDocumentFullValidation(detailedResponse, ocrResponse);
@@ -137,9 +136,24 @@ public class HermeseResponseProcessor implements HermeseResponseProcessorInterfa
         response.setAddressDocFullValidations(validationDataList);
     }
 
+    private void updateDataValidations(VerificationProcessDetailedResponse response, OcrResponse ocrResponse){
+        List<Object> resultList = new ArrayList<>();
+        DocumentVerification dataValidations =
+                documentVerificationFactory.getDocumentVerification(DocumentVerificationType.DATA_VALIDATIONS);
+        resultList = dataValidations.verifyExtractedDocumentResult(ocrResponse, verificationConfigurationMap);
+        List<DataValidation> dataValidationList = getDataValidationValueList(resultList);
+        response.setDataValidation(dataValidationList);
+    }
+
     private List<ValidationData> getValidationDataList(List<Object> objectList){
         return  objectList.stream()
                 .map(element->(ValidationData) element)
+                .collect(Collectors.toList());
+    }
+
+    private List<DataValidation> getDataValidationValueList(List<Object> objectList){
+        return objectList.stream()
+                .map(element->(DataValidation) element)
                 .collect(Collectors.toList());
     }
 
