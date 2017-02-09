@@ -32,7 +32,7 @@ JAVA_OPT="-Xms6g -Xmx6g -XX:MaxPermSize=256m"
 
 jsvc_exec() {
     cd /$FILE_PATH
-    $EXEC -home $JAVA_HOME -cp $CLASS_PATH -DagentState="debug" -user $USER -outfile $LOG_OUT -errfile $LOG_ERR -pidfile $PID $1 $CLASS
+    $EXEC -home $JAVA_HOME -cp $CLASS_PATH -DcontextFilePath="/opt/orion/hermese/config" -DapplicationContextFrom="file" -DcontextFileName="applicationContext.xml" -user $USER -outfile $LOG_OUT -errfile $LOG_ERR -pidfile $PID $1 $CLASS
 }
 
 case "$1" in
