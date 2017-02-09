@@ -53,7 +53,7 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
 
         try {
             mrzDecodeResults = passportMRZDecodingStrategy.decode(fullMrzLine);
-            CheckDigitResults checkDigitResults = passportCheckDigitFormation.calculateCheckdigit(fullMrzLine);
+            CheckDigitResults checkDigitResults = passportCheckDigitFormation.calculateCheckDigit(fullMrzLine);
             if ( mrzDecodeResults != null){
                 validationData = compareCheckDigits(checkDigitResults, mrzDecodeResults);
             }else {

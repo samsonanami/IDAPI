@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * This class will validate the driving license MRZ.
  * Created by MudithaJ on 12/16/2016.
  */
 public class ValidateDrivingLicence implements ValidateMRZ {

@@ -17,7 +17,7 @@ public class OperationDateComparator implements DataValidationStrategy {
     private DateDecoder dateDecoder;
 
     @Override
-    public ValidationResult doOperation(String base, String compare) {
+    public ValidationResult doDataValidationOperation(String base, String compare) {
         ValidationResult
                 result = new ValidationResult(false, "");
         Date baseDate = null;

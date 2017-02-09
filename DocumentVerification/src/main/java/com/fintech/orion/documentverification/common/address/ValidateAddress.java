@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * This call validates address is validate or not.
  * Created by MudithaJ on 12/16/2016.
  */
 public class ValidateAddress {
@@ -27,7 +28,7 @@ public class ValidateAddress {
                 }
             }
             return validAddressType;
-        } catch (NullPointerException e) {
+        } catch (AddressValidatingException e) {
             throw new AddressValidatingException("Not well formatted address or not well set configuration " +
                     "properties Exception. address :" + address + "type:" + validAddressType.toString(), e);
 
@@ -35,12 +36,15 @@ public class ValidateAddress {
 
     }
 
-    private boolean checkAddressType(AddressType addressType, String address) {
+    private boolean checkAddressType(AddressType addressType, String address) throws AddressValidatingException {
         String regularExpression;
         boolean isAddressValidType;
         regularExpression = addressType.getValidateRegularExpression();
         Pattern pattern = Pattern.compile(regularExpression);
-
+        if(  regularExpression == null)
+        {
+            throw new AddressValidatingException("Not well set configuration" );
+        }
         Matcher matcher = pattern.matcher(address);
         isAddressValidType = matcher.find();
         return isAddressValidType;

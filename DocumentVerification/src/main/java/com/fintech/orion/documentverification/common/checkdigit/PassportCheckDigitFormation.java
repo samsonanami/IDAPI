@@ -11,40 +11,39 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 
 /**
+ * This Class calculates the all five check digits in passport MRZ
  * Created by MudithaJ on 11/28/2016.
+ *
  */
 @Component
 public class PassportCheckDigitFormation {
 
-    private int moduler;
-    private int checkDigitAphabteStartValue;
-    private int checkDigitAphabteENDValue;
-    private int secondStringStartIndex;
+    private int modulo;
+    private int checkDigitAlphabetStartValue;
     private int mrzFirstLineCharacterCount;
 
     @Autowired
     @Qualifier("passportMRZConfigureList")
     private HashMap<String, MRZItemProperty> mrzItemProperty;
 
-    public PassportCheckDigitFormation() {
-        this.setCheckDigitAphabteStartValue(6);
-        this.setModuler(10);
-        this.setSecondStringStartIndex(44);
+     PassportCheckDigitFormation() {
+        this.setCheckDigitAlphabetStartValue(6);
+        this.setModulo(10);
     }
 
-    public CheckDigitResults calculateCheckdigit(String mrz) throws CheckDigitFormationException {
+    public CheckDigitResults calculateCheckDigit(String mrz) throws CheckDigitFormationException {
         try {
             this.mrzFirstLineCharacterCount = 44;
             Range[] checkDigitRangeArray = this.getCheckDigitRangeParameters();
-            String fixedMRX = this.getfixedMRZ(mrz);
+            String fixedMRX = this.getFixedMRZ(mrz);
 
             CheckDigitResults results = new CheckDigitResults();
 
-            results.setCheckDigitPraseOne(getCheckdigitPraseOne(fixedMRX, checkDigitRangeArray[0]));
-            results.setCheckDigitPraseTwo(getCheckdigitPraseTwo(fixedMRX, checkDigitRangeArray[1]));
-            results.setCheckDigitPraseThree(getCheckdigitPraseThree(fixedMRX, checkDigitRangeArray[2]));
-            results.setCheckDigitPraseFour(getCheckdigitPraseFour(fixedMRX, checkDigitRangeArray[3]));
-            results.setCheckDigitPraseFive(getCheckdigitPraseFive(fixedMRX, checkDigitRangeArray));
+            results.setCheckDigitPraseOne(getCheckDigitParseOne(fixedMRX, checkDigitRangeArray[0]));
+            results.setCheckDigitPraseTwo(getCheckDigitParseTwo(fixedMRX, checkDigitRangeArray[1]));
+            results.setCheckDigitPraseThree(getCheckDigitParseThree(fixedMRX, checkDigitRangeArray[2]));
+            results.setCheckDigitPraseFour(getCheckDigitParseFour(fixedMRX, checkDigitRangeArray[3]));
+            results.setCheckDigitPraseFive(getCheckDigitParseFive(fixedMRX, checkDigitRangeArray));
 
 
             return results;
@@ -53,7 +52,7 @@ public class PassportCheckDigitFormation {
         }
     }
 
-    private String getfixedMRZ(String mrz) {
+    private String getFixedMRZ(String mrz) {
         return mrz.replaceAll("\\s+", "");
     }
 
@@ -94,29 +93,14 @@ public class PassportCheckDigitFormation {
 
     }
 
-    public void setSecondStringStartIndex(int secondStringStartIndex) {
-        this.secondStringStartIndex = secondStringStartIndex;
+    private void setModulo(int modulo) {
+        this.modulo = modulo;
     }
 
-    public void setModuler(int moduler) {
-        this.moduler = moduler;
+    private void setCheckDigitAlphabetStartValue(int checkDigitAlphabetStartValue) {
+        this.checkDigitAlphabetStartValue = checkDigitAlphabetStartValue;
     }
 
-    public void setCheckDigitAphabteStartValue(int checkDigitAphabteStartValue) {
-        this.checkDigitAphabteStartValue = checkDigitAphabteStartValue;
-    }
-
-    public void setCheckDigitAphabteENDValue(int checkDigitAphabteENDValue) {
-        this.checkDigitAphabteENDValue = checkDigitAphabteENDValue;
-    }
-
-    public int getCheckDigitAphabteENDValue() {
-        return checkDigitAphabteENDValue;
-    }
-
-    public int getSecondStringStartIndex() {
-        return secondStringStartIndex;
-    }
 
     private int calculateCharacterDigitValue(char character) {
         int value;
@@ -127,7 +111,7 @@ public class PassportCheckDigitFormation {
         } else if (character == '<') {
             return 0;
         } else {
-            subtituedValue = (int) Character.toUpperCase('A') - this.checkDigitAphabteStartValue;
+            subtituedValue = (int) Character.toUpperCase('A') - this.checkDigitAlphabetStartValue;
 
             value = (int) Character.toUpperCase(character) - subtituedValue;
             return value;
@@ -161,12 +145,12 @@ public class PassportCheckDigitFormation {
         return value;
     }
 
-    private int calculateCheckDigit(String mrz, Range rangeObject) {
+    private int calculateCheckDigitForString(String mrz, Range rangeObject) {
 
         String mrzPortion = mrz.substring(rangeObject.getStart(), rangeObject.getEnd());
         int index = 1;
         int checkDigit = 0;
-        int checkDigitPerIndex = 0;
+        int checkDigitPerIndex;
 
         for (char c : mrzPortion.toCharArray()) {
             checkDigitPerIndex = this.calculateCharacterDigitValue(c) * this.calculateWeight(index);
@@ -175,67 +159,56 @@ public class PassportCheckDigitFormation {
             index++;
         }
 
-        return checkDigit % this.moduler;
+        return checkDigit % this.modulo;
     }
 
-    public String getCheckdigitPraseOne(String mrz, Range digitRange) {
-        int checkDigitPrase;
-        Range rangeForCheckdigitPrase = new Range();
-        rangeForCheckdigitPrase.setStart(digitRange.getStart());
-        rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
+    private String getCheckDigitParseOne(String mrz, Range digitRange) {
 
-        checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
-        return Integer.toString(checkDigitPrase);
+        return getCheckDigitParse(mrz,digitRange);
     }
 
-    public String getCheckdigitPraseTwo(String mrz, Range digitRange) {
-        int checkDigitPrase;
-        Range rangeForCheckdigitPrase = new Range();
-        rangeForCheckdigitPrase.setStart(digitRange.getStart());
-        rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
+    private String getCheckDigitParseTwo(String mrz, Range digitRange) {
 
-        checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
-        return Integer.toString(checkDigitPrase);
-
+        return getCheckDigitParse(mrz,digitRange);
     }
 
-    public String getCheckdigitPraseThree(String mrz, Range digitRange) {
-        int checkDigitPrase;
-        Range rangeForCheckdigitPrase = new Range();
-        rangeForCheckdigitPrase.setStart(digitRange.getStart());
-        rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
+    private String getCheckDigitParseThree(String mrz, Range digitRange) {
 
-        checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
-        return Integer.toString(checkDigitPrase);
+        return getCheckDigitParse(mrz,digitRange);
     }
 
-    public String getCheckdigitPraseFour(String mrz, Range digitRange) {
-        int checkDigitPrase;
-        Range rangeForCheckdigitPrase = new Range();
-        rangeForCheckdigitPrase.setStart(digitRange.getStart());
-        rangeForCheckdigitPrase.setEnd(digitRange.getEnd());
+    private String getCheckDigitParseFour(String mrz, Range digitRange) {
 
-        checkDigitPrase = this.calculateCheckDigit(mrz, rangeForCheckdigitPrase);
-        return Integer.toString(checkDigitPrase);
+        return getCheckDigitParse(mrz,digitRange);
     }
-
-    public String getCheckdigitPraseFive(String mrz, Range[] range) {
+    private String getCheckDigitParseFive(String mrz, Range[] range)
+    {
         String checkDigitPraseFive;
         int checkDigitPrase;
 
-        checkDigitPraseFive = mrz.substring(range[0].getStart(), range[0].getEnd())
-                + getCheckdigitPraseOne(mrz, range[0])
-                + mrz.substring(range[1].getStart(), range[1].getEnd())
-                + getCheckdigitPraseTwo(mrz, range[1])
-                + mrz.substring(range[2].getStart(), range[2].getEnd())
-                + getCheckdigitPraseTwo(mrz, range[2])
-                + mrz.substring(range[3].getStart(), range[3].getEnd())
-                + getCheckdigitPraseTwo(mrz, range[3]);
+        checkDigitPraseFive =  mrz.substring(range[0].getStart(),range[0].getEnd())
+                               + getCheckDigitParseOne(mrz, range[0])
+                                +mrz.substring(range[1].getStart(),range[1].getEnd())
+                                + getCheckDigitParseTwo(mrz, range[1])
+                +mrz.substring(range[2].getStart(),range[2].getEnd())
+                + getCheckDigitParseTwo(mrz, range[2])
+                +mrz.substring(range[3].getStart(),range[3].getEnd())
+                + getCheckDigitParseTwo(mrz, range[3]);
 
         Range rangeForCheckdigitPrase = new Range();
         rangeForCheckdigitPrase.setStart(0);
-        rangeForCheckdigitPrase.setEnd(checkDigitPraseFive.length() - 1);
-        checkDigitPrase = this.calculateCheckDigit(checkDigitPraseFive, rangeForCheckdigitPrase);
+        rangeForCheckdigitPrase.setEnd(checkDigitPraseFive.length()-1);
+        checkDigitPrase = this.calculateCheckDigitForString(checkDigitPraseFive,rangeForCheckdigitPrase);
+        return Integer.toString(checkDigitPrase);
+    }
+
+    private String getCheckDigitParse(String mrz, Range digitRange)
+    {
+        int checkDigitPrase;
+        Range rangeForCheckdigitPrase = new Range();
+        rangeForCheckdigitPrase.setStart(digitRange.getStart());
+
+        checkDigitPrase = this.calculateCheckDigitForString(mrz, digitRange);
         return Integer.toString(checkDigitPrase);
     }
 }
