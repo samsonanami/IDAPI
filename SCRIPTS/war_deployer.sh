@@ -109,13 +109,13 @@ wildfly_deploy()
 		$WILDFLY_LOC/bin/jboss-cli.sh --connect --command="deploy --force $WILDFLY_LOC/temp/zip/$lines4"
 		if [ $? -eq 0 ]
 		then
-		    echo #######################################################
+		    echo "######################################################"
 			echo "Successfully Deployed $lines4"
-			echo #######################################################
+			echo "######################################################"
 		else
-		    echo #######################################################
+		    echo "######################################################"
 			echo "$lines4 Deployment Unsuccessfull"
-			echo #######################################################
+			echo "######################################################"
 			exit 1
 		fi
 	done < $WILDFLY_LOC/temp/temp_zipped_war.file
