@@ -1,6 +1,7 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 /**
+ * This contains properties for every decodable elements in MRZ.
  * Created by MudithaJ on 12/1/2016.
  */
 public class MRZItemProperty {

@@ -1,6 +1,7 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 /**
+ * This class contains the MRZ decoded items.
  * Created by MudithaJ on 12/23/2016.
  */
 public class ValidateMRZResult {

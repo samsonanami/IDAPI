@@ -28,8 +28,7 @@ import java.util.Map;
  * Created by sasitha on 12/26/16.
  */
 public class IdentificationDocumentFullVerification implements DocumentVerification {
-    private static final String PASSPORT = "passport";
-    private static final String DRIVING_LICENSE_FRONT = "drivingLicenseFront";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(IdentificationDocumentFullVerification.class);
 
     @Autowired
@@ -65,8 +64,8 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
 
         Resource idVerificationResource = null;
         for (Resource resource : documentVerificationProcess.getResources()) {
-            if (idVerificationResource == null && (PASSPORT.equalsIgnoreCase(resource.getResourceName().getName())
-                    || DRIVING_LICENSE_FRONT.equalsIgnoreCase(resource.getResourceName().getName()))) {
+            if (idVerificationResource == null && (resource.getResourceName().getName().equalsIgnoreCase("passport")
+                    || resource.getResourceName().getName().equalsIgnoreCase("drivingLicenseFront"))) {
                 idVerificationResource = resource;
             }
         }
@@ -74,7 +73,7 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
         if (idVerificationResource != null) {
             resourceName = idVerificationResource.getResourceName();
         }
-        List<Object> idDocFullValidationList = new ArrayList<>();
+        List<Object> idDocFullValidationList = new ArrayList();
         ValidationData errorDataSet = new ValidationData();
         errorDataSet.setRemarks("");
         errorDataSet.setId("critical_error_set");
@@ -86,9 +85,8 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
                 if (!validationData.getValidationStatus() && validation.isCriticalValidation()) {
                     errorDataSet.setRemarks(errorDataSet.getRemarks() + validationData.getRemarks());
                 }
-            } catch (CustomValidationException ex) {
-                LOGGER.error("Unable to execute custom validation in Identification document full verification" +
-                        " the validation is {}", validation, ex);
+            } catch (CustomValidationException e) {
+                LOGGER.error("Unable to execute custom validation {}", validation);
             }
         }
 
@@ -100,4 +98,87 @@ public class IdentificationDocumentFullVerification implements DocumentVerificat
     private List<CustomValidation> getCustomValidationList() {
         return idDocCustomValidations;
     }
+
+/*
+    private ValidationData getDocumentNumber(OcrResponse ocrResponse, String resourceName){
+        ValidationData validationData = new ValidationData();
+        validationData.setId("Document Number");
+        String documentNumberField = "";
+        if (resourceName.equalsIgnoreCase("passport")){
+            documentNumberField = "passport_number";
+        }
+        OcrFieldData fieldData = getFieldDataById(documentNumberField, ocrResponse);
+        OcrFieldValue value  = fieldData.getValue().get(0);
+        validationData.setValue(value.getValue());
+        validationData.setOcrConfidence(value.getConfidence());
+        validationData.setRemarks("");
+        return validationData;
+    }
+
+    private ValidationData getDocumentExpiredDate(OcrResponse ocrResponse, String resourceName){
+        ValidationData validationData = new ValidationData();
+        validationData.setId("Document Expired Date");
+        OcrFieldData fieldData = getFieldDataById("date_of_expiry", ocrResponse);
+        OcrFieldValue fieldValue = getFieldValueById(resourceName+"##date_of_expiry", fieldData);
+        validationData.setValue(fieldValue.getValue());
+        validationData.setOcrConfidence(fieldValue.getConfidence());
+        validationData.setRemarks("Document is expired");
+        return validationData;
+    }
+
+
+
+    private ValidationData documentCheckDigitValidation(OcrResponse ocrResponse, String resourceName){
+        ValidationData validationData = new ValidationData();
+        validationData.setId("Check Digit Validation");
+
+
+        String completeMRZLine = "";
+        if(resourceName.equalsIgnoreCase("passport")){
+            OcrFieldData mrzLine1 = getFieldDataById("MRZ_line1", ocrResponse);
+            OcrFieldValue mrzLine1FieldValue = getFieldValueById(resourceName+"##MRZ_line1", mrzLine1);
+            OcrFieldData mrzLine2 = getFieldDataById("MRZ_line2", ocrResponse);
+            OcrFieldValue mrzLine2FieldValue = getFieldValueById(resourceName+"##MRZ_line2", mrzLine2);
+            completeMRZLine = mrzLine1FieldValue.getValue()+mrzLine2FieldValue.getValue();
+        }else if (resourceName.equalsIgnoreCase("drivingLicenseFront")){
+            validationData.setValue("Failed");
+            validationData.setRemarks("Check digit validation is not available for driving license");
+        }
+        MRZDecodeResults mrzDecodeResults = new MRZDecodeResults();
+        try {
+            if (resourceName.equalsIgnoreCase("passport")){
+                mrzDecodeResults = passportMRZDecodingStrategy.decode(completeMRZLine);
+            }else if(resourceName.equalsIgnoreCase("drivingLicenseFront")){
+                mrzDecodeResults = drivingLicenseMRZDecodingStrategy.decode(completeMRZLine);
+            }
+            CheckDigitResults checkDigitResults = passportCheckDigitFormation.calculateCheckDigit(completeMRZLine);
+            if (checkDigitResults.getCheckdigitPraseOne().equals(mrzDecodeResults.getCheckDigitPhraseOne()) &&
+                    checkDigitResults.getCheckdigitPraseTwo().equals(mrzDecodeResults.getCheckDigitPhraseTwo()) &&
+                    checkDigitResults.getCheckdigitPraseThree().equals(mrzDecodeResults.getCheckDigitPhraseThree()) &&
+                    checkDigitResults.getCheckdigitPraseFour().equals(mrzDecodeResults.getCheckDigitPhraseFour()) &&
+                    checkDigitResults.getCheckdigitPraseFive().equals(mrzDecodeResults.getCheckDigitPhraseFive())){
+                validationData.setValue("Passed");
+                validationData.setRemarks("All check digit validations passed");
+            }else {
+                validationData.setValue("Failed");
+                validationData.setRemarks("One or more check digit validations failed");
+            }
+        } catch (CheckDigitFormationException e) {
+            validationData.setValue("Failed");
+            validationData.setRemarks("Unable to complete the check digit validation");
+            LOGGER.warn("Unable to generate check digit from the mrz {} ", completeMRZLine, e);
+        } catch (PassportMRZDecodeException e) {
+            validationData.setValue("Failed");
+            validationData.setRemarks("Unable to complete the check digit validation");
+            LOGGER.warn("Error occurred while decoding passport mrz {}", completeMRZLine, e);
+        } catch (DrivingLicenseMRZDecodingException e) {
+            validationData.setValue("Failed");
+            validationData.setRemarks("Unable to complete the check digit validation");
+            LOGGER.warn("Error occurred while decoding driving license mrz {}", completeMRZLine, e);
+        }
+
+
+        return validationData;
+    }
+    */
 }

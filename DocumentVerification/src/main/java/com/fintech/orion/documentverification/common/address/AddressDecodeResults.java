@@ -1,6 +1,8 @@
 package com.fintech.orion.documentverification.common.address;
 
 /**
+ *
+ * This class contains the decoded element of a address.
  * Created by MudithaJ on 12/16/2016.
  */
 public class AddressDecodeResults {

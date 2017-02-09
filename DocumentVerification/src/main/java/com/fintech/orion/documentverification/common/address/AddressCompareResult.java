@@ -1,6 +1,7 @@
 package com.fintech.orion.documentverification.common.address;
 
 /**
+ * This result class contains the compare results of two address.
  * Created by MudithaJ on 12/22/2016.
  */
 public class AddressCompareResult {

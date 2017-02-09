@@ -1,6 +1,7 @@
 package com.fintech.orion.documentverification.common.checkdigit;
 
 /**
+ * This class contains the result of ALl five check digit in Passport MRZ
  * Created by MudithaJ on 11/30/2016.
  */
 public class CheckDigitResults {

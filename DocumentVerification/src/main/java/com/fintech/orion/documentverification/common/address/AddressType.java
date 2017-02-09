@@ -1,6 +1,7 @@
 package com.fintech.orion.documentverification.common.address;
 
 /**
+ * This claaa contains the address type details.
  * Created by MudithaJ on 12/16/2016.
  */
 public class AddressType {

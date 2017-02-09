@@ -26,7 +26,7 @@ public class AddressDecoding {
             }
 
             return results;
-        } catch (NullPointerException e) {
+        } catch (AddressValidatingException e) {
             throw new AddressValidatingException("address validating failed number" + results.getAddressType(), e);
         }
     }
