@@ -67,7 +67,8 @@
 
     <bean id="passportMRZDecodingStrategy" class="com.fintech.orion.documentverification.common.mrz.PassportMRZDecodingStrategy"/>
     <bean id="drivingLicenseMRZDecodingStrategy" class="com.fintech.orion.documentverification.common.mrz.DrivingLicenseMZRDecodingStrategy"/>
-
+    <bean id="passportMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidatePassPortMRZ"/>
+    <bean id="drivingLicenseMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidateDrivingLicence"/>
     <bean id="passportCheckDigitFormation" class="com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation"/>
 
     <bean id ="dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
@@ -219,15 +220,17 @@
 
     <bean id="passportMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
         <property name="documentName" value="passport"/>
-        <property name="mrzOcrExtractionFieldBase" value="MRZ_Line"/>
+        <property name="mrzOcrExtractionFieldBase" value="MRZ_line"/>
         <property name="mrzDecodingStrategy" ref="passportMRZDecodingStrategy"/>
         <property name="mrzLineCount" value="2"/>
+        <property name="mrzValidationStrategy" ref="passportMRZValidationStrategy"/>
     </bean>
 
     <bean id="drivingLicenseMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
         <property name="documentName" value="drivingLicenseFront"/>
-        <property name="mrzOcrExtractionFieldBase" value="MRZ_Line"/>
+        <property name="mrzOcrExtractionFieldBase" value="MRZ_line"/>
         <property name="mrzLineCount" value="1"/>
         <property name="mrzDecodingStrategy" ref="drivingLicenseMRZDecodingStrategy"/>
+        <property name="mrzValidationStrategy" ref="drivingLicenseMRZValidationStrategy"/>
     </bean>
 </beans>

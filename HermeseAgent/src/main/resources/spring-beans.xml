@@ -62,15 +62,25 @@
     </bean>
 
     <bean id="ukPassportDateConfigurations" class="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
-        <property name="dateTypeRegex" value="^(\\d{2}) (\\w{3})(.*)(\\d{2})$"/>
+        <property name="dateTypeRegex" value="^(\d{2}) (\w{3})(.*)(\d{2})$"/>
         <property name="strategy" ref="operationUKPassportDateDecode"/>
     </bean>
 
     <bean id="basicDateConfiguration" class="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
-        <property name="dateTypeRegex" value="^(\\d{2}.(\\d{2}).(\\d{4}))$"/>
+        <property name="dateTypeRegex" value="^(\d{2}.(\d{2}).(\d{4}))$"/>
         <property name="strategy" ref="operationSimplePassportDecode"/>
     </bean>
 
+    <bean id="ukPassportMRZDateConfigurations" class="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
+        <property name="dateTypeRegex" value="^\d{6}$"/>
+        <property name="strategy" ref="operationUKPassportMRZDateDecode"/>
+    </bean>
+
     <bean id="operationUKPassportDateDecode" class="com.fintech.orion.documentverification.common.date.strategy.UKPassportDateDecodeStrategy"/>
-    <bean id="operationSimplePassportDecode" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy"/>
+    <bean id="operationSimplePassportDecode" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
+        <property name="dateFormat" value="dd.MM.yyyy"/>
+    </bean>
+    <bean id="operationUKPassportMRZDateDecode" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
+        <property name="dateFormat" value="yyMMdd"/>
+    </bean>
 </beans>

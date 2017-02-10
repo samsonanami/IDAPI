@@ -13,13 +13,26 @@ import java.util.Date;
  */
 public class BasicDateDecodingStrategy implements DateDecodingStrategy{
 
+    private String dateFormat;
+
     @Override
     public Date decodeDate(String date) throws DateDecoderException {
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+        if (dateFormat == null || dateFormat.isEmpty()){
+            throw new DateDecoderException("No date format has been set ");
+        }
+        DateFormat df = new SimpleDateFormat(dateFormat);
         try {
             return df.parse(date);
         } catch (ParseException e) {
             throw new DateDecoderException("Unable to parse the given date ", e);
         }
+    }
+
+    public String getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
     }
 }

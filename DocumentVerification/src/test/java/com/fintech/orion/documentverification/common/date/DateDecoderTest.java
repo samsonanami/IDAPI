@@ -66,9 +66,17 @@ public class DateDecoderTest {
 
     @Test(expected = DateDecoderException.class)
     public void should_throw_DateDecoderException_if_invalid_date_is_given()throws Exception{
-        Date date = dateDecoder.decodeDate("09 GEB /FEV 12");
+        Date date = dateDecoder.decodeDate("09/07/12");
         DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         Date expected = dateFormat.parse("09022012");
+        Assert.assertEquals(expected, date);
+    }
+
+    @Test
+    public void should_decode_date_type_1()throws Exception{
+        Date date = dateDecoder.decodeDate("25 JUL /JUIL 74");
+        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+        Date expected = dateFormat.parse("25071974");
         Assert.assertEquals(expected, date);
     }
 }
