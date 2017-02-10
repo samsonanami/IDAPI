@@ -220,7 +220,7 @@
 
     <bean id="passportMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
         <property name="documentName" value="passport"/>
-        <property name="mrzOcrExtractionFieldBase" value="MRZ_Line"/>
+        <property name="mrzOcrExtractionFieldBase" value="MRZ_line"/>
         <property name="mrzDecodingStrategy" ref="passportMRZDecodingStrategy"/>
         <property name="mrzLineCount" value="2"/>
         <property name="mrzValidationStrategy" ref="passportMRZValidationStrategy"/>
@@ -228,7 +228,7 @@
 
     <bean id="drivingLicenseMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
         <property name="documentName" value="drivingLicenseFront"/>
-        <property name="mrzOcrExtractionFieldBase" value="MRZ_Line"/>
+        <property name="mrzOcrExtractionFieldBase" value="MRZ_line"/>
         <property name="mrzLineCount" value="1"/>
         <property name="mrzDecodingStrategy" ref="drivingLicenseMRZDecodingStrategy"/>
         <property name="mrzValidationStrategy" ref="drivingLicenseMRZValidationStrategy"/>

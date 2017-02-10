@@ -42,28 +42,18 @@ public class AbstractDataValidation extends ValidationHelper {
 
     private DataValidationStrategyType dataValidationStrategyType;
 
-    public DataValidation ocrExtractionFieldVizMrzDataValidation(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
+    public DataValidation ocrExtractionFieldVizMrzDataValidation(ResourceName resourceName, OcrResponse ocrResponse)
+            throws CustomValidationException {
         DataValidation dataValidation = new DataValidation();
         dataValidation.setId(getOcrExtractionFieldName());
         List<DataValidationValue> dataValidationValueList = new ArrayList<>();
 
         for (String documentName : getResourceListFromOcrResponse(ocrResponse)){
-            DataValidationValue dataValidationValue = new DataValidationValue();
-            dataValidationValue.setDocumentName(documentName);
-            dataValidationValue.setVizValue(getVizValue(getOcrExtractionFieldName(), documentName, ocrResponse));
-            dataValidationValue.setMrzValue("");
-            dataValidationValue.setRemarks(getFailedRemarksMessage());
-            try {
-                MRZDecodeResults mrzDecodeResults = decodeMrz(getOcrExtractionFieldName(), documentName, ocrResponse);
-                dataValidationValue.setMrzValue(getMrzValueForOcrExtractionField(getOcrExtractionFieldName(), mrzDecodeResults));
-            }catch (MRZValidatingException e){
-                LOGGER.error("Error validating mrz line {}", e);
-            } catch (MRZDecodingException e) {
-                LOGGER.error("Error decoding the mrz line {}", e);
-            }
-            dataValidationValue.setRemarks(getFailedRemarksMessage());
+            DataValidationValue dataValidationValue = getDataValidationValue(getOcrExtractionFieldName(),
+                    documentName, ocrResponse);
 
-            DataValidationStrategy strategy = dataValidationStrategyProvider.getValidationStrategy(dataValidationStrategyType);
+            DataValidationStrategy strategy = dataValidationStrategyProvider
+                    .getValidationStrategy(dataValidationStrategyType);
             DocumentDataValidator validator =  new DocumentDataValidator(strategy);
 
             ValidationResult result = validator.executeStrategy(dataValidationValue.getMrzValue(),
@@ -78,28 +68,50 @@ public class AbstractDataValidation extends ValidationHelper {
         return dataValidation;
     }
 
+    private DataValidationValue getDataValidationValue(String extractionFieldName,
+                                                       String documentName, OcrResponse ocrResponse){
+        DataValidationValue dataValidationValue = new DataValidationValue();
+        dataValidationValue.setDocumentName(documentName);
+        dataValidationValue.setStatus(false);
+        dataValidationValue.setRemarks(getFailedRemarksMessage());
+        dataValidationValue.setMrzValue("");
+        dataValidationValue.setVizValue(getVizValue(getOcrExtractionFieldName(), documentName, ocrResponse));
+        MrzLineBuilder mrzLineBuilder = new MrzLineBuilder();
+        for (DocumentMrzDecodingConfigurations configuration : getDocumentMrzDecodingConfigurations()){
+            extractMrzValueFromOcrResponse(documentName, ocrResponse, dataValidationValue, mrzLineBuilder, configuration);
+        }
+        return dataValidationValue;
+    }
+
+    private void extractMrzValueFromOcrResponse(String documentName, OcrResponse ocrResponse,
+                                                DataValidationValue dataValidationValue, MrzLineBuilder mrzLineBuilder,
+                                                DocumentMrzDecodingConfigurations configuration) {
+        MRZDecodeResults decodeResults;
+        if (configuration.getDocumentName().equalsIgnoreCase(documentName)){
+            String singleMrzLine = mrzLineBuilder.buildSingleLineMRZ(ocrResponse, documentName,
+                    configuration.getMrzOcrExtractionFieldBase(),
+                    configuration.getMrzLineCount());
+            try {
+                ValidateMRZResult validateMRZResult = validateMrz(singleMrzLine, configuration.getMrzValidationStrategy());
+                if ("true".equalsIgnoreCase(validateMRZResult.getValidationResult())){
+                    decodeResults = configuration.getMrzDecodingStrategy().decode(singleMrzLine);
+                    dataValidationValue.setMrzValue(getMrzValueForOcrExtractionField(getOcrExtractionFieldName(),
+                            decodeResults));
+                }
+            } catch (MRZDecodingException e) {
+                dataValidationValue.setRemarks("Unable to decoding MRZ : " + singleMrzLine);
+                LOGGER.error("Error decoding the mrz line {}", e);
+            } catch (MRZValidatingException e) {
+                dataValidationValue.setRemarks("Invalid MRZ detected : " + singleMrzLine);
+                LOGGER.error("Error validating mrz line {}", e);
+            }
+        }
+    }
+
     public String getVizValue(String extractionFieldName, String documentName, OcrResponse ocrResponse){
         OcrFieldData fieldData = getFieldDataById(extractionFieldName, ocrResponse);
         OcrFieldValue fieldValue = getFieldValueById(documentName+"##"+extractionFieldName, fieldData);
         return fieldValue.getValue();
-    }
-
-    private MRZDecodeResults decodeMrz(String extractionFieldName, String documentName, OcrResponse ocrResponse) throws MRZDecodingException, MRZValidatingException {
-        MRZDecodeResults decodeResults = new MRZDecodeResults();
-        MrzLineBuilder mrzLineBuilder = new MrzLineBuilder();
-        for (DocumentMrzDecodingConfigurations configuration : getDocumentMrzDecodingConfigurations()){
-            if (configuration.getDocumentName().equalsIgnoreCase(documentName)){
-                String singleMrzLine = mrzLineBuilder.buildSingleLineMRZ(ocrResponse, documentName,
-                        configuration.getMrzOcrExtractionFieldBase(),
-                        configuration.getMrzLineCount());
-                ValidateMRZResult validateMRZResult = validateMrz(singleMrzLine, configuration.getMrzValidationStrategy());
-                if ("true".equalsIgnoreCase(validateMRZResult.getValidationResult())){
-                    decodeResults = configuration.getMrzDecodingStrategy().decode(singleMrzLine);
-                }
-            }
-        }
-
-        return decodeResults;
     }
 
     private ValidateMRZResult validateMrz(String mrz, ValidateMRZ mrzValidator) throws MRZValidatingException {

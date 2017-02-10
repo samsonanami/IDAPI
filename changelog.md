@@ -3,6 +3,157 @@ Orion - Changelog
 
 Unreleased
 ----------
+(2017-02-09 12:55:14 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-09 12:54:50 +0530	) Merge branch 'code-review-updates-by-muditha' into 'develop'
+ Code review updates by muditha
+
+
+
+See merge request !50
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-09 11:40:19 +0530	) Correcting syntax error
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-02-09 11:30:06 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into code-review-updates-by-muditha
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-02-09 11:04:30 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-09 10:30:58 +0530	) validating mrz before decoding
+ mrz are validated before decoding it to ensure the integrity of the mrz
+
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-08 17:28:02 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 17:25:22 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 17:22:16 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 17:20:44 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 17:19:24 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 17:17:34 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 17:17:08 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 17:16:05 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 17:14:38 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:49:32 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:33:56 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:24:27 +0530	) Delete spring-datasource.xml
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:24:14 +0530	) Delete spring-config.xml
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:24:06 +0530	) Delete spring-beans.xml
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:23:59 +0530	) Delete logback.xml
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:23:52 +0530	) Delete applicationContext.xml
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:23:43 +0530	) Delete Hermese.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:18:33 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:18:22 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:18:11 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:18:00 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:17:47 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:17:36 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:13:23 +0530	) Add new directory
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:03:56 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:03:13 +0530	) Upload new file
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:02:21 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 16:01:24 +0530	) Update Hermese.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 15:33:05 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 15:30:16 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 15:22:12 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 15:20:13 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 15:17:18 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 15:03:51 +0530	) Update Hermese.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 14:52:42 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 14:27:42 +0530	) Merge branch 'verification-implementation' into 'develop'
+ Verification implementation
+
+
+
+See merge request !48
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-08 14:27:02 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-08 14:26:20 +0530	) [ci-skip] test case update
+ 
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+(2017-02-08 10:34:27 +0530	) Update war_deployer.sh
+ 
+ (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-02-08 00:00:07 +0530	) Merge branch 'verification-implementation' into 'develop'
+ Verification implementation
+
+
+
+See merge request !47
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
 (2017-02-07 23:59:34 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into verification-implementation
  
  (Sasitha Gunadasa)(sasithag@zone24x7.com)
@@ -48,6 +199,9 @@ Decode sex from driving license MRZ
 See merge request !44
  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 (2017-02-07 18:16:25 +0530	) Add Sex decoding for DL and test Decode sex from driving license MRZ
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-02-07 17:04:41 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into code-review-updates-by-muditha
  
  (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
 (2017-02-07 16:28:28 +0530	) Update war_deployer.sh
@@ -358,6 +512,9 @@ See merge request !42
 (2017-02-03 11:25:29 +0530	) Add new directory
  
  (Dinuka Jayamaha)(dinukaj@zone24x7.com)
+(2017-01-31 10:55:14 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into code-review-updates-by-muditha
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
 (2017-01-31 10:43:41 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into date-format-update
  
  (Sasitha Gunadasa)(sasithag@zone24x7.com)
@@ -372,6 +529,24 @@ to decode a given date
 (2017-01-30 16:32:19 +0530	) changed execution permissions
  
  (Manthila Mendis)(manthila.mendis@kohls.com)
+(2017-01-30 14:58:16 +0530	) Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into code-review-updates-by-muditha
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-01-30 11:45:26 +0530	) fix Issue #29 [Practices] - Don't explicitly catch NullPointerExceptions
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-01-26 16:26:18 +0530	) Fixed Issue #31 [Practices] - Add Java Doc comments
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-01-26 13:27:02 +0530	) Fix Issue #35 [Practices] - Code Duplication and sonar issues
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-01-26 11:57:44 +0530	) Fix Issue #40 [Practices - Naming] - Avoid general naming like "doOperation"
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
+(2017-01-26 11:35:17 +0530	)  Fixing Issue #28  Treat Booleans as Booleans
+ 
+ (Muditha Jayawardana)(MudithaJ@Zone24x7.lk)
 (2017-01-24 13:17:19 +0530	) Merge branch 'code-review-updates-by-sasitha' into 'develop'
  Code review updates by sasitha
 
