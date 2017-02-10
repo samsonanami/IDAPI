@@ -1,5 +1,6 @@
 package com.fintech.orion.documentverification.common.date;
 
+import com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy;
 import com.fintech.orion.documentverification.common.date.strategy.DateDecodingStrategy;
 import com.fintech.orion.documentverification.common.date.strategy.UKPassportDateDecodeStrategy;
 import com.fintech.orion.documentverification.common.exception.DateDecoderException;
@@ -43,7 +44,14 @@ public class DateDecoderTest {
         DateDecodingStrategy ukPassport = new UKPassportDateDecodeStrategy();
         configuration1.setStrategy(ukPassport);
 
+        BasicDateDecodingStrategy simpleDateDecode = new BasicDateDecodingStrategy();
+        simpleDateDecode.setDateFormat("dd.MM.yyyy");
+        DateTypeConfiguration simpleConfig = new DateTypeConfiguration();
+        simpleConfig.setDateTypeRegex("^(\\d{2}.(\\d{2}).(\\d{4}))$");
+        simpleConfig.setStrategy(simpleDateDecode);
+
         dateTypeConfigurationListObj.add(configuration1);
+        dateTypeConfigurationListObj.add(simpleConfig);
 
         MockitoAnnotations.initMocks(this);
     }
