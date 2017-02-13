@@ -20,7 +20,7 @@
 
 
     <bean id="processingRequestJsonFormatValidator" class="com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidator"/>
-
+    <bean id="resourceAccessValidator" class="com.fintech.orion.api.service.validator.ResourceAccessValidator"/>
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.api.service.request.ProcessingRequestService" />
     <bean id="clientValidatorInterface" class="com.fintech.orion.api.service.validator.ClientValidator" />
 

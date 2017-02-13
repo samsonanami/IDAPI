@@ -47,7 +47,7 @@ changelog {
 
     // The name of the report to generate.
     // Default value: CHANGELOG.md
-    fileName = "changelog.md"
+    //fileName = "changelog.md"
 
     // The range of commits the changelog should be composed of.
     // Default value: 'beginning' (i.e. full changelog)
@@ -74,7 +74,7 @@ changelog {
     // Default value: '* %s (%an)', which produces:
     // * Initial commit (Alex Selesse)
     markdown {
-        commitFormat = '(%ai%x09) %s%n %b%n (%an)(%aE)'
+        commitFormat = '%s%n %b%n (%an)(%aE)'
     }
 
     // Specifies a commit format for the HTML template.
@@ -90,9 +90,11 @@ changelog {
 
     // A closure that returns 'true' if the line should be included in the changelog.
     // Default value: accept everything, { true }
-    /*includeLines = {
+    includeLines = {
         !it.contains("Merge")
-    }*/
+        !it.contains("[ci-skip]")
+        !it.contains("[ci skip]")
+    }
 
     // A closure that transforms a changelog String.
     // Default value: the identity closure, { it }
@@ -100,8 +102,9 @@ changelog {
     // For example, to remove '[ci skip]' from the changelog messages:
     processLines = {
         String input = it as String
-        if (input.contains('[ci skip] ')) {
+        if (input.contains('[ci skip] ') || input.contains('[ci-skip] ')) {
             input = input.minus('[ci skip] ')
+            input = input.minus('[ci-skip] ')
         }
         input
     }
