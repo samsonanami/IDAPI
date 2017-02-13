@@ -30,7 +30,7 @@
     </bean>
     <bean id="idSurName" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
         <property name="itemName" value="surname"></property>
-        <property name="startIndex" value="5"></property>
+        <property name="startIndex" value="6"></property>
         <property name="endIndex" value="44"></property>
         <property name="mrzLineNumber" value="1"></property>
     </bean>
@@ -60,8 +60,8 @@
     </bean>
     <bean id="idSex" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
         <property name="itemName" value="Sex"></property>
-        <property name="startIndex" value="20"></property>
-        <property name="endIndex" value="20"></property>
+        <property name="startIndex" value="21"></property>
+        <property name="endIndex" value="21"></property>
         <property name="mrzLineNumber" value="2"></property>
     </bean>
     <bean id="idExpireDate" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
