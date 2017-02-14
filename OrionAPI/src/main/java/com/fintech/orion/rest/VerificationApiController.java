@@ -5,7 +5,10 @@ import com.fintech.orion.api.service.exceptions.*;
 import com.fintech.orion.api.service.request.ProcessingRequestServiceInterface;
 import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInterface;
 import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorInterface;
+import com.fintech.orion.api.service.validator.ResourceAccessValidator;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
+import com.fintech.orion.dto.request.api.Resource;
+import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
@@ -27,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-18T09:12:11.427Z")
@@ -47,6 +52,9 @@ public class VerificationApiController implements VerificationApi {
 
     @Autowired
     private ProcessingRequestServiceInterface processingRequestHandlerInterface;
+
+    @Autowired
+    private ResourceAccessValidator resourceAccessValidator;
 
     @Autowired
     private MessageProducer messageProducer;
@@ -80,6 +88,14 @@ public class VerificationApiController implements VerificationApi {
                 errorMessage.setMessage("Your license does not cover the processing types requested");
                 errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
+            }
+
+            if (!resourceAccessValidator.validateResourceOwnership(principal.getName(), getResourceList(body))){
+                LOGGER.warn("Client {} tried to access one or more resources not uploaded by them selfs.");
+                errorMessage.setMessage("Unknown resource id was found in the processing request. " +
+                        "Please check all the resource id's and try again");
+                errorMessage.setStatus(HttpStatus.NOT_FOUND.value());
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.NOT_FOUND);
             }
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(principal.getName(), body.getVerificationProcesses());
@@ -149,6 +165,16 @@ public class VerificationApiController implements VerificationApi {
         }
 
         return responseEntity;
+    }
+
+    private List<String> getResourceList(VerificationRequest verificationRequest){
+        List<String> resourceIdList = new ArrayList<>();
+        for (VerificationProcess verificationProcess : verificationRequest.getVerificationProcesses()){
+            for (Resource resource : verificationProcess.getResources()){
+                resourceIdList.add(resource.getResourceId());
+            }
+        }
+        return resourceIdList;
     }
 
 }

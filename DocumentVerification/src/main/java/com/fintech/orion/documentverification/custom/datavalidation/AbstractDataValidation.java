@@ -137,7 +137,7 @@ public class AbstractDataValidation extends ValidationHelper {
             case "given_names":
                 mrzValue = decodeResults.getGivenName();
                 break;
-            case "document_number":
+            case "passport_number":
                 mrzValue = decodeResults.getPassPortNumber();
                 break;
             default:
