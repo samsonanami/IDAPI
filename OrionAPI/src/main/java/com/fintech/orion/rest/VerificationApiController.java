@@ -90,13 +90,13 @@ public class VerificationApiController implements VerificationApi {
                 return new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
             }
 
-          /*  if (!resourceAccessValidator.validateResourceOwnership(principal.getName(), getResourceList(body))){
+            if (!resourceAccessValidator.validateResourceOwnership(principal.getName(), getResourceList(body))){
                 LOGGER.warn("Client {} tried to access one or more resources not uploaded by them selfs.");
                 errorMessage.setMessage("Unknown resource id was found in the processing request. " +
                         "Please check all the resource id's and try again");
                 errorMessage.setStatus(HttpStatus.NOT_FOUND.value());
                 return new ResponseEntity<Object>(errorMessage, HttpStatus.NOT_FOUND);
-            }*/
+            }
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(principal.getName(), body.getVerificationProcesses());
 

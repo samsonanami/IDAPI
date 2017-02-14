@@ -5,6 +5,8 @@ import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.repositories.ClientRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ResourceRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
  * Created by sasitha on 2/10/17.
  *
  */
+@Service
 public class ResourceAccessValidator implements ResourceAccessValidatorInterface {
 
     @Autowired
@@ -21,6 +24,7 @@ public class ResourceAccessValidator implements ResourceAccessValidatorInterface
     private ResourceRepositoryInterface resourceRepositoryInterface;
 
     @Override
+    @Transactional
     public boolean validateResourceOwnership(String userName, List<String> resourceList) {
         boolean isAllResourceBelongsToTheUser = true;
         Client client = clientRepositoryInterface.findClientByUserName(userName);
