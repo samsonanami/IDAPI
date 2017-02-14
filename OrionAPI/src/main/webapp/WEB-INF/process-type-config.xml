@@ -23,6 +23,11 @@
         <property name="resources" ref="addressVerificationResources"/>
     </bean>
 
+    <bean id="facialVerificationType" class="com.fintech.orion.dto.request.api.VerificationProcess">
+        <property name="verificationProcessType" value="facialVerification"/>
+        <property name="resources" ref="facialVerificationResources"/>
+    </bean>
+
     <bean id="idVerificationTypeResources" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.dto.request.api.Resource">
@@ -41,6 +46,15 @@
                 <ref bean="utilityBillResourceType"/>
                 <ref bean="drivingLicenseFrontResourceType"/>
                 <ref bean="keyedValuesResourceType"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="facialVerificationResources" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.dto.request.api.Resource">
+                <ref bean="faceImageResourceType"/>
+                <ref bean="facialVideoResourceType"/>
             </array>
         </constructor-arg>
     </bean>
@@ -73,6 +87,16 @@
     <bean id="keyedValuesResourceType" class="com.fintech.orion.dto.request.api.Resource">
         <property name="resourceId" value=""/>
         <property name="resourceName" value="keyedData"/>
+    </bean>
+
+    <bean id="facialVideoResourceType" class="com.fintech.orion.dto.request.api.Resource">
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="facialVideo"/>
+    </bean>
+
+    <bean id="faceImageResourceType" class="com.fintech.orion.dto.request.api.Resource">
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="faceImage"/>
     </bean>
 
 </beans>
