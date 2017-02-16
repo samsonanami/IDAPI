@@ -22,18 +22,18 @@ DROP PROCEDURE IF EXISTS orion_toggleLicense;
 DELIMITER //
 CREATE PROCEDURE orion_toggleLicense
   (
-    IN license_key     VARCHAR(256),
+    IN key_id     VARCHAR(256),
     IN togle          BOOLEAN
   )
   BEGIN
     SET SQL_SAFE_UPDATES = 0;
       UPDATE license
         SET ENABLED = togle
-      WHERE LICENSE_KEY = license_key;
+      WHERE LICENSE_KEY = key_id;
     SET SQL_SAFE_UPDATES = 1;
     SELECT
       'Toggled license enable / disable status ' AS 'MESSAGE',
       LICENSE_KEY AS 'LICENSE KEY', ENABLED AS 'NEW STATUS'
-    FROM license where LICENSE_KEY = license_key;
+    FROM license where LICENSE_KEY = key_id;
   END //
 DELIMITER ;
