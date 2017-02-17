@@ -1,17 +1,19 @@
-package com.fintech.orion.hermesagentservices.processor;
+package com.fintech.orion.hermesagentservices.processor.request.processor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.request.FailedRequestException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
-import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
+import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponseType;
-import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.dto.hermese.model.oracle.VerificationProcessResponse;
 import com.fintech.orion.dto.hermese.model.oracle.VerificationResource;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
+import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponseType;
+import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyBuilder;
 import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyBuilderFactory;
 import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyType;
@@ -30,7 +32,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 /**
@@ -38,7 +43,7 @@ import java.util.concurrent.Future;
  *
  */
 @Component
-public class OracleRequestProcessor implements VerificationProcessor {
+public class OracleRequestProcessor implements RequestProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OracleRequestProcessor.class);
 
@@ -57,7 +62,7 @@ public class OracleRequestProcessor implements VerificationProcessor {
     @Async
     @Override
     @Transactional
-    public Future<Object> process(Object object) throws RequestProcessorException {
+    public Future<Object> processRequest(Object object) throws RequestProcessorException {
 
         ProcessingRequest processingRequest;
         ProcessingMessage processingMessage = (ProcessingMessage)object;
