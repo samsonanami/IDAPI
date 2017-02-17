@@ -23,14 +23,14 @@ DROP PROCEDURE IF EXISTS  `orion_addVerificationTypeForLicense`           ;
 DELIMITER //
 CREATE PROCEDURE orion_addVerificationTypeForLicense
   (
-    IN licnese_key                  VARCHAR(256),
+    IN key_id                  VARCHAR(256),
     IN verification_process_type    VARCHAR(256)
   )
   license_process:BEGIN
     DECLARE license_id				  INT(11)		DEFAULT 		'';
     DECLARE process_type_id			INT(1)		DEFAULT			'';
 
-    SELECT ID INTO license_id 					FROM 	license 		  WHERE 	LICENSE_KEY 	        = 	licnese_key;
+    SELECT ID INTO license_id 					FROM 	license 		  WHERE 	LICENSE_KEY 	        = 	key_id;
     SELECT ID INTO process_type_id 	    FROM 	process_type 	WHERE 	process_type.`TYPE`   = 	verification_process_type;
     INSERT INTO process_type_license
     (
@@ -44,6 +44,6 @@ CREATE PROCEDURE orion_addVerificationTypeForLicense
       );
     SELECT
       'Added verification type for license' AS 'MESSAGE',
-      licnese_key AS 'LICENSE KEY', verification_process_type AS 'VERIFICATION PROCESS TYPE';
+      key_id AS 'LICENSE KEY', verification_process_type AS 'VERIFICATION PROCESS TYPE';
   END //
 DELIMITER ;

@@ -22,14 +22,14 @@ DROP PROCEDURE IF EXISTS orion_updateLicenseMaximumRequestCount;
 DELIMITER //
 CREATE PROCEDURE orion_updateLicenseMaximumRequestCount
   (
-    IN  license_key  VARCHAR(256),
+    IN  key_id  VARCHAR(256),
     IN  maximum_request_count INT(5)
   )
   BEGIN
     SET SQL_SAFE_UPDATES = 0;
       UPDATE license
         SET MAXIMUM_REQUEST_COUNT = maximum_request_count
-      WHERE LICENSE_KEY = license_key;
+      WHERE LICENSE_KEY = key_id;
     SET SQL_SAFE_UPDATES = 1;
 
     SELECT
@@ -39,6 +39,6 @@ CREATE PROCEDURE orion_updateLicenseMaximumRequestCount
       license.START_DATE AS 'LICENSE STARTING DATE', license.END_DATE AS 'LICENSE ENDING DATE',
       license.ENABLED AS 'LICENSE STATUS'
     FROM license
-      INNER JOIN client ON license.CLIENT = client.ID WHERE license.LICENSE_KEY = license_key;
+      INNER JOIN client ON license.CLIENT = client.ID WHERE license.LICENSE_KEY = key_id;
   END //
 DELIMITER ;
