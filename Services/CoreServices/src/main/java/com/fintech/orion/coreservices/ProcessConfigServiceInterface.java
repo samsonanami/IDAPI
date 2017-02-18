@@ -10,6 +10,5 @@ import java.util.List;
  */
 public interface ProcessConfigServiceInterface {
 
-    List<ProcessConfigDTO> findById(int processType) throws ItemNotFoundException;
 
 }

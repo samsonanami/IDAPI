@@ -36,7 +36,7 @@ public class Client  implements java.io.Serializable {
      private Set<License> licenses = new HashSet<License>(0);
      private Set<ProcessingRequest> processingRequests = new HashSet<ProcessingRequest>(0);
      private Set<Resource> resources = new HashSet<Resource>(0);
-
+     private Set<ProcessConfig> processConfigs = new HashSet<ProcessConfig>(0);
     public Client() {
     }
 
@@ -48,7 +48,7 @@ public class Client  implements java.io.Serializable {
         this.password = password;
         this.enabled = enabled;
     }
-    public Client(String email, Date registeredOn, String userName, String password, boolean enabled, Set<License> licenses, Set<ProcessingRequest> processingRequests, Set<Resource> resources) {
+    public Client(String email, Date registeredOn, String userName, String password, boolean enabled, Set<License> licenses, Set<ProcessingRequest> processingRequests, Set<Resource> resources, Set<ProcessConfig> processConfigs) {
        this.email = email;
        this.registeredOn = registeredOn;
        this.userName = userName;
@@ -57,6 +57,7 @@ public class Client  implements java.io.Serializable {
        this.licenses = licenses;
        this.processingRequests = processingRequests;
        this.resources = resources;
+       this.processConfigs = processConfigs;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -102,7 +103,7 @@ public class Client  implements java.io.Serializable {
     }
 
     
-    @Column(name="PASSWORD", nullable=false, length=256)
+    @Column(name="PASSWORD", nullable=false, length=512)
     public String getPassword() {
         return this.password;
     }
@@ -148,6 +149,15 @@ public class Client  implements java.io.Serializable {
         this.resources = resources;
     }
 
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
+    public Set<ProcessConfig> getProcessConfigs() {
+        return this.processConfigs;
+    }
+    
+    public void setProcessConfigs(Set<ProcessConfig> processConfigs) {
+        this.processConfigs = processConfigs;
+    }
 
 
 

@@ -43,7 +43,7 @@
 
     <bean id="verificationRequestDetailService" class="com.fintech.orion.common.service.VerificationRequestDetailService"/>
 
-
+    <bean id="configurationProvider" class="com.fintech.orion.hermesagentservices.provider.ConfigurationProvider"/>
     <bean id="oracleAPIBaseUrl" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="http://localhost:8080/oracle/v1/"/>
     </bean>

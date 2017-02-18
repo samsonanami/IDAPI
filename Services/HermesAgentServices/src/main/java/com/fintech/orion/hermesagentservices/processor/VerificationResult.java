@@ -9,6 +9,7 @@ import com.fintech.orion.common.Processor;
 public class VerificationResult {
     private Processor processor;
     private String resultString;
+    private String license;
 
     public Processor getProcessor() {
         return processor;
@@ -24,5 +25,13 @@ public class VerificationResult {
 
     public void setResultString(String resultString) {
         this.resultString = resultString;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
     }
 }

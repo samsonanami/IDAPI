@@ -1,13 +1,13 @@
 package com.fintech.orion.dataabstraction.entities.orion;
-// Generated Dec 25, 2016 10:54:56 AM by Hibernate Tools 4.3.1
+// Generated Feb 18, 2017 5:58:33 PM by Hibernate Tools 4.3.1
 
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,35 +21,62 @@ import javax.persistence.Table;
 public class ProcessConfig  implements java.io.Serializable {
 
 
-     private ProcessConfigId id;
+     private Integer id;
+     private Client client;
+     private ConfigurationKey configurationKey;
      private ProcessType processType;
      private String value;
 
     public ProcessConfig() {
     }
 
-    public ProcessConfig(ProcessConfigId id, ProcessType processType, String value) {
-       this.id = id;
+	
+    public ProcessConfig(Client client, ConfigurationKey configurationKey, ProcessType processType) {
+        this.client = client;
+        this.configurationKey = configurationKey;
+        this.processType = processType;
+    }
+    public ProcessConfig(Client client, ConfigurationKey configurationKey, ProcessType processType, String value) {
+       this.client = client;
+       this.configurationKey = configurationKey;
        this.processType = processType;
        this.value = value;
     }
    
-     @EmbeddedId
+     @Id @GeneratedValue(strategy=IDENTITY)
 
     
-    @AttributeOverrides( {
-        @AttributeOverride(name="processType", column=@Column(name="PROCESS_TYPE", nullable=false) ), 
-        @AttributeOverride(name="key", column=@Column(name="KEY", nullable=false, length=45) ) } )
-    public ProcessConfigId getId() {
+    @Column(name="ID", unique=true, nullable=false)
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(ProcessConfigId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PROCESS_TYPE", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="CLIENT", nullable=false)
+    public Client getClient() {
+        return this.client;
+    }
+    
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="KEY", nullable=false)
+    public ConfigurationKey getConfigurationKey() {
+        return this.configurationKey;
+    }
+    
+    public void setConfigurationKey(ConfigurationKey configurationKey) {
+        this.configurationKey = configurationKey;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PROCESS_TYPE", nullable=false)
     public ProcessType getProcessType() {
         return this.processType;
     }
@@ -59,7 +86,7 @@ public class ProcessConfig  implements java.io.Serializable {
     }
 
     
-    @Column(name="VALUE", nullable=false, length=150)
+    @Column(name="VALUE", length=45)
     public String getValue() {
         return this.value;
     }

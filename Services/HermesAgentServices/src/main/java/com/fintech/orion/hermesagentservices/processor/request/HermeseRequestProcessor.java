@@ -45,6 +45,7 @@ public class HermeseRequestProcessor implements HermeseRequestProcessorInterface
                 oracleVerificationResult = new VerificationResult();
                 oracleVerificationResult.setProcessor(Processor.ORACLE);
                 oracleVerificationResult.setResultString(oracleRawString);
+                oracleVerificationResult.setLicense(processingMessage.getClientLicense());
                 verificationResults.add(oracleVerificationResult);
             }
 
@@ -54,6 +55,7 @@ public class HermeseRequestProcessor implements HermeseRequestProcessorInterface
                 facialVerificationResults = new VerificationResult();
                 facialVerificationResults.setProcessor(Processor.COMPRESSION_LABS);
                 facialVerificationResults.setResultString(facialVerificationRawResponse);
+                facialVerificationResults.setLicense(processingMessage.getClientLicense());
                 verificationResults.add(facialVerificationResults);
             }
 

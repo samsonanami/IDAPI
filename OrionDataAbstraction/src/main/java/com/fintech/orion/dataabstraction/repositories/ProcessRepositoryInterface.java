@@ -25,10 +25,7 @@ public interface ProcessRepositoryInterface extends CrudRepository<Process, Inte
 
     @Query("select p.processType from Process p where  p.processIdentificationCode = ?1")
     ProcessType test(String string);
-
-    /*@Query("select p from Process p where p.processingRequest = (select  pr from ProcessingRequest pr where " +
-            "pr.processingRequestIdentificationCode = ?1) and p.processType in (select pt from ProcessType pt where" +
-            "pt.type in (?2))")*/
+    
     List<Process> findProcessByProcessingRequestAndProcessTypeIn(ProcessingRequest processingRequest, List<ProcessType>
                                                                            processTypeList);
 
