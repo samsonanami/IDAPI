@@ -6,6 +6,7 @@ import com.fintech.orion.dto.hermese.ResponseProcessorResult;
 import com.fintech.orion.dto.response.api.ValidationData;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.hermesagentservices.processor.VerificationResult;
+import com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialVerificationProcessor;
 import com.fintech.orion.hermesagentservices.processor.response.chain.oracle.OracleResponseProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +22,9 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
     @Autowired
     private OracleResponseProcessor oracleResponseProcessor;
 
+    @Autowired
+    private FacialVerificationProcessor facialVerificationProcessor;
+
     @Override
     public ResponseProcessorResult processVerificationResults(List<VerificationResult> verificationResults,
                                                               String processingRequestId) {
@@ -29,6 +33,7 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
         VerificationProcessDetailedResponse verificationProcessDetailedResponse =
                 new VerificationProcessDetailedResponse();
 
+        oracleResponseProcessor.setNext(facialVerificationProcessor);
         oracleResponseProcessor.start(verificationProcessDetailedResponse,
                 verificationResults, processingRequestId);
 

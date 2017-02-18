@@ -52,11 +52,13 @@ public class OracleResponseProcessor extends RequestProcessorChain {
             }
         }
 
-        try {
-            processRawString(response, rawString, processingRequestId);
-        } catch (IOException e) {
-            LOGGER.error("Error processing raw response {} for processing request id {} ",
-                    rawString, processingRequestId, e);
+        if (rawString != null && !"null".equalsIgnoreCase(rawString) && !rawString.isEmpty()) {
+            try {
+                processRawString(response, rawString, processingRequestId);
+            } catch (IOException e) {
+                LOGGER.error("Error processing raw response {} for processing request id {} ",
+                        rawString, processingRequestId, e);
+            }
         }
     }
 

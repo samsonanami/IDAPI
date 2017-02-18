@@ -12,10 +12,15 @@ public class RequestProcessorFactory {
     @Autowired
     private OracleRequestProcessor oracleRequestProcessor;
 
+    @Autowired
+    private CompressionLabsRequestProcessor compressionLabsRequestProcessor;
+
     public RequestProcessor getRequestProcessor(Processor processor) {
         RequestProcessor requestProcessor = null;
         if (processor.equals(Processor.ORACLE)){
             requestProcessor = oracleRequestProcessor;
+        }else if (processor.equals(Processor.COMPRESSION_LABS)){
+            requestProcessor = compressionLabsRequestProcessor;
         }
         return requestProcessor;
     }

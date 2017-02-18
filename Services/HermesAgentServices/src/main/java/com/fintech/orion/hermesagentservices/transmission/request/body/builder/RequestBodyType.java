@@ -6,5 +6,5 @@ package com.fintech.orion.hermesagentservices.transmission.request.body.builder;
  */
 public enum RequestBodyType {
 
-    ORACLE, JENID
+    ORACLE, JENID, COMPRESSION
 }

@@ -6,6 +6,6 @@ package com.fintech.orion.hermesagentservices.transmission.request.builder;
  */
 public enum  BuilderType {
 
-    ORACLE, JENID
+    ORACLE, COMPRESSION
 
 }

@@ -35,25 +35,36 @@ public class HermeseRequestProcessor implements HermeseRequestProcessorInterface
         Future<Object> oracleResults = requestProcessorFactory.getRequestProcessor(Processor.ORACLE)
                 .processRequest(processingMessage);
 
+        Future<Object> compressionLabsResults = requestProcessorFactory.getRequestProcessor(Processor.COMPRESSION_LABS)
+                .processRequest(processingMessage);
 
-        if(oracleResults != null){
-
-            try {
+        try {
+            VerificationResult oracleVerificationResult = null;
+            if (oracleResults != null) {
                 String oracleRawString = objectMapper.writeValueAsString(oracleResults.get());
-                VerificationResult oracleVerificationResult = new VerificationResult();
+                oracleVerificationResult = new VerificationResult();
                 oracleVerificationResult.setProcessor(Processor.ORACLE);
                 oracleVerificationResult.setResultString(oracleRawString);
-
                 verificationResults.add(oracleVerificationResult);
-
-            } catch (JsonProcessingException e) {
-                LOGGER.error("Error parsing the json from result {} ", oracleResults, e);
-            } catch (InterruptedException e) {
-                LOGGER.error("Async processing interrupted ", e);
-            } catch (ExecutionException e) {
-                LOGGER.error("Async process execution exception occurred ", e);
             }
+
+            VerificationResult facialVerificationResults = null;
+            if (compressionLabsResults != null) {
+                String facialVerificationRawResponse = objectMapper.writeValueAsString(compressionLabsResults.get());
+                facialVerificationResults = new VerificationResult();
+                facialVerificationResults.setProcessor(Processor.COMPRESSION_LABS);
+                facialVerificationResults.setResultString(facialVerificationRawResponse);
+                verificationResults.add(facialVerificationResults);
+            }
+
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Error parsing the json from result {} ", oracleResults, e);
+        } catch (InterruptedException e) {
+            LOGGER.error("Async processing interrupted ", e);
+        } catch (ExecutionException e) {
+            LOGGER.error("Async process execution exception occurred ", e);
         }
+
 
         return verificationResults;
     }

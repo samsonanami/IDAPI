@@ -23,6 +23,8 @@ public interface VerificationRequestDetailServiceInterface {
 
     List<Process> getProcessListBelongsToProcessingRequest(String processingRequestCode);
 
+    List<Process> getProcessListBelongsToProcessingRequest(String processingRequestCode, List<String> processTypes);
+
     ProcessType getProcessTypeFromProcessCode(String processIdentificationCode);
 
 }

@@ -36,13 +36,28 @@
     <bean id="oracleRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.processor.OracleRequestProcessor"/>
     <bean id="oracleResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.OracleResponseProcessor"/>
 
+    <bean id="compressionLabsRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.processor.CompressionLabsRequestProcessor"/>
+    <bean id="facialVerificationProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialVerificationProcessor"/>
+
     <bean id="requestSubmitter" class="com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitter"/>
 
     <bean id="verificationRequestDetailService" class="com.fintech.orion.common.service.VerificationRequestDetailService"/>
 
 
     <bean id="oracleAPIBaseUrl" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="http://10.101.15.212:8080/oracle/v1/"/>
+        <constructor-arg type="java.lang.String" value="http://localhost:8080/oracle/v1/"/>
+    </bean>
+
+    <bean id="compressionLabsBaseUrl" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="https://api.compressionlabs.com/v1/"/>
+    </bean>
+
+    <bean id="resourceBaseLocation" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/opt/wildfly_data"/>
+    </bean>
+
+    <bean id="commandsFileLocation" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/home/sasitha/Pictures/idapi/compression/commands.json"/>
     </bean>
 
     <bean id="maximumWaitingTimeInSeconds" class="java.lang.String">

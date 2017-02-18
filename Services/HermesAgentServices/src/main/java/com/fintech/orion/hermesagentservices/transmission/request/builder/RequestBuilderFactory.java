@@ -15,6 +15,8 @@ public class RequestBuilderFactory {
         RequestBuilder requestBuilder = new OracleRequestBuilder();
         if (builderType.equals(BuilderType.ORACLE)){
             requestBuilder = new OracleRequestBuilder();
+        } else if (builderType.equals(BuilderType.COMPRESSION)){
+            requestBuilder = new CompressionlabsRequestBuilder();
         }
         return requestBuilder;
     }

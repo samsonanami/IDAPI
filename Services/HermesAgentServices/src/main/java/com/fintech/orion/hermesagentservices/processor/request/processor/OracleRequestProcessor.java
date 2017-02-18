@@ -64,29 +64,40 @@ public class OracleRequestProcessor implements RequestProcessor {
     @Transactional
     public Future<Object> processRequest(Object object) throws RequestProcessorException {
 
+
         ProcessingRequest processingRequest;
         ProcessingMessage processingMessage = (ProcessingMessage)object;
-        OcrResponse response = new OcrResponse();
-        try {
-            processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
-        } catch (ItemNotFoundException e) {
-            throw new RequestProcessorException("Could not found processing request with verification request code : " +
-                    "" + processingMessage.getVerificationRequestCode(), e);
-        }
+        OcrResponse response = null;
 
-        BaseRequest postRequest = buildPostRequest(processingRequest);
+        List<String> processTypeList = new ArrayList<>();
+        processTypeList.add("idVerification");
+        processTypeList.add("addressVerification");
+        List<Process> processList = verificationRequestDetailService
+                .getProcessListBelongsToProcessingRequest(processingMessage.getVerificationRequestCode(),
+                        processTypeList);
 
-        try {
-            VerificationProcessResponse verificationResponse = sendPostRequest(postRequest);
-            response = waitForProcessingComplete(verificationResponse);
-        } catch (FailedRequestException e) {
-            throw new RequestProcessorException("Could not send request to oracle api", e);
-        } catch (IOException e) {
-            throw new RequestProcessorException("Could not map response from oracle api to the post request : " +
-                    "" + postRequest.toString(), e);
-        } catch (InterruptedException e) {
-            throw new RequestProcessorException("Interruption occurred while waiting to get the processed data " +
-                    "from the oracle api ", e);
+        if (!processList.isEmpty()) {
+            try {
+                processingRequest = verificationRequestDetailService.getProcessingRequest(processingMessage.getVerificationRequestCode());
+            } catch (ItemNotFoundException e) {
+                throw new RequestProcessorException("Could not found processing request with verification request code : " +
+                        "" + processingMessage.getVerificationRequestCode(), e);
+            }
+
+            BaseRequest postRequest = buildPostRequest(processingRequest);
+
+            try {
+                VerificationProcessResponse verificationResponse = sendPostRequest(postRequest);
+                response = waitForProcessingComplete(verificationResponse);
+            } catch (FailedRequestException e) {
+                throw new RequestProcessorException("Could not send request to oracle api", e);
+            } catch (IOException e) {
+                throw new RequestProcessorException("Could not map response from oracle api to the post request : " +
+                        "" + postRequest.toString(), e);
+            } catch (InterruptedException e) {
+                throw new RequestProcessorException("Interruption occurred while waiting to get the processed data " +
+                        "from the oracle api ", e);
+            }
         }
 
         return new AsyncResult<>(response);
@@ -156,9 +167,13 @@ public class OracleRequestProcessor implements RequestProcessor {
 
     @Transactional
     private Map<String, Object> getRequestBodyContent(ProcessingRequest processingRequest){
+        List<String> processTypeList = new ArrayList<>();
+        processTypeList.add("idVerification");
+        processTypeList.add("addressVerification");
         Map<String, Object> requestBodyContent = new HashMap<>();
         List<Process> processList = verificationRequestDetailService
-                .getProcessListBelongsToProcessingRequest(processingRequest.getProcessingRequestIdentificationCode());
+                .getProcessListBelongsToProcessingRequest(processingRequest.getProcessingRequestIdentificationCode(),
+                        processTypeList);
         for (Process p : processList){
             ProcessType processType = verificationRequestDetailService
                     .getProcessTypeFromProcessCode(p.getProcessIdentificationCode());

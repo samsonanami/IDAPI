@@ -13,6 +13,8 @@ public class RequestBodyBuilderFactory {
         RequestBodyBuilder builder = new OracleRequestBodyBuilder();
         if (type.equals(RequestBodyType.ORACLE)){
             builder = new OracleRequestBodyBuilder();
+        }else if (type.equals(RequestBodyType.COMPRESSION)){
+            builder = new CompressionLabsRequestBodyBuilder();
         }
         return builder;
     }
