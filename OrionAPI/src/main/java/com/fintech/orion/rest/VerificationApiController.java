@@ -100,12 +100,7 @@ public class VerificationApiController implements VerificationApi {
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(principal.getName(), body.getVerificationProcesses());
 
-            if (!Boolean.valueOf(integrationRequest)){
-                ProcessingMessage message = new ProcessingMessage();
-                message.setVerificationRequestCode(processingRequestId);
-                message.setClientLicense(licenseKey);
-                messageProducer.sendMessage(message, jmsTemplate);
-            }
+            updateMessageQueue(integrationRequest, licenseKey, processingRequestId);
 
             VerificationRequestResponse verificationResponse = new VerificationRequestResponse();
             verificationResponse.setProcessingRequestId(processingRequestId);
@@ -129,6 +124,15 @@ public class VerificationApiController implements VerificationApi {
         }
 
         return responseEntity;
+    }
+
+    private void updateMessageQueue(String integrationRequest, String licenseKey, String processingRequestId) {
+        if (!Boolean.valueOf(integrationRequest)){
+            ProcessingMessage message = new ProcessingMessage();
+            message.setVerificationRequestCode(processingRequestId);
+            message.setClientLicense(licenseKey);
+            messageProducer.sendMessage(message, jmsTemplate);
+        }
     }
 
     public ResponseEntity<Object> verificationVerificationIdGet(

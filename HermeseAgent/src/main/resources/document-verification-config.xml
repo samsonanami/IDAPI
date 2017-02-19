@@ -74,6 +74,7 @@
     <bean id ="dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
     <bean id="addressComparator" class="com.fintech.orion.documentverification.common.address.AddressCompare"/>
     <bean id="addressDecoder" class="com.fintech.orion.documentverification.common.address.AddressDecoding"/>
+    <bean id="addressValidator" class="com.fintech.orion.documentverification.common.address.ValidateAddress"/>
 
 
     <bean id="idDocCustomValidations" class="java.util.ArrayList">

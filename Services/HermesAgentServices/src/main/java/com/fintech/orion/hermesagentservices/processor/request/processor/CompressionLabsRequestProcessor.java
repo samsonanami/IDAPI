@@ -146,9 +146,9 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
     @Transactional
     private String getShortRequestName(String resourceName){
         String shortName = "f1";
-        if (resourceName.equalsIgnoreCase("facialVideo")){
+        if ("facialVideo".equalsIgnoreCase(resourceName)){
             shortName = "f1";
-        }else if (resourceName.equalsIgnoreCase("faceImage")){
+        }else if ("faceImage".equalsIgnoreCase(resourceName)){
             shortName = "f2";
         }
         return shortName;
