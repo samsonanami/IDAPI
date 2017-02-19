@@ -114,10 +114,9 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
         return mrz.substring(start, end);
     }
 
-    private String decodeSex(String mrz,Range range)
-    {
-        String sexMRZ= mrz.substring( range.getStart(), range.getEnd());
-        String sex ="M";
+    private String decodeSex(String mrz, Range range) {
+        String sexMRZ = mrz.substring(range.getStart(), range.getEnd());
+        String sex = "M";
         if (Integer.parseInt(sexMRZ) > 12) {
             sex = "F";
         }

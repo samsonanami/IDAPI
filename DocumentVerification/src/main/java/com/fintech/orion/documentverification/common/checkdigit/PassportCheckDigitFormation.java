@@ -13,7 +13,6 @@ import java.util.HashMap;
 /**
  * This Class calculates the all five check digits in passport MRZ
  * Created by MudithaJ on 11/28/2016.
- *
  */
 @Component
 public class PassportCheckDigitFormation {
@@ -26,7 +25,7 @@ public class PassportCheckDigitFormation {
     @Qualifier("passportMRZConfigureList")
     private HashMap<String, MRZItemProperty> mrzItemProperty;
 
-     PassportCheckDigitFormation() {
+    PassportCheckDigitFormation() {
         this.setCheckDigitAlphabetStartValue(6);
         this.setModulo(10);
     }
@@ -164,46 +163,45 @@ public class PassportCheckDigitFormation {
 
     private String getCheckDigitParseOne(String mrz, Range digitRange) {
 
-        return getCheckDigitParse(mrz,digitRange);
+        return getCheckDigitParse(mrz, digitRange);
     }
 
     private String getCheckDigitParseTwo(String mrz, Range digitRange) {
 
-        return getCheckDigitParse(mrz,digitRange);
+        return getCheckDigitParse(mrz, digitRange);
     }
 
     private String getCheckDigitParseThree(String mrz, Range digitRange) {
 
-        return getCheckDigitParse(mrz,digitRange);
+        return getCheckDigitParse(mrz, digitRange);
     }
 
     private String getCheckDigitParseFour(String mrz, Range digitRange) {
 
-        return getCheckDigitParse(mrz,digitRange);
+        return getCheckDigitParse(mrz, digitRange);
     }
-    private String getCheckDigitParseFive(String mrz, Range[] range)
-    {
+
+    private String getCheckDigitParseFive(String mrz, Range[] range) {
         String checkDigitPraseFive;
         int checkDigitPrase;
 
-        checkDigitPraseFive =  mrz.substring(range[0].getStart(),range[0].getEnd())
-                               + getCheckDigitParseOne(mrz, range[0])
-                                +mrz.substring(range[1].getStart(),range[1].getEnd())
-                                + getCheckDigitParseTwo(mrz, range[1])
-                +mrz.substring(range[2].getStart(),range[2].getEnd())
+        checkDigitPraseFive = mrz.substring(range[0].getStart(), range[0].getEnd())
+                + getCheckDigitParseOne(mrz, range[0])
+                + mrz.substring(range[1].getStart(), range[1].getEnd())
+                + getCheckDigitParseTwo(mrz, range[1])
+                + mrz.substring(range[2].getStart(), range[2].getEnd())
                 + getCheckDigitParseTwo(mrz, range[2])
-                +mrz.substring(range[3].getStart(),range[3].getEnd())
+                + mrz.substring(range[3].getStart(), range[3].getEnd())
                 + getCheckDigitParseTwo(mrz, range[3]);
 
         Range rangeForCheckdigitPrase = new Range();
         rangeForCheckdigitPrase.setStart(0);
-        rangeForCheckdigitPrase.setEnd(checkDigitPraseFive.length()-1);
-        checkDigitPrase = this.calculateCheckDigitForString(checkDigitPraseFive,rangeForCheckdigitPrase);
+        rangeForCheckdigitPrase.setEnd(checkDigitPraseFive.length() - 1);
+        checkDigitPrase = this.calculateCheckDigitForString(checkDigitPraseFive, rangeForCheckdigitPrase);
         return Integer.toString(checkDigitPrase);
     }
 
-    private String getCheckDigitParse(String mrz, Range digitRange)
-    {
+    private String getCheckDigitParse(String mrz, Range digitRange) {
         int checkDigitPrase;
         Range rangeForCheckdigitPrase = new Range();
         rangeForCheckdigitPrase.setStart(digitRange.getStart());
