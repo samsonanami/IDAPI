@@ -38,6 +38,15 @@ public class HermeseRequestProcessor implements HermeseRequestProcessorInterface
         Future<Object> compressionLabsResults = requestProcessorFactory.getRequestProcessor(Processor.COMPRESSION_LABS)
                 .processRequest(processingMessage);
 
+        while (!(oracleResults.isDone() && compressionLabsResults.isDone())) {
+            try {
+                LOGGER.debug("Waiting for all the async task to be completed.");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RequestProcessorException("Interpreted", e);
+            }
+        }
+
         try {
             VerificationResult oracleVerificationResult = null;
             if (oracleResults != null) {

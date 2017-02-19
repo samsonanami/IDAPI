@@ -6,8 +6,11 @@ import com.fintech.orion.dto.hermese.ResponseProcessorResult;
 import com.fintech.orion.dto.response.api.ValidationData;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.hermesagentservices.processor.VerificationResult;
+import com.fintech.orion.hermesagentservices.processor.request.HermeseRequestProcessor;
 import com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialVerificationProcessor;
 import com.fintech.orion.hermesagentservices.processor.response.chain.oracle.OracleResponseProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.List;
  *
  */
 public class HermesResponseProcessor implements HermesResponseProcessorInterface {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HermeseRequestProcessor.class);
     private static final String STATUS_FAILED = "processing_failed";
 
     @Autowired
@@ -42,7 +46,8 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
         try {
             result.setProcessedString(objectMapper.writeValueAsString(verificationProcessDetailedResponse));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            LOGGER.error("Error parsing verification process detailed response object in to a string. " +
+                    "Actual object is {} ", verificationProcessDetailedResponse, e);
         }
         if (STATUS_FAILED.equalsIgnoreCase(verificationProcessDetailedResponse.getStatus())){
             result.setFinalProcessingStatus(false);
@@ -62,6 +67,12 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
             if("critical_error_set".equalsIgnoreCase(validation.getId())&& !validation.getRemarks().isEmpty()){
                 detailedResponse.setStatus(STATUS_FAILED);
             }
+        }
+        if (!"passed".equalsIgnoreCase(detailedResponse.getFacialMatch())){
+            detailedResponse.setStatus(STATUS_FAILED);
+        }
+        if (!"passed".equalsIgnoreCase(detailedResponse.getLivenessTest())){
+            detailedResponse.setStatus(STATUS_FAILED);
         }
     }
 }
