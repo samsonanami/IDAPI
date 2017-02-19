@@ -14,10 +14,10 @@ import java.util.Objects;
 
 public class VerificationProcessDetailedResponse {
     @JsonProperty("facialMatch")
-    private Integer facialMatch = null;
+    private String facialMatch = null;
 
     @JsonProperty("livenessTest")
-    private Integer livenessTest = null;
+    private String livenessTest = null;
 
     @JsonProperty("verificationRequestId")
     private String verificationRequestId = null;
@@ -43,7 +43,7 @@ public class VerificationProcessDetailedResponse {
     @JsonProperty("addressDocFullValidations")
     private List<ValidationData> addressDocFullValidations = new ArrayList<ValidationData>();
 
-    public VerificationProcessDetailedResponse facialMatch(Integer facialMatch) {
+    public VerificationProcessDetailedResponse facialMatch(String facialMatch) {
         this.facialMatch = facialMatch;
         return this;
     }
@@ -54,15 +54,15 @@ public class VerificationProcessDetailedResponse {
      * @return facialMatch
      **/
     @ApiModelProperty(value = "")
-    public Integer getFacialMatch() {
+    public String getFacialMatch() {
         return facialMatch;
     }
 
-    public void setFacialMatch(Integer facialMatch) {
+    public void setFacialMatch(String facialMatch) {
         this.facialMatch = facialMatch;
     }
 
-    public VerificationProcessDetailedResponse livenessTest(Integer livenessTest) {
+    public VerificationProcessDetailedResponse livenessTest(String livenessTest) {
         this.livenessTest = livenessTest;
         return this;
     }
@@ -73,11 +73,11 @@ public class VerificationProcessDetailedResponse {
      * @return livenessTest
      **/
     @ApiModelProperty(value = "")
-    public Integer getLivenessTest() {
+    public String getLivenessTest() {
         return livenessTest;
     }
 
-    public void setLivenessTest(Integer livenessTest) {
+    public void setLivenessTest(String livenessTest) {
         this.livenessTest = livenessTest;
     }
 

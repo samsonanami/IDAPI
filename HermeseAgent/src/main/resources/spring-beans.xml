@@ -30,17 +30,34 @@
     <bean id="orchestrator" class="com.fintech.orion.hermes.orchestrator.VerificationOrchestrator"/>
     <bean id="licenseHandler" class="com.fintech.orion.hermesagentservices.license.LicenseHandler"/>
 
-    <bean id="oracleRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.OracleRequestProcessor"/>
+    <bean id="requestProcessorFactory" class="com.fintech.orion.hermesagentservices.processor.request.processor.RequestProcessorFactory"/>
+    <bean id="hermeseRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.HermeseRequestProcessor"/>
+    <bean id="hermesResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.HermesResponseProcessor"/>
+    <bean id="oracleRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.processor.OracleRequestProcessor"/>
+    <bean id="oracleResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.OracleResponseProcessor"/>
 
+    <bean id="compressionLabsRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.processor.CompressionLabsRequestProcessor"/>
+    <bean id="facialVerificationProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialVerificationProcessor"/>
 
     <bean id="requestSubmitter" class="com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitter"/>
 
     <bean id="verificationRequestDetailService" class="com.fintech.orion.common.service.VerificationRequestDetailService"/>
 
-    <bean id="hermeseResponseProcessor" class="com.fintech.orion.hermesagentservices.response.processor.HermeseResponseProcessor"/>
-
+    <bean id="configurationProvider" class="com.fintech.orion.hermesagentservices.provider.ConfigurationProvider"/>
     <bean id="oracleAPIBaseUrl" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="http://10.101.15.212:8080/oracle/v1/"/>
+        <constructor-arg type="java.lang.String" value="http://localhost:8080/oracle/v1/"/>
+    </bean>
+
+    <bean id="compressionLabsBaseUrl" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="https://api.compressionlabs.com/v1/"/>
+    </bean>
+
+    <bean id="resourceBaseLocation" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/opt/wildfly_data"/>
+    </bean>
+
+    <bean id="commandsFileLocation" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="/home/sasitha/Pictures/idapi/compression/commands.json"/>
     </bean>
 
     <bean id="maximumWaitingTimeInSeconds" class="java.lang.String">

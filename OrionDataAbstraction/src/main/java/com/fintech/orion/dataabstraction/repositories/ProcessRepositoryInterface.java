@@ -2,7 +2,9 @@ package com.fintech.orion.dataabstraction.repositories;
 
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -23,5 +25,8 @@ public interface ProcessRepositoryInterface extends CrudRepository<Process, Inte
 
     @Query("select p.processType from Process p where  p.processIdentificationCode = ?1")
     ProcessType test(String string);
+    
+    List<Process> findProcessByProcessingRequestAndProcessTypeIn(ProcessingRequest processingRequest, List<ProcessType>
+                                                                           processTypeList);
 
 }

@@ -8,5 +8,5 @@ import com.fintech.orion.common.exceptions.license.LicenseHandlerException;
  */
 public interface LicenseHandlerInterface {
 
-    void updateLicense(String clientLicenseId, String rawString) throws LicenseHandlerException;
+    void updateLicense(String clientLicenseId, String processingRequestId) throws LicenseHandlerException;
 }

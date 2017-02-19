@@ -41,9 +41,9 @@ public class ValidateAddress {
         boolean isAddressValidType;
         regularExpression = addressType.getValidateRegularExpression();
         Pattern pattern = Pattern.compile(regularExpression);
-        if(  regularExpression == null)
-        {
-            throw new AddressValidatingException("Not well set configuration" );
+        if (regularExpression == null) {
+            throw new AddressValidatingException("Regular expression in a address type cannot be null. It must be " +
+                    "set form the configuration. ");
         }
         Matcher matcher = pattern.matcher(address);
         isAddressValidType = matcher.find();

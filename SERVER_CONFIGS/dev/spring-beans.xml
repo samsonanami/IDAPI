@@ -30,7 +30,7 @@
     <bean id="orchestrator" class="com.fintech.orion.hermes.orchestrator.VerificationOrchestrator"/>
     <bean id="licenseHandler" class="com.fintech.orion.hermesagentservices.license.LicenseHandler"/>
 
-    <bean id="oracleRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.OracleRequestProcessor"/>
+    <bean id="oracleRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.processor.OracleRequestProcessor"/>
 
 
     <bean id="requestSubmitter" class="com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitter"/>

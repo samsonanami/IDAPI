@@ -67,6 +67,16 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
 
     @Override
     @Transactional
+    public List<Process> getProcessListBelongsToProcessingRequest(String processingRequestCode, List<String> processTypes) {
+
+        List<ProcessType> processTypeList = processTypeRepositoryInterface.findProcessTypesByTypeIn(processTypes);
+        ProcessingRequest processingRequest = processingRequestRepositoryInterface.findProcessingRequestByProcessingRequestIdentificationCode(processingRequestCode);
+        return processRepositoryInterface.findProcessByProcessingRequestAndProcessTypeIn(processingRequest,
+                processTypeList);
+    }
+
+    @Override
+    @Transactional
     public ProcessType getProcessTypeFromProcessCode(String processIdentificationCode) {
         return processRepositoryInterface.test(processIdentificationCode);
     }
