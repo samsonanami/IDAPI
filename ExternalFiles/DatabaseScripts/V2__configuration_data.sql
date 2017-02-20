@@ -16,6 +16,16 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Dumping data for table `ocr_extraction_field`
+--
+
+LOCK TABLES `ocr_extraction_field` WRITE;
+/*!40000 ALTER TABLE `ocr_extraction_field` DISABLE KEYS */;
+INSERT INTO `ocr_extraction_field` VALUES (1,'surname'),(2,'given_names'),(3,'date_of_birth'),(4,'place_of_birth'),(5,'date_of_issue'),(6,'issuing_authorithy'),(7,'date_of_expiry'),(8,'MRZ_Line'),(9,'family_name'),(10,'parents_given_name'),(11,'sex'),(12,'passport_number'),(13,'nationality'),(14,'place_of_issue'),(15,'MRZ_line1'),(16,'MRZ_line2'),(17,'address_line1'),(18,'processing_failure'),(19,'address_line2'),(20,'address_line3'),(21,'title'),(22,'name_in_utility_bill'),(23,'utility_bill_document_name'),(24,'utility_bill_date');
+/*!40000 ALTER TABLE `ocr_extraction_field` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `ocr_process_type`
 --
 
@@ -33,16 +43,6 @@ LOCK TABLES `ocr_processing_status` WRITE;
 /*!40000 ALTER TABLE `ocr_processing_status` DISABLE KEYS */;
 INSERT INTO `ocr_processing_status` VALUES (1,'pending'),(2,'processing_started'),(3,'processing_failed'),(4,'processing_successful');
 /*!40000 ALTER TABLE `ocr_processing_status` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `process_config`
---
-
-LOCK TABLES `process_config` WRITE;
-/*!40000 ALTER TABLE `process_config` DISABLE KEYS */;
-INSERT INTO `process_config` VALUES (1,'body.clientID','127.0.01'),(1,'body.description','IDAPI'),(1,'body.inputImages.type','visible'),(1,'header.authorization','Basic RmludGVjaDp4R0gyMjk3OUhvczJ3eDRL'),(1,'header.contentType','application/json'),(1,'InspectionImageUrl','https://www.checkid.online:15045/inspectionim'),(1,'Password','xGH22979Hos2wx4K'),(1,'queryString.synchronous','true'),(1,'url','https://www.checkid.online:15045/inspectionjob/create'),(1,'Username','Fintech');
-/*!40000 ALTER TABLE `process_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -104,4 +104,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-05  9:53:51
+-- Dump completed on 2017-02-19 14:31:35

@@ -5,6 +5,7 @@ import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by sasitha on 2/18/17.
@@ -29,6 +30,7 @@ public class ConfigurationProvider implements ConfigurationProviderInterface{
 
 
     @Override
+    @Transactional
     public String getConfigurationValue(String clientLicenseKey, String configurationKey, String processType) throws ConfigurationProvidorException {
         String configValue ="";
         try {
@@ -39,7 +41,19 @@ public class ConfigurationProvider implements ConfigurationProviderInterface{
             ProcessConfig processConfig = processConfigRepositoryInterface
                     .findProcessConfigByConfigurationKeyAndProcessTypeAndClient(key, process, client);
 
-            configValue = processConfig.getValue();
+            if(processConfig != null){
+                configValue = processConfig.getValue();
+            }else {
+                processConfig = processConfigRepositoryInterface
+                        .findProcessConfigByConfigurationKeyAndProcessType(key, process);
+                if (processConfig != null){
+                    configValue = processConfig.getValue();
+                }else {
+                    throw new ConfigurationProvidorException("Unable to get the default configuration value for " +
+                            "key " + configurationKey + " for process type " + processType);
+                }
+            }
+
         } catch (ItemNotFoundException e) {
             throw new ConfigurationProvidorException("Unable to find the configuration ", e);
         }

@@ -12,4 +12,7 @@ public interface ProcessConfigRepositoryInterface  extends CrudRepository<Proces
 
     ProcessConfig findProcessConfigByConfigurationKeyAndProcessTypeAndClient(ConfigurationKey configurationKey,
                                                                              ProcessType processType, Client client);
+
+    ProcessConfig findProcessConfigByConfigurationKeyAndProcessType(ConfigurationKey configurationKey,
+                                                                    ProcessType processType);
 }
