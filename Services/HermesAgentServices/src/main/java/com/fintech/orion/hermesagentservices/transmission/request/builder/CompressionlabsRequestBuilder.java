@@ -3,6 +3,7 @@ package com.fintech.orion.hermesagentservices.transmission.request.builder;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.BaseRequest;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -13,11 +14,12 @@ public class CompressionlabsRequestBuilder extends RequestBuilder{
 
     @Override
     public BaseRequest buildPostRequest(Map<String, String> configurations, Map content) {
-        String body = (String)content.get("body");
+
 
         return Unirest.post(configurations.get("url"))
-                .header("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
-                .header("cache-control", "no-cache")
-                .body(body);
+                .field("f1", new File((String) content.get("f1")))
+                .field("f2", new File((String) content.get("f2")))
+                .field("f3", new File((String) content.get("f3")));
+
     }
 }

@@ -10,9 +10,6 @@ import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.hermese.model.compressionlabs.response.FacialVerificationResponse;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
-import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyBuilder;
-import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyBuilderFactory;
-import com.fintech.orion.hermesagentservices.transmission.request.body.builder.RequestBodyType;
 import com.fintech.orion.hermesagentservices.transmission.request.builder.BuilderType;
 import com.fintech.orion.hermesagentservices.transmission.request.builder.RequestBuilder;
 import com.fintech.orion.hermesagentservices.transmission.request.builder.RequestBuilderFactory;
@@ -78,7 +75,6 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
 
             BaseRequest postRequest = buildPostRequest(processingRequest);
 
-
             try {
                 verificationResponse = sendPostRequest(postRequest);
             } catch (FailedRequestException e) {
@@ -103,20 +99,13 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
     @Transactional
     private BaseRequest buildPostRequest(ProcessingRequest processingRequest) {
         Map<String, String> processConfigurationMap = new HashMap<>();
-        Map<String, Object> content = new HashMap<>();
         processConfigurationMap.put("url", compressionLabsBaseUrl + "match");
-        processConfigurationMap.put("header.contentType", "multipart/form-data");
 
-        RequestBodyBuilderFactory requestBodyBuilderFactory = new RequestBodyBuilderFactory();
-        RequestBodyBuilder requestBodyBuilder = requestBodyBuilderFactory.getRequestBodyBuilder(RequestBodyType.COMPRESSION);
-
-        String body = requestBodyBuilder.getRequestBody(getRequestBodyContent(processingRequest));
-        content.put("body", body);
 
         RequestBuilderFactory requestBuilderFactory = new RequestBuilderFactory();
         RequestBuilder builder = requestBuilderFactory.getRequestBuilder(BuilderType.COMPRESSION);
 
-        return builder.buildPostRequest(processConfigurationMap, content);
+        return builder.buildPostRequest(processConfigurationMap, getRequestBodyContent(processingRequest));
     }
 
     @Transactional
