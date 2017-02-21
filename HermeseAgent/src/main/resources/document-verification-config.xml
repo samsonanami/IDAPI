@@ -80,12 +80,15 @@
     <bean id="idDocCustomValidations" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
-                <ref bean="documentTypeValidation"/>
                 <ref bean="surNameValidation"/>
                 <ref bean="genderVerification"/>
                 <ref bean="minimumAgeVerification"/>
                 <ref bean="dateOfBirthVerification"/>
                 <ref bean="mrzCheckDigitValidation"/>
+                <ref bean="issuedDateAgeLimitValidation"/>
+                <ref bean="dateOfIssueEndYearValidation"/>
+                <ref bean="ageLimitValidation"/>
+
             </array>
         </constructor-arg>
     </bean>
@@ -96,6 +99,7 @@
                 <ref bean="documentTypeValidation"/>
                 <ref bean="surNameValidation"/>
                 <ref bean="addressValidation"/>
+                <ref bean="utilityBillDateEndMonthValidation"/>
             </array>
         </constructor-arg>
     </bean>
@@ -153,6 +157,41 @@
         <property name="mrzLineCount" value="2"/>
         <property name="resourceNameToCheckMRZ" value="passport"/>
         <property name="successRemarksMessage" value="MRZ check digit validation successful."/>
+    </bean>
+
+    <bean id="ageLimitValidation" class="com.fintech.orion.documentverification.custom.common.AgeLimitValidation">
+        <property name="ocrExtractionFieldName" value="date_of_birth"/>
+        <property name="criticalValidation" value="false"/>
+        <property name="minimumAge" value="18"/>
+        <property name="maximumAge" value="90"/>
+        <property name="failedRemarksMessage" value="Age limit verification failed"/>
+        <property name="successRemarksMessage" value="Customer is between 18 and 90 "/>
+    </bean>
+
+    <bean id="utilityBillDateEndMonthValidation" class="com.fintech.orion.documentverification.custom.common.BillDateEndMonthValidation">
+        <property name="ocrExtractionFieldName" value="utility_bill_date"/>
+        <property name="criticalValidation" value="false"/>
+        <property name="validMonthCount" value="3"/>
+        <property name="failedRemarksMessage" value="Utility bill is older than 3 months"/>
+        <property name="successRemarksMessage" value="Utility bill is within 3 months"/>
+    </bean>
+
+    <bean id="dateOfIssueEndYearValidation" class="com.fintech.orion.documentverification.custom.common.DateOfIssueEndYearValidation">
+        <property name="ocrExtractionFieldName" value="date_of_issue"/>
+        <property name="criticalValidation" value="false"/>
+        <property name="validYearCount" value="10"/>
+        <property name="successRemarksMessage" value="Success"/>
+        <property name="failedRemarksMessage" value="Failed"/>
+    </bean>
+
+    <bean id="issuedDateAgeLimitValidation" class="com.fintech.orion.documentverification.custom.common.IssuedDateAgeLimitValidation">
+        <property name="ocrExtractionFieldName" value="date_of_issue"/>
+        <property name="dateOfBirthOcrExtractionField" value="date_of_birth"/>
+        <property name="criticalValidation" value="false"/>
+        <property name="minimumAge" value="18"/>
+        <property name="maximumAge" value="90"/>
+        <property name="failedRemarksMessage" value="failed"/>
+        <property name="successRemarksMessage" value="success"/>
     </bean>
 
 
