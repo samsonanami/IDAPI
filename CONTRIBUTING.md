@@ -124,14 +124,40 @@ a release phase.
 ## Project Sub-Modules
 **Orion** has the following project sub module structure
 
-```Root project 'Orion'
-+--- Project ':HermeseAgent'
-+--- Project ':OrionAPI'
-+--- Project ':OrionDataAbstraction'
-\--- Project ':Services'
-     +--- Project ':Services:APIServices'
-     +--- Project ':Services:CoreServices'
-     \--- Project ':Services:HermeseAgentServices'
+```
+├── DataTransferObjects
+│   
+├── Deployment
+│   
+├── DocumentVerification
+│   
+├── ExternalFiles
+│   └── DatabaseScripts
+│       
+├── HermeseAgent
+│   
+├── JobMessagingChannelHandler
+│   
+├── OrionAPI
+│   
+├── OrionAuthAPI
+│  
+├── OrionDataAbstraction
+│  
+├── SCRIPTS
+│   
+├── SERVER_CONFIGS
+│   
+├── SERVER_KEYS
+│   
+├── Services
+│   ├── APIServices
+│   │   
+│   ├── CoreServices
+│   │   
+│   └── HermesAgentServices
+│      
+     
 ```
 ##### Orion
 This is the root project. All the sub modules are included to this root project.
