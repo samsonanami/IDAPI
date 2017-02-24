@@ -2,6 +2,7 @@ plugins {
     id "com.gradle.build-scan" version "1.2"
     id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
     id "com.selesse.git.changelog" version "0.3.0"
+    id "jacoco"
 }
 buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'
@@ -13,6 +14,8 @@ allprojects {
     apply plugin: "idea"
     apply plugin: 'java'
     apply plugin: 'net.vivin.gradle-semantic-build-versioning'
+    apply plugin: 'jacoco'
+
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     project.version.with {
@@ -34,8 +37,12 @@ allprojects {
         }
 
     }
-}
 
+    jacoco {
+        toolVersion = "0.7.6.201602180812"
+    }
+
+}
 changelog {
     // The title appears at the top of the changelog.
     // Default value: the name of the project.
@@ -92,6 +99,7 @@ changelog {
     // Default value: accept everything, { true }
     includeLines = {
         !it.contains("Merge")
+        !it.contains("merge")
         !it.contains("[ci-skip]")
         !it.contains("[ci skip]")
     }
@@ -114,7 +122,16 @@ changelog {
 subprojects {
 
 
-    
+    jacocoTestReport {
+        additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
+        sourceDirectories = files(sourceSets.main.allSource.srcDirs)
+        classDirectories =  files(sourceSets.main.output)
+        reports {
+            html.enabled = true
+            xml.enabled = true
+            csv.enabled = false
+        }
+    }
 
 
     repositories {
@@ -127,4 +144,26 @@ subprojects {
         mavenLocal()
     }
 
+
+}
+
+task jacocoRootReport(type: JacocoReport) {
+    dependsOn = subprojects.test
+    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+    onlyIf = {
+        true
+    }
+    doFirst {
+        executionData = files(executionData.findAll {
+            it.exists()
+        })
+    }
 }
