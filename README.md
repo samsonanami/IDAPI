@@ -44,7 +44,8 @@ requests.
 We uses [Semantic Versioning](http://semver.org/) for versioning. The versioning is automatically handle by the gradle 
 [Semantic Version Plugging](https://github.com/vivin/gradle-semantic-build-versioning).
 
-##Acknowledgments
+
+## Acknowledgments
 ### Story behind our nickname.
 
 We belie each and every project that we build is one of our creations. Our creations which solve a problem and **inspire
