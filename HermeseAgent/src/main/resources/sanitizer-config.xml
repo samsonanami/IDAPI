@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="sanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.Sanitizer"/>
+
+    <bean id="sanitizerChainHead" class="com.fintech.orion.hermesagentservices.sanitizer.chain.SanitizerChainHead">
+        <property name="next" ref="addressSanitizer"/>
+    </bean>
+
+    <bean id="addressSanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.chain.AddressSanitizer">
+        <property name="sanitizerConfiguration" ref="addressSanitizerConfiguration"/>
+        <property name="next" ref="drivingLicenseMrzSanitizer"/>
+    </bean>
+
+    <bean id="drivingLicenseMrzSanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.chain.DrivingLicenseMrzSanitizer">
+        <property name="sanitizerConfiguration" ref="drivingLicenseMrzSanitizerConfiguration"/>
+        <property name="next" ref="dateSanitizer"/>
+    </bean>
+
+    <bean id="dateSanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.chain.DateSanitizer">
+        <property name="sanitizerConfiguration" ref="dateSanitizerConfiguration"/>
+    </bean>
+
+    <bean id="addressSanitizerConfiguration" class="com.fintech.orion.dto.hermese.sanitizer.OcrResultSanitizerConfiguration">
+        <property name="ocrExtractionFields">
+            <list>
+                <value>drivingLicenseFront##address_line1</value>
+                <value>utilityBill##address_line1</value>
+                <value>utilityBill##address_line2</value>
+                <value>utilityBill##address_line3</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="drivingLicenseMrzSanitizerConfiguration" class="com.fintech.orion.dto.hermese.sanitizer.OcrResultSanitizerConfiguration">
+        <property name="ocrExtractionFields">
+            <list>
+                <value>drivingLicenseFront##MRZ_line1</value>
+                <value>drivingLicenseFront##MRZ_line2</value>
+                <value>drivingLicenseFront##MRZ_line3</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dateSanitizerConfiguration" class="com.fintech.orion.dto.hermese.sanitizer.OcrResultSanitizerConfiguration">
+        <property name="ocrExtractionFields">
+            <list>
+                <value>passport##date_of_issue</value>
+                <value>passport##date_of_expire</value>
+                <value>passport##date_of_birth</value>
+                <value>drivingLicenseFront##date_of_birth</value>
+                <value>drivingLicenseFront##date_of_expire</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>
