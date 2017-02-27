@@ -50,7 +50,7 @@
         <entry key="jpeg" value="10485760"/>
         <entry key="jpg" value="10485760"/>
         <entry key="json" value="2097152"/>
-        <entry key="mp4" value="10485760"/>
+        <entry key="mp4" value="40485760"/>
     </util:map>
 
 
