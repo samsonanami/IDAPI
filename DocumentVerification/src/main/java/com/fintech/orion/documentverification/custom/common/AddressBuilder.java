@@ -38,6 +38,7 @@ public class AddressBuilder extends ValidationHelper {
         } else if (!matchesWithFlat.find() && matchesWithoutFlat.find()) {
             address = address.replace(matchesWithoutFlat.group(0), matchesWithoutFlat.group(0) + ",");
         }
+        address = address.replace(".", ",");
         return address;
     }
 }

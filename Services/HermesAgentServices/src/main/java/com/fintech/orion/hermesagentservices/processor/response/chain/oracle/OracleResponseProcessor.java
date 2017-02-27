@@ -15,6 +15,7 @@ import com.fintech.orion.dto.response.api.ValidationData;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.hermesagentservices.processor.VerificationResult;
 import com.fintech.orion.hermesagentservices.processor.response.chain.RequestProcessorChain;
+import com.fintech.orion.hermesagentservices.sanitizer.Sanitizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class OracleResponseProcessor extends RequestProcessorChain {
 
     @Autowired
     private DocumentVerificationFactory documentVerificationFactory;
+
+    @Autowired
+    private Sanitizer sanitizer;
 
     @Override
     protected void execute(VerificationProcessDetailedResponse response,
@@ -71,6 +75,8 @@ public class OracleResponseProcessor extends RequestProcessorChain {
         detailedResponse.setStatus(ocrResponse.getStatus());
         detailedResponse.setVerificationRequestId(processingRequestId);
         ocrResponse.setVerificationRequestId(processingRequestId);
+
+        sanitizer.sanitize(ocrResponse);
 
         updateDataComparison(detailedResponse, ocrResponse);
         updateDataValidations(detailedResponse, ocrResponse);

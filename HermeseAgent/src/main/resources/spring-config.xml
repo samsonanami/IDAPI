@@ -18,6 +18,7 @@
     <import resource="address-config.xml"/>
     <import resource="driving-license-config.xml"/>
     <import resource="passport-mrz-decode.xml"/>
+    <import resource="sanitizer-config.xml"/>
     <import resource="document-verification-config.xml"/>
 
 </beans>
