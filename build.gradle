@@ -2,19 +2,20 @@ plugins {
     id "com.gradle.build-scan" version "1.2"
     id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
     id "com.selesse.git.changelog" version "0.3.0"
-    id "jacoco"
+    id "com.palantir.jacoco-coverage" version "0.4.0"
 }
 buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'
     licenseAgree = 'yes'
 }
 apply plugin: 'com.selesse.git.changelog'
+apply plugin: 'com.palantir.jacoco-full-report'
 allprojects {
     group = "com.fintech.orion"
     apply plugin: "idea"
     apply plugin: 'java'
     apply plugin: 'net.vivin.gradle-semantic-build-versioning'
-    apply plugin: 'jacoco'
+    apply plugin: 'com.palantir.jacoco-coverage'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -36,10 +37,6 @@ allprojects {
             }
         }
 
-    }
-
-    jacoco {
-        toolVersion = "0.7.6.201602180812"
     }
 
 }
@@ -75,13 +72,13 @@ changelog {
     // The Git "pretty" changelog commit format.
     // Default value: %ad%x09%s (%an), which produces:
     // Thu May 7 20:10:33 2015 -0400    Initial commit (Alex Selesse)
-    commitFormat = '(%ai%x09) %s%n %b%n (%an)(%aE)'
+    commitFormat = '%s %b (%an)(%aE)(%ai%x09)%n'
 
     // Specifies a commit format for Markdown.
     // Default value: '* %s (%an)', which produces:
     // * Initial commit (Alex Selesse)
     markdown {
-        commitFormat = '%s%n %b%n (%an)(%aE)'
+        commitFormat = '%s %b (%an)(%aE)%n'
     }
 
     // Specifies a commit format for the HTML template.
@@ -145,25 +142,4 @@ subprojects {
     }
 
 
-}
-
-task jacocoRootReport(type: JacocoReport) {
-    dependsOn = subprojects.test
-    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
-    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(subprojects.sourceSets.main.output)
-    executionData = files(subprojects.jacocoTestReport.executionData)
-    reports {
-        html.enabled = true
-        xml.enabled = true
-        csv.enabled = false
-    }
-    onlyIf = {
-        true
-    }
-    doFirst {
-        executionData = files(executionData.findAll {
-            it.exists()
-        })
-    }
 }
