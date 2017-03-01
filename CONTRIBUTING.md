@@ -163,6 +163,14 @@ a release phase.
 This is the root project. All the sub modules are included to this root project.
 
 ##### OrionDataAbstraction
-This sub module will contain all the components related to the data abstraction
-including all the *Entity* classes generated.
+This is the sub module which is responsible for abstracting database to the system. It will include all the *entity* 
+classes and all the *repositories* which will provide methods to access the data. Then entity classes are usually auto
+generated with the help of an IDE like *Netbeans* or *Intelij IDEA*.
+ 
+All the repositories will implement the spring jpa [CRUD repository](). It will give the basic *CRUD* operations
+and more complex methods can be implemented by using named queries.
+
+#### DataTransferObjects
+This module responsible to handle all the POJO classes which used to transfer data between the multiple external systems
+and IDAPI modules. 
 
