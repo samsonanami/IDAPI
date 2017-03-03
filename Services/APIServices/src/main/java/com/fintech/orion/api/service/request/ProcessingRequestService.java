@@ -12,11 +12,18 @@ import com.fintech.orion.dataabstraction.repositories.*;
 import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
+import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -101,14 +108,93 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         }
         ObjectMapper objectMapper = new ObjectMapper();
         VerificationProcessDetailedResponse response = new VerificationProcessDetailedResponse();
-        Process process = processingRequest.getProcesses().iterator().next();
-        if(process.getResponse() != null){
-            String processedJson = process.getResponse().getExtractedJson();
+
+        if(processingRequest.getFinalResponse() != null){
+            String processedJson = processingRequest.getFinalResponse();
             response = objectMapper.readValue(processedJson, VerificationProcessDetailedResponse.class);
         }else {
             response.setVerificationRequestId(verificationRequestId);
             response.setStatus("Pending");
         }
         return response;
+    }
+
+    @Override
+    @Transactional
+    public PagedResources<VerificationRequestSummery> verificationRequestSummery(String clientName, Date from, Date to,
+                                                                                 String page, String size) throws DataNotFoundException {
+        Client client = clientRepositoryInterface.findClientByUserName(clientName);
+
+        Page<ProcessingRequest> processingRequests;
+        Pageable pageable = new PageRequest(
+                Integer.valueOf(page), Integer.valueOf(size)
+        );
+        processingRequests =  processingRequestRepositoryInterface.findProcessingRequestByClient(client, pageable);
+
+
+        PagedResources.PageMetadata pageMetadata = new PagedResources.PageMetadata( Integer.valueOf(size), Integer.valueOf(page),
+                processingRequests.getTotalElements(), processingRequests.getTotalPages());
+
+        return new PagedResources<>(getVerificationSummeryList(processingRequests.getContent()), pageMetadata,
+                getLink(processingRequests, "page", "size"));
+    }
+
+    private List<VerificationRequestSummery> getVerificationSummeryList(List<ProcessingRequest> processingRequestList){
+        List<VerificationRequestSummery> verificationRequestSummeryList = new ArrayList<>();
+        for (ProcessingRequest processingRequest : processingRequestList){
+            VerificationRequestSummery summery = new VerificationRequestSummery();
+            summery.setRequestIdentificationCode(processingRequest.getProcessingRequestIdentificationCode());
+            summery.setRequestedDate(processingRequest.getReceivedOn());
+            summery.setProcessingCompletedOn(processingRequest.getProcessingCompletedOn());
+            summery.setProcessedString(processingRequest.getFinalResponse());
+            verificationRequestSummeryList.add(summery);
+        }
+        return verificationRequestSummeryList;
+    }
+
+    private List<Link> getLink(Page page, String pageParam, String sizeParam){
+        List<Link> linkList = new ArrayList<>();
+
+        if(page.hasPrevious()){
+            String path = createBuilder()
+                    .queryParam(pageParam,page.getNumber()-1)
+                    .queryParam(sizeParam,page.getSize())
+                    .build()
+                    .toUriString();
+            Link link = new Link(path, Link.REL_PREVIOUS);
+            linkList.add(link);
+        }
+
+        if(page.hasNext()){
+            String path = createBuilder()
+                    .queryParam(pageParam,page.getNumber()+1)
+                    .queryParam(sizeParam,page.getSize())
+                    .build()
+                    .toUriString();
+            Link link = new Link(path, Link.REL_NEXT);
+            linkList.add(link);
+        }
+
+        linkList.add( buildPageLink(pageParam,0,sizeParam,page.getSize(),Link.REL_FIRST));
+
+        int indexOfLastPage = page.getTotalPages() - 1;
+        linkList.add(buildPageLink(pageParam,indexOfLastPage,sizeParam,page.getSize(),Link.REL_LAST));
+
+        linkList.add(buildPageLink(pageParam,page.getNumber(),sizeParam,page.getSize(),Link.REL_SELF));
+
+        return linkList;
+    }
+
+    private ServletUriComponentsBuilder createBuilder() {
+        return ServletUriComponentsBuilder.fromCurrentRequestUri();
+    }
+
+    private Link buildPageLink(String pageParam,int page,String sizeParam,int size,String rel) {
+        String path = createBuilder()
+                .queryParam(pageParam,page)
+                .queryParam(sizeParam,size)
+                .build()
+                .toUriString();
+        return new Link(path,rel);
     }
 }

@@ -3,12 +3,16 @@ package com.fintech.orion.rest;
 import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
+import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import io.swagger.annotations.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-18T09:12:11.427Z")
 
@@ -45,5 +49,19 @@ public interface VerificationApi {
     ResponseEntity<Object> verificationVerificationIdGet(@ApiParam(value = "verification id", required = true)
                                                          @PathVariable("verificationId") String verificationId,
                                                          HttpServletResponse response, HttpServletRequest request);
+
+
+    @RequestMapping(
+            value = "/v1/verification/history",
+            params = { "page", "size" },
+            produces = { "application/json" },
+            method = RequestMethod.GET
+    )
+    public ResponseEntity<PagedResources<VerificationRequestSummery>> verificationRequestSummeryGet(
+            @RequestParam(value = "from", required = false) @DateTimeFormat(pattern = "MM-dd-yyyy") Date from,
+            @RequestParam(value = "to", required = false) @DateTimeFormat(pattern = "MM-dd-yyyy") Date to,
+            @RequestParam(value = "page", required = false, defaultValue = "1") String pageNumber,
+            @RequestParam(value = "size", required = false, defaultValue = "10") String pageSize,
+            HttpServletRequest request, HttpServletResponse response);
 
 }
