@@ -3,6 +3,7 @@ package com.fintech.orion.hermesagentservices.processor.response.chain.oracle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.Processor;
 import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.documentverification.factory.DocumentVerification;
 import com.fintech.orion.documentverification.factory.DocumentVerificationFactory;
 import com.fintech.orion.documentverification.factory.DocumentVerificationType;
@@ -58,6 +59,7 @@ public class OracleResponseProcessor extends RequestProcessorChain {
 
         if (rawString != null && !"null".equalsIgnoreCase(rawString) && !rawString.isEmpty()) {
             try {
+                saveResponseString(processingRequestId, rawString, "");
                 processRawString(response, rawString, processingRequestId);
             } catch (IOException e) {
                 LOGGER.error("Error processing raw response {} for processing request id {} ",
@@ -150,5 +152,17 @@ public class OracleResponseProcessor extends RequestProcessorChain {
     private boolean isProcessTypeFoundInProcessingRequest(String processingRequestId, String processType){
         return verificationRequestDetailService.isVerificationProcessFoundInProcessingRequest(processingRequestId,
                 processType);
+    }
+
+    private void saveResponseString(String verificationRequestCode, String rawString, String processedString){
+        List<String> processTypeList = new ArrayList<>();
+        processTypeList.add("idVerification");
+        processTypeList.add("addressVerification");
+        List<Process> processList = verificationRequestDetailService
+                .getProcessListBelongsToProcessingRequest(verificationRequestCode,
+                        processTypeList);
+        for (Process process : processList){
+            verificationRequestDetailService.saveResponse(rawString, processedString, process);
+        }
     }
 }
