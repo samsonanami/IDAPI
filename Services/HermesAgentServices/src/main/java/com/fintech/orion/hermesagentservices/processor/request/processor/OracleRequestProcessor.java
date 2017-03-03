@@ -32,10 +32,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Future;
 
 /**
@@ -87,8 +84,10 @@ public class OracleRequestProcessor implements RequestProcessor {
             BaseRequest postRequest = buildPostRequest(processingRequest);
 
             try {
+                updateProcessStarte(processList, new Date());
                 VerificationProcessResponse verificationResponse = sendPostRequest(postRequest);
                 response = waitForProcessingComplete(verificationResponse);
+                updateProcessCompletedTime(processList, new Date());
             } catch (FailedRequestException e) {
                 throw new RequestProcessorException("Could not send request to oracle api", e);
             } catch (IOException e) {
@@ -101,6 +100,22 @@ public class OracleRequestProcessor implements RequestProcessor {
         }
 
         return new AsyncResult<>(response);
+    }
+
+    @Transactional
+    private void updateProcessStarte(List<Process> processList, Date date){
+        for (Process process : processList){
+            process.setRequestSentOn(date);
+        }
+        verificationRequestDetailService.updateProcessDetails(processList);
+    }
+
+    @Transactional
+    private void updateProcessCompletedTime(List<Process> processList, Date date){
+        for (Process process : processList){
+            process.setResponseReceivedOn(date);
+        }
+        verificationRequestDetailService.updateProcessDetails(processList);
     }
 
     @Transactional

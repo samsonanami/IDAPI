@@ -71,10 +71,8 @@ public class VerificationOrchestrator {
 
     @Transactional
     private void saveProcessResponse(ResponseProcessorResult responseProcessorResult, String verificationCode){
-        for (Process process : verificationRequestDetailService.getProcessListBelongsToProcessingRequest(verificationCode)){
-            verificationRequestDetailService.saveResponse(responseProcessorResult.getProcessedString(),
-                    responseProcessorResult.getProcessedString(), process);
-        }
+        verificationRequestDetailService.saveFinalVerificationResponse(responseProcessorResult.getProcessedString(),
+                verificationCode);
     }
 
 }

@@ -9,11 +9,11 @@ CREATE TABLE IF NOT EXISTS `configuration_key` (
 
 DROP TABLE IF EXISTS `process_config`;
 
-CREATE TABLE IF NOT EXISTS `idapi`.`process_config` (
+CREATE TABLE IF NOT EXISTS `process_config` (
   `ID` INT(11) NOT NULL AUTO_INCREMENT,
   `VALUE` VARCHAR(45) NULL DEFAULT NULL,
   `KEY` INT(11) NOT NULL,
-  `CLIENT` INT(11) NOT NULL,
+  `CLIENT` INT(11)  NULL  DEFAULT NULL,
   `PROCESS_TYPE` INT(11) NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `fk_process_config_configuration_key1_idx` (`KEY` ASC),
@@ -21,17 +21,17 @@ CREATE TABLE IF NOT EXISTS `idapi`.`process_config` (
   INDEX `fk_process_config_process_type1_idx` (`PROCESS_TYPE` ASC),
   CONSTRAINT `fk_process_config_configuration_key1`
   FOREIGN KEY (`KEY`)
-  REFERENCES `idapi`.`configuration_key` (`ID`)
+  REFERENCES `configuration_key` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_process_config_client1`
   FOREIGN KEY (`CLIENT`)
-  REFERENCES `idapi`.`client` (`ID`)
+  REFERENCES `client` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_process_config_process_type1`
   FOREIGN KEY (`PROCESS_TYPE`)
-  REFERENCES `idapi`.`process_type` (`ID`)
+  REFERENCES `process_type` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
   ENGINE = InnoDB

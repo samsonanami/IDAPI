@@ -24,10 +24,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Future;
 
 /**
@@ -76,7 +73,11 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
             BaseRequest postRequest = buildPostRequest(processingRequest);
 
             try {
+                updateProcessStarte(processList, new Date());
                 verificationResponse = sendPostRequest(postRequest);
+                updateProcessCompletedTime(processList, new Date());
+                LOGGER.debug("Received response from compression labs {} ", verificationResponse);
+
             } catch (FailedRequestException e) {
                 throw new RequestProcessorException("Unable to send the facial verification request  ", e);
             } catch (IOException e) {
@@ -86,6 +87,22 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
         }
 
         return new AsyncResult<>(verificationResponse);
+    }
+
+    @Transactional
+    private void updateProcessStarte(List<Process> processList, Date date){
+        for (Process process : processList){
+            process.setRequestSentOn(date);
+        }
+        verificationRequestDetailService.updateProcessDetails(processList);
+    }
+
+    @Transactional
+    private void updateProcessCompletedTime(List<Process> processList, Date date){
+        for (Process process : processList){
+            process.setResponseReceivedOn(date);
+        }
+        verificationRequestDetailService.updateProcessDetails(processList);
     }
 
     @Transactional

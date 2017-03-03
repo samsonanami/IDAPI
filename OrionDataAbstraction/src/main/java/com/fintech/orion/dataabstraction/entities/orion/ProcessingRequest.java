@@ -31,15 +31,19 @@ public class ProcessingRequest  implements java.io.Serializable {
      private Client client;
      private Date receivedOn;
      private String processingRequestIdentificationCode;
+     private String finalResponse;
+     private Date processingCompletedOn;
      private Set<Process> processes = new HashSet<Process>(0);
 
     public ProcessingRequest() {
     }
 
-    public ProcessingRequest(Client client, Date receivedOn, String processingRequestIdentificationCode, Set<Process> processes) {
+    public ProcessingRequest(Client client, Date receivedOn, String processingRequestIdentificationCode, String finalResponse, Date processingCompletedOn, Set<Process> processes) {
        this.client = client;
        this.receivedOn = receivedOn;
        this.processingRequestIdentificationCode = processingRequestIdentificationCode;
+       this.finalResponse = finalResponse;
+       this.processingCompletedOn = processingCompletedOn;
        this.processes = processes;
     }
    
@@ -83,6 +87,26 @@ public class ProcessingRequest  implements java.io.Serializable {
     
     public void setProcessingRequestIdentificationCode(String processingRequestIdentificationCode) {
         this.processingRequestIdentificationCode = processingRequestIdentificationCode;
+    }
+
+    
+    @Column(name="FINAL_RESPONSE")
+    public String getFinalResponse() {
+        return this.finalResponse;
+    }
+    
+    public void setFinalResponse(String finalResponse) {
+        this.finalResponse = finalResponse;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="PROCESSING_COMPLETED_ON", length=19)
+    public Date getProcessingCompletedOn() {
+        return this.processingCompletedOn;
+    }
+    
+    public void setProcessingCompletedOn(Date processingCompletedOn) {
+        this.processingCompletedOn = processingCompletedOn;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="processingRequest")

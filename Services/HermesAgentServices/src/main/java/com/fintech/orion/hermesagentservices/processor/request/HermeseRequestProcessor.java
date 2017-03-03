@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.Processor;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
+import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.hermesagentservices.processor.VerificationResult;
 import com.fintech.orion.hermesagentservices.processor.request.processor.RequestProcessorFactory;
@@ -27,6 +29,9 @@ public class HermeseRequestProcessor implements HermeseRequestProcessorInterface
 
     @Autowired
     private RequestProcessorFactory requestProcessorFactory;
+
+    @Autowired
+    private VerificationRequestDetailServiceInterface verificationRequestDetailService;
 
     @Override
     public List<VerificationResult> processVerificationRequest(ProcessingMessage processingMessage) throws RequestProcessorException {

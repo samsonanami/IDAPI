@@ -4,8 +4,10 @@ import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +21,8 @@ public interface VerificationRequestDetailServiceInterface {
 
     void saveResponse(String rawResponse, String processedResponse, Process process);
 
+    void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode);
+
     boolean isVerificationProcessFoundInProcessingRequest(String processingRequestCode, String processType);
 
     List<Process> getProcessListBelongsToProcessingRequest(String processingRequestCode);
@@ -26,5 +30,7 @@ public interface VerificationRequestDetailServiceInterface {
     List<Process> getProcessListBelongsToProcessingRequest(String processingRequestCode, List<String> processTypes);
 
     ProcessType getProcessTypeFromProcessCode(String processIdentificationCode);
+
+    void updateProcessDetails(List<Process> processList);
 
 }
