@@ -126,7 +126,7 @@ public class BillDateEndMonthValidationTest {
 
 
         ValidationData verificationData = billDateEndMonthValidation.validate(resourceName, ocrResponse);
-        assertTrue(verificationData.getValidationStatus());
+        assertFalse(verificationData.getValidationStatus());
     }
 
     @Test(expected = CustomValidationException.class)

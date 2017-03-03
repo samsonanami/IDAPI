@@ -3,11 +3,13 @@ package com.fintech.orion.common.service;
 import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
+import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import com.fintech.orion.dataabstraction.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,6 +54,15 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
 
     @Override
     @Transactional
+    public void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode) {
+        ProcessingRequest verificationRequest = processingRequestRepositoryInterface.findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestCode);
+        verificationRequest.setFinalResponse(verificationResponse);
+        verificationRequest.setProcessingCompletedOn(new Date());
+        processingRequestRepositoryInterface.save(verificationRequest);
+    }
+
+    @Override
+    @Transactional
     public boolean isVerificationProcessFoundInProcessingRequest(String processingRequestCode, String processType) {
         Process process = processRepositoryInterface.findProcessByProcessingRequestAndProcessType(processingRequestCode,
                 processType);
@@ -79,5 +90,12 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
     @Transactional
     public ProcessType getProcessTypeFromProcessCode(String processIdentificationCode) {
         return processRepositoryInterface.test(processIdentificationCode);
+    }
+
+
+    @Override
+    @Transactional
+    public void updateProcessDetails(List<Process> processList) {
+        processRepositoryInterface.save(processList);
     }
 }

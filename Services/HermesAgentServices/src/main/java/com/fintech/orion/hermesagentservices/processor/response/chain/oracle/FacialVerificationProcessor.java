@@ -3,6 +3,8 @@ package com.fintech.orion.hermesagentservices.processor.response.chain.oracle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.Processor;
 import com.fintech.orion.common.exceptions.ConfigurationProvidorException;
+import com.fintech.orion.common.service.VerificationRequestDetailServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dto.hermese.model.compressionlabs.response.FacialVerificationResponse;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.hermesagentservices.processor.VerificationResult;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +27,8 @@ public class FacialVerificationProcessor extends RequestProcessorChain{
 
     private static final String FACIAL_VERIFICATION = "facialVerification";
 
+    @Autowired
+    private VerificationRequestDetailServiceInterface verificationRequestDetailService;
 
     @Autowired
     private ConfigurationProvider configurationProvider;
@@ -41,6 +46,7 @@ public class FacialVerificationProcessor extends RequestProcessorChain{
 
         if (rawString != null && !"null".equalsIgnoreCase(rawString) && !rawString.isEmpty()) {
             try {
+                saveResponseString(processingRequestId, rawString, "");
                 processRawString(response, rawString, processingRequestId, clientId);
             } catch (IOException e) {
                 LOGGER.error("Error processing raw response {} for processing request id {} ",
@@ -91,6 +97,17 @@ public class FacialVerificationProcessor extends RequestProcessorChain{
             response.setFacialMatch("failed");
         }
 
+    }
+
+    private void saveResponseString(String verificationRequestCode, String rawString, String processedString){
+        List<String> processTypeList = new ArrayList<>();
+        processTypeList.add("facialVerification");
+        List<Process> processList = verificationRequestDetailService
+                .getProcessListBelongsToProcessingRequest(verificationRequestCode,
+                        processTypeList);
+        for (Process process : processList){
+            verificationRequestDetailService.saveResponse(rawString, processedString, process);
+        }
     }
 
 
