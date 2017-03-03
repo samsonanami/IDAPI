@@ -4,4 +4,3 @@ INSERT INTO `process_type`
 VALUES
 (3,
 'facialVerification');
-SELECT * FROM idapi.process_type;
