@@ -6,6 +6,7 @@ import com.fintech.orion.api.service.request.ProcessingRequestServiceInterface;
 import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInterface;
 import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorInterface;
 import com.fintech.orion.api.service.validator.ResourceAccessValidator;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
@@ -13,24 +14,34 @@ import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
+import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.jobchanel.producer.MessageProducer;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -169,6 +180,24 @@ public class VerificationApiController implements VerificationApi {
         }
 
         return responseEntity;
+    }
+    @Override
+    public ResponseEntity<PagedResources<VerificationRequestSummery>> verificationRequestSummeryGet(
+            @RequestParam(value = "from", required = false) @DateTimeFormat(pattern = "MM-dd-yyyy") Date from,
+            @RequestParam(value = "to", required = false) @DateTimeFormat(pattern = "MM-dd-yyyy") Date to,
+            @RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber,
+            @RequestParam(value = "size", required = false, defaultValue = "10") String pageSize,
+            HttpServletRequest request, HttpServletResponse response) {
+            Principal principal = request.getUserPrincipal();
+        PagedResources<VerificationRequestSummery> pagedVerificationRequestSummery = null;
+        try {
+            pagedVerificationRequestSummery =  processingRequestHandlerInterface
+                    .verificationRequestSummery(principal.getName(), from, to, pageNumber, pageSize);
+
+        } catch (DataNotFoundException e) {
+            LOGGER.warn("No history data found for the client {} ", principal.getName(), e);
+        }
+        return new ResponseEntity<PagedResources<VerificationRequestSummery>>(pagedVerificationRequestSummery, HttpStatus.OK);
     }
 
     private List<String> getResourceList(VerificationRequest verificationRequest){
