@@ -39,7 +39,7 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             try {
-                validationData = validateBillDateEndMonth(fieldData);
+                validationData = validateBillDateEndMonth(fieldData, ocrResponse);
             } catch (DateDecoderException e) {
                 throw new CustomValidationException("Error Occurred while performing bill date end month verification ", e);
             }
@@ -51,11 +51,11 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         return validationData;
     }
 
-    private ValidationData validateBillDateEndMonth(OcrFieldData ocrFieldData) throws DateDecoderException {
+    private ValidationData validateBillDateEndMonth(OcrFieldData ocrFieldData, OcrResponse ocrResponse) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
-            Date date = dateDecoder.decodeDate(fieldValue.getValue());
+            Date date = dateDecoder.decodeDate(fieldValue.getValue(), getTemplateCategory(fieldValue.getId(), ocrResponse));
             LocalDate issuedDate = new LocalDate(date);
             Months monthsFromIssued = Months.monthsBetween(issuedDate, today);
 

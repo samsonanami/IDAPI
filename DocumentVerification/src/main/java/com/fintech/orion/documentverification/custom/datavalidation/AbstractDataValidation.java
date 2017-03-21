@@ -56,8 +56,10 @@ public class AbstractDataValidation extends ValidationHelper {
                     .getValidationStrategy(dataValidationStrategyType);
             DocumentDataValidator validator =  new DocumentDataValidator(strategy);
 
+            String templateCategory = "TODO:";
+
             ValidationResult result = validator.executeStrategy(dataValidationValue.getMrzValue(),
-                    dataValidationValue.getVizValue());
+                    dataValidationValue.getVizValue(), templateCategory);
             if (result.isStatus()){
                 dataValidationValue.setStatus(true);
                 dataValidationValue.setRemarks(getSuccessRemarksMessage());

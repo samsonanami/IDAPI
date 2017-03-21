@@ -34,7 +34,7 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             try {
-                validationData = checkDocumentExpirationDate(fieldData);
+                validationData = checkDocumentExpirationDate(fieldData, ocrResponse);
             } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an expire date validation for ocr response {} on " +
                         "resource name {} {}", ocrResponse, resourceName.getName(), e);
@@ -53,10 +53,10 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
         return validationData;
     }
 
-    private ValidationData checkDocumentExpirationDate(OcrFieldData ocrFieldData) throws DateDecoderException {
+    private ValidationData checkDocumentExpirationDate(OcrFieldData ocrFieldData, OcrResponse ocrResponse) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
-            Date date = dateDecoder.decodeDate(fieldValue.getValue());
+            Date date = dateDecoder.decodeDate(fieldValue.getValue(), getTemplateCategory(fieldValue.getId(), ocrResponse));
             if (date.before(new Date())) {
                 validationData.setRemarks(getDocumentNameFromOcrFieldValueId(fieldValue.getId()) + getFailedRemarksMessage());
                 validationData.setValidationStatus(false);

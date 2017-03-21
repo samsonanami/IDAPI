@@ -41,7 +41,7 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             try {
-                validationData = validateDateofIusseEndYear(fieldData);
+                validationData = validateDateofIusseEndYear(fieldData, ocrResponse);
             } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an date of issue year validation for ocr response {} {}",
                         ocrResponse, e);
@@ -61,11 +61,11 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
         return validationData;
     }
 
-    private ValidationData validateDateofIusseEndYear(OcrFieldData ocrFieldData) throws DateDecoderException {
+    private ValidationData validateDateofIusseEndYear(OcrFieldData ocrFieldData, OcrResponse ocrResponse) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
-            Date date = dateDecoder.decodeDate(fieldValue.getValue());
+            Date date = dateDecoder.decodeDate(fieldValue.getValue(), getTemplateCategory(fieldValue.getId(), ocrResponse));
             LocalDate issuedDate = new LocalDate(date);
             Years yearsFromIssued = Years.yearsBetween(issuedDate, today);
 

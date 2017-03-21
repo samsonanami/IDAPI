@@ -17,15 +17,15 @@ public class OperationDateComparator implements DataValidationStrategy {
     private DateDecoder dateDecoder;
 
     @Override
-    public ValidationResult doDataValidationOperation(String base, String compare) {
-        ValidationResult
-                result = new ValidationResult(false, "");
+    public ValidationResult doDataValidationOperation(String base, String compare, String templateCategory) {
+        ValidationResult result = new ValidationResult(false, "");
         Date baseDate = null;
         Date compareDate = null;
 
         try {
-            baseDate = dateDecoder.decodeDate(base);
-            compareDate = dateDecoder.decodeDate(compare);
+
+            baseDate = dateDecoder.decodeDate(base, templateCategory);
+            compareDate = dateDecoder.decodeDate(compare, templateCategory);
             if (baseDate.equals(compareDate)) {
                 result.setStatus(true);
             }

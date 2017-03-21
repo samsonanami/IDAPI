@@ -16,7 +16,7 @@ public class OperationAddressComparator implements DataValidationStrategy {
     private AddressCompare addressCompare;
 
     @Override
-    public ValidationResult doDataValidationOperation(String base, String compare) {
+    public ValidationResult doDataValidationOperation(String base, String compare, String templateCategory) {
         ValidationResult validationResult = new ValidationResult(false, "Error Validating date");
         try {
             AddressCompareResult result = addressCompare.compare(base, compare);

@@ -1,10 +1,12 @@
 package com.fintech.orion.documentverification.custom.common;
 
+import com.fintech.orion.documentverification.common.date.DateDecoder;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -15,29 +17,29 @@ import java.util.List;
  */
 public class ValidationHelper {
 
+
+    @Autowired
+    private DateDecoder dateDecoder;
+
+    @Autowired
+    private OcrResponseReader responseReader;
+
+
     private boolean isCriticalValidation;
     private String successRemarksMessage;
     private String failedRemarksMessage;
     private String ocrExtractionFieldName;
 
     public OcrFieldValue getFieldValueById(String id, OcrFieldData fieldData) {
-        OcrFieldValue fieldValue = new OcrFieldValue();
-        for (OcrFieldValue f : fieldData.getValue()) {
-            if (f.getId().equalsIgnoreCase(id)) {
-                fieldValue = f;
-            }
-        }
-        return fieldValue;
+        return responseReader.getFieldValueById(id, fieldData);
     }
 
     public OcrFieldData getFieldDataById(String id, OcrResponse ocrResponse) {
-        OcrFieldData data = new OcrFieldData();
-        for (OcrFieldData fieldData : ocrResponse.getData()) {
-            if (fieldData.getId().equalsIgnoreCase(id)) {
-                data = fieldData;
-            }
-        }
-        return data;
+        return responseReader.getFieldDataById(id, ocrResponse);
+    }
+
+    public String getTemplateCategory(String id, OcrResponse ocrResponse){
+        return responseReader.getTemplateCategory(id, ocrResponse);
     }
 
     public boolean isCriticalValidation() {
@@ -156,7 +158,7 @@ public class ValidationHelper {
     }
 
     public String getSingleValueStringFromMultipleFields(String resourceName, List<OcrFieldData> ocrFieldDataList,
-                                                         String lineSeparator){
+                                                         String lineSeparator) {
         String singleValueString = "";
         for (OcrFieldData fieldData : ocrFieldDataList) {
             OcrFieldValue fieldValue = getFieldValueById(resourceName + "##" + fieldData.getId(), fieldData);

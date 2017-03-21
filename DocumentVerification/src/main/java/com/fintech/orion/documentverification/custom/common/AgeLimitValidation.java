@@ -30,6 +30,7 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
 
     @Autowired
     private DateDecoder dateDecoder;
+
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         if (minimumAge <= 0 || getOcrExtractionFieldName() == null) {
@@ -45,7 +46,7 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             try {
-                validationData = validateAgeLimit(fieldData);
+                validationData = validateAgeLimit(fieldData, ocrResponse);
             } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an age limit verification on ocr response {} {}"
                         , ocrResponse, e);
@@ -61,11 +62,11 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
         return validationData;
     }
 
-    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData) throws DateDecoderException {
+    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData, OcrResponse ocrResponse) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
-            Date date = dateDecoder.decodeDate(fieldValue.getValue());
+            Date date = dateDecoder.decodeDate(fieldValue.getValue(), getTemplateCategory(fieldValue.getId(), ocrResponse));
             LocalDate birthday = new LocalDate(date);
             Years age = Years.yearsBetween(birthday, today);
 

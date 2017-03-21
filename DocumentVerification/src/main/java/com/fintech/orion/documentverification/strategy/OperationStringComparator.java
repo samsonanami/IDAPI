@@ -6,7 +6,7 @@ package com.fintech.orion.documentverification.strategy;
 public class OperationStringComparator implements DataValidationStrategy {
 
     @Override
-    public ValidationResult doDataValidationOperation(String base, String compare) {
+    public ValidationResult doDataValidationOperation(String base, String compare, String templateCategory) {
         ValidationResult result = new ValidationResult(false, "");
         if (isInputNotNull(base, compare) && isInputEmpty(base, compare) && base.equalsIgnoreCase(compare)) {
             result.setStatus(true);

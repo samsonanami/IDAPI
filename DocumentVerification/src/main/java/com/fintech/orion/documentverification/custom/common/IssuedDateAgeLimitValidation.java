@@ -49,7 +49,7 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
         validationData = validateInput(fieldDataIssuedDate);
         if (validationData.getValidationStatus()) {
             try {
-                validationData = validateIssuedDateAgeLimit(valueIssuedDate, valueDateOfBirth);
+                validationData = validateIssuedDateAgeLimit(valueIssuedDate, valueDateOfBirth, ocrResponse);
             } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an date of birth at issue date" +
                         " validation for ocr response {} {}", ocrResponse, e);
@@ -69,10 +69,12 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
         return validationData;
     }
 
-    private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate, OcrFieldValue ocrFieldValueDateOfBirth) throws DateDecoderException {
+    private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate
+            , OcrFieldValue ocrFieldValueDateOfBirth, OcrResponse ocrResponse) throws DateDecoderException {
+        String templateCategory = getTemplateCategory(ocrFieldValueIssuedDate.getId(), ocrResponse);
         ValidationData validationData = new ValidationData();
-        Date issuedDate = dateDecoder.decodeDate(ocrFieldValueIssuedDate.getValue());
-        Date dateOfBirth = dateDecoder.decodeDate(ocrFieldValueDateOfBirth.getValue());
+        Date issuedDate = dateDecoder.decodeDate(ocrFieldValueIssuedDate.getValue(), templateCategory);
+        Date dateOfBirth = dateDecoder.decodeDate(ocrFieldValueDateOfBirth.getValue(), templateCategory);
 
         int age = getAgeforIssueDate(issuedDate, dateOfBirth);
         if (age > minimumAge && age < maximumAge) {

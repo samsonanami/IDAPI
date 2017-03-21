@@ -28,6 +28,8 @@ public class DateDecoderTest {
 
     private String dateType1;
     private String dateType2;
+    private String templateCategory;
+
     private List<DateTypeConfiguration> dateTypeConfigurationListObj = new ArrayList<>();
 
     @Spy
@@ -54,11 +56,12 @@ public class DateDecoderTest {
         dateTypeConfigurationListObj.add(simpleConfig);
 
         MockitoAnnotations.initMocks(this);
+        templateCategory = "TODO:";
     }
 
     @Test
     public void should_return_correct_date_for_correct_input_of_date_type_1()throws Exception{
-        Date date = dateDecoder.decodeDate(dateType1);
+        Date date = dateDecoder.decodeDate(dateType1, templateCategory);
         DateFormat df = new SimpleDateFormat("ddMMyyyy");
         Date expected = df.parse("09022012");
         Assert.assertEquals(expected, date);
@@ -66,7 +69,7 @@ public class DateDecoderTest {
 
     @Test
     public void should_return_correct_date_for_correct_input_of_date_type_2()throws Exception{
-        Date date = dateDecoder.decodeDate(dateType2);
+        Date date = dateDecoder.decodeDate(dateType2, templateCategory);
         DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         Date expected = dateFormat.parse("25071974");
         Assert.assertEquals(expected, date);
@@ -74,7 +77,7 @@ public class DateDecoderTest {
 
     @Test(expected = DateDecoderException.class)
     public void should_throw_DateDecoderException_if_invalid_date_is_given()throws Exception{
-        Date date = dateDecoder.decodeDate("09/07/12");
+        Date date = dateDecoder.decodeDate("09/07/12", templateCategory);
         DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         Date expected = dateFormat.parse("09022012");
         Assert.assertEquals(expected, date);
@@ -82,7 +85,7 @@ public class DateDecoderTest {
 
     @Test
     public void should_decode_date_type_1()throws Exception{
-        Date date = dateDecoder.decodeDate("25 JUL /JUIL 74");
+        Date date = dateDecoder.decodeDate("25 JUL /JUIL 74", templateCategory);
         DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         Date expected = dateFormat.parse("25071974");
         Assert.assertEquals(expected, date);

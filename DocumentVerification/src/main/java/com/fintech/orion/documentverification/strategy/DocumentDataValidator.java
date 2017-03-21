@@ -12,7 +12,7 @@ public class DocumentDataValidator {
         this.strategy = strategy;
     }
 
-    public ValidationResult executeStrategy(String base, String compare) {
-        return strategy.doDataValidationOperation(base, compare);
+    public ValidationResult executeStrategy(String base, String compare, String templateCategory) {
+        return strategy.doDataValidationOperation(base, compare, templateCategory);
     }
 }
