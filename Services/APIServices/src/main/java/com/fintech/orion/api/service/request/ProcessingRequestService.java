@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,7 +128,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
         Page<ProcessingRequest> processingRequests;
         Pageable pageable = new PageRequest(
-                Integer.valueOf(page), Integer.valueOf(size)
+                Integer.valueOf(page), Integer.valueOf(size), Sort.Direction.DESC, "id"
         );
         processingRequests =  processingRequestRepositoryInterface.findProcessingRequestByClient(client, pageable);
 

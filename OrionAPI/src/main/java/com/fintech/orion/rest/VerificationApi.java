@@ -51,6 +51,7 @@ public interface VerificationApi {
                                                          HttpServletResponse response, HttpServletRequest request);
 
 
+    @CrossOrigin
     @RequestMapping(
             value = "/v1/verification/history",
             params = { "page", "size" },
