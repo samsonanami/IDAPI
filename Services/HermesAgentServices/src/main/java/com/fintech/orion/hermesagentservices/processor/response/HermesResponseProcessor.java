@@ -22,6 +22,7 @@ import java.util.List;
 public class HermesResponseProcessor implements HermesResponseProcessorInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(HermeseRequestProcessor.class);
     private static final String STATUS_FAILED = "processing_failed";
+    private static final String STATUS_PASSED = "processing_successful";
 
     @Autowired
     private OracleResponseProcessor oracleResponseProcessor;
@@ -58,6 +59,7 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
 
 
     private void setFinalProcessingStatus(VerificationProcessDetailedResponse detailedResponse){
+        detailedResponse.setStatus(STATUS_PASSED);
         for (ValidationData validation : detailedResponse.getIdDocFullValidations()){
             if("critical_error_set".equalsIgnoreCase(validation.getId()) && !validation.getRemarks().isEmpty()){
                 detailedResponse.setStatus(STATUS_FAILED);
