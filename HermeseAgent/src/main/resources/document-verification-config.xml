@@ -203,6 +203,7 @@
                 <ref bean="documentNumberVizMrzValidation"/>
                 <ref bean="genderVizMrzValidation"/>
                 <ref bean="givenNameVizMrzValidation"/>
+                <ref bean="expireDateVizMrzValidation"/>
             </array>
         </constructor-arg>
     </bean>
@@ -245,6 +246,14 @@
         <property name="failedRemarksMessage" value="Failed to validate "/>
         <property name="successRemarksMessage" value="Verified"/>
         <property name="dataValidationStrategyType" value="STRING"/>
+    </bean>
+
+    <bean id="expireDateVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.ExpireDateVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="date_of_expiry"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="MRZ and VIZ expire date not matching"/>
+        <property name="successRemarksMessage" value="MRZ and VIZ expire date matching"/>
+        <property name="dataValidationStrategyType" value="DATE"/>
     </bean>
 
 

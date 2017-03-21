@@ -140,6 +140,9 @@ public class AbstractDataValidation extends ValidationHelper {
             case "passport_number":
                 mrzValue = decodeResults.getPassPortNumber();
                 break;
+            case "date_of_expiry":
+                mrzValue = decodeResults.getDateofExpire();
+                break;
             default:
                 mrzValue = "";
                 break;

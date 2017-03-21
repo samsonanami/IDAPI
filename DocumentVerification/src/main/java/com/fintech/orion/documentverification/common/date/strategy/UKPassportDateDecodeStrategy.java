@@ -54,29 +54,11 @@ public class UKPassportDateDecodeStrategy implements DateDecodingStrategy {
         return outputFormat.format(calendar.getTime());
     }
 
-    private String getYear(String yearDigit) {
-        int yearNow;
-        int yearDigitValue = Integer.parseInt(yearDigit);
-        String fourDigitYear;
-        String decadeDigit;
-        int decadeDigitNow;
-
-        DateFormat df = new SimpleDateFormat("yyyy");
-        String formattedDate = df.format(Calendar.getInstance().getTime());
-        yearNow = Integer.parseInt(formattedDate.substring(1, 4));
-        decadeDigitNow = Integer.parseInt(formattedDate.substring(0, 2));
-
-
-        if (yearDigitValue > yearNow) {
-            decadeDigit = Integer.toString(decadeDigitNow - 1);
-        } else {
-            decadeDigit = Integer.toString(decadeDigitNow);
-
-        }
-
-        fourDigitYear = decadeDigit + new DecimalFormat("00").format(yearDigitValue);
-
-
-        return fourDigitYear;
+    private String getYear(String yearDigit) throws ParseException {
+        DateFormat twoDigitYearFormat = new SimpleDateFormat("yy");
+        Date date = null;
+        date = twoDigitYearFormat.parse(yearDigit);
+        DateFormat fourDigitYearFormat = new SimpleDateFormat("yyyy");
+        return fourDigitYearFormat.format(date);
     }
 }
