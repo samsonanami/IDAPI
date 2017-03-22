@@ -313,8 +313,27 @@
             <bean id="templateMap" class="com.fintech.orion.documentverification.custom.common.TemplateCategoryMap">
                 <constructor-arg>
                     <util:map>
-                        <entry key="UK" value="operationSimplePassportDecode" />
-                        <entry key="UK2" value="operationUKPassportDateDecode" />
+                        <entry key="DLB_UK" value="CommonDlDateDecoder" />
+
+                        <entry key="DLF_Ireland" value="CommonDlDateDecoder" />
+                        <entry key="DLF_UK1" value="CommonDateDecoder" />
+                        <entry key="DLF_Sweden" value="CommonDlDateDecoder" />
+                        <entry key="DLF_UK2" value="CommonDlDateDecoder" />
+                        <entry key="DLF_UK3" value="CommonDlDateDecoder" />
+
+                        <entry key="ID_Finland" value="CommonDateDecoder" />
+                        <entry key="ID_Germany" value="CommonDateDecoder" />
+                        <entry key="ID_Poland" value="CommonDateDecoder" />
+                        <entry key="ID_Spain" value="CommonDateDecoder" />
+
+                        <entry key="P_Ireland" value="IrelandPassportDateDecoder" />
+                        <entry key="P_Ireland2" value="IrelandPassportDateDecoder" />
+                        <entry key="P_UK1" value="UKPassportDateDecoder" />
+                        <entry key="P_UK2" value="UKPassportDateDecoder" />
+
+
+                        <entry key="P_UK1" value="UKPassportDateDecoder" />
+
                     </util:map>
                 </constructor-arg>
             </bean>

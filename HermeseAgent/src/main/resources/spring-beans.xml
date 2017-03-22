@@ -93,8 +93,11 @@
         <property name="strategy" ref="operationUKPassportMRZDateDecode"/>
     </bean>
 
-    <bean id="operationUKPassportDateDecode" class="com.fintech.orion.documentverification.common.date.strategy.UKPassportDateDecodeStrategy"/>
-    <bean id="operationSimplePassportDecode" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
+    <bean id="UKPassportDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.UKPassportDateDecodeStrategy"/>
+
+    <bean id="IrelandPassportDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.IrelandPassportDateDecodeStrategy"/>
+
+    <bean id="CommonDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
         <property name="dateFormat" value="dd.MM.yyyy"/>
     </bean>
     <bean id="operationUKPassportMRZDateDecode" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
