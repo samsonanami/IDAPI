@@ -2,6 +2,7 @@ package com.fintech.orion.documentverification.custom.datavalidation;
 
 import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations;
+import com.fintech.orion.documentverification.common.configuration.factory.ConfigurationFactory;
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.common.exception.MRZDecodingException;
 import com.fintech.orion.documentverification.common.exception.MRZValidatingException;
@@ -14,6 +15,8 @@ import com.fintech.orion.documentverification.strategy.DataValidationStrategy;
 import com.fintech.orion.documentverification.strategy.DataValidationStrategyProvider;
 import com.fintech.orion.documentverification.strategy.DocumentDataValidator;
 import com.fintech.orion.documentverification.strategy.ValidationResult;
+import com.fintech.orion.documentverification.template.category.TemplateCategory;
+import com.fintech.orion.documentverification.template.category.factory.TemplateCategoryFactory;
 import com.fintech.orion.dto.configuration.DataValidationStrategyType;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -40,6 +43,12 @@ public class AbstractDataValidation extends ValidationHelper {
     @Autowired
     private DataValidationStrategyProvider dataValidationStrategyProvider;
 
+    @Autowired
+    private ConfigurationFactory commonConfigurationFactory;
+
+    @Autowired
+    private TemplateCategoryFactory templateCategoryFactory;
+
     private DataValidationStrategyType dataValidationStrategyType;
 
     public DataValidation ocrExtractionFieldVizMrzDataValidation(ResourceName resourceName, OcrResponse ocrResponse)
@@ -49,7 +58,7 @@ public class AbstractDataValidation extends ValidationHelper {
         List<DataValidationValue> dataValidationValueList = new ArrayList<>();
 
         for (String documentName : getResourceListFromOcrResponse(ocrResponse)){
-            DataValidationValue dataValidationValue = getDataValidationValue(getOcrExtractionFieldName(),
+            DataValidationValue dataValidationValue = getDataValidationValue(getTemplateName(documentName, ocrResponse),
                     documentName, ocrResponse);
 
             DataValidationStrategy strategy = dataValidationStrategyProvider
@@ -68,8 +77,8 @@ public class AbstractDataValidation extends ValidationHelper {
         return dataValidation;
     }
 
-    private DataValidationValue getDataValidationValue(String extractionFieldName,
-                                                       String documentName, OcrResponse ocrResponse){
+    private DataValidationValue getDataValidationValue(String templateName,
+                                                       String documentName, OcrResponse ocrResponse) throws CustomValidationException {
         DataValidationValue dataValidationValue = new DataValidationValue();
         dataValidationValue.setDocumentName(documentName);
         dataValidationValue.setStatus(false);
@@ -77,9 +86,7 @@ public class AbstractDataValidation extends ValidationHelper {
         dataValidationValue.setMrzValue("");
         dataValidationValue.setVizValue(getVizValue(getOcrExtractionFieldName(), documentName, ocrResponse));
         MrzLineBuilder mrzLineBuilder = new MrzLineBuilder();
-        for (DocumentMrzDecodingConfigurations configuration : getDocumentMrzDecodingConfigurations()){
-            extractMrzValueFromOcrResponse(documentName, ocrResponse, dataValidationValue, mrzLineBuilder, configuration);
-        }
+        extractMrzValueFromOcrResponse(documentName, ocrResponse, dataValidationValue, mrzLineBuilder, commonConfigurationFactory.getConfiguration(getTemplateCategory(templateName)));
         return dataValidationValue;
     }
 
@@ -87,24 +94,22 @@ public class AbstractDataValidation extends ValidationHelper {
                                                 DataValidationValue dataValidationValue, MrzLineBuilder mrzLineBuilder,
                                                 DocumentMrzDecodingConfigurations configuration) {
         MRZDecodeResults decodeResults;
-        if (configuration.getDocumentName().equalsIgnoreCase(documentName)){
-            String singleMrzLine = mrzLineBuilder.buildSingleLineMRZ(ocrResponse, documentName,
-                    configuration.getMrzOcrExtractionFieldBase(),
-                    configuration.getMrzLineCount());
-            try {
-                ValidateMRZResult validateMRZResult = validateMrz(singleMrzLine, configuration.getMrzValidationStrategy());
-                if ("true".equalsIgnoreCase(validateMRZResult.getValidationResult())){
-                    decodeResults = configuration.getMrzDecodingStrategy().decode(singleMrzLine);
-                    dataValidationValue.setMrzValue(getMrzValueForOcrExtractionField(getOcrExtractionFieldName(),
-                            decodeResults));
-                }
-            } catch (MRZDecodingException e) {
-                dataValidationValue.setRemarks("Unable to decoding MRZ : " + singleMrzLine);
-                LOGGER.error("Error decoding the mrz line {}", e);
-            } catch (MRZValidatingException e) {
-                dataValidationValue.setRemarks("Invalid MRZ detected : " + singleMrzLine);
-                LOGGER.error("Error validating mrz line {}", e);
+        String singleMrzLine = mrzLineBuilder.buildSingleLineMRZ(ocrResponse, documentName,
+                configuration.getMrzOcrExtractionFieldBase(),
+                configuration.getMrzLineCount());
+        try {
+            ValidateMRZResult validateMRZResult = validateMrz(singleMrzLine, configuration.getMrzValidationStrategy());
+            if ("true".equalsIgnoreCase(validateMRZResult.getValidationResult())) {
+                decodeResults = configuration.getMrzDecodingStrategy().decode(singleMrzLine);
+                dataValidationValue.setMrzValue(getMrzValueForOcrExtractionField(getOcrExtractionFieldName(),
+                        decodeResults));
             }
+        } catch (MRZDecodingException e) {
+            dataValidationValue.setRemarks("Unable to decoding MRZ : " + singleMrzLine);
+            LOGGER.error("Error decoding the mrz line {}", e);
+        } catch (MRZValidatingException e) {
+            dataValidationValue.setRemarks("Invalid MRZ detected : " + singleMrzLine);
+            LOGGER.error("Error validating mrz line {}", e);
         }
     }
 
@@ -153,5 +158,20 @@ public class AbstractDataValidation extends ValidationHelper {
 
     public DataValidationStrategyType getDataValidationStrategyType() {
         return dataValidationStrategyType;
+    }
+
+    public String getTemplateName(String document, OcrResponse ocrResponse) {
+        String templateName = "TemplateName";
+        OcrFieldData ocrFieldData = getFieldDataById(templateName, ocrResponse);
+        OcrFieldValue ocrFieldValue = getFieldValueById(document + "##" + templateName, ocrFieldData);
+        return ocrFieldValue.getValue();
+    }
+
+    public String getTemplateCategory(String templateName) throws CustomValidationException {
+        TemplateCategory templateCategory = templateCategoryFactory.getTemplateCategory(templateName, "Common");
+        if(templateCategory.getCategoryName() == null) {
+            throw new CustomValidationException("No valid Template Category Found for the relevant Template Name");
+        }
+        return templateCategory.getCategoryName();
     }
 }

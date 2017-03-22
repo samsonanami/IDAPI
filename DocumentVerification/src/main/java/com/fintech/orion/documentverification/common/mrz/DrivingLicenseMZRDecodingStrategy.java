@@ -1,10 +1,9 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 import com.fintech.orion.documentverification.common.exception.DrivingLicenseMRZDecodingException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
@@ -14,9 +13,10 @@ import java.util.HashMap;
  */
 @Component
 public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
-    @Autowired
-    @Qualifier("drivingLicenseMRZConfigureList")
-    private HashMap<String, MRZItemProperty> mrzItemProperty;
+
+    @Resource(name="drivingLicenseMRZConfigureList")
+    private HashMap<String, MRZItemProperty> drivingLicenseMRZConfigureList;
+
     int mrzFirstLineCharacterCount;
 
     public MRZDecodeResults decode(String mrz) throws DrivingLicenseMRZDecodingException {
@@ -66,7 +66,7 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
     }
 
     private MRZItemProperty getItemProperties(String key) {
-        return mrzItemProperty.get(key);
+        return drivingLicenseMRZConfigureList.get(key);
     }
 
     private String decodeFirstnamesOfSurName(String mrz, Range range) {

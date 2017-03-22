@@ -9,6 +9,7 @@ public class MRZDecodeResults {
     private String surname;
     private String givenName;
     private String passPortNumber;
+    private String drivingLicenseNumber;
     private String sex;
     private String dateOfBirth;
     private String dateOfExpire;
@@ -166,5 +167,13 @@ public class MRZDecodeResults {
 
     public void setPlaceOfIssue(String placeOfIssue) {
         this.placeOfIssue = placeOfIssue;
+    }
+
+    public String getDrivingLicenseNumber() {
+        return drivingLicenseNumber;
+    }
+
+    public void setDrivingLicenseNumber(String drivingLicenseNumber) {
+        this.drivingLicenseNumber = drivingLicenseNumber;
     }
 }

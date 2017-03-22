@@ -1,32 +1,31 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 import com.fintech.orion.documentverification.common.exception.DirivingLicenseMRZValidatingException;
+import com.fintech.orion.documentverification.common.exception.MRZValidatingException;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class will validate the driving license MRZ.
- * Created by MudithaJ on 12/16/2016.
+ * Created by TharinduMP on 3/22/2017.
+ * Used the same structure as the other implementations of the interface.
+ * This class structure and the interface needs a refactor.
  */
-public class ValidateDrivingLicence implements ValidateMRZ {
-    private static final String FALSE = "false";
+public class ValidateIrelandDrivingLicense implements ValidateMRZ {
 
-    @Resource(name = "drivingLicenseMRZConfigureList")
-    private HashMap<String, MRZItemProperty> mrzItemProperty;
+    private static final String FALSE = "false";
+    private static final int MRZ_LENGTH = 30;
 
     @Override
-    public ValidateMRZResult validate(String mrz) throws DirivingLicenseMRZValidatingException {
+    public ValidateMRZResult validate(String mrz) throws MRZValidatingException {
+
+        ValidateMRZResult validMRZ = new ValidateMRZResult();
         try {
-            ValidateMRZResult validMRZ = new ValidateMRZResult();
-            validMRZ.setMRZType("DrivingLicense");
+            validMRZ.setMRZType("IrelandDrivingLicense");
             validMRZ.setItem(mrz);
 
-            Map<String, String> validateMap = new HashMap<String, String>();
-
+            Map<String, String> validateMap = new HashMap<>();
             validateMap.put("checkMRZLength", String.valueOf(this.checkMRZLength(mrz)));
-
 
             if (validateMap.containsValue(FALSE)) {
                 validMRZ.setValidationResult(FALSE);
@@ -35,11 +34,11 @@ public class ValidateDrivingLicence implements ValidateMRZ {
                 validMRZ.setValidationResult("true");
             }
 
-            return validMRZ;
         } catch (NullPointerException e) {
-
             throw new DirivingLicenseMRZValidatingException("Not well formatted Driving license MRZ or not well set configuration properties", e);
         }
+
+        return validMRZ;
     }
 
     @Override
@@ -50,23 +49,15 @@ public class ValidateDrivingLicence implements ValidateMRZ {
                 message = message + e.getKey() + "<<";
             }
         }
-
         return message;
     }
 
     private boolean checkMRZLength(String mrz) {
         boolean validate = false;
-        int length = this.getConfigValue("MZRLength").getEndIndex();
-        if (mrz.length() == length) {
+        if (mrz.length() == MRZ_LENGTH) {
             validate = true;
         }
-
         return validate;
 
     }
-
-    public MRZItemProperty getConfigValue(String key) {
-        return mrzItemProperty.get(key);
-    }
-
 }
