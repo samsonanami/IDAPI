@@ -147,7 +147,7 @@ public class ProcessingRequestServiceTest {
         Set<Process> processSet = new HashSet<>();
         processSet.add(process);
         processingRequest.setProcesses(processSet);
-
+        processingRequest.setFinalResponse(extractedJson);
         Mockito.when(clientRepositoryInterface.findClientByUserName("zone")).thenReturn(client);
         Mockito.when(processingRequestRepositoryInterface.findProcessingRequestByProcessingRequestIdentificationCode(Matchers.anyString())).thenReturn(processingRequest);
 

@@ -98,16 +98,16 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
     private boolean compareSingleAddressWithBaseAddress(ValidationData validationData, String baseAddress, String address) {
         boolean isAddressMatch = false;
         try {
-            if (address.isEmpty() ) {
-                validationData.setValidationStatus(true);
-                validationData.setRemarks(getSuccessRemarksMessage());
-                validationData.setValue(baseAddress);
-                isAddressMatch = true;
-            } else if(!address.isEmpty() && !addressComparator.compare(baseAddress, address).isResult()) {
+            if (!address.isEmpty() && !addressComparator.compare(baseAddress, address).isResult() ) {
                 validationData.setValidationStatus(false);
                 validationData.setRemarks(getFailedRemarksMessage());
                 validationData.setValue(baseAddress);
                 isAddressMatch = false;
+            } else {
+                validationData.setValidationStatus(true);
+                validationData.setRemarks(getSuccessRemarksMessage());
+                validationData.setValue(baseAddress);
+                isAddressMatch = true;
             }
         } catch (AddressValidatingException e) {
             validationData.setValidationStatus(false);

@@ -137,6 +137,42 @@ public class AddressValidationTest {
     @Test
     public void should_return_false_if_there_are_no_address_for_given_resource_name() throws Exception {
         resourceName.setName("passport");
+        OcrFieldValue utilityBillLine1 = new OcrFieldValue();
+        utilityBillLine1.setId("utilityBill##address_line1");
+
+        OcrFieldValue dlFrontLine1 = new OcrFieldValue();
+        dlFrontLine1.setId("drivingLicenseFront##address_line1");
+
+        List<OcrFieldValue> addressLine1FieldValueList = new ArrayList<>();
+        addressLine1FieldValueList.add(utilityBillLine1);
+        addressLine1FieldValueList.add(dlFrontLine1);
+
+        ocrFieldAddressLine1.setId("address_line1");
+        ocrFieldAddressLine1.setValue(addressLine1FieldValueList);
+
+        List<OcrFieldValue> addressLine2FieldValueList = new ArrayList<>();
+        OcrFieldValue utilityBillLine2 = new OcrFieldValue();
+        utilityBillLine2.setId("utilityBill##address_line2");
+        addressLine2FieldValueList.add(utilityBillLine2);
+
+        ocrFieldAddressLine2.setId("address_line2");
+        ocrFieldAddressLine2.setValue(addressLine2FieldValueList);
+
+        List<OcrFieldValue> addressLine3FieldValueList = new ArrayList<>();
+        OcrFieldValue utilityBillLine3 = new OcrFieldValue();
+        utilityBillLine3.setId("utilityBill##address_line3");
+        addressLine3FieldValueList.add(utilityBillLine3);
+
+        ocrFieldAddressLine3.setId("address_line3");
+        ocrFieldAddressLine3.setValue(addressLine3FieldValueList);
+
+        List<OcrFieldData> fieldDataList = new ArrayList<>();
+        fieldDataList.add(ocrFieldAddressLine1);
+        fieldDataList.add(ocrFieldAddressLine2);
+        fieldDataList.add(ocrFieldAddressLine3);
+
+        ocrResponse.setData(fieldDataList);
+
         ValidationData validationData = addressValidation.validate(resourceName, ocrResponse);
         assertFalse(validationData.getValidationStatus());
     }
