@@ -37,6 +37,9 @@ public class BillDateEndMonthValidationTest {
     private String templateCategory;
 
     @Mock
+    private OcrResponseReader responseReader;
+
+    @Mock
     private DateDecoder dateDecoder;
 
 
@@ -48,7 +51,8 @@ public class BillDateEndMonthValidationTest {
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        templateCategory = "TODO:";
+        templateCategory = null;
+        billDateEndMonthValidation.setResponseReader(responseReader);
     }
 
     @Test

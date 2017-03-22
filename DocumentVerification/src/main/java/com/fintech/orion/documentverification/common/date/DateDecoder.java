@@ -21,4 +21,8 @@ public class DateDecoder {
         DateDecodingStrategy strategy = beanFactory.getBean(templateCategory, DateDecodingStrategy.class);
         return strategy.decodeDate(date);
     }
+
+    public void setBeanFactory(BeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
+    }
 }

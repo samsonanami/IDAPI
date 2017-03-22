@@ -33,6 +33,10 @@ public class DateOfIsssueEndYearValidationTest {
     private SimpleDateFormat dateFormat;
     private String templateCategory;
 
+
+    @Mock
+    private OcrResponseReader responseReader;
+
     @Mock
     private DateDecoder dateDecoder;
 
@@ -43,7 +47,8 @@ public class DateOfIsssueEndYearValidationTest {
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        templateCategory = "TODO:";
+        templateCategory = null;
+        dateOfIssueEndYearValidation.setResponseReader(responseReader);
     }
 
     @Test

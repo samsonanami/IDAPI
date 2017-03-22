@@ -322,4 +322,5 @@
     </bean>
 
 
+    <bean id="addressBuilder" class="com.fintech.orion.documentverification.custom.common.AddressBuilder" />
 </beans>

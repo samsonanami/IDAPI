@@ -35,6 +35,9 @@ public class AgeLimitValidationTest {
     private DateFormat df;
 
     @Mock
+    private OcrResponseReader ocrResponseReader;
+
+    @Mock
     private DateDecoder dateDecoder;
     private String templateCategory;
 
@@ -45,7 +48,7 @@ public class AgeLimitValidationTest {
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
         df = new SimpleDateFormat("MM/dd/yyyy");
-        templateCategory = "TODO:";
+        templateCategory = null;
     }
 
     @Test
@@ -76,6 +79,7 @@ public class AgeLimitValidationTest {
         ageLimitValidation.setOcrExtractionFieldName("date_of_birth");
         ageLimitValidation.setMinimumAge(18);
         ageLimitValidation.setMaximumAge(90);
+        ageLimitValidation.setResponseReader(ocrResponseReader);
 
         ValidationData verificationData = ageLimitValidation.validate(resourceName, ocrResponse);
         assertTrue(verificationData.getValidationStatus());

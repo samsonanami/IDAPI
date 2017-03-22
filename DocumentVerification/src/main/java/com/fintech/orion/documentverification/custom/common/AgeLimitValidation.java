@@ -66,7 +66,8 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
         ValidationData validationData = new ValidationData();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
-            Date date = dateDecoder.decodeDate(fieldValue.getValue(), getTemplateCategory(fieldValue.getId(), ocrResponse));
+            String templateCategory = getTemplateCategory(fieldValue.getId(), ocrResponse);
+            Date date = dateDecoder.decodeDate(fieldValue.getValue(), templateCategory);
             LocalDate birthday = new LocalDate(date);
             Years age = Years.yearsBetween(birthday, today);
 

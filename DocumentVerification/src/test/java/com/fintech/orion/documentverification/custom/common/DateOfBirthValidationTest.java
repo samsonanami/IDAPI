@@ -34,6 +34,10 @@ public class DateOfBirthValidationTest {
     private ValidationResult validationResult;
     private String templateCategory;
 
+
+    @Mock
+    private OcrResponseReader responseReader;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -63,13 +67,14 @@ public class DateOfBirthValidationTest {
 
         ocrResponse.setData(fieldDataList);
 
-        templateCategory = "TODO:";
+        templateCategory = null;
+        dateOfBirthValidation.setResponseReader(responseReader);
     }
 
     @Test
     public void should_return_true_if_all_document_have_same_date_of_birth() throws Exception {
         validationResult.setStatus(true);
-        Mockito.when(dateComparator.doDataValidationOperation(Matchers.anyString(), Matchers.anyString(), templateCategory)).thenReturn(validationResult);
+        Mockito.when(dateComparator.doDataValidationOperation(Matchers.anyString(), Matchers.anyString(), Matchers.anyString())).thenReturn(validationResult);
 
         ValidationData validationData = dateOfBirthValidation.validate(resourceName, ocrResponse);
         assertTrue(validationData.getValidationStatus());

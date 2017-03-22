@@ -31,15 +31,31 @@ public class ValidationHelper {
     private String ocrExtractionFieldName;
 
     public OcrFieldValue getFieldValueById(String id, OcrFieldData fieldData) {
-        return responseReader.getFieldValueById(id, fieldData);
+        OcrFieldValue fieldValue = new OcrFieldValue();
+        for (OcrFieldValue f : fieldData.getValue()) {
+            if (f.getId().equalsIgnoreCase(id)) {
+                fieldValue = f;
+            }
+        }
+        return fieldValue;
     }
 
     public OcrFieldData getFieldDataById(String id, OcrResponse ocrResponse) {
-        return responseReader.getFieldDataById(id, ocrResponse);
+        OcrFieldData data = new OcrFieldData();
+        for (OcrFieldData fieldData : ocrResponse.getData()) {
+            if (fieldData.getId().equalsIgnoreCase(id)) {
+                data = fieldData;
+            }
+        }
+        return data;
     }
 
     public String getTemplateCategory(String id, OcrResponse ocrResponse){
         return responseReader.getTemplateCategory(id, ocrResponse);
+    }
+
+    public void setResponseReader(OcrResponseReader responseReader){
+        this.responseReader = responseReader;
     }
 
     public boolean isCriticalValidation() {

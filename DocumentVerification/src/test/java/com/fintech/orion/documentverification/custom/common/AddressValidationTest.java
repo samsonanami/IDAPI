@@ -51,6 +51,7 @@ public class AddressValidationTest {
         addressValidation.setSuccessRemarksMessage("address validation completed");
         addressValidation.setFailedRemarksMessage("address validation failed");
 
+
         OcrFieldValue utilityBillLine1 = new OcrFieldValue();
         utilityBillLine1.setId("utilityBill##address_line1");
         utilityBillLine1.setValue("42 PYMMES GREEN ROAD");
@@ -90,6 +91,8 @@ public class AddressValidationTest {
         fieldDataList.add(ocrFieldAddressLine3);
 
         ocrResponse.setData(fieldDataList);
+
+        addressValidation.setAddressBuilder(new AddressBuilder());
     }
 
     @Test
@@ -100,7 +103,8 @@ public class AddressValidationTest {
 
         resourceName.setName("utilityBill");
         ValidationData validationData = addressValidation.validate(resourceName, ocrResponse);
-        assertTrue(validationData.getValidationStatus());
+        boolean actual = validationData.getValidationStatus();
+        assertTrue(actual);
 
     }
 

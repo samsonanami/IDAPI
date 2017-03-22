@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +19,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by sasitha on 12/29/16.
@@ -31,6 +31,9 @@ public class MinimumAgeValidationTest {
 
     @Mock
     DateDecoder dateDecoder;
+
+    @Mock
+    private OcrResponseReader responseReader;
 
     private OcrResponse ocrResponse;
     private OcrFieldData ocrFieldDataSex;
@@ -45,13 +48,15 @@ public class MinimumAgeValidationTest {
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        templateCategory = "TODO:";
+        templateCategory = null;
+
+        minimumAgeValidation.setResponseReader(responseReader);
     }
 
     @Test
     public void should_return_true_if_age_in_every_document_is_above_minimum_age() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
+        when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25.07.1974");
@@ -81,8 +86,8 @@ public class MinimumAgeValidationTest {
 
     @Test
     public void should_return_false_if_age_in_any_document_less_than_minimum_age() throws Exception {
-        Mockito.when(dateDecoder.decodeDate("25.07.2014", templateCategory)).thenReturn(dateFormat.parse("07/25/2014"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
+        when(dateDecoder.decodeDate("25.07.2014", templateCategory)).thenReturn(dateFormat.parse("07/25/2014"));
+        when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25.07.2014");
@@ -112,7 +117,7 @@ public class MinimumAgeValidationTest {
 
     @Test
     public void should_return_true_if_age_in_every_document_is_above_minimum_age_and_dates_in_different_format() throws Exception {
-        Mockito.when(dateDecoder.decodeDate("20 JAN /JAN 59", templateCategory)).thenReturn(dateFormat.parse("01/20/1959"));
+        when(dateDecoder.decodeDate("20 JAN /JAN 59", templateCategory)).thenReturn(dateFormat.parse("01/20/1959"));
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("20 JAN /JAN 59");
@@ -142,8 +147,8 @@ public class MinimumAgeValidationTest {
 
     @Test
     public void should_return_false_if_date_format_is_not_supported() throws Exception {
-        Mockito.when(dateDecoder.decodeDate("25/07/1974", templateCategory)).thenThrow(new DateDecoderException("Unsupported date"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
+        when(dateDecoder.decodeDate("25/07/1974", templateCategory)).thenThrow(new DateDecoderException("Unsupported date"));
+        when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25/07/1974");

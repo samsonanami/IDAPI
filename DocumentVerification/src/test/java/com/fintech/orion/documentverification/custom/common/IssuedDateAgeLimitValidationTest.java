@@ -31,6 +31,9 @@ public class IssuedDateAgeLimitValidationTest {
     @Mock
     private DateDecoder dateDecoder;
 
+    @Mock
+    private OcrResponseReader responseReader;
+
     private OcrResponse ocrResponse;
     private OcrFieldData ocrFieldDataOfIssue;
     private OcrFieldData ocrFieldDataOfBirth;
@@ -46,7 +49,8 @@ public class IssuedDateAgeLimitValidationTest {
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        templateCategory = "TODO:";
+        templateCategory = null;
+        issuedDateAgeLimitValidation.setResponseReader(responseReader);
     }
 
     @Test

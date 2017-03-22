@@ -36,6 +36,9 @@ public class ExpireDateValidationTest {
     private SimpleDateFormat dateFormat;
     private String templateCategory;
 
+    @Mock
+    private OcrResponseReader responseReader;
+
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -43,7 +46,8 @@ public class ExpireDateValidationTest {
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        templateCategory = "TODO:";
+        templateCategory = null;
+        expireDateValidation.setResponseReader(responseReader);
     }
 
     @Test

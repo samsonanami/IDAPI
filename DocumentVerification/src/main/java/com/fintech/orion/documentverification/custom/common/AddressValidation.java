@@ -6,7 +6,6 @@ import com.fintech.orion.documentverification.common.exception.AddressValidating
 import com.fintech.orion.documentverification.common.exception.CustomValidationException;
 import com.fintech.orion.documentverification.custom.CustomValidation;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
-import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.slf4j.Logger;
@@ -39,7 +38,8 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
     @Autowired
     private AddressCompare addressComparator;
 
-    private AddressBuilder addressBuilder = new AddressBuilder();
+    @Autowired
+    private AddressBuilder addressBuilder;
 
     private String ocrFieldBase;
     private int addressLineCount;
@@ -127,5 +127,9 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
 
     public void setAddressLineCount(int addressLineCount) {
         this.addressLineCount = addressLineCount;
+    }
+
+    public void setAddressBuilder(AddressBuilder addressBuilder) {
+        this.addressBuilder = addressBuilder;
     }
 }
