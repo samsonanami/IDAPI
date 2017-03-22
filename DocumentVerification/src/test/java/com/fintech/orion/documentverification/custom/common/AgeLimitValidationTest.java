@@ -35,7 +35,12 @@ public class AgeLimitValidationTest {
     private DateFormat df;
 
     @Mock
+    private OcrResponseReader ocrResponseReader;
+
+    @Mock
     private DateDecoder dateDecoder;
+    private String templateCategory;
+
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -43,12 +48,13 @@ public class AgeLimitValidationTest {
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
         df = new SimpleDateFormat("MM/dd/yyyy");
+        templateCategory = null;
     }
 
     @Test
     public void should_return_true_if_age_in_every_document_is_within_age_limit() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("25.07.1974")).thenReturn(df.parse("07/25/1974"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(df.parse("07/25/1974"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
@@ -73,6 +79,7 @@ public class AgeLimitValidationTest {
         ageLimitValidation.setOcrExtractionFieldName("date_of_birth");
         ageLimitValidation.setMinimumAge(18);
         ageLimitValidation.setMaximumAge(90);
+        ageLimitValidation.setResponseReader(ocrResponseReader);
 
         ValidationData verificationData = ageLimitValidation.validate(resourceName, ocrResponse);
         assertTrue(verificationData.getValidationStatus());
@@ -81,8 +88,8 @@ public class AgeLimitValidationTest {
     @Test
     public void should_return_false_if_age_in_any_document_below_than_age_limit() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("25.07.1974")).thenReturn(df.parse("07/25/1974"));
-        Mockito.when(dateDecoder.decodeDate("25.07.2014")).thenReturn(df.parse("07/25/2014"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(df.parse("07/25/1974"));
+        Mockito.when(dateDecoder.decodeDate("25.07.2014", templateCategory)).thenReturn(df.parse("07/25/2014"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
@@ -115,8 +122,8 @@ public class AgeLimitValidationTest {
     @Test
     public void should_return_false_if_age_in_any_document_greater_than_age_limit() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("25.07.1914")).thenReturn(df.parse("07/25/1914"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1974")).thenReturn(df.parse("07/25/1974"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1914", templateCategory)).thenReturn(df.parse("07/25/1914"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(df.parse("07/25/1974"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
@@ -149,7 +156,7 @@ public class AgeLimitValidationTest {
     @Test
     public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("20 JAN /JAN 59")).thenReturn(df.parse("01/20/1959"));
+        Mockito.when(dateDecoder.decodeDate("20 JAN /JAN 59", templateCategory)).thenReturn(df.parse("01/20/1959"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
@@ -181,8 +188,8 @@ public class AgeLimitValidationTest {
 
     @Test
     public void should_return_false_if_date_format_is_not_supported() throws Exception {
-        Mockito.when(dateDecoder.decodeDate("25/07/1974")).thenThrow(new DateDecoderException("Un supported date format"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1974")).thenReturn(df.parse("07/25/1974"));
+        Mockito.when(dateDecoder.decodeDate("25/07/1974", templateCategory)).thenThrow(new DateDecoderException("Un supported date format"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(df.parse("07/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25/07/1974");

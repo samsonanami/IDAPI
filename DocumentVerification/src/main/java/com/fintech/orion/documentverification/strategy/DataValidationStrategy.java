@@ -5,5 +5,5 @@ package com.fintech.orion.documentverification.strategy;
  */
 public interface DataValidationStrategy {
 
-    ValidationResult doDataValidationOperation(String base, String compare);
+    ValidationResult doDataValidationOperation(String base, String compare, String templateCategory);
 }

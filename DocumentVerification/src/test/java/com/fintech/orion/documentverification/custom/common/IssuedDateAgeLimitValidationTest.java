@@ -31,11 +31,15 @@ public class IssuedDateAgeLimitValidationTest {
     @Mock
     private DateDecoder dateDecoder;
 
+    @Mock
+    private OcrResponseReader responseReader;
+
     private OcrResponse ocrResponse;
     private OcrFieldData ocrFieldDataOfIssue;
     private OcrFieldData ocrFieldDataOfBirth;
     private ResourceName resourceName;
     private SimpleDateFormat dateFormat;
+    private String templateCategory;
 
     @Before
     public void setup() throws Exception {
@@ -45,13 +49,15 @@ public class IssuedDateAgeLimitValidationTest {
         ocrResponse = new OcrResponse();
         resourceName = new ResourceName();
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        templateCategory = null;
+        issuedDateAgeLimitValidation.setResponseReader(responseReader);
     }
 
     @Test
     public void should_return_true_if_age_in_every_document_is_within_age_limit() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("25.07.2004")).thenReturn(dateFormat.parse("07/25/2004"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1974")).thenReturn(dateFormat.parse("07/25/1974"));
+        Mockito.when(dateDecoder.decodeDate("25.07.2004", templateCategory)).thenReturn(dateFormat.parse("07/25/2004"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
         passportValue.setValue("25.07.2004");
@@ -98,8 +104,8 @@ public class IssuedDateAgeLimitValidationTest {
     @Test
     public void should_return_false_if_age_in_any_document_below_than_age_limit() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("25.07.1978")).thenReturn(dateFormat.parse("07/25/1978"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1974")).thenReturn(dateFormat.parse("07/25/1974"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1978", templateCategory)).thenReturn(dateFormat.parse("07/25/1978"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
@@ -145,8 +151,8 @@ public class IssuedDateAgeLimitValidationTest {
 
     @Test
     public void should_return_false_if_age_in_any_document_greater_than_age_limit() throws Exception {
-        Mockito.when(dateDecoder.decodeDate("25.07.2004")).thenReturn(dateFormat.parse("07/25/2004"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1904")).thenReturn(dateFormat.parse("07/25/1904"));
+        Mockito.when(dateDecoder.decodeDate("25.07.2004", templateCategory)).thenReturn(dateFormat.parse("07/25/2004"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1904", templateCategory)).thenReturn(dateFormat.parse("07/25/1904"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_issue");
@@ -193,9 +199,9 @@ public class IssuedDateAgeLimitValidationTest {
     @Test
     public void should_return_true_if_age_in_every_document_is_within_date_limit_and_dates_in_different_format() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("20 JAN /JAN 04")).thenReturn(dateFormat.parse("01/20/2004"));
-        Mockito.when(dateDecoder.decodeDate("20.01.2004")).thenReturn(dateFormat.parse("01/20/2004"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1974")).thenReturn(dateFormat.parse("07/25/1974"));
+        Mockito.when(dateDecoder.decodeDate("20 JAN /JAN 04", templateCategory)).thenReturn(dateFormat.parse("01/20/2004"));
+        Mockito.when(dateDecoder.decodeDate("20.01.2004", templateCategory)).thenReturn(dateFormat.parse("01/20/2004"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
 
         //////////////////////////////////////////////////
         OcrFieldValue passportValue = new OcrFieldValue();
@@ -244,9 +250,9 @@ public class IssuedDateAgeLimitValidationTest {
     @Test
     public void should_throw_CustomValidationException_false_if_date_format_is_not_supported() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("20/01/2004")).thenThrow(new DateDecoderException("Unsupported date format"));
-        Mockito.when(dateDecoder.decodeDate("20.01.2004")).thenReturn(dateFormat.parse("01/20/2004"));
-        Mockito.when(dateDecoder.decodeDate("25.07.1974")).thenReturn(dateFormat.parse("07/25/1974"));
+        Mockito.when(dateDecoder.decodeDate("20/01/2004", templateCategory)).thenThrow(new DateDecoderException("Unsupported date format"));
+        Mockito.when(dateDecoder.decodeDate("20.01.2004", templateCategory)).thenReturn(dateFormat.parse("01/20/2004"));
+        Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
 
 
         OcrFieldValue passportValue = new OcrFieldValue();

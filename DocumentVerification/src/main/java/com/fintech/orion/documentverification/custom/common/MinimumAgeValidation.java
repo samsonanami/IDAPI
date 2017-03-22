@@ -42,7 +42,7 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             try {
-                validationData = validateMinimumAge(fieldData);
+                validationData = validateMinimumAge(fieldData, ocrResponse);
             } catch (DateComparatorException e) {
                 LOGGER.warn("Error occurred while performing an minimum age" +
                         " validation for ocr response {} {}", ocrResponse, e);
@@ -62,13 +62,14 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
         return validationData;
     }
 
-    private ValidationData validateMinimumAge(OcrFieldData ocrFieldData) throws DateComparatorException {
+    private ValidationData validateMinimumAge(OcrFieldData ocrFieldData, OcrResponse ocrResponse) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
         LocalDate today = new LocalDate();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = null;
             try {
-                date = dateDecoder.decodeDate(fieldValue.getValue());
+                String templateCategory = getTemplateCategory(fieldValue.getId(), ocrResponse);
+                date = dateDecoder.decodeDate(fieldValue.getValue(), templateCategory);
             } catch (DateDecoderException e) {
                 throw new DateComparatorException("Unable to decode the given date " , e);
             }

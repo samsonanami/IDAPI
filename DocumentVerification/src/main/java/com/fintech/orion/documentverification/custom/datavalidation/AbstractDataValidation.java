@@ -10,6 +10,7 @@ import com.fintech.orion.documentverification.common.mrz.MRZDecodeResults;
 import com.fintech.orion.documentverification.common.mrz.ValidateMRZ;
 import com.fintech.orion.documentverification.common.mrz.ValidateMRZResult;
 import com.fintech.orion.documentverification.custom.common.MrzLineBuilder;
+import com.fintech.orion.documentverification.custom.common.OcrResponseReader;
 import com.fintech.orion.documentverification.custom.common.ValidationHelper;
 import com.fintech.orion.documentverification.strategy.DataValidationStrategy;
 import com.fintech.orion.documentverification.strategy.DataValidationStrategyProvider;
@@ -49,6 +50,9 @@ public class AbstractDataValidation extends ValidationHelper {
     @Autowired
     private TemplateCategoryFactory templateCategoryFactory;
 
+    @Autowired
+    private OcrResponseReader ocrResponseReader;
+
     private DataValidationStrategyType dataValidationStrategyType;
 
     public DataValidation ocrExtractionFieldVizMrzDataValidation(ResourceName resourceName, OcrResponse ocrResponse)
@@ -66,7 +70,7 @@ public class AbstractDataValidation extends ValidationHelper {
             DocumentDataValidator validator =  new DocumentDataValidator(strategy);
 
             ValidationResult result = validator.executeStrategy(dataValidationValue.getMrzValue(),
-                    dataValidationValue.getVizValue());
+                    dataValidationValue.getVizValue(), ocrResponseReader.getTemplateCategory(getTemplateName(documentName, ocrResponse)));
             if (result.isStatus()){
                 dataValidationValue.setStatus(true);
                 dataValidationValue.setRemarks(getSuccessRemarksMessage());
@@ -144,6 +148,9 @@ public class AbstractDataValidation extends ValidationHelper {
                 break;
             case "passport_number":
                 mrzValue = decodeResults.getPassPortNumber();
+                break;
+            case "date_of_expiry":
+                mrzValue = decodeResults.getDateofExpire();
                 break;
             default:
                 mrzValue = "";

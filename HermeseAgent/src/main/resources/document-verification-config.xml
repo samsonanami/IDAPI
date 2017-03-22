@@ -6,26 +6,31 @@
     <bean id="addressCompare" class="com.fintech.orion.documentverification.common.address.AddressCompare"/>
     <bean id="addressDecoding" class="com.fintech.orion.documentverification.common.address.AddressDecoding"/>
 
-    <bean id="operationAddressComparator" class="com.fintech.orion.documentverification.strategy.OperationAddressComparator"/>
+    <bean id="operationAddressComparator"
+          class="com.fintech.orion.documentverification.strategy.OperationAddressComparator"/>
     <bean id="operationDateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
-    <bean id="operationStringComparator" class="com.fintech.orion.documentverification.strategy.OperationStringComparator"/>
+    <bean id="operationStringComparator"
+          class="com.fintech.orion.documentverification.strategy.OperationStringComparator"/>
 
-    <bean id="dataValidationStrategyProvider" class="com.fintech.orion.documentverification.strategy.DataValidationStrategyProvider"/>
+    <bean id="dataValidationStrategyProvider"
+          class="com.fintech.orion.documentverification.strategy.DataValidationStrategyProvider"/>
 
-    <bean id="documentVerificationFactory" class="com.fintech.orion.documentverification.factory.DocumentVerificationFactory"/>
+    <bean id="documentVerificationFactory"
+          class="com.fintech.orion.documentverification.factory.DocumentVerificationFactory"/>
 
     <bean id="dataComparator" class="com.fintech.orion.documentverification.factory.DataComparator"/>
-    <bean id="idDocFullValidator" class="com.fintech.orion.documentverification.factory.IdentificationDocumentFullVerification"/>
-    <bean id="addressDocFullValidator" class="com.fintech.orion.documentverification.factory.AddressDocumentFullVerification"/>
+    <bean id="idDocFullValidator"
+          class="com.fintech.orion.documentverification.factory.IdentificationDocumentFullVerification"/>
+    <bean id="addressDocFullValidator"
+          class="com.fintech.orion.documentverification.factory.AddressDocumentFullVerification"/>
     <bean id="documentDataValidator" class="com.fintech.orion.documentverification.factory.DataValidations"/>
-
     <bean id="commonConfigurationFactory" class="com.fintech.orion.documentverification.common.configuration.factory.CommonConfigurationFactory" />
 
     <bean id="verificationConfigurationMap" class="java.util.HashMap" scope="prototype">
         <constructor-arg>
             <map key-type="java.lang.String" value-type="com.fintech.orion.dto.configuration.VerificationConfiguration">
                 <entry key="surname" value-ref="surnameVC"/>
-                <entry key="given_name" value-ref="givenNameVC"/>
+                <entry key="given_names" value-ref="givenNameVC"/>
                 <entry key="date_of_birth" value-ref="dateOfBirthVC"/>
                 <entry key="place_of_birth" value-ref="placeOfBirthVC"/>
                 <entry key="family_name" value-ref="familyNameVC"/>
@@ -38,7 +43,7 @@
     </bean>
 
     <bean id="surnameVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
-        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING" />
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
     </bean>
     <bean id="givenNameVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
         <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
@@ -67,15 +72,18 @@
         <property name="sameValueComparisonStrategyAcrossMultipleResources" value="ADDRESS"/>
     </bean>
 
-    <bean id="passportMRZDecodingStrategy" class="com.fintech.orion.documentverification.common.mrz.PassportMRZDecodingStrategy"/>
-    <bean id="drivingLicenseMRZDecodingStrategy" class="com.fintech.orion.documentverification.common.mrz.DrivingLicenseMZRDecodingStrategy"/>
+    <bean id="passportMRZDecodingStrategy"
+          class="com.fintech.orion.documentverification.common.mrz.PassportMRZDecodingStrategy"/>
+    <bean id="drivingLicenseMRZDecodingStrategy"
+          class="com.fintech.orion.documentverification.common.mrz.DrivingLicenseMZRDecodingStrategy"/>
     <bean id="irlDrivingLicenseMRZDecodingStrategy" class="com.fintech.orion.documentverification.common.mrz.IrlDrivingLicenseMRZDecodingStrategy"/>
     <bean id="passportMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidatePassPortMRZ"/>
-    <bean id="drivingLicenseMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidateDrivingLicence"/>
+    <bean id="drivingLicenseMRZValidationStrategy"
+          class="com.fintech.orion.documentverification.common.mrz.ValidateDrivingLicence"/>
     <bean id="irlDrivingLicenseMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidateIrelandDrivingLicense"/>
     <bean id="passportCheckDigitFormation" class="com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation"/>
 
-    <bean id ="dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
+    <bean id="dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
     <bean id="addressComparator" class="com.fintech.orion.documentverification.common.address.AddressCompare"/>
     <bean id="addressDecoder" class="com.fintech.orion.documentverification.common.address.AddressDecoding"/>
     <bean id="addressValidator" class="com.fintech.orion.documentverification.common.address.ValidateAddress"/>
@@ -109,17 +117,20 @@
     </bean>
 
 
-    <bean id="documentTypeValidation" class="com.fintech.orion.documentverification.custom.common.DocumentTypeValidation">
+    <bean id="documentTypeValidation"
+          class="com.fintech.orion.documentverification.custom.common.DocumentTypeValidation">
         <property name="criticalValidation" value="false"/>
         <property name="failedRemarksMessage" value="Document type verification failed"/>
         <property name="successRemarksMessage" value="Documet type verification success"/>
     </bean>
-    <bean id="documentVersionValidation" class="com.fintech.orion.documentverification.custom.common.DocumentVersionValidation">
+    <bean id="documentVersionValidation"
+          class="com.fintech.orion.documentverification.custom.common.DocumentVersionValidation">
         <property name="criticalValidation" value="false"/>
         <property name="failedRemarksMessage" value="Document version verification failed"/>
         <property name="successRemarksMessage" value="Document version verification success"/>
     </bean>
-    <bean id="surNameValidation" class="com.fintech.orion.documentverification.custom.common.SimpleStringFieldValidator">
+    <bean id="surNameValidation"
+          class="com.fintech.orion.documentverification.custom.common.SimpleStringFieldValidator">
         <property name="criticalValidation" value="true"/>
         <property name="ocrExtractionFieldName" value="surname"/>
         <property name="failedRemarksMessage" value="Surname not matching "/>
@@ -149,14 +160,16 @@
         <property name="failedRemarksMessage" value="Mismatching gender over multiple documents"/>
     </bean>
 
-    <bean id="dateOfBirthVerification" class="com.fintech.orion.documentverification.custom.common.DateOfBirthValidation">
+    <bean id="dateOfBirthVerification"
+          class="com.fintech.orion.documentverification.custom.common.DateOfBirthValidation">
         <property name="criticalValidation" value="true"/>
         <property name="failedRemarksMessage" value="Date of birth is not similar"/>
         <property name="successRemarksMessage" value="Date of birth verified successfully"/>
         <property name="ocrExtractionFieldName" value="date_of_birth"/>
     </bean>
 
-    <bean id="mrzCheckDigitValidation" class="com.fintech.orion.documentverification.custom.common.MrzCheckDigitValidation">
+    <bean id="mrzCheckDigitValidation"
+          class="com.fintech.orion.documentverification.custom.common.MrzCheckDigitValidation">
         <property name="ocrFieldBase" value="MRZ_Line"/>
         <property name="mrzLineCount" value="2"/>
         <property name="resourceNameToCheckMRZ" value="passport"/>
@@ -172,7 +185,8 @@
         <property name="successRemarksMessage" value="Customer is between 18 and 90 "/>
     </bean>
 
-    <bean id="utilityBillDateEndMonthValidation" class="com.fintech.orion.documentverification.custom.common.BillDateEndMonthValidation">
+    <bean id="utilityBillDateEndMonthValidation"
+          class="com.fintech.orion.documentverification.custom.common.BillDateEndMonthValidation">
         <property name="ocrExtractionFieldName" value="utility_bill_date"/>
         <property name="criticalValidation" value="false"/>
         <property name="validMonthCount" value="3"/>
@@ -180,7 +194,8 @@
         <property name="successRemarksMessage" value="Utility bill is within 3 months"/>
     </bean>
 
-    <bean id="dateOfIssueEndYearValidation" class="com.fintech.orion.documentverification.custom.common.DateOfIssueEndYearValidation">
+    <bean id="dateOfIssueEndYearValidation"
+          class="com.fintech.orion.documentverification.custom.common.DateOfIssueEndYearValidation">
         <property name="ocrExtractionFieldName" value="date_of_issue"/>
         <property name="criticalValidation" value="false"/>
         <property name="validYearCount" value="10"/>
@@ -188,7 +203,8 @@
         <property name="failedRemarksMessage" value="Failed"/>
     </bean>
 
-    <bean id="issuedDateAgeLimitValidation" class="com.fintech.orion.documentverification.custom.common.IssuedDateAgeLimitValidation">
+    <bean id="issuedDateAgeLimitValidation"
+          class="com.fintech.orion.documentverification.custom.common.IssuedDateAgeLimitValidation">
         <property name="ocrExtractionFieldName" value="date_of_issue"/>
         <property name="dateOfBirthOcrExtractionField" value="date_of_birth"/>
         <property name="criticalValidation" value="false"/>
@@ -207,11 +223,13 @@
                 <ref bean="documentNumberVizMrzValidation"/>
                 <ref bean="genderVizMrzValidation"/>
                 <ref bean="givenNameVizMrzValidation"/>
+                <ref bean="expireDateVizMrzValidation"/>
             </array>
         </constructor-arg>
     </bean>
 
-    <bean id="surnameVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.SurnameVizMrzValidation">
+    <bean id="surnameVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.SurnameVizMrzValidation">
         <property name="ocrExtractionFieldName" value="surname"/>
         <property name="criticalValidation" value="true"/>
         <property name="failedRemarksMessage" value="Failed to validate surname mrz and viz values"/>
@@ -219,7 +237,8 @@
         <property name="dataValidationStrategyType" value="STRING"/>
     </bean>
 
-    <bean id="dateOfBirthVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.DateOfBirthVizMrzValidation">
+    <bean id="dateOfBirthVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.DateOfBirthVizMrzValidation">
         <property name="ocrExtractionFieldName" value="date_of_birth"/>
         <property name="criticalValidation" value="true"/>
         <property name="failedRemarksMessage" value="Failed to validate date of birth"/>
@@ -227,7 +246,8 @@
         <property name="dataValidationStrategyType" value="DATE"/>
     </bean>
 
-    <bean id="documentNumberVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.DocumentNumberVizMrzValidation">
+    <bean id="documentNumberVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.DocumentNumberVizMrzValidation">
         <property name="ocrExtractionFieldName" value="passport_number"/>
         <property name="criticalValidation" value="true"/>
         <property name="failedRemarksMessage" value="Failed to validate "/>
@@ -235,7 +255,8 @@
         <property name="dataValidationStrategyType" value="STRING"/>
     </bean>
 
-    <bean id="genderVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.GenderVizMrzValidation">
+    <bean id="genderVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.GenderVizMrzValidation">
         <property name="ocrExtractionFieldName" value="sex"/>
         <property name="criticalValidation" value="true"/>
         <property name="failedRemarksMessage" value="Failed to validate "/>
@@ -243,7 +264,8 @@
         <property name="dataValidationStrategyType" value="STRING"/>
     </bean>
 
-    <bean id="givenNameVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.GivenNamesVizMrzValidation">
+    <bean id="givenNameVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.GivenNamesVizMrzValidation">
         <property name="ocrExtractionFieldName" value="given_names"/>
         <property name="criticalValidation" value="true"/>
         <property name="failedRemarksMessage" value="Failed to validate "/>
@@ -251,6 +273,13 @@
         <property name="dataValidationStrategyType" value="STRING"/>
     </bean>
 
+    <bean id="expireDateVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.ExpireDateVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="date_of_expiry"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="MRZ and VIZ expire date not matching"/>
+        <property name="successRemarksMessage" value="MRZ and VIZ expire date matching"/>
+        <property name="dataValidationStrategyType" value="DATE"/>
+    </bean>
 
 
     <bean id="documentMrzDecodingConfigurations" class="java.util.ArrayList">
@@ -262,7 +291,8 @@
         </constructor-arg>
     </bean>
 
-    <bean id="passportMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
+    <bean id="passportMrzDecodingConfigurations"
+          class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
         <property name="documentName" value="passport"/>
         <property name="mrzOcrExtractionFieldBase" value="MRZ_line"/>
         <property name="mrzDecodingStrategy" ref="passportMRZDecodingStrategy"/>
@@ -270,7 +300,8 @@
         <property name="mrzValidationStrategy" ref="passportMRZValidationStrategy"/>
     </bean>
 
-    <bean id="drivingLicenseMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
+    <bean id="drivingLicenseMrzDecodingConfigurations"
+          class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
         <property name="documentName" value="drivingLicenseFront"/>
         <property name="mrzOcrExtractionFieldBase" value="MRZ_line"/>
         <property name="mrzLineCount" value="1"/>
@@ -310,8 +341,6 @@
                 <entry key="P_UK1" value="CommonPassport" />
                 <entry key="P_UK2" value="CommonPassport" />
 
-
-                <entry key="P_UK1" value="IrelandDl" />
             </map>
         </constructor-arg>
     </bean>
@@ -335,6 +364,37 @@
             </map>
         </constructor-arg>
     </bean>
+    
+    <bean id="ocrResponseReader" name="defaultOcrResponseReader" class="com.fintech.orion.documentverification.custom.common.OcrResponseReader">
+        <constructor-arg>
+            <bean id="templateMap" class="com.fintech.orion.documentverification.custom.common.TemplateCategoryMap">
+                <constructor-arg>
+                    <util:map>
+                        <entry key="DLB_UK" value="CommonDlDateDecoder" />
+
+                        <entry key="DLF_Ireland" value="CommonDlDateDecoder" />
+                        <entry key="DLF_Sweden" value="CommonDlDateDecoder" />
+                        <entry key="DLF_UK1" value="CommonDateDecoder" />
+                        <entry key="DLF_UK2" value="CommonDlDateDecoder" />
+                        <entry key="DLF_UK3" value="CommonDlDateDecoder" />
+
+                        <entry key="ID_Finland" value="CommonDateDecoder" />
+                        <entry key="ID_Germany" value="CommonDateDecoder" />
+                        <entry key="ID_Poland" value="CommonDateDecoder" />
+                        <entry key="ID_Spain" value="CommonDateDecoder" />
+
+                        <entry key="P_Ireland" value="IrelandPassportDateDecoder" />
+                        <entry key="P_Ireland2" value="IrelandPassportDateDecoder" />
+                        <entry key="P_UK1" value="UKPassportDateDecoder" />
+                        <entry key="P_UK2" value="UKPassportDateDecoder" />
+
+                    </util:map>
+                </constructor-arg>
+            </bean>
+    </constructor-arg>
+    </bean>
+	    
+	<bean id="addressBuilder" class="com.fintech.orion.documentverification.custom.common.AddressBuilder" />
 
     <!--FILTERS-->
 

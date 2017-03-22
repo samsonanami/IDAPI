@@ -25,18 +25,21 @@ public class OperationDateComparatorTest {
 
     private ValidationResult result;
     private DateFormat df;
+    private String templateCategory;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         result = new ValidationResult(false, "");
         df = new SimpleDateFormat("MM/dd/yyyy");
+        templateCategory = "TODO:";
     }
 
     @Test
 
     public  void should_Return_True_for_similar_date_type_one() throws ParseException, DateDecoderException {
-        Mockito.when(dateDecoder.decodeDate("23 jan/ jan 89")).thenReturn(df.parse("01/23/1989"));
-        result = comparator.doDataValidationOperation("23 jan/ jan 89", "23 jan/ jan 89");
+        Mockito.when(dateDecoder.decodeDate("23 jan/ jan 89", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        result = comparator.doDataValidationOperation("23 jan/ jan 89", "23 jan/ jan 89", templateCategory);
 
 
         Assert.assertTrue(result.isStatus());
@@ -44,9 +47,9 @@ public class OperationDateComparatorTest {
 
     @Test
     public void should_Return_False_for_different_date_type_one() throws ParseException, DateDecoderException {
-        Mockito.when(dateDecoder.decodeDate("23 jan/ jan 89")).thenReturn(df.parse("01/23/1989"));
-        Mockito.when(dateDecoder.decodeDate("24 jan/ jan 89")).thenReturn(df.parse("01/24/1989"));
-        result = comparator.doDataValidationOperation("23 jan/ jan 89", "24 jan/ jan 89");
+        Mockito.when(dateDecoder.decodeDate("23 jan/ jan 89", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        Mockito.when(dateDecoder.decodeDate("24 jan/ jan 89", templateCategory)).thenReturn(df.parse("01/24/1989"));
+        result = comparator.doDataValidationOperation("23 jan/ jan 89", "24 jan/ jan 89", templateCategory);
 
 
         Assert.assertFalse(result.isStatus());
@@ -55,8 +58,8 @@ public class OperationDateComparatorTest {
     @Test
 
     public void should_Return_True_for_Similar_date_type_Two() throws ParseException, DateDecoderException {
-        Mockito.when(dateDecoder.decodeDate("23.01.1989")).thenReturn(df.parse("01/23/1989"));
-        result = comparator.doDataValidationOperation("23.01.1989", "23.01.1989");
+        Mockito.when(dateDecoder.decodeDate("23.01.1989", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        result = comparator.doDataValidationOperation("23.01.1989", "23.01.1989", templateCategory);
 
         Assert.assertTrue(result.isStatus());
     }
@@ -64,9 +67,9 @@ public class OperationDateComparatorTest {
     @Test
 
     public void should_Return_False_for_Different_date_type_Two() throws ParseException, DateDecoderException {
-        Mockito.when(dateDecoder.decodeDate("23.02.1989")).thenReturn(df.parse("02/23/1989"));
-        Mockito.when(dateDecoder.decodeDate("23.01.1989")).thenReturn(df.parse("01/23/1989"));
-        result = comparator.doDataValidationOperation("23.02.1989", "23.01.1989");
+        Mockito.when(dateDecoder.decodeDate("23.02.1989", templateCategory)).thenReturn(df.parse("02/23/1989"));
+        Mockito.when(dateDecoder.decodeDate("23.01.1989", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        result = comparator.doDataValidationOperation("23.02.1989", "23.01.1989", templateCategory);
 
         Assert.assertFalse(result.isStatus());
     }
@@ -74,25 +77,25 @@ public class OperationDateComparatorTest {
     @Test
 
     public void should_Return_True_for_Simillar_date_type_one_and_two() throws ParseException, DateDecoderException {
-        Mockito.when(dateDecoder.decodeDate("23 jan/ jan 89")).thenReturn(df.parse("01/23/1989"));
-        Mockito.when(dateDecoder.decodeDate("23.01.1989")).thenReturn(df.parse("01/23/1989"));
-        result = comparator.doDataValidationOperation("23 jan/ jan 89", "23.01.1989");
+        Mockito.when(dateDecoder.decodeDate("23 jan/ jan 89", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        Mockito.when(dateDecoder.decodeDate("23.01.1989", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        result = comparator.doDataValidationOperation("23 jan/ jan 89", "23.01.1989", templateCategory);
 
         Assert.assertTrue(result.isStatus());
     }
 
     @Test
     public void should_Return_true_for_date_type_two_without_back_slash() throws ParseException, DateDecoderException {
-        Mockito.when(dateDecoder.decodeDate("23 jan jan 89")).thenReturn(df.parse("01/23/1989"));
-        Mockito.when(dateDecoder.decodeDate("23.01.1989")).thenReturn(df.parse("01/23/1989"));
-        result = comparator.doDataValidationOperation("23 jan jan 89", "23.01.1989");
+        Mockito.when(dateDecoder.decodeDate("23 jan jan 89", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        Mockito.when(dateDecoder.decodeDate("23.01.1989", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        result = comparator.doDataValidationOperation("23 jan jan 89", "23.01.1989", templateCategory);
         Assert.assertTrue(result.isStatus());
     }
 
     @Test
     public void should_Return_False_for_malforemd_date() throws ParseException, DateDecoderException {
-        Mockito.when(dateDecoder.decodeDate("23 jan 89")).thenReturn(df.parse("01/23/1989"));
-        result = comparator.doDataValidationOperation("23 jan 89", "23.01.1989");
+        Mockito.when(dateDecoder.decodeDate("23 jan 89", templateCategory)).thenReturn(df.parse("01/23/1989"));
+        result = comparator.doDataValidationOperation("23 jan 89", "23.01.1989", templateCategory);
         Assert.assertFalse(result.isStatus());
     }
 
