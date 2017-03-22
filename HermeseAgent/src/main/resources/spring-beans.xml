@@ -69,25 +69,6 @@
     </bean>
 
     <bean id="dateDecoder" class="com.fintech.orion.documentverification.common.date.DateDecoder"/>
-    <bean id="dateTypeConfigurationList" class="java.util.ArrayList">
-        <constructor-arg>
-            <array value-type="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
-                <ref bean="ukPassportDateConfigurations"/>
-                <ref bean="basicDateConfiguration"/>
-            </array>
-        </constructor-arg>
-    </bean>
-
-    <bean id="ukPassportDateConfigurations" class="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
-        <property name="dateTypeRegex" value="^(\d{2}) (\w{3})(.*)(\d{2})$"/>
-        <property name="strategy" ref="operationUKPassportDateDecode"/>
-    </bean>
-
-    <bean id="basicDateConfiguration" class="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
-        <property name="dateTypeRegex" value="^(\d{2}.(\d{2}).(\d{4}))$"/>
-        <property name="strategy" ref="operationSimplePassportDecode"/>
-    </bean>
-
     <bean id="ukPassportMRZDateConfigurations" class="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
         <property name="dateTypeRegex" value="^\d{6}$"/>
         <property name="strategy" ref="operationUKPassportMRZDateDecode"/>
