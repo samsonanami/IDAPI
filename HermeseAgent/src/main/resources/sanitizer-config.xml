@@ -16,7 +16,6 @@
 
     <bean id="drivingLicenseMrzSanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.chain.DrivingLicenseMrzSanitizer">
         <property name="sanitizerConfiguration" ref="drivingLicenseMrzSanitizerConfiguration"/>
-        <property name="next" ref="dateSanitizer"/>
     </bean>
 
     <bean id="dateSanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.chain.DateSanitizer">

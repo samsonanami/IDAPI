@@ -46,4 +46,8 @@ public class OcrResponseReader {
         OcrFieldValue templateName = getFieldValueById(documentType + "##TemplateName", templateNameDocument);
         return templateMap.getCategoryByTemplateName(templateName.getValue());
     }
+
+    public String getTemplateCategory(String templateName){
+        return templateMap.getCategoryByTemplateName(templateName);
+    }
 }

@@ -69,6 +69,7 @@
     </bean>
 
     <bean id="dateDecoder" class="com.fintech.orion.documentverification.common.date.DateDecoder"/>
+
     <bean id="ukPassportMRZDateConfigurations" class="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
         <property name="dateTypeRegex" value="^\d{6}$"/>
         <property name="strategy" ref="operationUKPassportMRZDateDecode"/>
