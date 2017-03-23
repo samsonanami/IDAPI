@@ -29,6 +29,7 @@ public class ValidationHelper {
     private String successRemarksMessage;
     private String failedRemarksMessage;
     private String ocrExtractionFieldName;
+    private String templateCategoryOcrExtractionFieldName;
 
     public OcrFieldValue getFieldValueById(String id, OcrFieldData fieldData) {
         OcrFieldValue fieldValue = new OcrFieldValue();
@@ -48,6 +49,14 @@ public class ValidationHelper {
             }
         }
         return data;
+    }
+
+    public String getTemplateCategoryOcrExtractionFieldName() {
+        return templateCategoryOcrExtractionFieldName;
+    }
+
+    public void setTemplateCategoryOcrExtractionFieldName(String templateCategoryOcrExtractionFieldName) {
+        this.templateCategoryOcrExtractionFieldName = templateCategoryOcrExtractionFieldName;
     }
 
     public String getTemplateCategory(String id, OcrResponse ocrResponse){

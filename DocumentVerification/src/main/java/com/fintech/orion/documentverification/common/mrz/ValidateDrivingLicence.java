@@ -4,6 +4,7 @@ import com.fintech.orion.documentverification.common.exception.DirivingLicenseMR
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +15,7 @@ import java.util.Map;
 public class ValidateDrivingLicence implements ValidateMRZ {
     private static final String FALSE = "false";
 
-    @Autowired
-    @Qualifier("addressConfigureList")
+    @Resource(name = "drivingLicenseMRZConfigureList")
     private HashMap<String, MRZItemProperty> mrzItemProperty;
 
     @Override

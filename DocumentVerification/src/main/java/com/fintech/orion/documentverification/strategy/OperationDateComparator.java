@@ -31,7 +31,8 @@ public class OperationDateComparator implements DataValidationStrategy {
             }
 
         } catch (DateDecoderException e) {
-            LOGGER.error("Error occurred while comparing following dates : base {} compare {}", base, compare, e);
+            LOGGER.error("Error occurred while comparing following dates : base {} compare {} " +
+                    "template category {} ", base, compare, templateCategory, e);
         }
 
 

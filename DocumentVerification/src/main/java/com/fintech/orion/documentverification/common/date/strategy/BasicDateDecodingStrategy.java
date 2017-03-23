@@ -20,6 +20,9 @@ public class BasicDateDecodingStrategy implements DateDecodingStrategy{
         if (dateFormat == null || dateFormat.isEmpty()){
             throw new DateDecoderException("No date format has been set ");
         }
+        if(date == null){
+            throw new DateDecoderException("Cannot decode null date");
+        }
         DateFormat df = new SimpleDateFormat(dateFormat);
         try {
             return df.parse(date);

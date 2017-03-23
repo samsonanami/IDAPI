@@ -29,18 +29,18 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
-            String templateCategory = getTemplateCategory(validationData.getId(), ocrResponse);
-            validationData = validateDateOfBirth(fieldData.getValue(), templateCategory);
+            validationData = validateDateOfBirth(fieldData.getValue(), ocrResponse);
         }
         validationData.setId("Date of Birth Validation");
         return validationData;
     }
 
-    private ValidationData validateDateOfBirth(List<OcrFieldValue> values, String templateCategory) throws CustomValidationException {
+    private ValidationData validateDateOfBirth(List<OcrFieldValue> values,
+                                               OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
         if (!values.isEmpty()) {
             String firstDateOfBirth = values.iterator().next().getValue();
-            validationData = compareRestOfTheDatesWithBaseDate(firstDateOfBirth, values, templateCategory);
+            validationData = compareRestOfTheDatesWithBaseDate(firstDateOfBirth, values, ocrResponse);
         } else {
             validationData.setValidationStatus(false);
             validationData.setRemarks("Not Enough data to complete the validation. Need two or more date of births from" +
@@ -49,9 +49,11 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
         return validationData;
     }
 
-    private ValidationData compareRestOfTheDatesWithBaseDate(String base, List<OcrFieldValue> values, String templateCategory) {
+    private ValidationData compareRestOfTheDatesWithBaseDate(String base, List<OcrFieldValue> values,
+                                                             OcrResponse ocrResponse) {
         ValidationData validationData = new ValidationData();
         for (OcrFieldValue value : values) {
+            String templateCategory = getTemplateCategory(value.getId(), ocrResponse);
             if (!dateComparator.doDataValidationOperation(base, value.getValue(), templateCategory).isStatus()) {
                 validationData.setValidationStatus(false);
                 validationData.setValue(value.getValue());

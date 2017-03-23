@@ -10,9 +10,11 @@ import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 public class OcrResponseReader {
 
     private TemplateMap templateMap;
+    private String defaultTemplateName;
 
-    public OcrResponseReader(TemplateMap templateMap) {
+    public OcrResponseReader(TemplateMap templateMap, String defaultTemplateName) {
         this.templateMap = templateMap;
+        this.defaultTemplateName = defaultTemplateName;
     }
 
     public OcrFieldValue getFieldValueById(String id, OcrFieldData fieldData) {
@@ -44,10 +46,18 @@ public class OcrResponseReader {
         String documentType = id.split("##")[0];
         OcrFieldData templateNameDocument = getFieldDataById("TemplateName", ocrResponse);
         OcrFieldValue templateName = getFieldValueById(documentType + "##TemplateName", templateNameDocument);
-        return templateMap.getCategoryByTemplateName(templateName.getValue());
+        String templateCategory = templateMap.getCategoryByTemplateName(templateName.getValue());
+        if(templateCategory == null){
+            templateCategory = templateMap.getCategoryByTemplateName(this.defaultTemplateName);
+        }
+        return templateCategory;
     }
 
     public String getTemplateCategory(String templateName){
-        return templateMap.getCategoryByTemplateName(templateName);
+        String templateCategory =  templateMap.getCategoryByTemplateName(templateName);
+        if(templateCategory == null){
+            templateCategory = templateMap.getCategoryByTemplateName(this.defaultTemplateName);
+        }
+        return templateCategory;
     }
 }

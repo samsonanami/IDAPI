@@ -7,7 +7,7 @@ public class FillerFilter implements Filter {
 
     @Override
     public String filter(String s) {
-        return s.replace(">", "");
+        return s.replace("<", "");
     }
 
 }

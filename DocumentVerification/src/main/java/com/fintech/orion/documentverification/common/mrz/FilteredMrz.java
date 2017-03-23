@@ -2,6 +2,7 @@ package com.fintech.orion.documentverification.common.mrz;
 
 import com.fintech.orion.documentverification.common.mrz.filter.Filter;
 import com.fintech.orion.dto.featurepoint.FeaturePoint;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

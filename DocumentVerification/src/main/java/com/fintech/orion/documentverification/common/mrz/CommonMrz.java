@@ -5,6 +5,7 @@ import com.fintech.orion.dto.featurepoint.FeaturePoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +16,12 @@ import java.util.Map;
 @Component
 public class CommonMrz implements Mrz {
 
-    @Autowired
     private Map<String, String> mrzFeatures;
     private String mrzText;
     private List<FeaturePoint> featurePoints;
 
     public CommonMrz(String mrzText, List<FeaturePoint> featurePoints) {
+        mrzFeatures = new HashMap<>();
         this.mrzText = mrzText;
         this.featurePoints = featurePoints;
         validateMrz(mrzText);

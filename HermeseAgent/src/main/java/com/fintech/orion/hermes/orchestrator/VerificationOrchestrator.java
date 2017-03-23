@@ -58,7 +58,7 @@ public class VerificationOrchestrator {
 
         saveProcessResponse(responseProcessorResult, processingMessage.getVerificationRequestCode());
 
-        LOGGER.info("Total time elapse to complete the full processing {} ", start - System.currentTimeMillis());
+        LOGGER.info("Total time elapse to complete the full processing {} ",  System.currentTimeMillis() - start);
 
         try {
             licenseHandler.updateLicense(processingMessage.getClientLicense(), processingMessage.getVerificationRequestCode());

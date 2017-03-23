@@ -24,10 +24,12 @@ public class UKPassportDateDecodeStrategy implements DateDecodingStrategy {
 
     private static final String UK_PASSPORT_MRZ_DATE_FORMAT = "^\\d{6}$";
 
-
-    private List<String> dateTypeConfiguration;
+    
     @Override
     public Date decodeDate(String date) throws DateDecoderException {
+        if(date == null){
+            throw new DateDecoderException("Cannot decode null date");
+        }
         Date decodedDate = new Date();
         Pattern pattern = Pattern.compile(UK_PASSPORT_MRZ_DATE_FORMAT);
         Matcher matcher = pattern.matcher(date);

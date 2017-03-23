@@ -92,10 +92,8 @@
     <bean id="idDocCustomValidations" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
-                <ref bean="surNameValidation"/>
                 <ref bean="genderVerification"/>
                 <ref bean="minimumAgeVerification"/>
-                <ref bean="dateOfBirthVerification"/>
                 <ref bean="mrzCheckDigitValidation"/>
                 <ref bean="issuedDateAgeLimitValidation"/>
                 <ref bean="dateOfIssueEndYearValidation"/>
@@ -108,7 +106,6 @@
     <bean id="addressDocCustomValidations" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
-                <ref bean="documentTypeValidation"/>
                 <ref bean="surNameValidation"/>
                 <ref bean="addressValidation"/>
                 <ref bean="utilityBillDateEndMonthValidation"/>
@@ -370,13 +367,13 @@
             <bean id="templateMap" class="com.fintech.orion.documentverification.custom.common.TemplateCategoryMap">
                 <constructor-arg>
                     <util:map>
-                        <entry key="DLB_UK" value="CommonDlDateDecoder" />
+                        <entry key="DLB_UK" value="CommonDateDecoder" />
 
-                        <entry key="DLF_Ireland" value="CommonDlDateDecoder" />
-                        <entry key="DLF_Sweden" value="CommonDlDateDecoder" />
-                        <entry key="DLF_UK1" value="CommonDateDecoder" />
-                        <entry key="DLF_UK2" value="CommonDlDateDecoder" />
-                        <entry key="DLF_UK3" value="CommonDlDateDecoder" />
+                        <entry key="DLF_Ireland" value="irelandDLDateDecoder" />
+                        <entry key="DLF_Sweden" value="ukDLDateDecoder" />
+                        <entry key="DLF_UK1" value="ukDLDateDecoder" />
+                        <entry key="DLF_UK2" value="ukDLDateDecoder" />
+                        <entry key="DLF_UK3" value="ukDLDateDecoder" />
 
                         <entry key="ID_Finland" value="CommonDateDecoder" />
                         <entry key="ID_Germany" value="CommonDateDecoder" />
@@ -388,10 +385,31 @@
                         <entry key="P_UK1" value="UKPassportDateDecoder" />
                         <entry key="P_UK2" value="UKPassportDateDecoder" />
 
+                        <entry key="UB_EBS_Savings_Document" value="CommonDateDecoder"/>
+                        <entry key="UB_EBS_Savings_Document_2" value="CommonDateDecoder"/>
+                        <entry key="UB_EDF_Energy" value="CommonDateDecoder"/>
+                        <entry key="UB_Electricity_Bill_Sainsbury" value="CommonDateDecoder"/>
+                        <entry key="UB_Electricity_Bill_Southern" value="CommonDateDecoder"/>
+                        <entry key="UB_Electricty_Bill_Attantic" value="CommonDateDecoder"/>
+                        <entry key="UB_EVO_Energy" value="CommonDateDecoder"/>
+                        <entry key="UB_Gas_Statement_BritishGas" value="CommonDateDecoder"/>
+                        <entry key="UB_Gas_Statement_EDF" value="CommonDateDecoder"/>
+                        <entry key="UB_Gas_Statement_Southern" value="CommonDateDecoder"/>
+                        <entry key="UB_Tax_Demand_Notice" value="CommonDateDecoder"/>
+                        <entry key="UB_Telephone_Bill_BT" value="CommonDateDecoder"/>
+                        <entry key="UB_Water_Bill_ThamesWater" value="CommonDateDecoder"/>
+                        <entry key="UB_Water_Bill_Veolia" value="CommonDateDecoder"/>
+
+                        <entry key="DEFAULT" value="CommonDateDecoder"/>
+
                     </util:map>
+
                 </constructor-arg>
             </bean>
-    </constructor-arg>
+        </constructor-arg>
+        <constructor-arg>
+            <value type="java.lang.String">DEFAULT</value>
+        </constructor-arg>
     </bean>
 	    
 	<bean id="addressBuilder" class="com.fintech.orion.documentverification.custom.common.AddressBuilder" />
@@ -424,6 +442,12 @@
         <constructor-arg index="0" value="18"/>
         <constructor-arg index="1" value="27"/>
         <constructor-arg index="2" value="DrivingLicNum"/>
+    </bean>
+
+    <bean id="filteredMrz" class="com.fintech.orion.documentverification.common.mrz.FilteredMrz" scope="prototype">
+        <constructor-arg index="0" value=""/>
+        <constructor-arg index="1" ref="irelandDl" />
+        <constructor-arg index="2" ref="fillerFilter"/>
     </bean>
 
 

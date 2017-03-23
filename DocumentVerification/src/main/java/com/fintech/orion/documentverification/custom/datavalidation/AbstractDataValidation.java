@@ -105,8 +105,8 @@ public class AbstractDataValidation extends ValidationHelper {
             ValidateMRZResult validateMRZResult = validateMrz(singleMrzLine, configuration.getMrzValidationStrategy());
             if ("true".equalsIgnoreCase(validateMRZResult.getValidationResult())) {
                 decodeResults = configuration.getMrzDecodingStrategy().decode(singleMrzLine);
-                dataValidationValue.setMrzValue(getMrzValueForOcrExtractionField(getOcrExtractionFieldName(),
-                        decodeResults));
+                dataValidationValue.setMrzValue(getMrzValueForOcrExtractionField(documentName,
+                        getOcrExtractionFieldName(), decodeResults));
             }
         } catch (MRZDecodingException e) {
             dataValidationValue.setRemarks("Unable to decoding MRZ : " + singleMrzLine);
@@ -131,32 +131,10 @@ public class AbstractDataValidation extends ValidationHelper {
         return documentMrzDecodingConfigurations;
     }
 
-    public String getMrzValueForOcrExtractionField(String ocrExtractionField, MRZDecodeResults decodeResults){
-        String mrzValue;
-        switch (ocrExtractionField){
-            case "surname":
-                mrzValue = decodeResults.getSurname();
-                break;
-            case "date_of_birth":
-                mrzValue = decodeResults.getDateOfBirth();
-                break;
-            case "sex":
-                mrzValue = decodeResults.getSex();
-                break;
-            case "given_names":
-                mrzValue = decodeResults.getGivenName();
-                break;
-            case "passport_number":
-                mrzValue = decodeResults.getPassPortNumber();
-                break;
-            case "date_of_expiry":
-                mrzValue = decodeResults.getDateofExpire();
-                break;
-            default:
-                mrzValue = "";
-                break;
-        }
-        return mrzValue;
+    public String getMrzValueForOcrExtractionField(String documentName,
+                                                   String ocrExtractionField, MRZDecodeResults decodeResults){
+        MrzDecodeDataExtraction extraction = new MrzDecodeDataExtraction();
+        return extraction.getMRZValue(documentName, ocrExtractionField, decodeResults);
     }
 
     public void setDataValidationStrategyType(DataValidationStrategyType dataValidationStrategyType) {
