@@ -3,6 +3,29 @@ Orion - Changelog
 
 Unreleased
 ----------
+Ireland document support Integration issue fixes
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into develop  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'feature/irish-passport-mrz' into 'develop' Feature/irish passport mrz
+
+Irish passport mrz + Fixes
+
+See merge request !63 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'develop' into feature/irish-passport-mrz # Conflicts:
+#	HermeseAgent/src/main/resources/document-verification-config.xml
+ (Tharindu)(tharindump@zone24x7.com)
+
+IDAPI : ICAO Standard MRZ Support, Ireland DL Support + Bug Fixes  (Tharindu)(tharindump@zone24x7.com)
+
+fixed invalid bean reference errors  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Adding Ireland Passport date decoding strategy  (Chamil Kirieldeniyage)(chamilk@zone24x7.com)
+
+Fixed failing test cases  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 Unit Tests fixed except AddressValidationTest  (Chamil Kirieldeniyage)(chamilk@zone24x7.com)
 
 Implement the template based date decoding  (Chamil Kirieldeniyage)(chamilk@zone24x7.com)

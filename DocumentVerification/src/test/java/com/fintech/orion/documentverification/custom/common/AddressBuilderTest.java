@@ -37,7 +37,7 @@ public class AddressBuilderTest {
     @Before
     public void setUp() throws Exception {
         addressBuilder = new AddressBuilder();
-        addressBuilder.setResponseReader(new OcrResponseReader(null));
+        addressBuilder.setResponseReader(new OcrResponseReader(null, ""));
         ocrFieldAddressLine1 = new OcrFieldData();
         ocrFieldAddressLine2 = new OcrFieldData();
         ocrFieldAddressLine3 = new OcrFieldData();
