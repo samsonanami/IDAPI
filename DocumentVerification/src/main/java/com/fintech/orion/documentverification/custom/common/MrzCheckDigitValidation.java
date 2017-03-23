@@ -88,7 +88,7 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
             validationData.setRemarks(getCheckDigitMissmatchErrorMessage("three",
                     checkDigitResults.getCheckDigitPraseThree(), mrzDecodeResults.getCheckDigitPhraseThree()));
 
-        }else if(!checkDigitResults.getCheckDigitPraseFour().equals(mrzDecodeResults.getCheckDigitPhraseFour())){
+        }else if(!validateFourthCheckDigit(checkDigitResults.getCheckDigitPraseFour(),mrzDecodeResults.getCheckDigitPhraseFour())){
             validationData.setRemarks(getCheckDigitMissmatchErrorMessage("four",
                     checkDigitResults.getCheckDigitPraseFour(), mrzDecodeResults.getCheckDigitPhraseFour()));
 
@@ -107,6 +107,16 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
         return "Check digit value "+ checkDigitNumber + " dose not match : calculated value > " + decodedValue +
                 " : extracted value > " + extractedValue;
     }
+
+    private boolean validateFourthCheckDigit(String actual, String calculated) {
+        return actual.equals(calculated) || FourthCheckDigitFillerCharacter(actual) && FourthCheckDigitFillerCharacter(calculated);
+    }
+
+    private boolean FourthCheckDigitFillerCharacter(String value) {
+        return "0".equals(value) || "<".equals(value);
+    }
+
+
 
     public void setOcrFieldBase(String ocrFieldBase) {
         this.ocrFieldBase = ocrFieldBase;

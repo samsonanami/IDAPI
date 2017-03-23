@@ -24,12 +24,13 @@
     <bean id="addressDocFullValidator"
           class="com.fintech.orion.documentverification.factory.AddressDocumentFullVerification"/>
     <bean id="documentDataValidator" class="com.fintech.orion.documentverification.factory.DataValidations"/>
+    <bean id="commonConfigurationFactory" class="com.fintech.orion.documentverification.common.configuration.factory.CommonConfigurationFactory" />
 
     <bean id="verificationConfigurationMap" class="java.util.HashMap" scope="prototype">
         <constructor-arg>
             <map key-type="java.lang.String" value-type="com.fintech.orion.dto.configuration.VerificationConfiguration">
                 <entry key="surname" value-ref="surnameVC"/>
-                <entry key="given_name" value-ref="givenNameVC"/>
+                <entry key="given_names" value-ref="givenNameVC"/>
                 <entry key="date_of_birth" value-ref="dateOfBirthVC"/>
                 <entry key="place_of_birth" value-ref="placeOfBirthVC"/>
                 <entry key="family_name" value-ref="familyNameVC"/>
@@ -75,12 +76,12 @@
           class="com.fintech.orion.documentverification.common.mrz.PassportMRZDecodingStrategy"/>
     <bean id="drivingLicenseMRZDecodingStrategy"
           class="com.fintech.orion.documentverification.common.mrz.DrivingLicenseMZRDecodingStrategy"/>
-    <bean id="passportMRZValidationStrategy"
-          class="com.fintech.orion.documentverification.common.mrz.ValidatePassPortMRZ"/>
+    <bean id="irlDrivingLicenseMRZDecodingStrategy" class="com.fintech.orion.documentverification.common.mrz.IrlDrivingLicenseMRZDecodingStrategy"/>
+    <bean id="passportMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidatePassPortMRZ"/>
     <bean id="drivingLicenseMRZValidationStrategy"
           class="com.fintech.orion.documentverification.common.mrz.ValidateDrivingLicence"/>
-    <bean id="passportCheckDigitFormation"
-          class="com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation"/>
+    <bean id="irlDrivingLicenseMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidateIrelandDrivingLicense"/>
+    <bean id="passportCheckDigitFormation" class="com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation"/>
 
     <bean id="dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
     <bean id="addressComparator" class="com.fintech.orion.documentverification.common.address.AddressCompare"/>
@@ -308,6 +309,62 @@
         <property name="mrzValidationStrategy" ref="drivingLicenseMRZValidationStrategy"/>
     </bean>
 
+    <bean id="irelandDrivingLicenseMrzDecodingConfigurations" class="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
+        <property name="documentName" value="drivingLicenseFront"/>
+        <property name="mrzOcrExtractionFieldBase" value="MRZ_line"/>
+        <property name="mrzLineCount" value="1"/>
+        <property name="mrzDecodingStrategy" ref="irlDrivingLicenseMRZDecodingStrategy"/>
+        <property name="mrzValidationStrategy" ref="irlDrivingLicenseMRZValidationStrategy"/>
+    </bean>
+
+    <!--TEMPLATE NAME MAP-->
+    <!--TEMPLATE NAME TO CATEGORY-->
+
+    <bean id="templateNameToCategoryMap" name="templateNameToCategoryMap" class="java.util.HashMap">
+        <constructor-arg>
+            <map key-type="java.lang.String" value-type="java.lang.String">
+                <entry key="DLB_UK" value="IrelandDl" />
+
+                <entry key="DLF_Ireland" value="IrelandDl" />
+                <entry key="DLF_UK1" value="CommonDl" />
+                <entry key="DLF_Sweden" value="CommonDl" />
+                <entry key="DLF_UK2" value="CommonDl" />
+                <entry key="DLF_UK3" value="CommonDl" />
+
+                <entry key="ID_Finland" value="IrelandDl" />
+                <entry key="ID_Germany" value="IrelandDl" />
+                <entry key="ID_Poland" value="IrelandDl" />
+                <entry key="ID_Spain" value="IrelandDl" />
+
+                <entry key="P_Ireland" value="CommonPassport" />
+                <entry key="P_Ireland2" value="CommonPassport" />
+                <entry key="P_UK1" value="CommonPassport" />
+                <entry key="P_UK2" value="CommonPassport" />
+
+            </map>
+        </constructor-arg>
+    </bean>
+
+
+    <!--CONFIGURATION MAP-->
+    <!--TEMPLATE CATEGORY TO CONFIGURATION-->
+
+    <bean id="templateCategoryFactory" class="com.fintech.orion.documentverification.template.category.factory.CommonTemplateCategoryFactory" />
+
+    <bean id="commonTemplateCategory" class="com.fintech.orion.documentverification.template.category.CommonTemplateCategory" scope="prototype">
+        <constructor-arg value="DLF_UK1"/>
+    </bean>
+
+    <bean id="decodingConfigurationsMap" name="decodingConfigurationsMap" class="java.util.HashMap">
+        <constructor-arg>
+            <map key-type="java.lang.String" value-type="com.fintech.orion.documentverification.common.configuration.DocumentMrzDecodingConfigurations">
+                <entry key="CommonDl" value-ref="drivingLicenseMrzDecodingConfigurations" />
+                <entry key="CommonPassport" value-ref="passportMrzDecodingConfigurations" />
+                <entry key="IrelandDl" value-ref="irelandDrivingLicenseMrzDecodingConfigurations" />
+            </map>
+        </constructor-arg>
+    </bean>
+    
     <bean id="ocrResponseReader" name="defaultOcrResponseReader" class="com.fintech.orion.documentverification.custom.common.OcrResponseReader">
         <constructor-arg>
             <bean id="templateMap" class="com.fintech.orion.documentverification.custom.common.TemplateCategoryMap">
@@ -316,8 +373,8 @@
                         <entry key="DLB_UK" value="CommonDlDateDecoder" />
 
                         <entry key="DLF_Ireland" value="CommonDlDateDecoder" />
-                        <entry key="DLF_UK1" value="CommonDateDecoder" />
                         <entry key="DLF_Sweden" value="CommonDlDateDecoder" />
+                        <entry key="DLF_UK1" value="CommonDateDecoder" />
                         <entry key="DLF_UK2" value="CommonDlDateDecoder" />
                         <entry key="DLF_UK3" value="CommonDlDateDecoder" />
 
@@ -331,15 +388,43 @@
                         <entry key="P_UK1" value="UKPassportDateDecoder" />
                         <entry key="P_UK2" value="UKPassportDateDecoder" />
 
-
-                        <entry key="P_UK1" value="UKPassportDateDecoder" />
-
                     </util:map>
                 </constructor-arg>
             </bean>
-        </constructor-arg>
+    </constructor-arg>
+    </bean>
+	    
+	<bean id="addressBuilder" class="com.fintech.orion.documentverification.custom.common.AddressBuilder" />
+
+    <!--FILTERS-->
+
+    <bean id="filterFactory" class="com.fintech.orion.documentverification.common.mrz.filter.factory.CommonFilterFactory" />
+
+    <bean id="fillerFilter" class="com.fintech.orion.documentverification.common.mrz.filter.FillerFilter" />
+
+
+    <!--FEATURE POINTS FOR MRZ-->
+
+    <bean id="filteredMrzFactory" class="com.fintech.orion.documentverification.common.mrz.factory.FilteredMrzFactory" />
+
+    <!--IRELAND DL MRZ FEATURES TO DECODE-->
+
+    <util:list id="irelandDl" value-type="com.fintech.orion.dto.featurepoint.FeaturePoint" >
+        <ref bean="irelandDlSurname" />
+        <ref bean="irelandDlDrivingLicNum" />
+    </util:list>
+
+    <bean id="irelandDlSurname" class="com.fintech.orion.dto.featurepoint.FeaturePoint">
+        <constructor-arg index="0" value="2"/>
+        <constructor-arg index="1" value="12"/>
+        <constructor-arg index="2" value="Surname"/>
+    </bean>
+
+    <bean id="irelandDlDrivingLicNum" class="com.fintech.orion.dto.featurepoint.FeaturePoint">
+        <constructor-arg index="0" value="18"/>
+        <constructor-arg index="1" value="27"/>
+        <constructor-arg index="2" value="DrivingLicNum"/>
     </bean>
 
 
-    <bean id="addressBuilder" class="com.fintech.orion.documentverification.custom.common.AddressBuilder" />
 </beans>

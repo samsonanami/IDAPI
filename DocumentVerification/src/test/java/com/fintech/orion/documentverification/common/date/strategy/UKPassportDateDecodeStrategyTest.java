@@ -9,8 +9,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by sasitha on 1/30/17.
  *
@@ -45,6 +43,14 @@ public class UKPassportDateDecodeStrategyTest {
         date = "09 BEB_/$%FEV 12";
         Date decodedDate = ukPassportDateDecodeStrategy.decodeDate(date);
         Date expected = df.parse("09022012");
+        Assert.assertEquals(expected, decodedDate);
+    }
+
+    @Test
+    public void should_parse_UK_passport_MRZ_date()throws Exception{
+        date = "740725";
+        Date decodedDate = ukPassportDateDecodeStrategy.decodeDate(date);
+        Date expected = df.parse("25071974");
         Assert.assertEquals(expected, decodedDate);
     }
 }

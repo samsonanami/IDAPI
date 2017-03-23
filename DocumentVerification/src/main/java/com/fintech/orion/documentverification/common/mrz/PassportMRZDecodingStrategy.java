@@ -3,10 +3,9 @@ package com.fintech.orion.documentverification.common.mrz;
 
 import com.fintech.orion.documentverification.common.exception.MRZDecodingConfigurationException;
 import com.fintech.orion.documentverification.common.exception.PassportMRZDecodeException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 
 /**
@@ -17,9 +16,8 @@ import java.util.HashMap;
 public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
 
 
-    @Autowired
-    @Qualifier("passportMRZConfigureList")
-    private HashMap<String, MRZItemProperty> mrzItemProperty;
+    @Resource(name="passportMRZConfigureList")
+    private HashMap<String, MRZItemProperty> passportMRZConfigureList;
 
     private int mrzFirstLineCharacterCount;
 
@@ -75,7 +73,7 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
     }
 
     private MRZItemProperty getItemProperties(String key) throws MRZDecodingConfigurationException {
-        MRZItemProperty property = mrzItemProperty.get(key);
+        MRZItemProperty property = passportMRZConfigureList.get(key);
         if (property == null) {
             throw new MRZDecodingConfigurationException("Could not found configuration property for key :" + key);
         }
