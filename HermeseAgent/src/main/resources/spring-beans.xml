@@ -68,23 +68,5 @@
         <constructor-arg type="java.lang.String" value="10"/>
     </bean>
 
-    <bean id="dateDecoder" class="com.fintech.orion.documentverification.common.date.DateDecoder"/>
 
-    <bean id="ukPassportMRZDateConfigurations" class="com.fintech.orion.documentverification.common.date.DateTypeConfiguration">
-        <property name="dateTypeRegex" value="^\d{6}$"/>
-        <property name="strategy" ref="operationUKPassportMRZDateDecode"/>
-    </bean>
-
-    <bean id="UKPassportDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.UKPassportDateDecodeStrategy"/>
-
-    <bean id="IrelandPassportDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.IrelandPassportDateDecodeStrategy"/>
-
-    <bean id="ukDLDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.UKDrivingLicenseDateDecodingStrategy"/>
-    <bean id="irelandDLDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.IrelandDrivingLicenseDateDecodingStrategy"/>
-    <bean id="CommonDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
-        <property name="dateFormat" value="dd.MM.yyyy"/>
-    </bean>
-    <bean id="operationUKPassportMRZDateDecode" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
-        <property name="dateFormat" value="yyMMdd"/>
-    </bean>
 </beans>

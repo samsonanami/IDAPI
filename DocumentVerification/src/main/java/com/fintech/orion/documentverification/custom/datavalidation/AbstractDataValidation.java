@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by sasitha on 2/7/17.
@@ -55,13 +56,15 @@ public class AbstractDataValidation extends ValidationHelper {
 
     private DataValidationStrategyType dataValidationStrategyType;
 
+    private List<String> resourceNames;
+
     public DataValidation ocrExtractionFieldVizMrzDataValidation(ResourceName resourceName, OcrResponse ocrResponse)
             throws CustomValidationException {
         DataValidation dataValidation = new DataValidation();
         dataValidation.setId(getOcrExtractionFieldName());
         List<DataValidationValue> dataValidationValueList = new ArrayList<>();
-
-        for (String documentName : getResourceListFromOcrResponse(ocrResponse)){
+        List<String> unFilteredResourceList = getResourceListFromOcrResponse(ocrResponse);
+        for (String documentName : filterResourceNameList(unFilteredResourceList)){
             DataValidationValue dataValidationValue = getDataValidationValue(getTemplateName(documentName, ocrResponse),
                     documentName, ocrResponse);
 
@@ -70,7 +73,8 @@ public class AbstractDataValidation extends ValidationHelper {
             DocumentDataValidator validator =  new DocumentDataValidator(strategy);
 
             ValidationResult result = validator.executeStrategy(dataValidationValue.getMrzValue(),
-                    dataValidationValue.getVizValue(), ocrResponseReader.getTemplateCategory(getTemplateName(documentName, ocrResponse)));
+                    dataValidationValue.getVizValue(),
+                    ocrResponseReader.getTemplateCategory(getTemplateName(documentName, ocrResponse)));
             if (result.isStatus()){
                 dataValidationValue.setStatus(true);
                 dataValidationValue.setRemarks(getSuccessRemarksMessage());
@@ -82,7 +86,8 @@ public class AbstractDataValidation extends ValidationHelper {
     }
 
     private DataValidationValue getDataValidationValue(String templateName,
-                                                       String documentName, OcrResponse ocrResponse) throws CustomValidationException {
+                                                       String documentName, OcrResponse ocrResponse)
+            throws CustomValidationException {
         DataValidationValue dataValidationValue = new DataValidationValue();
         dataValidationValue.setDocumentName(documentName);
         dataValidationValue.setStatus(false);
@@ -90,7 +95,8 @@ public class AbstractDataValidation extends ValidationHelper {
         dataValidationValue.setMrzValue("");
         dataValidationValue.setVizValue(getVizValue(getOcrExtractionFieldName(), documentName, ocrResponse));
         MrzLineBuilder mrzLineBuilder = new MrzLineBuilder();
-        extractMrzValueFromOcrResponse(documentName, ocrResponse, dataValidationValue, mrzLineBuilder, commonConfigurationFactory.getConfiguration(getTemplateCategory(templateName)));
+        extractMrzValueFromOcrResponse(documentName, ocrResponse, dataValidationValue, mrzLineBuilder,
+                commonConfigurationFactory.getConfiguration(getTemplateCategory(templateName)));
         return dataValidationValue;
     }
 
@@ -117,6 +123,11 @@ public class AbstractDataValidation extends ValidationHelper {
         }
     }
 
+    private List<String> filterResourceNameList(List<String> fullList){
+        return fullList.stream()
+                .filter(r -> this.resourceNames.contains(r)).collect(Collectors.toList());
+    }
+
     public String getVizValue(String extractionFieldName, String documentName, OcrResponse ocrResponse){
         OcrFieldData fieldData = getFieldDataById(extractionFieldName, ocrResponse);
         OcrFieldValue fieldValue = getFieldValueById(documentName+"##"+extractionFieldName, fieldData);
@@ -125,10 +136,6 @@ public class AbstractDataValidation extends ValidationHelper {
 
     private ValidateMRZResult validateMrz(String mrz, ValidateMRZ mrzValidator) throws MRZValidatingException {
         return mrzValidator.validate(mrz);
-    }
-
-    private List<DocumentMrzDecodingConfigurations> getDocumentMrzDecodingConfigurations() {
-        return documentMrzDecodingConfigurations;
     }
 
     public String getMrzValueForOcrExtractionField(String documentName,
@@ -155,8 +162,13 @@ public class AbstractDataValidation extends ValidationHelper {
     public String getTemplateCategory(String templateName) throws CustomValidationException {
         TemplateCategory templateCategory = templateCategoryFactory.getTemplateCategory(templateName, "Common");
         if(templateCategory.getCategoryName() == null) {
-            throw new CustomValidationException("No valid Template Category Found for the relevant Template Name");
+            throw new CustomValidationException("No valid Template Category Found for the relevant " +
+                    "Template Name : " + templateName);
         }
         return templateCategory.getCategoryName();
+    }
+
+    public void setResourceNames(List<String> resourceNames) {
+        this.resourceNames = resourceNames;
     }
 }

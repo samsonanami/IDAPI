@@ -232,6 +232,12 @@
         <property name="failedRemarksMessage" value="Failed to validate surname mrz and viz values"/>
         <property name="successRemarksMessage" value="Successfully validated surname mrz and viz values"/>
         <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+                <value>drivingLicenseFront</value>
+            </util:list>
+        </property>
     </bean>
 
     <bean id="dateOfBirthVizMrzValidation"
@@ -241,6 +247,12 @@
         <property name="failedRemarksMessage" value="Failed to validate date of birth"/>
         <property name="successRemarksMessage" value="date of birth is validated"/>
         <property name="dataValidationStrategyType" value="DATE"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+                <value>drivingLicenseFront</value>
+            </util:list>
+        </property>
     </bean>
 
     <bean id="documentNumberVizMrzValidation"
@@ -250,6 +262,11 @@
         <property name="failedRemarksMessage" value="Failed to validate "/>
         <property name="successRemarksMessage" value="Verified"/>
         <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
     </bean>
 
     <bean id="genderVizMrzValidation"
@@ -259,6 +276,11 @@
         <property name="failedRemarksMessage" value="Failed to validate "/>
         <property name="successRemarksMessage" value="Verified"/>
         <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
     </bean>
 
     <bean id="givenNameVizMrzValidation"
@@ -268,6 +290,11 @@
         <property name="failedRemarksMessage" value="Failed to validate "/>
         <property name="successRemarksMessage" value="Verified"/>
         <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
     </bean>
 
     <bean id="expireDateVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.ExpireDateVizMrzValidation">
@@ -276,6 +303,11 @@
         <property name="failedRemarksMessage" value="MRZ and VIZ expire date not matching"/>
         <property name="successRemarksMessage" value="MRZ and VIZ expire date matching"/>
         <property name="dataValidationStrategyType" value="DATE"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
     </bean>
 
 
@@ -450,5 +482,16 @@
         <constructor-arg index="2" ref="fillerFilter"/>
     </bean>
 
+    <bean id="dateDecoder" class="com.fintech.orion.documentverification.common.date.DateDecoder"/>
+
+    <bean id="UKPassportDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.UKPassportDateDecodeStrategy"/>
+
+    <bean id="IrelandPassportDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.IrelandPassportDateDecodeStrategy"/>
+
+    <bean id="ukDLDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.UKDrivingLicenseDateDecodingStrategy"/>
+    <bean id="irelandDLDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.IrelandDrivingLicenseDateDecodingStrategy"/>
+    <bean id="CommonDateDecoder" class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
+        <property name="dateFormat" value="dd.MM.yyyy"/>
+    </bean>
 
 </beans>
