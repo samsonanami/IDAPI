@@ -35,6 +35,8 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
 
 
         ValidationData validationData = new ValidationData();
+        validationData.setValidationStatus(false);
+        validationData.setRemarks(getFailedRemarksMessage());
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
@@ -44,7 +46,7 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
                 throw new CustomValidationException("Error Occurred while performing bill date end month verification ", e);
             }
         }
-        if (!validationData.getValidationStatus()) {
+        if (validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Bill date end month verification");
@@ -63,8 +65,9 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
                 validationData.setValidationStatus(true);
                 validationData.setValue(String.valueOf(issuedDate.getMonthOfYear()));
             } else {
-                validationData.setRemarks(getFailedRemarksMessage());
-                validationData.setValue(String.valueOf(issuedDate.getMonthOfYear()));
+                validationData.setRemarks("Utility bill is "+ monthsFromIssued.getMonths() + " months older " +
+                getFailedRemarksMessage());
+                validationData.setValue(String.valueOf(issuedDate));
                 validationData.setValidationStatus(false);
                 break;
             }

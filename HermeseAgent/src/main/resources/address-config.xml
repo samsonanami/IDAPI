@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
        <bean id="addressConfigureList" class="java.util.HashMap">
               <constructor-arg>
                      <map   key-type="java.lang.String" value-type="com.fintech.orion.documentverification.common.address.AddressType">
@@ -22,4 +23,7 @@
               <property name="decodeRegularExpression" value="(.+?),(.+?),(.+?),(.+?),([^,]*$)"></property>
               <property name="description" value="Flat address"></property>
        </bean>
+
+       <bean id="addressBuilder" class="com.fintech.orion.documentverification.custom.common.AddressBuilder" />
+
 </beans>

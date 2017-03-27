@@ -54,6 +54,7 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
             validationData.setRemarks(getSuccessRemarksMessage());
         }
 
+        validationData.setId("Utility bill name verification");
         return validationData;
     }
 
@@ -89,7 +90,11 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
         return fullName;
     }
 
-    public void setutilityBillNameOcrExtractionField(String utilityBillNameOcrExtractionField) {
+    public String getUtilityBillNameOcrExtractionField() {
+        return utilityBillNameOcrExtractionField;
+    }
+
+    public void setUtilityBillNameOcrExtractionField(String utilityBillNameOcrExtractionField) {
         this.utilityBillNameOcrExtractionField = utilityBillNameOcrExtractionField;
     }
 

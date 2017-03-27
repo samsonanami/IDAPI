@@ -3,7 +3,7 @@ package com.fintech.orion.documentverification.strategy;
 /**
  * Created by sasitha on 12/25/16.
  */
-public interface DataValidationStrategy {
+public interface DataValidationStrategy<E,I> {
 
-    ValidationResult doDataValidationOperation(String base, String compare, String templateCategory);
+    ValidationResult doDataValidationOperation(E base, I compare, String templateCategory);
 }

@@ -49,6 +49,8 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
         validationData = validateInput(fieldDataIssuedDate);
         if (validationData.getValidationStatus()) {
             try {
+                validationData.setValidationStatus(false);
+                validationData.setRemarks(getFailedRemarksMessage());
                 validationData = validateIssuedDateAgeLimit(valueIssuedDate, valueDateOfBirth, ocrResponse);
             } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an date of birth at issue date" +
@@ -62,7 +64,7 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
                         "DD MM/MM YY or DD.MM.YYYY");
             }
         }
-        if (!validationData.getValidationStatus()) {
+        if (validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Date of Birth at Document Issue Date Validation");
