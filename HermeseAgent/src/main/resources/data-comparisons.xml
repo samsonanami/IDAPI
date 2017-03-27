@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="verificationConfigurationMap" class="java.util.HashMap" scope="prototype">
+        <constructor-arg>
+            <map key-type="java.lang.String" value-type="com.fintech.orion.dto.configuration.VerificationConfiguration">
+                <entry key="surname" value-ref="surnameVC"/>
+                <entry key="given_names" value-ref="givenNameVC"/>
+                <entry key="date_of_birth" value-ref="dateOfBirthVC"/>
+                <entry key="place_of_birth" value-ref="placeOfBirthVC"/>
+                <entry key="family_name" value-ref="familyNameVC"/>
+                <entry key="sex" value-ref="sexVC"/>
+                <entry key="parents_given_name" value-ref="parentsGivenNameVC"/>
+                <entry key="nationality" value-ref="nationalityVC"/>
+                <entry key="address" value-ref="addressVC"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="surnameVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
+    </bean>
+    <bean id="givenNameVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
+    </bean>
+    <bean id="dateOfBirthVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="DATE"/>
+    </bean>
+    <bean id="placeOfBirthVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
+    </bean>
+    <bean id="familyNameVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
+    </bean>
+    <bean id="parentsGivenNameVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
+    </bean>
+    <bean id="sexVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
+    </bean>
+
+    <bean id="nationalityVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="STRING"/>
+    </bean>
+
+    <bean id="addressVC" class="com.fintech.orion.dto.configuration.VerificationConfiguration">
+        <property name="sameValueComparisonStrategyAcrossMultipleResources" value="ADDRESS"/>
+    </bean>
+
+</beans>

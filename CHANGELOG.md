@@ -3,6 +3,13 @@ Orion - Changelog
 
 Unreleased
 ----------
+data validations runs on a defined template category a given data validation will only run on a configured resource list.
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Template name ocr-extraction field database configurations  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+fix errors in AddressBuilderTest  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 Ireland document support Integration issue fixes
  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 

@@ -94,7 +94,7 @@ public class NameUtilityBillValidationTest {
         nameUtilityBillValidation.setOcrExtractionFieldName("fullname");
         nameUtilityBillValidation.setSurnameOcrExtractionFieldName("surname");
         nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
-        nameUtilityBillValidation.setutilityBillNameOcrExtractionField("fullname");
+        nameUtilityBillValidation.setUtilityBillNameOcrExtractionField("fullname");
         nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
         resourceName.setName("bill");
 
@@ -161,7 +161,7 @@ public class NameUtilityBillValidationTest {
         nameUtilityBillValidation.setOcrExtractionFieldName("fullname");
         nameUtilityBillValidation.setSurnameOcrExtractionFieldName("surname");
         nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
-        nameUtilityBillValidation.setutilityBillNameOcrExtractionField("fullname");
+        nameUtilityBillValidation.setUtilityBillNameOcrExtractionField("fullname");
         nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
         resourceName.setName("bill");
 
@@ -220,7 +220,7 @@ public class NameUtilityBillValidationTest {
         nameUtilityBillValidation.setOcrExtractionFieldName("fullname");
         nameUtilityBillValidation.setSurnameOcrExtractionFieldName("surname");
         nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
-        nameUtilityBillValidation.setutilityBillNameOcrExtractionField("fullname");
+        nameUtilityBillValidation.setUtilityBillNameOcrExtractionField("fullname");
         nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
         resourceName.setName("bill");
 

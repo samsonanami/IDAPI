@@ -41,6 +41,8 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             try {
+                validationData.setValidationStatus(false);
+                validationData.setRemarks(getFailedRemarksMessage());
                 validationData = validateDateofIusseEndYear(fieldData, ocrResponse);
             } catch (DateDecoderException e) {
                 LOGGER.warn("Error occurred while performing an date of issue year validation for ocr response {} {}",
@@ -54,7 +56,7 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
                         "DD MM/MM YY or DD.MM.YYYY");
             }
         }
-        if (!validationData.getValidationStatus()) {
+        if (validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Issued date end year verification");

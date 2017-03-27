@@ -5,6 +5,10 @@ import com.fintech.orion.documentverification.strategy.DataValidationStrategy;
 import com.fintech.orion.documentverification.strategy.DataValidationStrategyProvider;
 import com.fintech.orion.documentverification.strategy.DocumentDataValidator;
 import com.fintech.orion.documentverification.strategy.ValidationResult;
+import com.fintech.orion.documentverification.translator.OcrValueTranslator;
+import com.fintech.orion.documentverification.translator.OcrValueTranslatorFactory;
+import com.fintech.orion.documentverification.translator.Translator;
+import com.fintech.orion.documentverification.translator.exception.TranslatorException;
 import com.fintech.orion.dto.configuration.DataValidationStrategyType;
 import com.fintech.orion.dto.configuration.VerificationConfiguration;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
@@ -39,6 +43,9 @@ public class DataComparator implements DocumentVerification {
 
     @Autowired
     private DataValidationStrategyProvider dataValidationStrategyProvider;
+
+    @Autowired
+    private OcrValueTranslatorFactory ocrValueTranslatorFactory;
 
     @Override
     public List<Object> verifyExtractedDocumentResult(OcrResponse ocrResponse, Map<String, VerificationConfiguration> configurations) {
@@ -78,26 +85,39 @@ public class DataComparator implements DocumentVerification {
     }
 
     private List<FieldDataComparision> getFieldComparisonList(List<FieldDataValue> fieldDataValueList, String fieldName, OcrResponse ocrResponse) {
-        List<FieldDataComparision> fieldDataComparisions = new ArrayList<>();
+        List<FieldDataComparision> fieldDataComparision = new ArrayList<>();
         DataValidationStrategy strategy = verificationStrategy(fieldName);
         if (strategy != null) {
             validator = new DocumentDataValidator(strategy);
             for (FieldDataValue fieldDataValue : fieldDataValueList) {
-                fieldDataComparisions.addAll(compareValueWithOtherValues(fieldDataValue, fieldDataValueList, ocrResponse));
+                fieldDataComparision.addAll(compareValueWithOtherValues(fieldDataValue, fieldDataValueList,
+                        ocrResponse, fieldName));
             }
         }
 
-        return fieldDataComparisions;
+        return fieldDataComparision;
     }
 
     private List<FieldDataComparision> compareValueWithOtherValues(FieldDataValue base, List<FieldDataValue> values
-            , OcrResponse ocrResponse) {
+            , OcrResponse ocrResponse, String fieldName) {
+        OcrValueTranslator ocrValueTranslator = this.ocrValueTranslatorFactory.getOcrValueTranslator(fieldName);
+
         List<FieldDataComparision> fieldDataComparision = new ArrayList<>();
         for (FieldDataValue value : values) {
             if (!base.getId().equalsIgnoreCase(value.getId()) && !isComparisonsAlreadyHappens(base.getId()
                     , value.getId(), fieldDataComparision)) {
-                String templateCategory = responseReader.getTemplateCategory(value.getId(), ocrResponse);
-                ValidationResult result = validator.executeStrategy(base.getValue(), value.getValue(), templateCategory);
+                String baseTemplateCategory = responseReader.getTemplateCategory(base.getId(), ocrResponse);
+                String compareTemplateCategory = responseReader.getTemplateCategory(value.getId(), ocrResponse);
+                ValidationResult result = new ValidationResult();
+                result.setStatus(false);
+                try {
+                    Object translatedBaseValue = ocrValueTranslator.translate(base.getValue(), baseTemplateCategory);
+                    Object translatedCompareValue = ocrValueTranslator.translate(value.getValue(), compareTemplateCategory);
+                    result = validator.executeStrategy(translatedBaseValue, translatedCompareValue, compareTemplateCategory);
+                } catch (TranslatorException e) {
+                    LOGGER.error("unable to translate values ", e);
+                }
+
                 FieldDataComparision comparision = new FieldDataComparision();
                 comparision.setId(getComparisionId(base.getId(), value.getId()));
                 comparision.setValue(result.isStatus());

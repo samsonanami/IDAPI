@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Created by sasitha on 12/26/16.
  */
-public class OperationAddressComparator implements DataValidationStrategy {
+public class OperationAddressComparator implements DataValidationStrategy<String, String> {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationAddressComparator.class);
     @Autowired
     private AddressCompare addressCompare;

@@ -18,6 +18,9 @@ import com.fintech.orion.documentverification.strategy.DocumentDataValidator;
 import com.fintech.orion.documentverification.strategy.ValidationResult;
 import com.fintech.orion.documentverification.template.category.TemplateCategory;
 import com.fintech.orion.documentverification.template.category.factory.TemplateCategoryFactory;
+import com.fintech.orion.documentverification.translator.OcrValueTranslator;
+import com.fintech.orion.documentverification.translator.OcrValueTranslatorFactory;
+import com.fintech.orion.documentverification.translator.exception.TranslatorException;
 import com.fintech.orion.dto.configuration.DataValidationStrategyType;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
@@ -33,9 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by sasitha on 2/7/17.
- */
+
 public class AbstractDataValidation extends ValidationHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDataValidation.class);
     @Autowired
@@ -54,6 +55,9 @@ public class AbstractDataValidation extends ValidationHelper {
     @Autowired
     private OcrResponseReader ocrResponseReader;
 
+    @Autowired
+    private OcrValueTranslatorFactory ocrValueTranslatorFactory;
+
     private DataValidationStrategyType dataValidationStrategyType;
 
     private List<String> resourceNames;
@@ -67,14 +71,25 @@ public class AbstractDataValidation extends ValidationHelper {
         for (String documentName : filterResourceNameList(unFilteredResourceList)){
             DataValidationValue dataValidationValue = getDataValidationValue(getTemplateName(documentName, ocrResponse),
                     documentName, ocrResponse);
+            String templateCategory = ocrResponseReader.getTemplateCategory(documentName, ocrResponse);
+            OcrValueTranslator<String,String> visualOcrValeTranslator = this.ocrValueTranslatorFactory.getOcrValueTranslator(getOcrExtractionFieldName());
+            OcrValueTranslator<String,String> mrzOcrValueTranslator = this.ocrValueTranslatorFactory.getOcrValueTranslator("MRZ_"+getOcrExtractionFieldName());
+            ValidationResult result = new ValidationResult();
+            result.setStatus(false);
+            try {
+                Object translatedVisualValue = visualOcrValeTranslator.translate(dataValidationValue.getVizValue(), templateCategory);
+                Object translatedMRZValue = mrzOcrValueTranslator.translate(dataValidationValue.getMrzValue(), templateCategory);
+                DataValidationStrategy strategy = dataValidationStrategyProvider
+                        .getValidationStrategy(dataValidationStrategyType);
+                DocumentDataValidator validator =  new DocumentDataValidator(strategy);
 
-            DataValidationStrategy strategy = dataValidationStrategyProvider
-                    .getValidationStrategy(dataValidationStrategyType);
-            DocumentDataValidator validator =  new DocumentDataValidator(strategy);
-
-            ValidationResult result = validator.executeStrategy(dataValidationValue.getMrzValue(),
-                    dataValidationValue.getVizValue(),
-                    ocrResponseReader.getTemplateCategory(getTemplateName(documentName, ocrResponse)));
+                result = validator.executeStrategy(translatedMRZValue,
+                        translatedVisualValue,
+                        ocrResponseReader.getTemplateCategory(getTemplateName(documentName, ocrResponse)));
+            } catch (TranslatorException e) {
+                LOGGER.error("Error occurred while translating following values mrz : {} viz {} ",
+                        dataValidationValue.getMrzValue(), dataValidationValue.getVizValue(), e);
+            }
             if (result.isStatus()){
                 dataValidationValue.setStatus(true);
                 dataValidationValue.setRemarks(getSuccessRemarksMessage());
