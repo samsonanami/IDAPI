@@ -59,6 +59,7 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
         if (validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
         }
+        validationData.setCriticalValidation(isCriticalValidation());
         validationData.setId("Issued date end year verification");
         return validationData;
     }

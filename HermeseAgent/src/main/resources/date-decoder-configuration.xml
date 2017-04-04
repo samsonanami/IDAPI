@@ -34,8 +34,8 @@
 
                         <entry key="P_Ireland" value="irelandPassportDateDecoder" />
                         <entry key="P_Ireland2" value="irelandPassportDateDecoder" />
-                        <entry key="P_UK1" value="UKPassportDateDecoder" />
-                        <entry key="P_UK2" value="UKPassportDateDecoder" />
+                        <entry key="P_UK1" value="uKPassportDateDecoder" />
+                        <entry key="P_UK2" value="uKPassportDateDecoder" />
 
                         <entry key="UB_EBS_Savings_Document" value="commonDateDecoder"/>
                         <entry key="UB_EBS_Savings_Document_2" value="simpleDateFormatter1"/>
@@ -47,7 +47,7 @@
                         <entry key="UB_Gas_Statement_BritishGas" value="simpleDateFormat2"/>
                         <entry key="UB_Gas_Statement_EDF" value="simpleDateFormat2"/>
                         <entry key="UB_Gas_Statement_Southern" value="simpleDateFormat2"/>
-                        <entry key="UB_Tax_Demand_Notice" value="simpleDateFormat1"/>
+                        <entry key="UB_Tax_Demand_Notice" value="simpleDateFormatter1"/>
                         <entry key="UB_Telephone_Bill_BT" value="simpleDateFormat2"/>
                         <entry key="UB_Water_Bill_ThamesWater" value="simpleDateFormat2"/>
                         <entry key="UB_Water_Bill_Veolia" value="simpleDateFormat2"/>

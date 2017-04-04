@@ -26,6 +26,8 @@ public class DataValidationValue {
     @JsonProperty("status")
     private boolean status = false;
 
+    private boolean isCriticalValidation = false;
+
     /**
      * Get documentName
      *
@@ -96,6 +98,14 @@ public class DataValidationValue {
         this.status = status;
     }
 
+
+    public boolean isCriticalValidation() {
+        return isCriticalValidation;
+    }
+
+    public void setCriticalValidation(boolean criticalValidation) {
+        isCriticalValidation = criticalValidation;
+    }
 
     @Override
     public boolean equals(Object o) {

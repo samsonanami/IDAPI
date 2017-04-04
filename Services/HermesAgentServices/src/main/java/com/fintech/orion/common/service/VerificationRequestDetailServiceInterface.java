@@ -3,8 +3,11 @@ package com.fintech.orion.common.service;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
+import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
+import com.fintech.orion.dto.response.api.ImageDetail;
+import com.fintech.orion.dto.response.api.VerificationProcessDetail;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -32,5 +35,9 @@ public interface VerificationRequestDetailServiceInterface {
     ProcessType getProcessTypeFromProcessCode(String processIdentificationCode);
 
     void updateProcessDetails(List<Process> processList);
+
+    List<ImageDetail> getResourceOfProcessingRequest(String processingRequestCode);
+
+    List<VerificationProcessDetail> getVerificationProcessDetails(String processingRequestCode);
 
 }

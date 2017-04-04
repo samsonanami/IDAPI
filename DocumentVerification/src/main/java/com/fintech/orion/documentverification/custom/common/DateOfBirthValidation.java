@@ -48,6 +48,7 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
                 LOGGER.error("Error while translating validating date of birth ", e);
             }
         }
+        validationData.setCriticalValidation(isCriticalValidation());
         validationData.setId("Date of Birth Validation");
         return validationData;
     }

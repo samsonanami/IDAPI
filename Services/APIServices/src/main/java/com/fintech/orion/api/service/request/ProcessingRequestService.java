@@ -13,6 +13,7 @@ import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
+import com.fintech.orion.dto.response.external.VerificationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -97,7 +98,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
     @Override
     @Transactional
-    public VerificationProcessDetailedResponse getDetailedResponse(String clientName, String verificationRequestId) throws IOException, ResourceAccessPolicyViolationException, ResourceNotFoundException {
+    public VerificationResponse getDetailedResponse(String clientName, String verificationRequestId) throws IOException, ResourceAccessPolicyViolationException, ResourceNotFoundException {
 
         Client client = clientRepositoryInterface.findClientByUserName(clientName);
         ProcessingRequest processingRequest = processingRequestRepositoryInterface.findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestId);
@@ -108,14 +109,14 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
             throw new ResourceAccessPolicyViolationException("Accessing content not belong to the requested user is denied by resource access policy.");
         }
         ObjectMapper objectMapper = new ObjectMapper();
-        VerificationProcessDetailedResponse response = new VerificationProcessDetailedResponse();
+        VerificationResponse response = new VerificationResponse();
 
         if(processingRequest.getFinalResponse() != null){
             String processedJson = processingRequest.getFinalResponse();
-            response = objectMapper.readValue(processedJson, VerificationProcessDetailedResponse.class);
+            response = objectMapper.readValue(processedJson, VerificationResponse.class);
         }else {
             response.setVerificationRequestId(verificationRequestId);
-            response.setStatus("Pending");
+            response.setStatus("pending");
         }
         return response;
     }

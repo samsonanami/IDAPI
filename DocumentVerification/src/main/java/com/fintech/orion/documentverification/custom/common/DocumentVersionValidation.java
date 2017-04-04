@@ -33,6 +33,7 @@ public class DocumentVersionValidation extends ValidationHelper implements Custo
                     "document " + resourceName.getName());
             validationData.setValidationStatus(false);
         }
+        validationData.setCriticalValidation(isCriticalValidation());
         validationData.setId("Document Version Verification");
         return validationData;
     }

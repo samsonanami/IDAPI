@@ -46,6 +46,7 @@ public class SimpleStringFieldValidator extends ValidationHelper implements Cust
                     validationData);
         }
         validationData.setId(verificationDisplayName);
+        validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 

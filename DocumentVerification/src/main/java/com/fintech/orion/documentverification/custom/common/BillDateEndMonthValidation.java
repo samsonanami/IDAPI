@@ -49,6 +49,7 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         if (validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
         }
+        validationData.setCriticalValidation(isCriticalValidation());
         validationData.setId("Bill date end month verification");
         return validationData;
     }

@@ -15,7 +15,7 @@ import com.fintech.orion.dto.response.api.FieldData;
 import com.fintech.orion.dto.response.api.ValidationData;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.hermesagentservices.processor.VerificationResult;
-import com.fintech.orion.hermesagentservices.processor.response.chain.RequestProcessorChain;
+import com.fintech.orion.hermesagentservices.processor.response.chain.ResponseProcessorChain;
 import com.fintech.orion.hermesagentservices.sanitizer.Sanitizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 /**
  * Created by sasitha on 2/17/17.
  */
-public class OracleResponseProcessor extends RequestProcessorChain {
+public class OracleResponseProcessor extends ResponseProcessorChain {
     private static final Logger LOGGER = LoggerFactory.getLogger(OracleResponseProcessor.class);
     @Autowired
     private VerificationRequestDetailServiceInterface verificationRequestDetailService;

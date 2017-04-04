@@ -90,6 +90,7 @@ public class AbstractDataValidation extends ValidationHelper {
                 LOGGER.error("Error occurred while translating following values mrz : {} viz {} ",
                         dataValidationValue.getMrzValue(), dataValidationValue.getVizValue(), e);
             }
+            dataValidationValue.setCriticalValidation(isCriticalValidation());
             if (result.isStatus()){
                 dataValidationValue.setStatus(true);
                 dataValidationValue.setRemarks(getSuccessRemarksMessage());

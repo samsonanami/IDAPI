@@ -43,6 +43,7 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
             validationData = validateMrz(completeMrzLine, resourceNameToCheckMRZ);
         }
         validationData.setId("MRZ Check digit validation");
+        validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 

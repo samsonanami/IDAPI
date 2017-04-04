@@ -5,10 +5,13 @@ import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import com.fintech.orion.dataabstraction.repositories.*;
+import com.fintech.orion.dto.response.api.ImageDetail;
+import com.fintech.orion.dto.response.api.VerificationProcessDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -97,5 +100,43 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
     @Transactional
     public void updateProcessDetails(List<Process> processList) {
         processRepositoryInterface.save(processList);
+    }
+
+    @Override
+    @Transactional
+    public List<ImageDetail> getResourceOfProcessingRequest(String processingRequestCode) {
+        List<ImageDetail> imageDetails = new ArrayList<>();
+        for (Process process : this.processRepositoryInterface.findProcessByProcessingRequest(processingRequestCode)){
+            imageDetails.addAll(getImageDetailsOfAProcess(process));
+        }
+        return imageDetails;
+    }
+
+    @Transactional
+    @Override
+    public List<VerificationProcessDetail> getVerificationProcessDetails(String processingRequestCode) {
+        List<VerificationProcessDetail> verificationProcessDetails = new ArrayList<>();
+        for (Process process : processRepositoryInterface.findProcessByProcessingRequest(processingRequestCode)){
+
+            VerificationProcessDetail verificationProcessDetail = new VerificationProcessDetail();
+            verificationProcessDetail.setVerificationProcessName(process.getProcessType().getType());
+            verificationProcessDetail.setImageDetails(getImageDetailsOfAProcess(process));
+
+            verificationProcessDetails.add(verificationProcessDetail);
+
+        }
+        return verificationProcessDetails;
+    }
+
+    @Transactional
+    private List<ImageDetail> getImageDetailsOfAProcess(Process process){
+        List<ImageDetail> imageDetails = new ArrayList<>();
+        for (Resource resource : process.getResources()){
+            ImageDetail imageDetail = new ImageDetail();
+            imageDetail.setId(resource.getResourceIdentificationCode());
+            imageDetail.setResourceName(resource.getResourceName().getName());
+            imageDetails.add(imageDetail);
+        }
+        return imageDetails;
     }
 }

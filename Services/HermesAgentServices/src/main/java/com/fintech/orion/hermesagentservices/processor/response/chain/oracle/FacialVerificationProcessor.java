@@ -8,7 +8,7 @@ import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dto.hermese.model.compressionlabs.response.FacialVerificationResponse;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.hermesagentservices.processor.VerificationResult;
-import com.fintech.orion.hermesagentservices.processor.response.chain.RequestProcessorChain;
+import com.fintech.orion.hermesagentservices.processor.response.chain.ResponseProcessorChain;
 import com.fintech.orion.hermesagentservices.provider.ConfigurationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by sasitha on 2/18/17.
  *
  */
-public class FacialVerificationProcessor extends RequestProcessorChain{
+public class FacialVerificationProcessor extends ResponseProcessorChain {
     private static final Logger LOGGER = LoggerFactory.getLogger(FacialVerificationProcessor.class);
 
     private static final String FACIAL_VERIFICATION = "facialVerification";

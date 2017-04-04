@@ -68,6 +68,7 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Date of Birth at Document Issue Date Validation");
+        validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 

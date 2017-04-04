@@ -26,6 +26,9 @@ public class ValidationData {
     @JsonProperty("validationStatus")
     private boolean validationStatus = false;
 
+
+    private boolean criticalValidation = false;
+
     public ValidationData id(String id) {
         this.id = id;
         return this;
@@ -114,6 +117,14 @@ public class ValidationData {
 
     public void setValidationStatus(boolean validationStatus) {
         this.validationStatus = validationStatus;
+    }
+
+    public boolean isCriticalValidation() {
+        return criticalValidation;
+    }
+
+    public void setCriticalValidation(boolean criticalValidation) {
+        this.criticalValidation = criticalValidation;
     }
 
     @Override

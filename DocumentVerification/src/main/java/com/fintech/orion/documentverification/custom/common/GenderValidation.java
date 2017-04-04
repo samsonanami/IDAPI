@@ -26,6 +26,7 @@ public class GenderValidation extends ValidationHelper implements CustomValidati
             validationData = validateGender(fieldData);
         }
         validationData.setId("Gender Verification");
+        validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 
