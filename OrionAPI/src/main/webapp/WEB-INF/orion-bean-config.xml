@@ -53,5 +53,70 @@
         <entry key="mp4" value="40485760"/>
     </util:map>
 
+    <bean id="pdfFile" class="com.fintech.orion.resource.file.pdf.CommonPdfFile" scope="prototype">
+        <constructor-arg value="[]"/>
+    </bean>
+
+    <bean id="commonPersistenceWorkflowFactory"
+          class="com.fintech.orion.resource.persistence.workflow.factory.CommonPersistenceWorkflowFactory"/>
+    <bean id="commonPersistenceWorkflow"
+          class="com.fintech.orion.resource.persistence.workflow.CommonPersistenceWorkflow" scope="prototype"/>
+    <bean id="pdfPersistenceWorkflow" class="com.fintech.orion.resource.persistence.workflow.PdfPersistenceWorkflow" scope="prototype"/>
+
+    <bean id="localStoragePersistence" class="com.fintech.orion.resource.persistence.LocalStoragePersistence"
+          scope="prototype">
+        <constructor-arg value="[]"/>
+        <constructor-arg value="0"/>
+        <constructor-arg value="0"/>
+    </bean>
+
+    <util:list id="imageSupportList">
+        <bean class="com.fintech.orion.dto.resource.support.ResourceSupportDTO">
+            <property name="fileExtension" value="jpeg"/>
+            <property name="fileSizeLimit" value="10485760"/>
+        </bean>
+        <bean class="com.fintech.orion.dto.resource.support.ResourceSupportDTO">
+            <property name="fileExtension" value="jpg"/>
+            <property name="fileSizeLimit" value="10485760"/>
+        </bean>
+        <bean class="com.fintech.orion.dto.resource.support.ResourceSupportDTO">
+            <property name="fileExtension" value="pdf"/>
+            <property name="fileSizeLimit" value="10485760"/>
+        </bean>
+    </util:list>
+
+    <util:list id="videoSupportList">
+        <bean class="com.fintech.orion.dto.resource.support.ResourceSupportDTO">
+            <property name="fileExtension" value="mp4"/>
+            <property name="fileSizeLimit" value="40485760"/>
+        </bean>
+    </util:list>
+
+    <util:list id="documentSupportList">
+        <bean class="com.fintech.orion.dto.resource.support.ResourceSupportDTO">
+            <property name="fileExtension" value="json"/>
+            <property name="fileSizeLimit" value="2097152"/>
+        </bean>
+    </util:list>
+
+    <bean id="imageResourceSupport" class="com.fintech.orion.resource.support.CommonResourceSupport">
+        <constructor-arg ref="imageSupportList"/>
+    </bean>
+
+    <bean id="videoResourceSupport" class="com.fintech.orion.resource.support.CommonResourceSupport">
+        <constructor-arg ref="videoSupportList"/>
+    </bean>
+
+    <bean id="documentResourceSupport" class="com.fintech.orion.resource.support.CommonResourceSupport">
+        <constructor-arg ref="documentSupportList"/>
+    </bean>
+
+    <bean id="commonValidation" class="com.fintech.orion.resource.validation.CommonValidation" scope="prototype" >
+        <constructor-arg>
+            <null />
+        </constructor-arg>
+    </bean>
+
+    <bean id="uuidFilename" class="com.fintech.orion.resource.file.name.UuidFileName" scope="prototype" />
 
 </beans>
