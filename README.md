@@ -44,16 +44,14 @@ requests.
 We uses [Semantic Versioning](http://semver.org/) for versioning. The versioning is automatically handle by the gradle 
 [Semantic Version Plugging](https://github.com/vivin/gradle-semantic-build-versioning).
 
+## Story behind our nickname
 
-## Acknowledgments
-### Story behind our nickname.
+We believe each and every solution that we build is with heart to **inspire emotions** in many lives in the world. 
+We need a meaningful name because we want to associate that mark with something that bear resemblance to its true prupose.
+After all, a name is the first emotional attachment to everything around us.
 
-We belie each and every project that we build is one of our creations. Our creations which solve a problem and **inspire
-emotions** in many lives in this world. If we did not gave a name to our precious creation it will be so un fair to it.
-How does the people who receive the benefits of this creation will ever remember it if it dose not have any name. 
-
-After all name is the first emotional attachment to everything around us. Hence we gave our project a name **Orion** 
-Greek meaning of this term is *rising in the sky* and we hope this product will rise in the software industry hence 
-we decided to take this name. Not only the product but all the other sub modules has its own name. Dive in to this 
-world of creation to discover more about our project.
+Hence we turned to Greek Methology and gave our project the name **Orion**.Greek meaning of this term is *rising in the sky* . 
+There are moments that we look upto the sky and wonder till something make sense. Our solution just do excatly that. 
+In this case, make sense about validity of identification documents ;-). 
+Not only the product but all the other sub modules has its own names. Dive into the project to know more.
 
