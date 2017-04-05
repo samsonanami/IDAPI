@@ -40,6 +40,9 @@ public class VerificationResponse {
     @JsonProperty("verificationDetails")
     private List<Verification> verificationDetails = new ArrayList<Verification>();
 
+    @JsonProperty("processingFailures")
+    private List<ProcessingFailure> processingFailures = new ArrayList<>();
+
     public VerificationResponse status(String status) {
         this.status = status;
         return this;
@@ -226,6 +229,24 @@ public class VerificationResponse {
         this.verificationDetails = verificationDetails;
     }
 
+    public VerificationResponse addProcessingFailureItem(ProcessingFailure processingFailure){
+        this.processingFailures.add(processingFailure);
+        return this;
+    }
+
+    /**
+     * Get processingFailures
+     *
+     * @return
+     */
+    @ApiModelProperty(value = "")
+    public List<ProcessingFailure> getProcessingFailures() {
+        return processingFailures;
+    }
+
+    public void setProcessingFailures(List<ProcessingFailure> processingFailures) {
+        this.processingFailures = processingFailures;
+    }
 
     @Override
     public boolean equals(Object o) {

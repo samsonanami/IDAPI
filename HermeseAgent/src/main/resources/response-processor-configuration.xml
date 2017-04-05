@@ -27,6 +27,13 @@
 
     <bean id="responseTransformerFactory" class="com.fintech.orion.hermesagentservices.transformer.factory.ResponseTransformerFactory"/>
 
-    <bean id="defaultResponseTransformer" class="com.fintech.orion.hermesagentservices.transformer.custom.GenericResponseTransformer"/>
+    <bean id="defaultResponseTransformer" class="com.fintech.orion.hermesagentservices.transformer.custom.GenericResponseTransformer">
+        <property name="idVerificationName" value="idVerification"/>
+        <property name="addressVerificationName" value="addressVerification"/>
+        <property name="criticalErrorSetOcrExtractionFieldName" value="critical_error_set"/>
+        <property name="processingFailureOcrExtractionFieldName" value="processing_failure"/>
+        <property name="verificationStatusFail" value="failed"/>
+        <property name="verificationStatusPass" value="passed"/>
+    </bean>
 
 </beans>

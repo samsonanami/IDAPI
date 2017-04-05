@@ -1,19 +1,16 @@
 package com.fintech.orion.hermesagentservices.transformer.custom;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.exceptions.transformer.RequestTransformerException;
 import com.fintech.orion.dto.response.api.*;
 import com.fintech.orion.dto.response.external.*;
+import com.fintech.orion.hermesagentservices.status.DefaultResponseTransformerStatusCalculator;
 import com.fintech.orion.hermesagentservices.transformer.ResponseTransformer;
-import com.fintech.orion.hermesagentservices.transformer.mapper.CustomValidationMapper;
-import com.fintech.orion.hermesagentservices.transformer.mapper.DataMapper;
-import com.fintech.orion.hermesagentservices.transformer.mapper.ImageMapper;
-import com.fintech.orion.hermesagentservices.transformer.mapper.VerificationMapper;
+import com.fintech.orion.hermesagentservices.transformer.mapper.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -26,13 +23,43 @@ import java.util.stream.Collectors;
  * {@link com.fintech.orion.dto.response.external.VerificationResponse VerificationResponse } is the object returned
  * from the Orion API
  * <p>
- * {@link com.fintech.orion.dto.response.external.VerificationResponse VerificationResponse } is the
  */
-public class GenericResponseTransformer implements ResponseTransformer {
+public class GenericResponseTransformer implements ResponseTransformer<VerificationResponse> {
+    private DefaultResponseTransformerStatusCalculator statusCalculator = new DefaultResponseTransformerStatusCalculator();
+
+    private String idVerificationName;
+    private String addressVerificationName;
+    private String criticalErrorSetOcrExtractionFieldName;
+    private String processingFailureOcrExtractionFieldName;
+    private String verificationStatusPass;
+    private String verificationStatusFail;
+
+    public void setIdVerificationName(String idVerificationName) {
+        this.idVerificationName = idVerificationName;
+    }
+
+    public void setAddressVerificationName(String addressVerificationName) {
+        this.addressVerificationName = addressVerificationName;
+    }
+
+    public void setCriticalErrorSetOcrExtractionFieldName(String criticalErrorSetOcrExtractionFieldName) {
+        this.criticalErrorSetOcrExtractionFieldName = criticalErrorSetOcrExtractionFieldName;
+    }
+
+    public void setProcessingFailureOcrExtractionFieldName(String processingFailureOcrExtractionFieldName) {
+        this.processingFailureOcrExtractionFieldName = processingFailureOcrExtractionFieldName;
+    }
+
+    public void setVerificationStatusPass(String verificationStatusPass) {
+        this.verificationStatusPass = verificationStatusPass;
+    }
+
+    public void setVerificationStatusFail(String verificationStatusFail) {
+        this.verificationStatusFail = verificationStatusFail;
+    }
 
     @Override
-    public String transform(VerificationProcessDetailedResponse detailedResponse) throws RequestTransformerException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public VerificationResponse transform(VerificationProcessDetailedResponse detailedResponse) throws RequestTransformerException {
 
         VerificationResponse verificationResponse = new VerificationResponse();
 
@@ -43,24 +70,18 @@ public class GenericResponseTransformer implements ResponseTransformer {
         verificationResponse.setData(transformToDataObjects(detailedResponse.getData()));
         verificationResponse.setFacialVerification(getFacialVerification(detailedResponse.getFacialMatch()));
         verificationResponse.setLivenessTest(getLivnessTest(detailedResponse.getLivenessTest()));
-        verificationResponse.setIdVerification(getIdVerificationDetails(detailedResponse));
-        verificationResponse.setAddressVerification(getAddressVerificationDetails(detailedResponse));
+        verificationResponse.setProcessingFailures(getProcessingFailures(detailedResponse.getData()));
 
+        if (isVerificationIsRequested(idVerificationName, detailedResponse.getVerificationProcessDetails())) {
+            verificationResponse.setIdVerification(getIdVerificationDetails(detailedResponse));
+        }
+        if (isVerificationIsRequested(addressVerificationName, detailedResponse.getVerificationProcessDetails())) {
+            verificationResponse.setAddressVerification(getAddressVerificationDetails(detailedResponse));
+        }
         calculateFinalVerificationStatus(verificationResponse, detailedResponse);
 
 
-        try {
-            return objectMapper.writeValueAsString(verificationResponse);
-        } catch (JsonProcessingException e) {
-            throw new RequestTransformerException(e);
-        }
-    }
-
-    private List<Data> transformToDataObjects(List<FieldData> input) {
-        DataMapper dataMapper = Mappers.getMapper(DataMapper.class);
-        return input.stream()
-                .map(element -> dataMapper.fieldDataToData(element))
-                .collect(Collectors.toList());
+        return verificationResponse;
     }
 
     private List<Image> getImageDetails(List<ImageDetail> imageDetails) {
@@ -77,12 +98,11 @@ public class GenericResponseTransformer implements ResponseTransformer {
                 .collect(Collectors.toList());
     }
 
-    private List<CustomValidation> getCustomValidations(List<ValidationData> validationDataList) {
-        CustomValidationMapper customValidationMapper = Mappers.getMapper(CustomValidationMapper.class);
-        return validationDataList.stream()
-                .map(element -> customValidationMapper.validationDataToCustomValidation(element))
+    private List<Data> transformToDataObjects(List<FieldData> input) {
+        DataMapper dataMapper = Mappers.getMapper(DataMapper.class);
+        return input.stream()
+                .map(element -> dataMapper.fieldDataToData(element))
                 .collect(Collectors.toList());
-
     }
 
     private FacialVerification getFacialVerification(String status) {
@@ -98,14 +118,33 @@ public class GenericResponseTransformer implements ResponseTransformer {
         return livenessTest;
     }
 
+
+    private List<ProcessingFailure> getProcessingFailures(List<FieldData> fieldDataList) {
+        ProcessingFailureMapper processingFailureMapper = Mappers.getMapper(ProcessingFailureMapper.class);
+        List<ProcessingFailure> processingFailureList = new ArrayList<>();
+        Optional<FieldData> filteredFieldData =
+                fieldDataList.stream()
+                        .filter(fieldData -> fieldData.getId().equalsIgnoreCase(processingFailureOcrExtractionFieldName))
+                        .findFirst();
+        if (filteredFieldData.isPresent()) {
+            FieldData processingFailureFieldData = filteredFieldData.get();
+            processingFailureList.addAll(processingFailureFieldData.getValue().stream()
+                    .map(fieldDataValue -> processingFailureMapper.fieldDataToProcessingFailure(fieldDataValue))
+                    .collect(Collectors.toList()));
+        }
+
+        return processingFailureList;
+
+    }
+
+
     private IdVerification getIdVerificationDetails(VerificationProcessDetailedResponse detailedResponse) {
         IdVerification idVerification = new IdVerification();
-        if(isVerificationIsRequested("idVerification", detailedResponse.getVerificationProcessDetails())){
-            idVerification.setDataValidations(getDocumentMrzVizValidations(detailedResponse,
-                    "idVerification"));
-            idVerification.setCustomValidations(getCustomValidations(detailedResponse.getIdDocFullValidations()));
-            idVerification.setStatus(calculateIntermediateStatus(idVerification.getCustomValidations(), idVerification.getDataValidations()));
-        }
+        idVerification.setDataValidations(getDocumentMrzVizValidations(detailedResponse,
+                idVerificationName));
+        idVerification.setCustomValidations(getCustomValidations(detailedResponse.getIdDocFullValidations()));
+        idVerification.setStatus(calculateIntermediateStatus(idVerification.getCustomValidations(), idVerification.getDataValidations()));
+
 
         return idVerification;
 
@@ -113,14 +152,13 @@ public class GenericResponseTransformer implements ResponseTransformer {
 
     private AddressVerification getAddressVerificationDetails(VerificationProcessDetailedResponse detailedResponse) {
         AddressVerification addressVerification = new AddressVerification();
-        if(isVerificationIsRequested("addressVerification", detailedResponse.getVerificationProcessDetails())){
-            addressVerification.setDataValidations(getDocumentMrzVizValidations(detailedResponse,
-                    "addressVerification"));
-            addressVerification.setCustomValidations(getCustomValidations(detailedResponse.getAddressDocFullValidations()));
-            addressVerification.setStatus(calculateIntermediateStatus(addressVerification.getCustomValidations(), addressVerification.getDataValidations()));
-        }
+        addressVerification.setDataValidations(getDocumentMrzVizValidations(detailedResponse, addressVerificationName));
+        addressVerification.setCustomValidations(getCustomValidations(detailedResponse.getAddressDocFullValidations()));
+        addressVerification.setStatus(calculateIntermediateStatus(addressVerification.getCustomValidations(), addressVerification.getDataValidations()));
+
         return addressVerification;
     }
+
 
     private List<DocumentMrzVizValidation> getDocumentMrzVizValidations(
             VerificationProcessDetailedResponse detailedResponse,
@@ -129,11 +167,15 @@ public class GenericResponseTransformer implements ResponseTransformer {
         VerificationProcessDetail verificationProcessDetail =
                 verificationProcessDetailByProcessType(verificationProcessType, detailedResponse);
         for (ImageDetail imageDetail : verificationProcessDetail.getImageDetails()) {
-            DocumentMrzVizValidation documentDataValidation = new DocumentMrzVizValidation();
-            documentDataValidation.setDocument(imageDetail.getResourceName());
-            documentDataValidation.setValidations(getMrzVizValidationForDocument(imageDetail.getResourceName(), detailedResponse));
+            List<MrzVizValidation> validations =
+                    getMrzVizValidationForDocument(imageDetail.getResourceName(), detailedResponse);
+            if (!validations.isEmpty()) {
+                DocumentMrzVizValidation documentDataValidation = new DocumentMrzVizValidation();
+                documentDataValidation.setDocument(imageDetail.getResourceName());
+                documentDataValidation.setValidations(validations);
 
-            documentMrzVizValidations.add(documentDataValidation);
+                documentMrzVizValidations.add(documentDataValidation);
+            }
         }
         return documentMrzVizValidations;
     }
@@ -170,6 +212,15 @@ public class GenericResponseTransformer implements ResponseTransformer {
         return values;
     }
 
+    private List<CustomValidation> getCustomValidations(List<ValidationData> validationDataList) {
+        CustomValidationMapper customValidationMapper = Mappers.getMapper(CustomValidationMapper.class);
+        return validationDataList.stream()
+                .filter(element -> !element.getId().equalsIgnoreCase(criticalErrorSetOcrExtractionFieldName))
+                .map(element -> customValidationMapper.validationDataToCustomValidation(element))
+                .collect(Collectors.toList());
+
+    }
+
     private VerificationProcessDetail verificationProcessDetailByProcessType(String verificationProcessType,
                                                                              VerificationProcessDetailedResponse detailedResponse) {
         VerificationProcessDetail processDetail = new VerificationProcessDetail();
@@ -183,10 +234,10 @@ public class GenericResponseTransformer implements ResponseTransformer {
     }
 
     private boolean isVerificationIsRequested(String verificationRequestType,
-                                              List<VerificationProcessDetail> verificationProcessDetails){
+                                              List<VerificationProcessDetail> verificationProcessDetails) {
         boolean isVerificationFound = false;
-        for (VerificationProcessDetail verificationProcessDetail : verificationProcessDetails){
-            if (verificationProcessDetail.getVerificationProcessName().equalsIgnoreCase(verificationRequestType)){
+        for (VerificationProcessDetail verificationProcessDetail : verificationProcessDetails) {
+            if (verificationProcessDetail.getVerificationProcessName().equalsIgnoreCase(verificationRequestType)) {
                 isVerificationFound = true;
                 break;
             }
@@ -196,57 +247,19 @@ public class GenericResponseTransformer implements ResponseTransformer {
     }
 
     private boolean calculateIntermediateStatus(List<CustomValidation> customValidations,
-                                                List<DocumentMrzVizValidation> documentMrzVizValidations ){
-        boolean verificationStatus = true;
-
-        for (CustomValidation customValidation : customValidations){
-            if (!customValidation.getStatus()){
-                verificationStatus = false;
-            }
-        }
-
-        for (DocumentMrzVizValidation documentMrzVizValidation : documentMrzVizValidations){
-            for (MrzVizValidation mrzVizValidation : documentMrzVizValidation.getValidations()){
-                if (mrzVizValidation.getStatus()){
-                    verificationStatus = false;
-                }
-            }
-        }
-        return verificationStatus;
+                                                List<DocumentMrzVizValidation> documentMrzVizValidations) {
+        return statusCalculator.calculateSingleVerificationProcessStatus(customValidations, documentMrzVizValidations);
     }
 
     private void calculateFinalVerificationStatus(VerificationResponse verificationResponse,
-                                             VerificationProcessDetailedResponse detailedResponse){
-        boolean finalVerificationStatus = true;
-        if (isVerificationIsRequested("facialVerification",
-                detailedResponse.getVerificationProcessDetails()) &&
-                !verificationResponse.getFacialVerification().getStatus().equalsIgnoreCase("passed")){
-            finalVerificationStatus = false;
+                                                  VerificationProcessDetailedResponse detailedResponse) {
+        boolean finalVerificationStatus = statusCalculator
+                .calculateFinalVerificationStatus(detailedResponse, verificationResponse);
+        if (finalVerificationStatus) {
+            verificationResponse.setStatus(verificationStatusPass);
+        } else {
+            verificationResponse.setStatus(verificationStatusFail);
         }
-
-        if (isVerificationIsRequested("facialVerification",
-                detailedResponse.getVerificationProcessDetails()) &&
-                !verificationResponse.getFacialVerification().getStatus().equalsIgnoreCase("passed")){
-            finalVerificationStatus = false;
-        }
-
-        if (isVerificationIsRequested("idVerification",
-                detailedResponse.getVerificationProcessDetails()) &&
-                !verificationResponse.getIdVerification().getStatus()){
-            finalVerificationStatus = false;
-        }
-
-        if (isVerificationIsRequested("addressVerification",
-                detailedResponse.getVerificationProcessDetails()) &&
-                !verificationResponse.getAddressVerification().getStatus()){
-            finalVerificationStatus = false;
-        }
-        if (finalVerificationStatus){
-            verificationResponse.setStatus("passed");
-        }else {
-            verificationResponse.setStatus("failed");
-        }
-
     }
 
 }

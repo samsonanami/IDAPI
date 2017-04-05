@@ -3,6 +3,9 @@ Orion - Changelog
 
 Unreleased
 ----------
+API JSON structure change Changing API output JSON format
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 Merge branch 'ocr-result-decoding-factory' into 'develop' Ocr value translator
 
 Set of translators to translate a given ocr value in to either a string or a date.

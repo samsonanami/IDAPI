@@ -3,7 +3,7 @@ package com.fintech.orion.hermesagentservices.transformer;
 import com.fintech.orion.common.exceptions.transformer.RequestTransformerException;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 
-public interface ResponseTransformer {
+public interface ResponseTransformer<E> {
 
-    String transform(VerificationProcessDetailedResponse detailedResponse) throws RequestTransformerException;
+    E transform(VerificationProcessDetailedResponse detailedResponse) throws RequestTransformerException;
 }
