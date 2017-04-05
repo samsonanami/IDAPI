@@ -3,6 +3,10 @@ Orion - Changelog
 
 Unreleased
 ----------
+IDAPI : Orion : Fixed Multi Page PDF Exception  (Tharindu)(tharindump@zone24x7.com)
+
+IDAPI : Orion : Added PDF Support + Refactor Content Upload Endpoint  (Tharindu)(tharindump@zone24x7.com)
+
 Merge branch 'ocr-result-decoding-factory' into 'develop' Ocr value translator
 
 Set of translators to translate a given ocr value in to either a string or a date.

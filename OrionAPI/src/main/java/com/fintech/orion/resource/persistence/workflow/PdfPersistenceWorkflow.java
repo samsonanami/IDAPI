@@ -30,7 +30,11 @@ public class PdfPersistenceWorkflow extends AbstractPersistenceWorkflow implemen
             persist(resourceBytes, uuidFilename.getUniqueFileName("pdf"));
 
             // Persist JPG
-            return persist(jpgBytes, uuidFilename.getUniqueFileName("jpg"));
+            String filename = uuidFilename.getUniqueFileName("jpg");
+            persist(jpgBytes, filename);
+
+            // return filename
+            return filename;
 
         } catch (IOException e) {
             throw new PersistenceException("PDF Persistence Workflow Failed Failed", e);

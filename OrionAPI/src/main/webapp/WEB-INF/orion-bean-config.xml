@@ -23,8 +23,6 @@
     <bean id="resourceAccessValidator" class="com.fintech.orion.api.service.validator.ResourceAccessValidator"/>
     <bean id="processingRequestHandlerInterface" class="com.fintech.orion.api.service.request.ProcessingRequestService" />
     <bean id="clientValidatorInterface" class="com.fintech.orion.api.service.validator.ClientValidator" />
-
-    <bean id="fileValidator" class="com.fintech.orion.api.service.validator.file.FileValidator" />
     <bean id="localFilePersistence" class="com.fintech.orion.api.service.io.file.LocalFilePersistence" />
     <bean id="genericDestinationProvider" class="com.fintech.orion.api.service.io.destination.generic.GenericDestinationProvider" />
 
@@ -44,14 +42,6 @@
     <bean id="validatorFactory" class="org.springframework.beans.factory.config.ServiceLocatorFactoryBean">
         <property name="serviceLocatorInterface" value="com.fintech.orion.dto.validator.ValidatorFactoryInterface" />
     </bean>
-
-
-    <util:map id="supportedFilesAndSizes" value-type="java.lang.Integer">
-        <entry key="jpeg" value="10485760"/>
-        <entry key="jpg" value="10485760"/>
-        <entry key="json" value="2097152"/>
-        <entry key="mp4" value="40485760"/>
-    </util:map>
 
     <bean id="pdfFile" class="com.fintech.orion.resource.file.pdf.CommonPdfFile" scope="prototype">
         <constructor-arg value="[]"/>
