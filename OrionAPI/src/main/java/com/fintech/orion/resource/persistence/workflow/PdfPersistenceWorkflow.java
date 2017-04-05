@@ -55,7 +55,11 @@ public class PdfPersistenceWorkflow extends AbstractPersistenceWorkflow implemen
             // conversion
             return pdfPdfFile.convertToJpeg();
 
-        } catch (Exception e) {
+        }
+        catch (PersistenceBusinessException e) {
+            throw e;
+        }
+        catch (Exception e) {
             throw new PersistenceException("PDF File to Image Conversion Failed", e);
         }
     }
