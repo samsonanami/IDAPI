@@ -2,17 +2,17 @@ package com.fintech.orion.rest;
 
 import com.fintech.orion.api.service.client.ClientLicenseServiceInterface;
 import com.fintech.orion.api.service.exceptions.ClientServiceException;
-import com.fintech.orion.api.service.exceptions.FileValidatorException;
-import com.fintech.orion.api.service.validator.file.FileValidatorInterface;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
 import com.fintech.orion.dto.response.api.ResourceUploadResponse;
 import com.fintech.orion.dto.validation.file.ValidatorStatus;
-import com.fintech.orion.exception.FileHandlerException;
+import com.fintech.orion.exception.BusinessException;
 import com.fintech.orion.exception.ResourceCreationException;
-import com.fintech.orion.service.core.file.FileHandlerServiceInterface;
-import com.fintech.orion.service.core.file.FileStorage;
+import com.fintech.orion.resource.Resource;
+import com.fintech.orion.resource.builder.ResourceBuilder;
+import com.fintech.orion.resource.persistence.exception.PersistenceException;
+import com.fintech.orion.resource.upload.UploadResource;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +38,9 @@ public class ContentApiController implements ContentApi {
     @Autowired
     private ClientLicenseServiceInterface clientService;
     @Autowired
-    private FileValidatorInterface fileValidator;
-    @Autowired
-    private FileHandlerServiceInterface fileHandlerService;
-    @Autowired
-    private String workingDir;
-    @Autowired
     private ResourceServiceInterface resourceServiceInterface;
+    @Autowired
+    private ResourceBuilder resourceBuilder;
 
     public ResponseEntity<Object> contentContentTypePost(
             @ApiParam(value = "type of the content you are submiting \"image\" \"video\" \"file\"",required=true )
@@ -59,42 +55,44 @@ public class ContentApiController implements ContentApi {
         try {
             clientService.getActiveLicenseOfClient(principal.getName());
 
-            ValidatorStatus validatorStatus = fileValidator.validateFile(file);
-            if (!validatorStatus.isPassed()) {
-                errorMessage.setMessage(validatorStatus.getMessage());
+            UploadResource uploadResource = new UploadResource(file, contentType);
+            Resource resource = resourceBuilder.build(uploadResource);
+            ValidatorStatus status = resource.validate();
+
+            if(status.isPassed()) {
+                String fileName = resource.persist();
+                ResourceDTO resourceDTO = resourceServiceInterface.createResourceForUser(fileName, contentType, principal.getName());
+                ResourceUploadResponse uploadResponse = new ResourceUploadResponse();
+                uploadResponse.setResourceReferenceCode(resourceDTO.getResourceIdentificationCode());
+                responseEntity = new ResponseEntity<Object>(uploadResponse, HttpStatus.OK);
+
+            } else
+            {
                 errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
-                return new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
+                errorMessage.setMessage(status.getMessage());
+                responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
             }
-
-            String fileName = fileHandlerService.persistFile(file, FileStorage.LOCAL, workingDir);
-
-            ResourceDTO resourceDTO = resourceServiceInterface.createResourceForUser(fileName, contentType, principal.getName());
-
-            ResourceUploadResponse uploadResponse = new ResourceUploadResponse();
-            uploadResponse.setResourceReferenceCode(resourceDTO.getResourceIdentificationCode());
-
-            responseEntity = new ResponseEntity<Object>(uploadResponse, HttpStatus.OK);
 
         } catch (ClientServiceException e) {
             LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(), e);
             errorMessage.setMessage("Your license is expired or suspended. Please contact support");
             errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
             responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
-        } catch (FileValidatorException e) {
-            LOGGER.error("File Verification encountered an exeption", e);
-            errorMessage.setMessage("Internal server error. Please check your request and try agian");
-            errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            responseEntity = new ResponseEntity<Object>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (ResourceCreationException e) {
             LOGGER.error("Unable to create resource with content type {} requested by user {} ",  contentType, principal.getName(), e);
             errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
             errorMessage.setMessage("Bad request : " + e.getMessage());
             responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
-        } catch (FileHandlerException e) {
-            LOGGER.error("Unable to save the multipart file in location : " + workingDir, e);
-            errorMessage.setMessage("Internal server error. Please check your request and try agian");
+        } catch (PersistenceException e) {
+            LOGGER.error("Unable to Persist Resource", e);
             errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            responseEntity = new ResponseEntity<Object>(errorMessage,HttpStatus.INTERNAL_SERVER_ERROR);
+            errorMessage.setMessage("Internal Server Error");
+            responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (BusinessException e) {
+            LOGGER.warn("Business Exception", e);
+            errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
+            errorMessage.setMessage("Bad request : " + e.getMessage());
+            responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
         }
 
         return responseEntity;

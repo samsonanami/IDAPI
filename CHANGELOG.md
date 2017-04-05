@@ -3,6 +3,15 @@ Orion - Changelog
 
 Unreleased
 ----------
+Merge branch 'ocr-result-decoding-factory' into 'develop' Ocr value translator
+
+Set of translators to translate a given ocr value in to either a string or a date.
+
+See merge request !64 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Ocr value translator Set of translators to translate a given ocr value in to either a string or a date.
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 data validations runs on a defined template category a given data validation will only run on a configured resource list.
  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 

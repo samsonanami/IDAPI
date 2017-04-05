@@ -9,6 +9,18 @@ public class ValidatorStatus {
     private boolean isPassed;
     private String message;
 
+    public ValidatorStatus() {
+    }
+
+    public ValidatorStatus(boolean isPassed) {
+        this.isPassed = isPassed;
+    }
+
+    public ValidatorStatus(boolean isPassed, String message) {
+        this.isPassed = isPassed;
+        this.message = message;
+    }
+
     public boolean isPassed() {
         return isPassed;
     }
