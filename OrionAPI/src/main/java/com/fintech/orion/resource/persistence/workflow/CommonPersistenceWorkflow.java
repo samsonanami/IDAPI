@@ -20,7 +20,9 @@ public class CommonPersistenceWorkflow extends AbstractPersistenceWorkflow imple
     @Override
     public String execute(UploadResource uploadResource) throws PersistenceException {
         try {
-            return persist(uploadResource.getResourceBytes(), uuidFilename.getUniqueFileName(uploadResource.getResourceExtension()));
+            String filename = uuidFilename.getUniqueFileName(uploadResource.getResourceExtension());
+            persist(uploadResource.getResourceBytes(), filename);
+            return filename;
         } catch (IOException e) {
             throw new PersistenceException("Getting Resource Bytes Failed", e);
         }
