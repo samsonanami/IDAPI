@@ -30,6 +30,7 @@
     <bean id="defaultResponseTransformer" class="com.fintech.orion.hermesagentservices.transformer.custom.GenericResponseTransformer">
         <property name="idVerificationName" value="idVerification"/>
         <property name="addressVerificationName" value="addressVerification"/>
+        <property name="facialVerificationName" value="facialVerification"/>
         <property name="criticalErrorSetOcrExtractionFieldName" value="critical_error_set"/>
         <property name="processingFailureOcrExtractionFieldName" value="processing_failure"/>
         <property name="verificationStatusFail" value="failed"/>
