@@ -7,7 +7,6 @@ import com.fintech.orion.api.service.request.ProcessingRequestServiceTest;
 import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceTest;
 import com.fintech.orion.api.service.validator.ClientValidatorTest;
 import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorTest;
-import com.fintech.orion.api.service.validator.file.FileValidatorTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -22,7 +21,6 @@ import org.junit.runners.Suite;
         GenericDestinationProviderTest.class,
         LocalFilePersistenceTest.class,
         ProcessingRequestServiceTest.class,
-        FileValidatorTest.class,
         ClientLicenseValidatorServiceTest.class,
         ClientValidatorTest.class,
         ProcessingRequestJsonFormatValidatorTest.class

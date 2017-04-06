@@ -3,8 +3,9 @@ Orion - Changelog
 
 Unreleased
 ----------
-API JSON structure change Changing API output JSON format
- (Sasitha Gunadasa)(sasithag@zone24x7.com)
+IDAPI : Orion : Fixed Multi Page PDF Exception  (Tharindu)(tharindump@zone24x7.com)
+
+IDAPI : Orion : Added PDF Support + Refactor Content Upload Endpoint  (Tharindu)(tharindump@zone24x7.com)
 
 Merge branch 'ocr-result-decoding-factory' into 'develop' Ocr value translator
 
