@@ -8,11 +8,11 @@ import java.util.List;
 /**
  * Created by sasitha on 2/17/17.
  */
-public abstract class RequestProcessorChain {
+public abstract class ResponseProcessorChain {
 
-    private RequestProcessorChain next;
+    private ResponseProcessorChain next;
 
-    public void setNext(RequestProcessorChain chain){
+    public void setNext(ResponseProcessorChain chain){
         this.next = chain;
     }
 

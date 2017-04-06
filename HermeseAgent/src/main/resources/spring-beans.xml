@@ -30,14 +30,7 @@
     <bean id="orchestrator" class="com.fintech.orion.hermes.orchestrator.VerificationOrchestrator"/>
     <bean id="licenseHandler" class="com.fintech.orion.hermesagentservices.license.LicenseHandler"/>
 
-    <bean id="requestProcessorFactory" class="com.fintech.orion.hermesagentservices.processor.request.processor.RequestProcessorFactory"/>
-    <bean id="hermeseRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.HermeseRequestProcessor"/>
-    <bean id="hermesResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.HermesResponseProcessor"/>
-    <bean id="oracleRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.processor.OracleRequestProcessor"/>
-    <bean id="oracleResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.OracleResponseProcessor"/>
 
-    <bean id="compressionLabsRequestProcessor" class="com.fintech.orion.hermesagentservices.processor.request.processor.CompressionLabsRequestProcessor"/>
-    <bean id="facialVerificationProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialVerificationProcessor"/>
 
     <bean id="requestSubmitter" class="com.fintech.orion.hermesagentservices.transmission.request.submit.RequestSubmitter"/>
 

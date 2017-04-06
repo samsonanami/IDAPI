@@ -50,6 +50,7 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Document Expiry Date Verification");
+        validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 

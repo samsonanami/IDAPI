@@ -65,6 +65,7 @@ public class AddressValidation extends ValidationHelper implements CustomValidat
                     "dose not have any address field to do the address verification");
         }
         validationData.setId("address Verification");
+        validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 

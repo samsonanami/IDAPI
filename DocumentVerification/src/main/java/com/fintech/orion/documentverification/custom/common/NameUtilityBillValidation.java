@@ -55,6 +55,7 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
         }
 
         validationData.setId("Utility bill name verification");
+        validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 

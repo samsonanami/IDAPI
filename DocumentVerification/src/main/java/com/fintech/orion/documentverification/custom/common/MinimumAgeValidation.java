@@ -59,6 +59,7 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
             validationData.setRemarks(getSuccessRemarksMessage());
         }
         validationData.setId("Minimum Age Verification");
+        validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 

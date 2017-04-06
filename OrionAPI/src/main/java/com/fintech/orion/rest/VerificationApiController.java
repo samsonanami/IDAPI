@@ -15,6 +15,7 @@ import com.fintech.orion.dto.response.api.GenericErrorMessage;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
+import com.fintech.orion.dto.response.external.VerificationResponse;
 import com.fintech.orion.jobchanel.producer.MessageProducer;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -149,7 +150,7 @@ public class VerificationApiController implements VerificationApi {
     public ResponseEntity<Object> verificationVerificationIdGet(
             @ApiParam(value = "verification id",required=true ) @PathVariable("verificationId") String verificationId,
             HttpServletResponse response, HttpServletRequest request) {
-        VerificationProcessDetailedResponse verificationResponse;
+        VerificationResponse verificationResponse;
         ResponseEntity<Object> responseEntity =null;
         Principal principal = request.getUserPrincipal();
         GenericErrorMessage errorMessage = new GenericErrorMessage();

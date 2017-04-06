@@ -43,6 +43,12 @@ public class VerificationProcessDetailedResponse {
     @JsonProperty("addressDocFullValidations")
     private List<ValidationData> addressDocFullValidations = new ArrayList<ValidationData>();
 
+    @JsonProperty("imageDetails")
+    private List<ImageDetail> imageDetails = new ArrayList<>();
+
+    @JsonProperty("verificationProcessDetails")
+    private List<VerificationProcessDetail> verificationProcessDetails = new ArrayList<>();
+
     public VerificationProcessDetailedResponse facialMatch(String facialMatch) {
         this.facialMatch = facialMatch;
         return this;
@@ -263,6 +269,21 @@ public class VerificationProcessDetailedResponse {
         this.addressDocFullValidations = addressDocFullValidations;
     }
 
+    public List<ImageDetail> getImageDetails() {
+        return imageDetails;
+    }
+
+    public void setImageDetails(List<ImageDetail> imageDetails) {
+        this.imageDetails = imageDetails;
+    }
+
+    public List<VerificationProcessDetail> getVerificationProcessDetails() {
+        return verificationProcessDetails;
+    }
+
+    public void setVerificationProcessDetails(List<VerificationProcessDetail> verificationProcessDetails) {
+        this.verificationProcessDetails = verificationProcessDetails;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -296,6 +317,8 @@ public class VerificationProcessDetailedResponse {
         sb.append("    dataValidation: ").append(toIndentedString(dataValidation)).append("\n");
         sb.append("    idDocFullValidations: ").append(toIndentedString(idDocFullValidations)).append("\n");
         sb.append("    addressDocFullValidations: ").append(toIndentedString(addressDocFullValidations)).append("\n");
+        sb.append("    imageDetails: ").append(toIndentedString(imageDetails)).append("\n");
+        sb.append("    verificationProcessDetails: ").append(toIndentedString(verificationProcessDetails)).append("\n");
         sb.append("}");
         return sb.toString();
     }

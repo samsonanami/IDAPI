@@ -19,6 +19,8 @@
     <import resource="driving-license-config.xml"/>
     <import resource="passport-mrz-decode.xml"/>
     <import resource="sanitizer-config.xml"/>
+    <import resource="request-processor-configuration.xml"/>
+    <import resource="response-processor-configuration.xml"/>
     <import resource="document-verification-config.xml"/>
 
 </beans>
