@@ -25,10 +25,11 @@ import java.util.stream.Collectors;
  * <p>
  */
 public class GenericResponseTransformer implements ResponseTransformer<VerificationResponse> {
-    private DefaultResponseTransformerStatusCalculator statusCalculator = new DefaultResponseTransformerStatusCalculator();
+    private DefaultResponseTransformerStatusCalculator statusCalculator;
 
     private String idVerificationName;
     private String addressVerificationName;
+    private String facialVerificationName;
     private String criticalErrorSetOcrExtractionFieldName;
     private String processingFailureOcrExtractionFieldName;
     private String verificationStatusPass;
@@ -58,9 +59,13 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
         this.verificationStatusFail = verificationStatusFail;
     }
 
+    public void setFacialVerificationName(String facialVerificationName) {
+        this.facialVerificationName = facialVerificationName;
+    }
+
     @Override
     public VerificationResponse transform(VerificationProcessDetailedResponse detailedResponse) throws RequestTransformerException {
-
+        statusCalculator = new DefaultResponseTransformerStatusCalculator(idVerificationName, addressVerificationName, facialVerificationName, verificationStatusPass);
         VerificationResponse verificationResponse = new VerificationResponse();
 
         verificationResponse.setVerificationRequestId(detailedResponse.getVerificationRequestId());

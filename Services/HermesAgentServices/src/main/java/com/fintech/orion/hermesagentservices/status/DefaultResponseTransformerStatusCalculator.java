@@ -10,6 +10,20 @@ import com.fintech.orion.dto.response.external.VerificationResponse;
 import java.util.List;
 
 public class DefaultResponseTransformerStatusCalculator implements VerificationProcessStatusCalculator<VerificationResponse, Boolean>{
+    private String idVerificationLiteralName;
+    private String addressVerificationLiteralName;
+    private String facialVerificationLiteralName;
+    private String passedStatusLiteral;
+
+    public DefaultResponseTransformerStatusCalculator(String idVerificationLiteralName,
+                                                      String addressVerificationLiteralName,
+                                                      String facialVerificationLiteralName,
+                                                      String passedStatusLiteral) {
+        this.idVerificationLiteralName = idVerificationLiteralName;
+        this.addressVerificationLiteralName = addressVerificationLiteralName;
+        this.facialVerificationLiteralName = facialVerificationLiteralName;
+        this.passedStatusLiteral = passedStatusLiteral;
+    }
 
     @Override
     public Boolean calculateSingleVerificationProcessStatus(List<CustomValidation> customValidations, List<DocumentMrzVizValidation> documentMrzVizValidations) {
@@ -35,25 +49,25 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
     public Boolean calculateFinalVerificationStatus(VerificationProcessDetailedResponse detailedResponse,
                                                     VerificationResponse finalVerificationResponse) {
         boolean finalVerificationStatus = true;
-        if (isVerificationIsRequested("facialVerification",
+        if (isVerificationIsRequested(facialVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
-                !finalVerificationResponse.getFacialVerification().getStatus().equalsIgnoreCase("passed")){
+                !passedStatusLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())){
             finalVerificationStatus = false;
         }
 
-        if (isVerificationIsRequested("facialVerification",
+        if (isVerificationIsRequested(facialVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
-                !finalVerificationResponse.getFacialVerification().getStatus().equalsIgnoreCase("passed")){
+                !passedStatusLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())){
             finalVerificationStatus = false;
         }
 
-        if (isVerificationIsRequested("idVerification",
+        if (isVerificationIsRequested(idVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
                 !finalVerificationResponse.getIdVerification().getStatus()){
             finalVerificationStatus = false;
         }
 
-        if (isVerificationIsRequested("addressVerification",
+        if (isVerificationIsRequested(addressVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
                 !finalVerificationResponse.getAddressVerification().getStatus()){
             finalVerificationStatus = false;
