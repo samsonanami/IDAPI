@@ -58,6 +58,11 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
                 validationData.setValidationStatus(false);
             }
         }
+        if(validationData.getValidationStatus()){
+            validationData.setRemarks(getSuccessRemarksMessage());
+        }else {
+            validationData.setRemarks(getFailedRemarksMessage());
+        }
         validationData.setId("Age limit verification");
         validationData.setCriticalValidation(isCriticalValidation());
         return validationData;

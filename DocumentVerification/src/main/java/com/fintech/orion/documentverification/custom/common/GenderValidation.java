@@ -21,6 +21,9 @@ public class GenderValidation extends ValidationHelper implements CustomValidati
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
+        if(fieldData.getValue().isEmpty()){
+            throw new CustomValidationException("Could not verify gender not enough data");
+        }
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             validationData = validateGender(fieldData);

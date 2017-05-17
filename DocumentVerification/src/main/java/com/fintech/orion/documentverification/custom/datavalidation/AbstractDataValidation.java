@@ -62,6 +62,8 @@ public class AbstractDataValidation extends ValidationHelper {
 
     private List<String> resourceNames;
 
+    private Integer vizValueSubStringLength;
+
     public DataValidation ocrExtractionFieldVizMrzDataValidation(ResourceName resourceName, OcrResponse ocrResponse)
             throws CustomValidationException {
         DataValidation dataValidation = new DataValidation();
@@ -82,7 +84,9 @@ public class AbstractDataValidation extends ValidationHelper {
                 DataValidationStrategy strategy = dataValidationStrategyProvider
                         .getValidationStrategy(dataValidationStrategyType);
                 DocumentDataValidator validator =  new DocumentDataValidator(strategy);
-
+                if(translatedVisualValue.getClass().equals(String.class) && vizValueSubStringLength != null){
+                    translatedVisualValue = translatedVisualValue.toString().substring(0, vizValueSubStringLength);
+                }
                 result = validator.executeStrategy(translatedMRZValue,
                         translatedVisualValue,
                         ocrResponseReader.getTemplateCategory(getTemplateName(documentName, ocrResponse)));
@@ -186,5 +190,9 @@ public class AbstractDataValidation extends ValidationHelper {
 
     public void setResourceNames(List<String> resourceNames) {
         this.resourceNames = resourceNames;
+    }
+
+    public void setVizValueSubStringLength(Integer vizValueSubStringLength) {
+        this.vizValueSubStringLength = vizValueSubStringLength;
     }
 }

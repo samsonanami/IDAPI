@@ -3,9 +3,53 @@ Orion - Changelog
 
 Unreleased
 ----------
+Merge branch 'json_structure_change' into 'develop' Json structure change
+
+
+
+See merge request !68 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into json_structure_change  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Handling possible null values for facialVerification status Facial verification status might be null based on the availability of the compression labs api. When calculating the final verification status this is handled.
+
+If the facial verification or liveness test status is null wile a facial verification is requested it will be considered as a failure
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'json_structure_change' into 'develop' Json structure change
+
+
+
+See merge request !67 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into json_structure_change  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'feature/pdf-support' into 'develop' PDF Support Update
+
+
+
+See merge request !66 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+IDAPI : Orion : Fixed Filename Return + Cleaned Unused Classes  (Tharindu)(tharindump@zone24x7.com)
+
+Update README.md  (Tharindu Piyasiri)(tharindump@zone24x7.com)
+
+
+Merge branch 'feature/pdf-support' into 'develop' Feature - PDF Support
+
+Feature - PDF Support
+
+See merge request !65 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 IDAPI : Orion : Fixed Multi Page PDF Exception  (Tharindu)(tharindump@zone24x7.com)
 
+processing failure data displaying as a separate section details regarding processing failures are displayed as a separate section in the JSON output.
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 IDAPI : Orion : Added PDF Support + Refactor Content Upload Endpoint  (Tharindu)(tharindump@zone24x7.com)
+
+API JSON structure change Changing API output JSON format
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
 
 Merge branch 'ocr-result-decoding-factory' into 'develop' Ocr value translator
 

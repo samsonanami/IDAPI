@@ -6,7 +6,8 @@
     <bean id="dataValidations" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
-                <ref bean="surnameVizMrzValidation"/>
+                <ref bean="passportSurnameVizMrzValidation"/>
+                <ref bean="dlSurnameVizMrzValidation"/>
                 <ref bean="dateOfBirthVizMrzValidation"/>
                 <ref bean="documentNumberVizMrzValidation"/>
                 <ref bean="genderVizMrzValidation"/>
@@ -16,7 +17,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="surnameVizMrzValidation"
+    <bean id="passportSurnameVizMrzValidation"
           class="com.fintech.orion.documentverification.custom.datavalidation.SurnameVizMrzValidation">
         <property name="ocrExtractionFieldName" value="surname"/>
         <property name="criticalValidation" value="true"/>
@@ -26,6 +27,20 @@
         <property name="resourceNames">
             <util:list>
                 <value>passport</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="dlSurnameVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.SurnameVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="surname"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate surname mrz and viz values"/>
+        <property name="successRemarksMessage" value="Successfully validated surname mrz and viz values"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="vizValueSubStringLength" value="5"/>
+        <property name="resourceNames">
+            <util:list>
                 <value>drivingLicenseFront</value>
             </util:list>
         </property>

@@ -55,8 +55,10 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
                         "DD MM/MM YY or DD.MM.YYYY");
             }
         }
-        if (!validationData.getValidationStatus()) {
+        if (validationData.getValidationStatus()) {
             validationData.setRemarks(getSuccessRemarksMessage());
+        }else {
+            validationData.setRemarks(getFailedRemarksMessage());
         }
         validationData.setId("Minimum Age Verification");
         validationData.setCriticalValidation(isCriticalValidation());

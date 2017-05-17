@@ -85,7 +85,12 @@
           class="com.fintech.orion.documentverification.custom.common.MrzCheckDigitValidation">
         <property name="ocrFieldBase" value="MRZ_Line"/>
         <property name="mrzLineCount" value="2"/>
-        <property name="resourceNameToCheckMRZ" value="passport"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+                <value>drivingLicenseFront</value>
+            </util:list>
+        </property>
         <property name="successRemarksMessage" value="MRZ check digit validation successful."/>
     </bean>
 

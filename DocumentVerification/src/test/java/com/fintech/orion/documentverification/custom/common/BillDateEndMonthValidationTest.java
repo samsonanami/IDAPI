@@ -60,7 +60,7 @@ public class BillDateEndMonthValidationTest {
         Mockito.when(dateDecoder.decodeDate("25.12.2016", templateCategory)).thenReturn(dateFormat.parse("12/25/2016"));
         OcrFieldValue utilityBillValue = new OcrFieldValue();
         utilityBillValue.setId("utilitybill##bill_date");
-        utilityBillValue.setValue("25.12.2016");
+        utilityBillValue.setValue("01.05.2017");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
         fieldValueList.add(utilityBillValue);
