@@ -3,7 +3,6 @@ package com.fintech.orion.documentverification.factory;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
-import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
 import com.fintech.orion.documentverification.custom.CustomValidation;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +20,9 @@ import java.util.Map;
  * Created by sasitha on 12/30/16.
  */
 public class AddressDocumentFullVerification extends AbstractCustomValidation implements DocumentVerification {
-    private static final String PASSPORT = "passport";
+    private static final String UTILITY_BILL = "utilityBill";
     private static final String DRIVING_LICENSE_FRONT = "drivingLicenseFront";
+    private static final String ADDRESS_VERIFICATION = "addressVerification";
     @Autowired
     private ProcessingRequestRepositoryInterface processingRequestRepositoryInterface;
 
@@ -29,8 +30,12 @@ public class AddressDocumentFullVerification extends AbstractCustomValidation im
     private ProcessRepositoryInterface processRepositoryInterface;
 
     @Autowired
-    @Qualifier("addressDocCustomValidations")
-    private List addressDocCustomValidations;
+    @Qualifier("utilityBillCustomValidationsForAddressValidation")
+    private List utilityBillCustomValidationsForAddressValidation;
+
+    @Autowired
+    @Qualifier("drivingLicenseCustomValidationsForAddressVerification")
+    private List drivingLicenseCustomValidationsForAddressVerification;
 
     @Override
     @Transactional
@@ -40,24 +45,24 @@ public class AddressDocumentFullVerification extends AbstractCustomValidation im
 
         Process documentVerificationProcess = processRepositoryInterface
                 .findProcessByProcessingRequestAndProcessType(processingRequest.getProcessingRequestIdentificationCode(),
-                        "addressVerification");
+                        ADDRESS_VERIFICATION);
 
-        Resource addressVerificationResourceName = null;
+        List<Object> verificationResults = new ArrayList<>();
         for (Resource resource : documentVerificationProcess.getResources()) {
-            if (addressVerificationResourceName == null && (PASSPORT.equalsIgnoreCase(resource.getResourceName().getName())
-                    || DRIVING_LICENSE_FRONT.equalsIgnoreCase(resource.getResourceName().getName()))) {
-                addressVerificationResourceName = resource;
-            }
-        }
-        ResourceName resourceName = new ResourceName();
-        if (addressVerificationResourceName != null) {
-            resourceName = addressVerificationResourceName.getResourceName();
+            verificationResults.addAll(executeCustomValidations(
+                    getCustomValidationList(resource.getResourceName().getName()), resource.getResourceName(), ocrResponse));
         }
 
-        return executeCustomValidations(getCustomValidationList(), resourceName, ocrResponse);
+        return verificationResults;
     }
 
-    private List<CustomValidation> getCustomValidationList() {
-        return addressDocCustomValidations;
+    private List<CustomValidation> getCustomValidationList(String documentName) {
+        List<CustomValidation> customValidationList = new ArrayList<>();
+        if(DRIVING_LICENSE_FRONT.equalsIgnoreCase(documentName)){
+            customValidationList = drivingLicenseCustomValidationsForAddressVerification;
+        }else if (UTILITY_BILL.equalsIgnoreCase(documentName)){
+            customValidationList = utilityBillCustomValidationsForAddressValidation;
+        }
+        return customValidationList;
     }
 }

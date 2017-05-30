@@ -3,6 +3,8 @@ Orion - Changelog
 
 Unreleased
 ----------
+fixed MRZ check digit validation  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 Merge branch 'json_structure_change' into 'develop' Json structure change
 
 

@@ -5,7 +5,42 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 
-    <bean id="idDocCustomValidations" class="java.util.ArrayList">
+    <bean id="addressDocCustomValidations" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
+                <ref bean="nameInUtilityBillValidation"/>
+                <ref bean="addressValidation"/>
+                <ref bean="utilityBillDateEndMonthValidation"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="drivingLicenseCustomValidationsForIdVerifications" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
+                <ref bean="minimumAgeVerification"/>
+                <ref bean="mrzCheckDigitValidation"/>
+                <ref bean="issuedDateAgeLimitValidation"/>
+                <ref bean="dateOfIssueEndYearValidation"/>
+                <ref bean="ageLimitValidation"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="drivingLicenseCustomValidationsForAddressVerification" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
+                <ref bean="addressValidation"/>
+                <ref bean="minimumAgeVerification"/>
+                <ref bean="mrzCheckDigitValidation"/>
+                <ref bean="issuedDateAgeLimitValidation"/>
+                <ref bean="dateOfIssueEndYearValidation"/>
+                <ref bean="ageLimitValidation"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="passportCustomValidationsForIdVerifications" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
                 <ref bean="genderVerification"/>
@@ -14,12 +49,11 @@
                 <ref bean="issuedDateAgeLimitValidation"/>
                 <ref bean="dateOfIssueEndYearValidation"/>
                 <ref bean="ageLimitValidation"/>
-
             </array>
         </constructor-arg>
     </bean>
 
-    <bean id="addressDocCustomValidations" class="java.util.ArrayList">
+    <bean id="utilityBillCustomValidationsForAddressValidation" class="java.util.ArrayList">
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
                 <ref bean="nameInUtilityBillValidation"/>
@@ -113,6 +147,15 @@
     </bean>
 
     <bean id="dateOfIssueEndYearValidation"
+          class="com.fintech.orion.documentverification.custom.common.DateOfIssueEndYearValidation">
+        <property name="ocrExtractionFieldName" value="date_of_issue"/>
+        <property name="criticalValidation" value="false"/>
+        <property name="validYearCount" value="10"/>
+        <property name="successRemarksMessage" value="Success"/>
+        <property name="failedRemarksMessage" value="Failed"/>
+    </bean>
+
+    <bean id="dateOfIssueValidationForAddressVerification"
           class="com.fintech.orion.documentverification.custom.common.DateOfIssueEndYearValidation">
         <property name="ocrExtractionFieldName" value="date_of_issue"/>
         <property name="criticalValidation" value="false"/>

@@ -11,16 +11,20 @@ import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
 import org.joda.time.LocalDate;
 import org.joda.time.Months;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by MudithaJ on 1/2/2017.
  */
 public class BillDateEndMonthValidation extends ValidationHelper implements CustomValidation {
 
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(BillDateEndMonthValidation.class);
     private int validMonthCount;
 
     @Autowired
@@ -38,12 +42,20 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         validationData.setValidationStatus(false);
         validationData.setRemarks(getFailedRemarksMessage());
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
+        if(fieldData.getValue().isEmpty()) {
+            throw new CustomValidationException("Skipping verification because no utility bill issue date is extracted " +
+                    "from any of the given documents");
+        }
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             try {
                 validationData = validateBillDateEndMonth(fieldData, ocrResponse);
             } catch (DateDecoderException e) {
-                throw new CustomValidationException("Error Occurred while performing bill date end month verification ", e);
+                LOGGER.error("Error occurred while validating utility bill date foll ocr response is {} "
+                        , ocrResponse, e);
+                validationData.setRemarks(getFailedRemarksMessage());
+                validationData.setValidationStatus(false);
+
             }
         }
         if (validationData.getValidationStatus()) {

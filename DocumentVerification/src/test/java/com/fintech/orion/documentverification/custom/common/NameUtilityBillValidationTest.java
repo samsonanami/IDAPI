@@ -57,7 +57,7 @@ public class NameUtilityBillValidationTest {
         drivingLicenseGivenNameValue.setValue("joey");
 
         OcrFieldValue billFullNameValue = new OcrFieldValue();
-        billFullNameValue.setId("bill##fullname");
+        billFullNameValue.setId("utilityBill##fullname");
         billFullNameValue.setValue("tribiyani joey");
 
 
@@ -96,7 +96,7 @@ public class NameUtilityBillValidationTest {
         nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
         nameUtilityBillValidation.setUtilityBillNameOcrExtractionField("fullname");
         nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
-        resourceName.setName("bill");
+        resourceName.setName("utilityBill");
 
 
         ValidationData verificationData = nameUtilityBillValidation.validate(resourceName, ocrResponse);
@@ -124,7 +124,7 @@ public class NameUtilityBillValidationTest {
         drivingLicenseGivenNameValue.setValue("joey");
 
         OcrFieldValue billFullNameValue = new OcrFieldValue();
-        billFullNameValue.setId("bill##fullname");
+        billFullNameValue.setId("utilityBill##fullname");
         billFullNameValue.setValue("tribiyani joey");
 
 
@@ -163,7 +163,7 @@ public class NameUtilityBillValidationTest {
         nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
         nameUtilityBillValidation.setUtilityBillNameOcrExtractionField("fullname");
         nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
-        resourceName.setName("bill");
+        resourceName.setName("utilityBill");
 
 
         ValidationData verificationData = nameUtilityBillValidation.validate(resourceName, ocrResponse);
@@ -183,7 +183,7 @@ public class NameUtilityBillValidationTest {
 
 
         OcrFieldValue billFullNameValue = new OcrFieldValue();
-        billFullNameValue.setId("bill##fullname");
+        billFullNameValue.setId("utilityBill##fullname");
         billFullNameValue.setValue("tribiyani joey");
 
 
@@ -222,7 +222,7 @@ public class NameUtilityBillValidationTest {
         nameUtilityBillValidation.setGivenNamesOcrExtractionFieldName("givenname");
         nameUtilityBillValidation.setUtilityBillNameOcrExtractionField("fullname");
         nameUtilityBillValidation.setResourceNameListToCheck(resourceList);
-        resourceName.setName("bill");
+        resourceName.setName("utilityBill");
 
 
         ValidationData verificationData = nameUtilityBillValidation.validate(resourceName, ocrResponse);

@@ -42,7 +42,7 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
             fullNameList.add(getFullName(resourceNameToValidate, fieldDataSurname, fieldDataGivenNames));
         }
 
-        String fullName = getFieldValueById(resourceName.getName() + "##" + utilityBillNameOcrExtractionField, fieldDataUtilityBillFullName).getValue();
+        String fullName = getFieldValueById("utilityBill" + "##" + utilityBillNameOcrExtractionField, fieldDataUtilityBillFullName).getValue();
 
         validationData = validateInput(fieldDataUtilityBillFullName);
 

@@ -3,7 +3,6 @@ package com.fintech.orion.documentverification.factory;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.entities.orion.Resource;
-import com.fintech.orion.dataabstraction.entities.orion.ResourceName;
 import com.fintech.orion.dataabstraction.repositories.ProcessRepositoryInterface;
 import com.fintech.orion.dataabstraction.repositories.ProcessingRequestRepositoryInterface;
 import com.fintech.orion.documentverification.custom.CustomValidation;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +30,13 @@ public class IdentificationDocumentFullVerification extends AbstractCustomValida
     private ProcessRepositoryInterface processRepositoryInterface;
 
     @Autowired
-    @Qualifier("idDocCustomValidations")
-    private List idDocCustomValidations;
+    @Qualifier("drivingLicenseCustomValidationsForIdVerifications")
+    private List drivingLicenseCustomValidationsForIdVerifications;
+
+    @Autowired
+    @Qualifier("passportCustomValidationsForIdVerifications")
+    private List passportCustomValidationsForIdVerifications;
+
 
     @Override
     @Transactional
@@ -45,22 +50,22 @@ public class IdentificationDocumentFullVerification extends AbstractCustomValida
                 .findProcessByProcessingRequestAndProcessType(processingRequest.getProcessingRequestIdentificationCode(),
                         "idVerification");
 
-        Resource idVerificationResource = null;
+        List<Object> verificationResults = new ArrayList<>();
         for (Resource resource : documentVerificationProcess.getResources()) {
-            if (idVerificationResource == null && (PASSPORT.equalsIgnoreCase(resource.getResourceName().getName())
-                    || DRIVING_LICENSE_FRONT.equalsIgnoreCase(resource.getResourceName().getName()))) {
-                idVerificationResource = resource;
-            }
+            verificationResults.addAll(executeCustomValidations(
+                    getCustomValidationList(resource.getResourceName().getName()), resource.getResourceName(), ocrResponse));
         }
-        ResourceName resourceName = new ResourceName();
-        if (idVerificationResource != null) {
-            resourceName = idVerificationResource.getResourceName();
-        }
+        return verificationResults;
 
-        return executeCustomValidations(getCustomValidationList(), resourceName, ocrResponse);
     }
 
-    private List<CustomValidation> getCustomValidationList() {
-        return idDocCustomValidations;
+    private List<CustomValidation> getCustomValidationList(String documentName) {
+        List<CustomValidation> customValidationList = new ArrayList<>();
+        if(DRIVING_LICENSE_FRONT.equalsIgnoreCase(documentName)){
+            customValidationList = drivingLicenseCustomValidationsForIdVerifications;
+        }else if (PASSPORT.equalsIgnoreCase(documentName)){
+            customValidationList = passportCustomValidationsForIdVerifications;
+        }
+        return customValidationList;
     }
 }

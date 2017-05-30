@@ -23,7 +23,7 @@
 
                         <entry key="DLF_Ireland" value="irelandDLDateDecoder" />
                         <entry key="DLF_Sweden" value="ukDLDateDecoder" />
-                        <entry key="DLF_UK1" value="ukDLDateDecoder" />
+                        <entry key="DLF_UK" value="ukDLDateDecoder" />
                         <entry key="DLF_UK2" value="ukDLDateDecoder" />
                         <entry key="DLF_UK3" value="ukDLDateDecoder" />
 

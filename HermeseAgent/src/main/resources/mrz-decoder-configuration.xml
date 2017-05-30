@@ -48,7 +48,7 @@
                 <entry key="DLB_UK" value="IrelandDl" />
 
                 <entry key="DLF_Ireland" value="IrelandDl" />
-                <entry key="DLF_UK1" value="CommonDl" />
+                <entry key="DLF_UK" value="CommonDl" />
                 <entry key="DLF_Sweden" value="CommonDl" />
                 <entry key="DLF_UK2" value="CommonDl" />
                 <entry key="DLF_UK3" value="CommonDl" />
@@ -74,7 +74,7 @@
     <bean id="templateCategoryFactory" class="com.fintech.orion.documentverification.template.category.factory.CommonTemplateCategoryFactory" />
 
     <bean id="commonTemplateCategory" class="com.fintech.orion.documentverification.template.category.CommonTemplateCategory" scope="prototype">
-        <constructor-arg value="DLF_UK1"/>
+        <constructor-arg value="DLF_UK"/>
     </bean>
 
     <bean id="decodingConfigurationsMap" name="decodingConfigurationsMap" class="java.util.HashMap">

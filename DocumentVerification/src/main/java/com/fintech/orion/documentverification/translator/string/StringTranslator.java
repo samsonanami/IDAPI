@@ -18,6 +18,6 @@ public class StringTranslator implements OcrValueTranslator<String, String> {
      */
     @Override
     public String translate(String ocrValue, String templateName) throws TranslatorException {
-        return ocrValue;
+        return ocrValue.trim();
     }
 }

@@ -38,6 +38,9 @@ public class DateOfIssueEndYearValidation extends ValidationHelper implements Cu
 
         ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
+        if(fieldData.getValue().isEmpty()){
+            throw new CustomValidationException("Skipping validation since no document issue date was found");
+        }
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             try {
