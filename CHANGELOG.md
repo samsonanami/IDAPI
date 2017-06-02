@@ -3,6 +3,8 @@ Orion - Changelog
 
 Unreleased
 ----------
+Configuration mismatch fixed Custom verifications aggregated to document level  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 fixed MRZ check digit validation  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 
 Merge branch 'json_structure_change' into 'develop' Json structure change

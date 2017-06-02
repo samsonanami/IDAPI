@@ -22,6 +22,6 @@ public class DateSanitizer extends OracleResponseSanitizerChain{
     }
 
     private String sanitizeDate(String dirtyString) {
-        return dirtyString.replace(" ", ".");
+        return dirtyString.replace(". ", "");
     }
 }

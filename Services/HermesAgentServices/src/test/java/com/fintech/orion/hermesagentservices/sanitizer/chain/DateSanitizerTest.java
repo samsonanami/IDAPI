@@ -36,7 +36,7 @@ public class DateSanitizerTest {
     public void should_sanitize_the_ocr_response(){
         OcrFieldData ocrFieldData = new OcrFieldData();
         OcrFieldValue ocrFieldValue = new OcrFieldValue();
-        ocrFieldValue.setValue("12.10 2014");
+        ocrFieldValue.setValue(". 12.10.2014");
         ocrFieldValue.setId("passport##date_of_issue");
         List<OcrFieldValue> ocrFieldValueList = new ArrayList<>();
         ocrFieldValueList.add(ocrFieldValue);

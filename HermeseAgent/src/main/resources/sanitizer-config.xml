@@ -16,6 +16,12 @@
 
     <bean id="drivingLicenseMrzSanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.chain.DrivingLicenseMrzSanitizer">
         <property name="sanitizerConfiguration" ref="drivingLicenseMrzSanitizerConfiguration"/>
+        <property name="next" ref="surnameSanitizer"/>
+    </bean>
+
+    <bean id="surnameSanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.chain.SurnameSanitizer">
+        <property name="surnameOcrExtractionField" value="surname"/>
+        <property name="next" ref="dateSanitizer"/>
     </bean>
 
     <bean id="dateSanitizer" class="com.fintech.orion.hermesagentservices.sanitizer.chain.DateSanitizer">
@@ -51,6 +57,7 @@
                 <value>passport##date_of_birth</value>
                 <value>drivingLicenseFront##date_of_birth</value>
                 <value>drivingLicenseFront##date_of_expire</value>
+                <value>drivingLicenseFront##date_of_issue</value>
             </list>
         </property>
     </bean>
