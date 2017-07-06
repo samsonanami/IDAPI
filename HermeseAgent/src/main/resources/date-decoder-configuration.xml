@@ -32,10 +32,10 @@
                         <entry key="ID_Poland" value="commonDateDecoder" />
                         <entry key="ID_Spain" value="commonDateDecoder" />
 
-                        <entry key="P_Ireland" value="irelandPassportDateDecoder" />
-                        <entry key="P_Ireland2" value="irelandPassportDateDecoder" />
-                        <entry key="P_UK1" value="uKPassportDateDecoder" />
-                        <entry key="P_UK2" value="uKPassportDateDecoder" />
+                        <entry key="PP_Ireland" value="irelandPassportDateDecoder" />
+                        <entry key="PP_Ireland2" value="irelandPassportDateDecoder" />
+                        <entry key="PP_UK1" value="uKPassportDateDecoder" />
+                        <entry key="PP_UK2" value="uKPassportDateDecoder" />
 
                         <entry key="UB_EBS_Savings_Document" value="commonDateDecoder"/>
                         <entry key="UB_EBS_Savings_Document_2" value="simpleDateFormatter1"/>
