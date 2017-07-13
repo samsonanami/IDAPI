@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * Created by MudithaJ on 12/27/2016.
@@ -33,6 +33,7 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
     private OcrValueTranslatorFactory ocrValueTranslatorFactory;
 
     OcrValueTranslator ocrValueTranslator;
+
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
         ValidationData validationData = new ValidationData();
@@ -53,14 +54,43 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
         return validationData;
     }
 
+    private List<OcrFieldValue> filterFieldDataValueList(OcrFieldValue base, List<OcrFieldValue> values) {
+
+        String idOfTheFirstObject = base.getId();
+        String prefixOfFirstObjectId = idOfTheFirstObject.substring(0, idOfTheFirstObject.lastIndexOf('#') + 1);
+        String suffixOfFirstObjectId = idOfTheFirstObject.split("##")[2].toString();
+
+        if (suffixOfFirstObjectId.equals("PP")) {
+            String removeObjectId = prefixOfFirstObjectId.concat("NPP");
+            return values.stream().filter(p -> !p.getId().equals(removeObjectId) && !p.getId().equals(idOfTheFirstObject)).collect(Collectors.toList());
+
+        } else if (suffixOfFirstObjectId.equals("NPP")) {
+            String removeObjectId = prefixOfFirstObjectId.concat("PP");
+            return values.stream().filter(p -> !p.getId().equals(removeObjectId) && !p.getId().equals(idOfTheFirstObject)).collect(Collectors.toList());
+        }
+        return values;
+    }
+
     private ValidationData validateDateOfBirth(List<OcrFieldValue> values,
                                                OcrResponse ocrResponse) throws CustomValidationException, TranslatorException {
         ValidationData validationData = new ValidationData();
-        if (!values.isEmpty()) {
-            String firstDateOfBirth = values.iterator().next().getValue();
-            String templateCategory = getTemplateCategory(values.iterator().next().getId(), ocrResponse);
-            Date dateOfBirth = (Date) ocrValueTranslator.translate(firstDateOfBirth, templateCategory);
-            validationData = compareRestOfTheDatesWithBaseDate(dateOfBirth, values, ocrResponse);
+        if (!values.isEmpty() && values.size()>1) {
+
+            for (OcrFieldValue ocrFieldValue : values.subList(0, 2)) {
+
+                String firstDateOfBirth = ocrFieldValue.getValue();
+                String templateCategory = getTemplateCategory(ocrFieldValue.getId(), ocrResponse);
+                Date dateOfBirth = (Date) ocrValueTranslator.translate(firstDateOfBirth, templateCategory);
+
+                List<OcrFieldValue> filteredOcrFieldValueList = filterFieldDataValueList(ocrFieldValue, values);
+                validationData = compareRestOfTheDatesWithBaseDate(dateOfBirth, filteredOcrFieldValueList, ocrResponse);
+
+                if (validationData.getValidationStatus()) {
+                    return validationData;
+                }
+
+            }
+
         } else {
             validationData.setValidationStatus(false);
             validationData.setRemarks("Not Enough data to complete the validation. Need two or more date of births from" +
@@ -73,7 +103,6 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
                                                              OcrResponse ocrResponse) throws TranslatorException {
         ValidationData validationData = new ValidationData();
 
-
         for (OcrFieldValue value : values) {
             String templateCategory = getTemplateCategory(value.getId(), ocrResponse);
             Date dateOfBirth = (Date) ocrValueTranslator.translate(value.getValue(), templateCategory);
@@ -81,11 +110,11 @@ public class DateOfBirthValidation extends ValidationHelper implements CustomVal
                 validationData.setValidationStatus(false);
                 validationData.setValue(value.getValue());
                 validationData.setRemarks(getFailedRemarksMessage());
-                break;
             } else {
                 validationData.setValidationStatus(true);
                 validationData.setValue(value.getValue());
                 validationData.setRemarks(getSuccessRemarksMessage());
+                break;
             }
         }
         return validationData;
