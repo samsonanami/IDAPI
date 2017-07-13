@@ -1,6 +1,7 @@
 package com.fintech.orion.documentverification.common.mrz;
 
 import com.fintech.orion.documentverification.common.exception.DrivingLicenseMRZDecodingException;
+import com.fintech.orion.documentverification.common.exception.MRZDecodingException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -21,33 +22,28 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
 
     public MRZDecodeResults decode(String mrz) throws DrivingLicenseMRZDecodingException {
         MRZDecodeResults results = new MRZDecodeResults();
-        try {
-            this.mrzFirstLineCharacterCount = 0;
-            String mrzToProcess = mrz.replaceAll("\\s+", "");
-            Range rangeSurName = this.convertConfigPropertiesToProcessableProperties("SurName");
-            results.setSurname(this.decodeFirstnamesOfSurName(mrzToProcess, rangeSurName));
+        this.mrzFirstLineCharacterCount = 0;
+        String mrzToProcess = mrz.replaceAll("\\s+", "");
+        Range rangeSurName = this.convertConfigPropertiesToProcessableProperties("SurName");
+        results.setSurname(this.decodeFirstnamesOfSurName(mrzToProcess, rangeSurName));
 
-            Range rangeDecadeDigitOfBirthYear = this.convertConfigPropertiesToProcessableProperties("DecadeDigitOfBirthYear");
-            results.setDecadeDigitOfBirthYear(this.decodeDecadeDigitFromYearOfBirth(mrzToProcess, rangeDecadeDigitOfBirthYear));
+        Range rangeDecadeDigitOfBirthYear = this.convertConfigPropertiesToProcessableProperties("DecadeDigitOfBirthYear");
+        results.setDecadeDigitOfBirthYear(this.decodeDecadeDigitFromYearOfBirth(mrzToProcess, rangeDecadeDigitOfBirthYear));
 
-            Range rangeDateofBirthMonth = this.convertConfigPropertiesToProcessableProperties("DateofBirthMonth");
-            results.setDateofBirthMonth(this.decodeDateofBirthMonth(mrzToProcess, rangeDateofBirthMonth));
+        Range rangeDateofBirthMonth = this.convertConfigPropertiesToProcessableProperties("DateofBirthMonth");
+        results.setDateofBirthMonth(this.decodeDateofBirthMonth(mrzToProcess, rangeDateofBirthMonth));
 
-            Range rangeDateWithinTheBirthMonth = this.convertConfigPropertiesToProcessableProperties("DateWithinTheBirthMonth");
-            results.setDateWithinTheBirthMonth(this.decodeDateWithinTheBirthMonth(mrzToProcess, rangeDateWithinTheBirthMonth));
+        Range rangeDateWithinTheBirthMonth = this.convertConfigPropertiesToProcessableProperties("DateWithinTheBirthMonth");
+        results.setDateWithinTheBirthMonth(this.decodeDateWithinTheBirthMonth(mrzToProcess, rangeDateWithinTheBirthMonth));
 
-            Range rangeDateofBirthYear = this.convertConfigPropertiesToProcessableProperties("DateofBirthYear");
-            results.setDateofBirthYear(this.decodeDateofBirthYear(mrzToProcess, rangeDateofBirthYear));
+        Range rangeDateofBirthYear = this.convertConfigPropertiesToProcessableProperties("DateofBirthYear");
+        results.setDateofBirthYear(this.decodeDateofBirthYear(mrzToProcess, rangeDateofBirthYear));
 
-            Range rangeInitialsOfTheFirstName = this.convertConfigPropertiesToProcessableProperties("InitialsOfTheFirstName");
-            results.setInitialsOfTheFirstName(this.decodeInitialsOfFirstName(mrzToProcess, rangeInitialsOfTheFirstName));
+        Range rangeInitialsOfTheFirstName = this.convertConfigPropertiesToProcessableProperties("InitialsOfTheFirstName");
+        results.setInitialsOfTheFirstName(this.decodeInitialsOfFirstName(mrzToProcess, rangeInitialsOfTheFirstName));
 
-            Range rangeSex = this.convertConfigPropertiesToProcessableProperties("DateofBirthMonth");
-            results.setSex(this.decodeSex(mrzToProcess, rangeSex));
-
-        } catch (NullPointerException e) {
-            throw new DrivingLicenseMRZDecodingException("Not well formatted drivingLicense MRZ or not well set configuration properties Exception " + mrz, e);
-        }
+        Range rangeSex = this.convertConfigPropertiesToProcessableProperties("DateofBirthMonth");
+        results.setSex(this.decodeSex(mrzToProcess, rangeSex));
         return results;
     }
 
@@ -83,14 +79,18 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
         return String.valueOf(mrz.charAt(start));
     }
 
-    private String decodeDateofBirthMonth(String mrz, Range range) {
+    private String decodeDateofBirthMonth(String mrz, Range range) throws DrivingLicenseMRZDecodingException {
 
         int start = range.getStart();
         int end = range.getEnd();
         DecimalFormat formatter = new DecimalFormat("00");
         String month = mrz.substring(start, end);
-        if (Integer.parseInt(month) > 12) {
-            month = formatter.format(Integer.parseInt(month) - 50);
+        try{
+            if (Integer.parseInt(month) > 12) {
+                month = formatter.format(Integer.parseInt(month) - 50);
+            }
+        }catch (NumberFormatException ex){
+            throw new DrivingLicenseMRZDecodingException("Invalid date string : "+ month, ex);
         }
         return month;
     }
@@ -114,11 +114,16 @@ public class DrivingLicenseMZRDecodingStrategy implements MRZDecodingStrategy {
         return mrz.substring(start, end);
     }
 
-    private String decodeSex(String mrz, Range range) {
+    private String decodeSex(String mrz, Range range) throws DrivingLicenseMRZDecodingException {
         String sexMRZ = mrz.substring(range.getStart(), range.getEnd());
         String sex = "M";
-        if (Integer.parseInt(sexMRZ) > 12) {
-            sex = "F";
+        try {
+            if (Integer.parseInt(sexMRZ) > 12) {
+                sex = "F";
+            }
+        }catch (NumberFormatException ex){
+            throw new DrivingLicenseMRZDecodingException("Invalid number format for gender representation in MRZ line" +
+                    " : " + sexMRZ, ex);
         }
         return sex;
     }

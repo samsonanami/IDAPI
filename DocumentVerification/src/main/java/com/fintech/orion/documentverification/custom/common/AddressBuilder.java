@@ -23,7 +23,7 @@ public class AddressBuilder extends ValidationHelper {
             OcrFieldData ocrFieldData = getFieldDataById(ocrFieldBase + String.valueOf(i), ocrResponse);
             addressLineFieldDataList.add(ocrFieldData);
         }
-        address = getSingleValueStringFromMultipleFields(resourceName, addressLineFieldDataList, LINE_SEPARATOR);
+        address = getSingleValueStringFromMultipleFields(resourceName, addressLineFieldDataList, LINE_SEPARATOR, "NPP");
         if (address.endsWith(LINE_SEPARATOR)) {
             address = address.substring(0, address.length() - 2);
         }

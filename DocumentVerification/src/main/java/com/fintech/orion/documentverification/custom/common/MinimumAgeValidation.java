@@ -16,10 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by sasitha on 12/29/16.
+ *
  */
 
 public class MinimumAgeValidation extends ValidationHelper implements CustomValidation {
@@ -68,14 +71,19 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
     private ValidationData validateMinimumAge(OcrFieldData ocrFieldData, OcrResponse ocrResponse) throws DateComparatorException {
         ValidationData validationData = new ValidationData();
         LocalDate today = new LocalDate();
+        List<Date> processedDateList = new ArrayList<>();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = null;
             try {
                 String templateCategory = getTemplateCategory(fieldValue.getId(), ocrResponse);
                 date = dateDecoder.decodeDate(fieldValue.getValue(), templateCategory);
+                processedDateList.add(date);
             } catch (DateDecoderException e) {
                 throw new DateComparatorException("Unable to decode the given date " , e);
             }
+        }
+
+        for (Date date : processedDateList){
             LocalDate birthday = new LocalDate(date);
             Years age = Years.yearsBetween(birthday, today);
             if (age.getYears() < minimumAge) {
@@ -87,7 +95,6 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
                 validationData.setValidationStatus(true);
                 validationData.setValue(String.valueOf(age.getYears()));
             }
-
         }
         return validationData;
     }

@@ -2,6 +2,7 @@ package com.fintech.orion.documentverification.translator.string;
 
 import com.fintech.orion.documentverification.translator.OcrValueTranslator;
 import com.fintech.orion.documentverification.translator.exception.TranslatorException;
+import org.springframework.util.Assert;
 
 /**
  * The {@code StringTranslator} class translate ocr value in to a
@@ -18,6 +19,9 @@ public class StringTranslator implements OcrValueTranslator<String, String> {
      */
     @Override
     public String translate(String ocrValue, String templateName) throws TranslatorException {
+        if(ocrValue == null){
+            throw new TranslatorException("ocr value cannot be null");
+        }
         return ocrValue.trim();
     }
 }

@@ -58,10 +58,11 @@
                 <entry key="ID_Poland" value="IrelandDl" />
                 <entry key="ID_Spain" value="IrelandDl" />
 
-                <entry key="P_Ireland" value="CommonPassport" />
-                <entry key="P_Ireland2" value="CommonPassport" />
-                <entry key="P_UK1" value="CommonPassport" />
-                <entry key="P_UK2" value="CommonPassport" />
+                <entry key="PP_Ireland" value="CommonPassport" />
+                <entry key="PP_Ireland2" value="CommonPassport" />
+                <entry key="PP_UK1" value="CommonPassport" />
+                <entry key="PP_UK2" value="CommonPassport" />
+                <entry key="PP_UK3" value="CommonPassport" />
 
             </map>
         </constructor-arg>

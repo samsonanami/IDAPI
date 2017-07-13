@@ -46,19 +46,19 @@ public class AddressBuilderTest {
         addressCompareResult = new AddressCompareResult();
 
 
-        utilityBillLine1WithoutFlat.setId("utilityBill##address_line1");
+        utilityBillLine1WithoutFlat.setId("utilityBill##address_line1##NPP");
         utilityBillLine1WithoutFlat.setValue("42 PYMMES GREEN ROAD");
 
 
-        utilityBillLine1WithFlat.setId("utilityBill##address_line1");
+        utilityBillLine1WithFlat.setId("utilityBill##address_line1##NPP");
         utilityBillLine1WithFlat.setValue("FLAT 42 PYMMES GREEN ROAD");
 
 
-        dlFrontLine1.setId("drivingLicenseFront##address_line1");
+        dlFrontLine1.setId("drivingLicenseFront##address_line1##NPP");
         dlFrontLine1.setValue("42 PYMMES GREEN ROAD, LONDON, N11 1BY");
 
 
-        utilityBillLine2.setId("utilityBill##address_line2");
+        utilityBillLine2.setId("utilityBill##address_line2##NPP");
         utilityBillLine2.setValue("LONDON");
         addressLine2FieldValueList.add(utilityBillLine2);
 
@@ -66,7 +66,7 @@ public class AddressBuilderTest {
         ocrFieldAddressLine2.setValue(addressLine2FieldValueList);
 
 
-        utilityBillLine3.setId("utilityBill##address_line3");
+        utilityBillLine3.setId("utilityBill##address_line3##NPP");
         utilityBillLine3.setValue("N11 1BY");
         addressLine3FieldValueList.add(utilityBillLine3);
 

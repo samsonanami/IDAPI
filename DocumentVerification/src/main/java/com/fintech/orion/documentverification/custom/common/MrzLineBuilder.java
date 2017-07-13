@@ -8,11 +8,12 @@ import java.util.List;
 
 /**
  * Created by sasitha on 1/13/17.
+ *
  */
 public class MrzLineBuilder extends ValidationHelper {
 
     public String buildSingleLineMRZ(OcrResponse ocrResponse, String resourceName, String ocrFieldBase,
-                                     int maxMrzLineCount){
+                                     int maxMrzLineCount, String preProcessNonePreProcessTag){
         String mrzLine = "";
         List<OcrFieldData> ocrFieldDataList = new ArrayList<>();
         for (int i =1 ; i <=maxMrzLineCount; i ++){
@@ -20,7 +21,7 @@ public class MrzLineBuilder extends ValidationHelper {
             ocrFieldDataList.add(ocrFieldData);
         }
 
-        mrzLine= getSingleValueStringFromMultipleFields(resourceName, ocrFieldDataList, "");
+        mrzLine= getSingleValueStringFromMultipleFields(resourceName, ocrFieldDataList, "", preProcessNonePreProcessTag);
 
         return mrzLine;
     }

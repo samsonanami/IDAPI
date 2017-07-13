@@ -183,10 +183,11 @@ public class ValidationHelper {
     }
 
     public String getSingleValueStringFromMultipleFields(String resourceName, List<OcrFieldData> ocrFieldDataList,
-                                                         String lineSeparator) {
+                                                         String lineSeparator, String preProcessNonePreProcessTag) {
         String singleValueString = "";
         for (OcrFieldData fieldData : ocrFieldDataList) {
-            OcrFieldValue fieldValue = getFieldValueById(resourceName + "##" + fieldData.getId(), fieldData);
+            OcrFieldValue fieldValue = getFieldValueById(resourceName + "##" + fieldData.getId() +
+                    "##"+preProcessNonePreProcessTag, fieldData);
             String value = fieldValue.getValue();
             if (value != null && !value.isEmpty()) {
                 value = value.trim();
