@@ -59,7 +59,7 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
         List<String> unFilteredResourceList = getResourceListFromOcrResponse(ocrResponse);
         for (String documentName: filterResourceNameList(unFilteredResourceList)){
             String completeMrzLine = mrzLineBuilder.buildSingleLineMRZ(ocrResponse, documentName,
-                    ocrFieldBase, mrzLineCount);
+                    ocrFieldBase, mrzLineCount, "NPP");
             if (completeMrzLine != null && !completeMrzLine.isEmpty()){
                 try {
                     validationData = validateMrz(completeMrzLine, documentName, ocrResponse);

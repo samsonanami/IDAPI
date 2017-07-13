@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -56,10 +58,15 @@ public class ExpireDateValidation extends ValidationHelper implements CustomVali
 
     private ValidationData checkDocumentExpirationDate(OcrFieldData ocrFieldData, OcrResponse ocrResponse) throws DateDecoderException {
         ValidationData validationData = new ValidationData();
+        List<Date> processedDateList = new ArrayList<>();
         for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
             Date date = dateDecoder.decodeDate(fieldValue.getValue(), getTemplateCategory(fieldValue.getId(), ocrResponse));
+            processedDateList.add(date);
+
+        }
+        for (Date date : processedDateList){
             if (date.before(new Date())) {
-                validationData.setRemarks(getDocumentNameFromOcrFieldValueId(fieldValue.getId()) + getFailedRemarksMessage());
+                validationData.setRemarks(getFailedRemarksMessage());
                 validationData.setValidationStatus(false);
                 validationData.setValue(date.toString());
                 break;

@@ -62,6 +62,7 @@
                 <entry key="PP_Ireland2" value="CommonPassport" />
                 <entry key="PP_UK1" value="CommonPassport" />
                 <entry key="PP_UK2" value="CommonPassport" />
+                <entry key="PP_UK3" value="CommonPassport" />
 
             </map>
         </constructor-arg>

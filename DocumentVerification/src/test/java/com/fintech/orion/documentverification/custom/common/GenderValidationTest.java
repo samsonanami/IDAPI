@@ -41,11 +41,11 @@ public class GenderValidationTest {
     public void should_return_true_if_all_the_document_has_same_sex_mentioned() throws Exception {
 
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##sex");
+        passportValue.setId("passport##sex#NPP");
         passportValue.setValue("M");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##sex");
+        dlFrontValue.setId("drivingLicenseFront##sex#NPP");
         dlFrontValue.setValue("M");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
@@ -68,11 +68,11 @@ public class GenderValidationTest {
     @Test
     public void should_return_false_if_document_gender_is_not_matching() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##sex");
+        passportValue.setId("passport##sex#NPP");
         passportValue.setValue("Female");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##sex");
+        dlFrontValue.setId("drivingLicenseFront##sex#NPP");
         dlFrontValue.setValue("M");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
@@ -96,11 +96,11 @@ public class GenderValidationTest {
     public void should_return_true_if_first_document_gender_value_is_empty_but_second_document_has_any_value()
             throws Exception{
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##sex");
+        passportValue.setId("passport##sex#NPP");
         passportValue.setValue("");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##sex");
+        dlFrontValue.setId("drivingLicenseFront##sex#NPP");
         dlFrontValue.setValue("M");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
