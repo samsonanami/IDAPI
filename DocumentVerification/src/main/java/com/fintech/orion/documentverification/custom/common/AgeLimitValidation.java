@@ -15,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by MudithaJ on 1/2/2017.
@@ -41,39 +43,57 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
             throw new CustomValidationException("Maximum age / extraction field name parameters missing");
         }
 
-        ValidationData validationData = new ValidationData();
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
+
+        ValidationData validationData = new ValidationData();
         validationData = validateInput(fieldData);
+        List<OcrFieldValue> parsableOcrFieldValueaList = new ArrayList<>();
+
         if (validationData.getValidationStatus()) {
-            try {
-                validationData = validateAgeLimit(fieldData, ocrResponse);
-            } catch (DateDecoderException e) {
-                LOGGER.warn("Error occurred while performing an age limit verification on ocr response {} {}"
-                        , ocrResponse, e);
-                validationData.setValue(null);
-                validationData.setRemarks("Error occurred while performing age limit verification. This is most likely " +
-                        "due to an unsupported date format. Supported date formats are," +
-                        "DD MM/MM YY or DD.MM.YYYY");
-                validationData.setOcrConfidence(null);
-                validationData.setValidationStatus(false);
+
+            for (OcrFieldValue ocrFieldValue : fieldData.getValue()) {
+
+                if (isParsableDateFormat(ocrFieldValue, ocrResponse)) {
+
+                    validationData = validateAgeLimit(ocrFieldValue, ocrResponse);
+                    if (validationData.getValidationStatus()) {
+                        validationData.setRemarks(getSuccessRemarksMessage());
+                        validationData.setId("Age limit verification");
+                        validationData.setCriticalValidation(isCriticalValidation());
+                        return validationData;
+                    }
+                }
             }
+
         }
-        if(validationData.getValidationStatus()){
-            validationData.setRemarks(getSuccessRemarksMessage());
-        }else {
-            validationData.setRemarks(getFailedRemarksMessage());
-        }
+        validationData.setValidationStatus(false);
+        validationData.setRemarks(getFailedRemarksMessage());
         validationData.setId("Age limit verification");
         validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 
-    private ValidationData validateAgeLimit(OcrFieldData ocrFieldData, OcrResponse ocrResponse) throws DateDecoderException {
+    private boolean isParsableDateFormat(OcrFieldValue ocrFieldValue, OcrResponse ocrResponse) {
+
+        String templateCategory = getTemplateCategory(ocrFieldValue.getId(), ocrResponse);
+        try {
+            Date date = dateDecoder.decodeDate(ocrFieldValue.getValue(), templateCategory);
+            return true;
+        } catch (DateDecoderException dEx) {
+            LOGGER.warn("Error occurred while parsing D.O.B date field on ocr response {} {}"
+                    , ocrResponse, dEx);
+            return false;
+        }
+    }
+
+    private ValidationData validateAgeLimit(OcrFieldValue ocrFieldValue, OcrResponse ocrResponse) {
         ValidationData validationData = new ValidationData();
         LocalDate today = new LocalDate();
-        for (OcrFieldValue fieldValue : ocrFieldData.getValue()) {
-            String templateCategory = getTemplateCategory(fieldValue.getId(), ocrResponse);
-            Date date = dateDecoder.decodeDate(fieldValue.getValue(), templateCategory);
+
+        String templateCategory = getTemplateCategory(ocrFieldValue.getId(), ocrResponse);
+
+        try {
+            Date date = dateDecoder.decodeDate(ocrFieldValue.getValue(), templateCategory);
             LocalDate birthday = new LocalDate(date);
             Years age = Years.yearsBetween(birthday, today);
 
@@ -84,10 +104,12 @@ public class AgeLimitValidation extends ValidationHelper implements CustomValida
                 validationData.setRemarks(getFailedRemarksMessage());
                 validationData.setValue(String.valueOf(age.getYears()));
                 validationData.setValidationStatus(false);
-                break;
             }
-
+        } catch (DateDecoderException dEx) {
+            LOGGER.warn("Error occurred while parsing D.O.B date field on ocr response {} {}"
+                    , ocrResponse, dEx);
         }
+
         return validationData;
     }
 
