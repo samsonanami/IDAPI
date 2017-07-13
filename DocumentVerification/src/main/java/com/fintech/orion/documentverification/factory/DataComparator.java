@@ -7,7 +7,6 @@ import com.fintech.orion.documentverification.strategy.DocumentDataValidator;
 import com.fintech.orion.documentverification.strategy.ValidationResult;
 import com.fintech.orion.documentverification.translator.OcrValueTranslator;
 import com.fintech.orion.documentverification.translator.OcrValueTranslatorFactory;
-import com.fintech.orion.documentverification.translator.Translator;
 import com.fintech.orion.documentverification.translator.exception.TranslatorException;
 import com.fintech.orion.dto.configuration.DataValidationStrategyType;
 import com.fintech.orion.dto.configuration.VerificationConfiguration;
@@ -25,6 +24,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by sasitha on 12/25/16.
@@ -89,13 +89,33 @@ public class DataComparator implements DocumentVerification {
         DataValidationStrategy strategy = verificationStrategy(fieldName);
         if (strategy != null) {
             validator = new DocumentDataValidator(strategy);
-            for (FieldDataValue fieldDataValue : fieldDataValueList) {
-                fieldDataComparision.addAll(compareValueWithOtherValues(fieldDataValue, fieldDataValueList,
-                        ocrResponse, fieldName));
+
+            if (!fieldDataValueList.isEmpty()) {
+                for (FieldDataValue fieldDataValue : fieldDataValueList.subList(0, 2)) {
+
+                    fieldDataComparision.addAll(compareValueWithOtherValues(fieldDataValue, fieldDataValueList, ocrResponse, fieldName));
+                }
             }
+
         }
 
         return fieldDataComparision;
+    }
+
+    private List<FieldDataValue> filterFieldDataValueList(FieldDataValue base, List<FieldDataValue> values) {
+
+        String idOfTheFirstObject = base.getId();
+        String prefixOfFirstObjectId = idOfTheFirstObject.substring(0, idOfTheFirstObject.lastIndexOf('#') + 1);
+        String suffixOfFirstObjectId = idOfTheFirstObject.split("##")[2].toString();
+
+        if (suffixOfFirstObjectId.equals("PP")) {
+            String removeObjectId = prefixOfFirstObjectId.concat("NPP");
+            return values.stream().filter(p -> !p.getId().equals(removeObjectId)).collect(Collectors.toList());
+        } else if (suffixOfFirstObjectId.equals("NPP")) {
+            String removeObjectId = prefixOfFirstObjectId.concat("PP");
+            return values.stream().filter(p -> !p.getId().equals(removeObjectId)).collect(Collectors.toList());
+        }
+        return values;
     }
 
     private List<FieldDataComparision> compareValueWithOtherValues(FieldDataValue base, List<FieldDataValue> values
@@ -103,7 +123,11 @@ public class DataComparator implements DocumentVerification {
         OcrValueTranslator ocrValueTranslator = this.ocrValueTranslatorFactory.getOcrValueTranslator(fieldName);
 
         List<FieldDataComparision> fieldDataComparision = new ArrayList<>();
-        for (FieldDataValue value : values) {
+
+        List<FieldDataValue> filteredFieldDataValueList = filterFieldDataValueList(base, values);
+
+        for (FieldDataValue value : filteredFieldDataValueList) {
+
             if (!base.getId().equalsIgnoreCase(value.getId()) && !isComparisonsAlreadyHappens(base.getId()
                     , value.getId(), fieldDataComparision)) {
                 String baseTemplateCategory = responseReader.getTemplateCategory(base.getId(), ocrResponse);
