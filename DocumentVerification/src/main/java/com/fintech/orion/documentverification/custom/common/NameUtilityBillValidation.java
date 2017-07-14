@@ -86,7 +86,7 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
             }
         }
         validationData.setRemarks(getFailedRemarksMessage());
-        validationData.setValue(String.valueOf(null));
+        validationData.setValue(null);
         validationData.setValidationStatus(false);
         return validationData;
     }
