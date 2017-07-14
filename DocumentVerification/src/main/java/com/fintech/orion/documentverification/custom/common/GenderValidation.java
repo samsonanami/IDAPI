@@ -45,6 +45,7 @@ public class GenderValidation extends ValidationHelper implements CustomValidati
                 if (genderBaseValue != null && genderBaseValue.equals(compare)) {
                     validationData.setRemarks(getSuccessRemarksMessage() + genderBaseValue);
                     validationData.setValidationStatus(true);
+                    return validationData;
                 } else {
                     validationData.setRemarks(getFailedRemarksMessage());
                     validationData.setValidationStatus(false);
