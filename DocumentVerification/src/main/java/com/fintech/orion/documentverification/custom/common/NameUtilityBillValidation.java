@@ -32,26 +32,37 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
             throw new CustomValidationException("SurName / Given Names extraction field name parameters missing");
         }
         ValidationData validationData = new ValidationData();
-        List<String> fullNameList = new ArrayList<String>();
+        List<String> idVerificationFullNameList = new ArrayList<String>();
+        List<String> addressVerificationFullNameList = new ArrayList<String>();
 
         OcrFieldData fieldDataSurname = getFieldDataById(surnameOcrExtractionFieldName, ocrResponse);
         OcrFieldData fieldDataGivenNames = getFieldDataById(givenNamesOcrExtractionFieldName, ocrResponse);
         OcrFieldData fieldDataUtilityBillFullName = getFieldDataById(utilityBillNameOcrExtractionField, ocrResponse);
 
+        List<String> documentTypeSuffixList = new ArrayList<String>();
+        documentTypeSuffixList.add("PP");
+        documentTypeSuffixList.add("NPP");
+
         for (String resourceNameToValidate : resourceNameListToCheck) {
-            fullNameList.add(getFullName(resourceNameToValidate, fieldDataSurname, fieldDataGivenNames));
+            for (String documentTypeSuffix : documentTypeSuffixList) {
+                idVerificationFullNameList.add(getFullName(resourceNameToValidate, fieldDataSurname, fieldDataGivenNames, documentTypeSuffix));
+            }
         }
 
-        String fullName = getFieldValueById("utilityBill" + "##" + utilityBillNameOcrExtractionField, fieldDataUtilityBillFullName).getValue();
+        for (String documentTypeSuffix : documentTypeSuffixList) {
+            String fullName = getFieldValueById("utilityBill" + "##" + utilityBillNameOcrExtractionField + "##" + documentTypeSuffix,
+                    fieldDataUtilityBillFullName).getValue();
+            addressVerificationFullNameList.add(fullName);
+        }
 
         validationData = validateInput(fieldDataUtilityBillFullName);
 
         if (validationData.getValidationStatus()) {
 
-            validationData = validateBillName(fullNameList, fullName);
+            validationData = validateBillName(idVerificationFullNameList, addressVerificationFullNameList);
 
         } else {
-            validationData.setRemarks(getSuccessRemarksMessage());
+            validationData.setRemarks(getFailedRemarksMessage());
         }
 
         validationData.setId("Utility bill name verification");
@@ -59,30 +70,33 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
         return validationData;
     }
 
-    private ValidationData validateBillName(List<String> stringList, String billFullName) {
+    private ValidationData validateBillName(List<String> stringList, List<String> billFullNameList) {
         ValidationData validationData = new ValidationData();
         stringList.removeAll(Collections.singleton(null));
-        for (String fullName : stringList) {
-            if (fullName.equalsIgnoreCase(billFullName)) {
-                validationData.setValidationStatus(true);
-                validationData.setValue(billFullName);
 
-            } else {
-                validationData.setRemarks(getFailedRemarksMessage());
-                validationData.setValue(String.valueOf(billFullName));
-                validationData.setValidationStatus(false);
-                break;
+        for (String billFullName : billFullNameList) {
+
+            for (String fullName : stringList) {
+                if (fullName.equalsIgnoreCase(billFullName)) {
+                    validationData.setValidationStatus(true);
+                    validationData.setValue(billFullName);
+                    validationData.setRemarks(getSuccessRemarksMessage());
+                    return validationData;
+                }
             }
         }
+        validationData.setRemarks(getFailedRemarksMessage());
+        validationData.setValue(null);
+        validationData.setValidationStatus(false);
         return validationData;
     }
 
 
-    private String getFullName(String resourceName, OcrFieldData fieldDataSurname, OcrFieldData fieldDataGivename) {
+    private String getFullName(String resourceName, OcrFieldData fieldDataSurname, OcrFieldData fieldDataGivename, String documetTypeSuffix) {
         String fullName;
 
-        OcrFieldValue valueSurName = getFieldValueById(resourceName + "##" + surnameOcrExtractionFieldName, fieldDataSurname);
-        OcrFieldValue valueGivenName = getFieldValueById(resourceName + "##" + givenNamesOcrExtractionFieldName, fieldDataGivename);
+        OcrFieldValue valueSurName = getFieldValueById(resourceName + "##" + surnameOcrExtractionFieldName + "##" + documetTypeSuffix, fieldDataSurname);
+        OcrFieldValue valueGivenName = getFieldValueById(resourceName + "##" + givenNamesOcrExtractionFieldName + "##" + documetTypeSuffix, fieldDataGivename);
         if (valueSurName.getValue() == null || valueGivenName.getValue() == null) {
             fullName = null;
         } else {
