@@ -3,6 +3,12 @@ Orion - Changelog
 
 Unreleased
 ----------
+data validation with multiple values return by abbyy  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+mrz/date decoder configuration update with new template names  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Surname sanitizer implemented  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 Configuration mismatch fixed Custom verifications aggregated to document level  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 
 fixed MRZ check digit validation  (Sasitha Gunadasa)(sasithag@zone24x7.com)

@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,9 @@ public class DataComparator implements DocumentVerification {
 
     @Autowired
     private OcrValueTranslatorFactory ocrValueTranslatorFactory;
+
+    @Resource(name = "preProcessNonePreProcessDelimiterList")
+    private List<String> preProcessNonePreProcessDelimiterList;
 
     @Override
     public List<Object> verifyExtractedDocumentResult(OcrResponse ocrResponse, Map<String, VerificationConfiguration> configurations) {
@@ -73,11 +77,19 @@ public class DataComparator implements DocumentVerification {
     private boolean isComparisonsAlreadyHappens(String baseId, String compareId, List<FieldDataComparision> comparision) {
         boolean isComparisionPresent = false;
         for (FieldDataComparision c : comparision) {
-            if (c.getId().equalsIgnoreCase(getComparisionId(baseId, compareId)) || c.getId().equalsIgnoreCase(getComparisionId(compareId, baseId))) {
+            if (c.getId().contains(getDocumentName(baseId)) && c.getId().contains(getDocumentName(compareId))) {
                 isComparisionPresent = true;
             }
         }
         return isComparisionPresent;
+    }
+
+    private String getDocumentName(String id){
+        String documentName = "";
+        if (id.split("##").length > 0){
+            documentName = id.split("##")[0];
+        }
+        return documentName;
     }
 
     private String getComparisionId(String baseId, String compareId) {

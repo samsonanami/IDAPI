@@ -7,7 +7,9 @@ import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldData;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrFieldValue;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.response.api.ValidationData;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +23,9 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
     private String surnameOcrExtractionFieldName;
     private String givenNamesOcrExtractionFieldName;
     private List<String> resourceNameListToCheck;
+
+    @Resource(name = "preProcessNonePreProcessDelimiterList")
+    private List<String> preProcessNonePreProcessDelimiterList;
 
     @Override
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
@@ -39,17 +44,13 @@ public class NameUtilityBillValidation extends ValidationHelper implements Custo
         OcrFieldData fieldDataGivenNames = getFieldDataById(givenNamesOcrExtractionFieldName, ocrResponse);
         OcrFieldData fieldDataUtilityBillFullName = getFieldDataById(utilityBillNameOcrExtractionField, ocrResponse);
 
-        List<String> documentTypeSuffixList = new ArrayList<String>();
-        documentTypeSuffixList.add("PP");
-        documentTypeSuffixList.add("NPP");
-
         for (String resourceNameToValidate : resourceNameListToCheck) {
-            for (String documentTypeSuffix : documentTypeSuffixList) {
+            for (String documentTypeSuffix : preProcessNonePreProcessDelimiterList) {
                 idVerificationFullNameList.add(getFullName(resourceNameToValidate, fieldDataSurname, fieldDataGivenNames, documentTypeSuffix));
             }
         }
 
-        for (String documentTypeSuffix : documentTypeSuffixList) {
+        for (String documentTypeSuffix : preProcessNonePreProcessDelimiterList) {
             String fullName = getFieldValueById("utilityBill" + "##" + utilityBillNameOcrExtractionField + "##" + documentTypeSuffix,
                     fieldDataUtilityBillFullName).getValue();
             addressVerificationFullNameList.add(fullName);
