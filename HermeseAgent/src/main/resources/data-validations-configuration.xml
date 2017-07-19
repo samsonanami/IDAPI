@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="dataValidations" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
+                <ref bean="passportSurnameVizMrzValidation"/>
+                <ref bean="dlSurnameVizMrzValidation"/>
+                <ref bean="dateOfBirthVizMrzValidation"/>
+                <ref bean="documentNumberVizMrzValidation"/>
+                <ref bean="genderVizMrzValidation"/>
+                <ref bean="givenNameVizMrzValidation"/>
+                <ref bean="expireDateVizMrzValidation"/>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="passportSurnameVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.SurnameVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="surname"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate surname mrz and viz values"/>
+        <property name="successRemarksMessage" value="Successfully validated surname mrz and viz values"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="dlSurnameVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.SurnameVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="surname"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate surname mrz and viz values"/>
+        <property name="successRemarksMessage" value="Successfully validated surname mrz and viz values"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="vizValueSubStringLength" value="5"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>drivingLicenseFront</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="dateOfBirthVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.DateOfBirthVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="date_of_birth"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate date of birth"/>
+        <property name="successRemarksMessage" value="date of birth is validated"/>
+        <property name="dataValidationStrategyType" value="DATE"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+                <value>drivingLicenseFront</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="documentNumberVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.DocumentNumberVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="passport_number"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate "/>
+        <property name="successRemarksMessage" value="Verified"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="genderVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.GenderVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="sex"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate "/>
+        <property name="successRemarksMessage" value="Verified"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="givenNameVizMrzValidation"
+          class="com.fintech.orion.documentverification.custom.datavalidation.GivenNamesVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="given_names"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="Failed to validate "/>
+        <property name="successRemarksMessage" value="Verified"/>
+        <property name="dataValidationStrategyType" value="STRING"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="expireDateVizMrzValidation" class="com.fintech.orion.documentverification.custom.datavalidation.ExpireDateVizMrzValidation">
+        <property name="ocrExtractionFieldName" value="date_of_expiry"/>
+        <property name="criticalValidation" value="true"/>
+        <property name="failedRemarksMessage" value="MRZ and VIZ expire date not matching"/>
+        <property name="successRemarksMessage" value="MRZ and VIZ expire date matching"/>
+        <property name="dataValidationStrategyType" value="DATE"/>
+        <property name="resourceNames">
+            <util:list>
+                <value>passport</value>
+            </util:list>
+        </property>
+    </bean>
+
+
+</beans>

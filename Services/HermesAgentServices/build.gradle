@@ -1,0 +1,90 @@
+/*project.version.with {
+    snapshotSuffix  = "-"
+    preRelease {
+        startingVersion = "0.0.0"
+        bump { String version ->
+            int firstNum = Integer.parseInt(version.split(/\./)[0])
+            int secondNum = Integer.parseInt(version.split(/\./)[1])
+            int thirdNum = Integer.parseInt(version.split(/\./)[2])
+            if(thirdNum > 9){
+                thirdNum = 0
+                secondNum = secondNum + 1
+            }else{
+                thirdNum = thirdNum + 1
+            }
+            return "${firstNum}.${secondNum}.${thirdNum}"
+        }
+    }
+
+}*/
+
+ext {
+    javaLanguageLevel = '1.8'
+    generatedMapperSourcesDir = "${buildDir}/generated-src"
+}
+
+configurations {
+    mapstruct
+}
+
+sourceSets.main {
+    ext.originalJavaSrcDirs = java.srcDirs
+    java.srcDir "${generatedMapperSourcesDir}"
+}
+
+
+dependencies {
+    compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.3'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.3'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-web', version: '4.3.2.RELEASE'
+
+    compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: '1.0.0.Final'
+
+    mapstruct( 'org.mapstruct:mapstruct-processor:1.0.0.Final' )
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+    compile project (':OrionDataAbstraction')
+    compile project (':DocumentVerification')
+    compile project (':Services:CoreServices')
+    compile project (':DataTransferObjects')
+}
+
+task generateMainMapperClasses(type: JavaCompile) {
+    ext.aptDumpDir = file( "${buildDir}/tmp/apt/mapstruct" )
+    destinationDir = aptDumpDir
+
+    classpath = compileJava.classpath + configurations.mapstruct
+    source = sourceSets.main.originalJavaSrcDirs
+    ext.sourceDestDir = file ( "$generatedMapperSourcesDir" )
+
+    options.define(
+            compilerArgs: [
+                    "-nowarn",
+                    "-proc:only",
+                    "-encoding", "UTF-8",
+                    "-processor", "org.mapstruct.ap.MappingProcessor",
+                    "-s", sourceDestDir.absolutePath,
+                    "-source", javaLanguageLevel,
+                    "-target", javaLanguageLevel,
+            ]
+    );
+
+    inputs.dir source
+    outputs.dir generatedMapperSourcesDir;
+    doFirst {
+        sourceDestDir.mkdirs()
+    }
+    doLast {
+        aptDumpDir.delete()
+    }
+}
+
+compileJava.dependsOn generateMainMapperClasses

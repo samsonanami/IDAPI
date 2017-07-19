@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="hermesResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.HermesResponseProcessor"/>
+
+    <bean id="hermesResponseProcessorChainHead" class="com.fintech.orion.hermesagentservices.processor.response.chain.ResponseProcessorChainHead">
+        <property name="next" ref="oracleResponseProcessor"/>
+    </bean>
+    <bean id="oracleResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.OracleResponseProcessor">
+        <property name="next" ref="facialVerificationProcessor"/>
+    </bean>
+
+    <bean id="facialVerificationProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialVerificationProcessor">
+        <property name="next" ref="imageDetailsProcessor"/>
+    </bean>
+
+    <bean id="imageDetailsProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.ImageDetailProcessor">
+        <property name="next" ref="processDetailsProcessor"/>
+    </bean>
+
+    <bean id="processDetailsProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.ProcessingDetailsProcessor"/>
+
+
+
+    <bean id="responseTransformerFactory" class="com.fintech.orion.hermesagentservices.transformer.factory.ResponseTransformerFactory"/>
+
+    <bean id="defaultResponseTransformer" class="com.fintech.orion.hermesagentservices.transformer.custom.GenericResponseTransformer">
+        <property name="idVerificationName" value="idVerification"/>
+        <property name="addressVerificationName" value="addressVerification"/>
+        <property name="facialVerificationName" value="facialVerification"/>
+        <property name="criticalErrorSetOcrExtractionFieldName" value="critical_error_set"/>
+        <property name="processingFailureOcrExtractionFieldName" value="processing_failure"/>
+        <property name="verificationStatusFail" value="failed"/>
+        <property name="verificationStatusPass" value="passed"/>
+    </bean>
+
+</beans>

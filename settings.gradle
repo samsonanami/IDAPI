@@ -1,0 +1,14 @@
+rootProject.name = 'Orion'
+
+include 'OrionDataAbstraction'
+include 'Services:CoreServices'
+include 'Services:APIServices'
+include 'Services:HermesAgentServices'
+include 'OrionAPI'
+include 'HermeseAgent'
+include 'JobMessagingChannelHandler'
+include 'DataTransferObjects'
+
+include 'DocumentVerification'
+include 'OrionAuthAPI'
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       <bean id="drivingLicenseMRZConfigureList" name="drivingLicenseMRZConfigureList" class="java.util.HashMap">
+              <constructor-arg>
+                     <map   key-type="java.lang.String" value-type="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
+                            <entry key = "SurName" value-ref="dlIdSurName"/>
+                            <entry key = "DecadeDigitOfBirthYear" value-ref="dlIdDecadeDigitOfBirthYear"/>
+                            <entry key = "DateofBirthMonth" value-ref ="dlIdDateofBirthMonth"/>
+                            <entry key = "DateWithinTheBirthMonth" value-ref ="dlIdDateWithinTheBirthMonth"/>
+                            <entry key = "DateofBirthYear" value-ref ="dlIdDateofBirthYear"/>
+                            <entry key = "InitialsOfTheFirstName" value-ref="dlIdInitialsOfTheFirstName"/>
+                            <entry key = "MZRLength"  value-ref="dlIdMZRLength"/>
+                     </map>
+              </constructor-arg>
+       </bean>
+       <bean id="dlIdSurName" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
+              <property name="itemName" value="surname"></property>
+              <property name="startIndex" value ="1"></property>
+              <property name="endIndex" value="5"></property>
+       </bean>
+       <bean id="dlIdDecadeDigitOfBirthYear" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
+              <property name="itemName" value="DecadeDigitOfBirthYear"></property>
+              <property name="startIndex" value ="6"></property>
+              <property name="endIndex" value="6"></property>
+       </bean>
+       <bean id="dlIdDateofBirthMonth" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
+              <property name="itemName" value="DateofBirthMonth"></property>
+              <property name="startIndex" value ="7"></property>
+              <property name="endIndex" value="8"></property>
+       </bean>
+       <bean id="dlIdDateWithinTheBirthMonth" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
+              <property name="itemName" value="DateWithinTheBirthMonth"></property>
+              <property name="startIndex" value ="9"></property>
+              <property name="endIndex" value="10"></property>
+       </bean>
+       <bean id="dlIdDateofBirthYear" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
+              <property name="itemName" value="DateofBirthYear"></property>
+              <property name="startIndex" value ="11"></property>
+              <property name="endIndex" value="11"></property>
+       </bean>
+       <bean id="dlIdInitialsOfTheFirstName" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
+              <property name="itemName" value="InitialsOfTheFirstName"></property>
+              <property name="startIndex" value ="12"></property>
+              <property name="endIndex" value="13"></property>
+       </bean>
+       <bean id="dlIdMZRLength" class="com.fintech.orion.documentverification.common.mrz.MRZItemProperty">
+              <property name="itemName" value="MZRLength"></property>
+              <property name="endIndex" value ="16"></property>
+       </bean>
+
+</beans>

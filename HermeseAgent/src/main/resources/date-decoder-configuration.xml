@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <description>
+        this configuration file will have all the beans required for date decoding
+    </description>
+
+    <!--Date decoder which should be used decode the dates-->
+    <bean id="dateDecoder" class="com.fintech.orion.documentverification.common.date.DateDecoder"/>
+    <!--ocr response reader is responsible for holding configuration and providing correct date decoder type for the
+    given template name. "templateMap" holds the configuration map. For each new template type added to the system
+    a new entry must be added to this map with the template name as the "key" and the date decoder bean name as the
+    value. If no entry found for a given template name found in the "templateMap" it will return the default
+    date decoder.-->
+    <bean id="ocrResponseReader" name="defaultOcrResponseReader" class="com.fintech.orion.documentverification.custom.common.OcrResponseReader">
+        <constructor-arg>
+            <bean id="templateMap" class="com.fintech.orion.documentverification.custom.common.TemplateCategoryMap">
+                <constructor-arg>
+                    <util:map>
+                        <entry key="DLB_UK" value="commonDateDecoder" />
+
+                        <entry key="DLF_Ireland" value="irelandDLDateDecoder" />
+                        <entry key="DLF_Sweden" value="ukDLDateDecoder" />
+                        <entry key="DLF_UK" value="ukDLDateDecoder" />
+                        <entry key="DLF_UK2" value="ukDLDateDecoder" />
+                        <entry key="DLF_UK3" value="ukDLDateDecoder" />
+
+                        <entry key="ID_Finland" value="commonDateDecoder" />
+                        <entry key="ID_Germany" value="commonDateDecoder" />
+                        <entry key="ID_Poland" value="commonDateDecoder" />
+                        <entry key="ID_Spain" value="commonDateDecoder" />
+
+                        <entry key="PP_Ireland" value="irelandPassportDateDecoder" />
+                        <entry key="PP_Ireland2" value="irelandPassportDateDecoder" />
+                        <entry key="PP_UK1" value="uKPassportDateDecoder" />
+                        <entry key="PP_UK2" value="uKPassportDateDecoder" />
+                        <entry key="PP_UK3" value="uKPassportDateDecoder" />
+
+                        <entry key="UB_EBS_Savings_Document" value="commonDateDecoder"/>
+                        <entry key="UB_EBS_Savings_Document_2" value="simpleDateFormatter1"/>
+                        <entry key="UB_EDF_Energy" value="commonDateDecoder"/>
+                        <entry key="UB_Electricity_Bill_Sainsbury" value="simpleDateFormat2"/>
+                        <entry key="UB_Electricity_Bill_Southern" value="simpleDateFormat2"/>
+                        <entry key="UB_Electricty_Bill_Attantic" value="simpleDateFormat2"/>
+                        <entry key="UB_EVO_Energy" value="simpleDateFormat2"/>
+                        <entry key="UB_Gas_Statement_BritishGas" value="simpleDateFormat2"/>
+                        <entry key="UB_Gas_Statement_EDF" value="simpleDateFormat2"/>
+                        <entry key="UB_Gas_Statement_Southern" value="simpleDateFormat2"/>
+                        <entry key="UB_Tax_Demand_Notice" value="simpleDateFormatter1"/>
+                        <entry key="UB_Telephone_Bill_BT" value="simpleDateFormat2"/>
+                        <entry key="UB_Water_Bill_ThamesWater" value="simpleDateFormat2"/>
+                        <entry key="UB_Water_Bill_Veolia" value="simpleDateFormat2"/>
+
+                        <entry key="DEFAULT" value="commonDateDecoder"/>
+
+                    </util:map>
+
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+        <constructor-arg>
+            <value type="java.lang.String">DEFAULT</value>
+        </constructor-arg>
+    </bean>
+
+    <!--date decoding implementation for the UK passport.-->
+    <bean id="uKPassportDateDecoder"
+          class="com.fintech.orion.documentverification.common.date.strategy.UKPassportDateDecodeStrategy"/>
+    <!--date decoding implementation for the ireland passport-->
+    <bean id="irelandPassportDateDecoder"
+          class="com.fintech.orion.documentverification.common.date.strategy.IrelandPassportDateDecodeStrategy"/>
+    <!--date decoding implementation for the UK drivers license-->
+    <bean id="ukDLDateDecoder"
+          class="com.fintech.orion.documentverification.common.date.strategy.UKDrivingLicenseDateDecodingStrategy"/>
+    <!--date decoding implementation for the ireland drivers license-->
+    <bean id="irelandDLDateDecoder"
+          class="com.fintech.orion.documentverification.common.date.strategy.IrelandDrivingLicenseDateDecodingStrategy"/>
+    <!--date decoding implementation for a basic date decoding. This implementation can be reused for any other
+    format by setting the dateFormat property to the desired value-->
+    <bean id="commonDateDecoder"
+          class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
+        <property name="dateFormat" value="dd.MM.yyyy"/>
+    </bean>
+
+    <bean id="simpleDateFormatter1"
+          class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
+        <property name="dateFormat" value="dd/MM/yyyy"/>
+    </bean>
+
+    <bean id="simpleDateFormat2"
+          class="com.fintech.orion.documentverification.common.date.strategy.BasicDateDecodingStrategy">
+        <property name="dateFormat" value="dd MMMM yyyy"/>
+    </bean>
+
+</beans>

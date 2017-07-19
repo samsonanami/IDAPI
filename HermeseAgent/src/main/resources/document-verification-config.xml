@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="addressCompare" class="com.fintech.orion.documentverification.common.address.AddressCompare"/>
+    <bean id="addressDecoding" class="com.fintech.orion.documentverification.common.address.AddressDecoding"/>
+
+    <bean id="operationAddressComparator"
+          class="com.fintech.orion.documentverification.strategy.OperationAddressComparator"/>
+    <bean id="operationDateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
+    <bean id="operationStringComparator"
+          class="com.fintech.orion.documentverification.strategy.OperationStringComparator"/>
+
+    <bean id="dataValidationStrategyProvider"
+          class="com.fintech.orion.documentverification.strategy.DataValidationStrategyProvider"/>
+
+    <bean id="documentVerificationFactory"
+          class="com.fintech.orion.documentverification.factory.DocumentVerificationFactory"/>
+
+    <bean id="dataComparator" class="com.fintech.orion.documentverification.factory.DataComparator"/>
+    <bean id="idDocFullValidator"
+          class="com.fintech.orion.documentverification.factory.IdentificationDocumentFullVerification"/>
+    <bean id="addressDocFullValidator"
+          class="com.fintech.orion.documentverification.factory.AddressDocumentFullVerification"/>
+    <bean id="documentDataValidator" class="com.fintech.orion.documentverification.factory.DataValidations"/>
+    <bean id="commonConfigurationFactory" class="com.fintech.orion.documentverification.common.configuration.factory.CommonConfigurationFactory" />
+
+    <bean id="passportMRZDecodingStrategy"
+          class="com.fintech.orion.documentverification.common.mrz.PassportMRZDecodingStrategy"/>
+    <bean id="drivingLicenseMRZDecodingStrategy"
+          class="com.fintech.orion.documentverification.common.mrz.DrivingLicenseMZRDecodingStrategy"/>
+    <bean id="irlDrivingLicenseMRZDecodingStrategy" class="com.fintech.orion.documentverification.common.mrz.IrlDrivingLicenseMRZDecodingStrategy"/>
+    <bean id="passportMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidatePassPortMRZ"/>
+    <bean id="drivingLicenseMRZValidationStrategy"
+          class="com.fintech.orion.documentverification.common.mrz.ValidateDrivingLicence"/>
+    <bean id="irlDrivingLicenseMRZValidationStrategy" class="com.fintech.orion.documentverification.common.mrz.ValidateIrelandDrivingLicense"/>
+    <bean id="passportCheckDigitFormation" class="com.fintech.orion.documentverification.common.checkdigit.PassportCheckDigitFormation"/>
+
+    <bean id="dateComparator" class="com.fintech.orion.documentverification.strategy.OperationDateComparator"/>
+    <bean id="addressComparator" class="com.fintech.orion.documentverification.common.address.AddressCompare"/>
+    <bean id="addressDecoder" class="com.fintech.orion.documentverification.common.address.AddressDecoding"/>
+    <bean id="addressValidator" class="com.fintech.orion.documentverification.common.address.ValidateAddress"/>
+
+
+    <bean id="preProcessNonePreProcessDelimiterList" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="java.lang.String">
+                <value>NPP</value>
+                <value>PP</value>
+            </array>
+        </constructor-arg>
+    </bean>
+
+
+    <import resource="mrz-decoder-configuration.xml"/>
+    <import resource="date-decoder-configuration.xml"/>
+    <import resource="ocr-value-translation-configuration.xml"/>
+    <import resource="data-validations-configuration.xml"/>
+    <import resource="custom-validations.xml"/>
+    <import resource="data-comparisons.xml"/>
+</beans>
