@@ -66,7 +66,7 @@ public class GenderValidationTest {
     }
 
     @Test
-    public void should_return_false_if_document_gender_is_not_matching() throws Exception {
+    public void should_return_true_if_document_gender_is_not_matching() throws Exception {
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##sex#NPP");
         passportValue.setValue("Female");
@@ -88,7 +88,7 @@ public class GenderValidationTest {
         ocrResponse.setData(fieldDataList);
 
         ValidationData validationData = genderValidation.validate(resourceName, ocrResponse);
-        assertFalse(validationData.getValidationStatus());
+        assertTrue(validationData.getValidationStatus());
         assertEquals(validationData.getValue(), "FEMALE");
     }
 

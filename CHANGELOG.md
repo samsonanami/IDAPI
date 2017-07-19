@@ -3,7 +3,73 @@ Orion - Changelog
 
 Unreleased
 ----------
+mrz check digit validation update  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'utility-bill-fullname-validation' into 'develop' Utility bill fullname validation
+
+
+
+See merge request !74 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'address-date-verification-change' into 'develop' issue date validation of utility bills
+
+
+
+See merge request !73 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+null value fix in return response  (Thilina)(Thilinaj@zone24x7.com)
+
+change validation logic to compare cross document full-name field  (Thilina)(Thilinaj@zone24x7.com)
+
+return gender value on success verification  (Thilina)(Thilinaj@zone24x7.com)
+
+return first successful value on first successful validation  (Thilina)(Thilinaj@zone24x7.com)
+
+issue date validation of utility bills  (Thilina)(Thilinaj@zone24x7.com)
+
+Merge branch 'multi-value-verification-support' into 'develop' Multi value verification support
+
+
+
+See merge request !72 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into multi-value-verification-support  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+comparison value holder implemented  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'multi-value-verification-support' into 'develop' Multi value verification support
+
+
+
+See merge request !71 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+DL mrz decoding strategy handling invalid number formats  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into multi-value-verification-support  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'dob-validation-fortwo-documents' into 'develop' Dob validation for two documents
+
+
+
+See merge request !70 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+update DoB validation logic to support preprocess(PP) and NPP docs  (Thilina)(Thilinaj@zone24x7.com)
+
+Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into multi-value-verification-support  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+test classes update with new data structure from OCRAPI  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 data validation with multiple values return by abbyy  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'cross-field-verification-of-two-documents' into 'develop' update data Comparator to cross validate fields of two documents
+
+
+
+See merge request !69 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+change age limit validation to process preprocessed(PP) and NPP documents  (Thilina)(Thilinaj@zone24x7.com)
+
+update data Comparator to cross validate fields of two documents  (Thilina)(Thilinaj@zone24x7.com)
 
 mrz/date decoder configuration update with new template names  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 
