@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,8 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
     @Autowired
     private ConfigurationFactory commonConfigurationFactory;
 
+    @Resource(name = "preProcessNonePreProcessDelimiterList")
+    private List<String> preProcessNonePreProcessDelimiterList;
 
     private List<String> resourceNames;
 
@@ -55,18 +58,14 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
     public ValidationData validate(ResourceName resourceName, OcrResponse ocrResponse) throws CustomValidationException {
 
         ValidationData validationData = new ValidationData();
-
         List<String> unFilteredResourceList = getResourceListFromOcrResponse(ocrResponse);
         for (String documentName: filterResourceNameList(unFilteredResourceList)){
-            String completeMrzLine = mrzLineBuilder.buildSingleLineMRZ(ocrResponse, documentName,
-                    ocrFieldBase, mrzLineCount, "NPP");
-            if (completeMrzLine != null && !completeMrzLine.isEmpty()){
-                try {
-                    validationData = validateMrz(completeMrzLine, documentName, ocrResponse);
-                } catch (MRZValidatingException e) {
-                    validationData.setValidationStatus(false);
-                    validationData.setRemarks(getFailedRemarksMessage());
-                    LOGGER.error("Error occured while performing mrz check dight validation ", e);
+            for (String decimeter: preProcessNonePreProcessDelimiterList){
+                String completeMrzLine = mrzLineBuilder.buildSingleLineMRZ(ocrResponse, documentName,
+                        ocrFieldBase, mrzLineCount, decimeter);
+                validationData = validateCompleteMRZLine(ocrResponse, validationData, documentName, completeMrzLine);
+                if (validationData.getValidationStatus()){
+                    break;
                 }
             }
 
@@ -79,6 +78,20 @@ public class MrzCheckDigitValidation extends ValidationHelper implements CustomV
         validationData.setId("MRZ Check digit validation");
         validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
+    }
+
+    private ValidationData validateCompleteMRZLine(OcrResponse ocrResponse, ValidationData validationData, String documentName, String completeMrzLine) throws CustomValidationException {
+        ValidationData result = validationData;
+        if (completeMrzLine != null && !completeMrzLine.isEmpty()){
+            try {
+                result = validateMrz(completeMrzLine, documentName, ocrResponse);
+                result.setValidationStatus(true);
+            } catch (MRZValidatingException e) {
+                result.setValidationStatus(false);
+                LOGGER.error("Error occured while performing mrz check dight validation ", e);
+            }
+        }
+        return result;
     }
 
     private ValidationData validateMrz(String fullMrzLine, String resourceName, OcrResponse ocrResponse)

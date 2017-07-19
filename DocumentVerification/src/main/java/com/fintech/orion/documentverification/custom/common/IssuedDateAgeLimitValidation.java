@@ -15,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by MudithaJ on 1/2/2017.
@@ -41,53 +43,49 @@ public class IssuedDateAgeLimitValidation extends ValidationHelper implements Cu
         }
 
         ValidationData validationData = new ValidationData();
-        OcrFieldData fieldDataIssuedDate = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
-        OcrFieldValue valueIssuedDate = getFieldValueById(resourceName.getName() + "##" + getOcrExtractionFieldName(), fieldDataIssuedDate);
-        OcrFieldData fieldDataDateOfBirth = getFieldDataById(dateOfBirthOcrExtractionField, ocrResponse);
-        OcrFieldValue valueDateOfBirth = getFieldValueById(resourceName.getName() + "##" + dateOfBirthOcrExtractionField, fieldDataDateOfBirth);
+        List<Date> issueDateList = this.getDecodedDateList(getFieldDataById(getOcrExtractionFieldName(), ocrResponse), ocrResponse);
+        List<Date> dateOfBirthList = this.getDecodedDateList(getFieldDataById(dateOfBirthOcrExtractionField, ocrResponse), ocrResponse);
 
-        validationData = validateInput(fieldDataIssuedDate);
-        if (validationData.getValidationStatus()) {
-            try {
-                validationData.setValidationStatus(false);
-                validationData.setRemarks(getFailedRemarksMessage());
-                validationData = validateIssuedDateAgeLimit(valueIssuedDate, valueDateOfBirth, ocrResponse);
-            } catch (DateDecoderException e) {
-                LOGGER.warn("Error occurred while performing an date of birth at issue date" +
-                        " validation for ocr response {} {}", ocrResponse, e);
-                validationData.setValue(null);
-                validationData.setOcrConfidence(null);
-                validationData.setValidationStatus(false);
-                validationData.setRemarks("Error occurred while performing the issue date year range validation. " +
-                        "This is most likely " +
-                        "due to an unsupported date format. Supported date formats are," +
-                        "DD MM/MM YY or DD.MM.YYYY");
-            }
-        }
-        if (validationData.getValidationStatus()) {
-            validationData.setRemarks(getSuccessRemarksMessage());
-        }
+        validationData = this.validateIssuedDateAgeLimit(issueDateList, dateOfBirthList);
+
         validationData.setId("Date of Birth at Document Issue Date Validation");
         validationData.setCriticalValidation(isCriticalValidation());
         return validationData;
     }
 
-    private ValidationData validateIssuedDateAgeLimit(OcrFieldValue ocrFieldValueIssuedDate
-            , OcrFieldValue ocrFieldValueDateOfBirth, OcrResponse ocrResponse) throws DateDecoderException {
-        String templateCategory = getTemplateCategory(ocrFieldValueIssuedDate.getId(), ocrResponse);
-        ValidationData validationData = new ValidationData();
-        Date issuedDate = dateDecoder.decodeDate(ocrFieldValueIssuedDate.getValue(), templateCategory);
-        Date dateOfBirth = dateDecoder.decodeDate(ocrFieldValueDateOfBirth.getValue(), templateCategory);
+    private List<Date> getDecodedDateList(OcrFieldData dateOcrFieldData, OcrResponse ocrResponse){
+        List<Date> issueDateList = new ArrayList<>();
+        for (OcrFieldValue ocrFieldValue : dateOcrFieldData.getValue()){
+            String templateCategory = getTemplateCategory(ocrFieldValue.getId(), ocrResponse);
+            Date date = null;
+            try {
+                date = dateDecoder.decodeDate(ocrFieldValue.getValue(), templateCategory);
+                issueDateList.add(date);
+            } catch (DateDecoderException e) {
+                LOGGER.error("Error while decoding the date {} ", ocrFieldValue.getValue(), e);
+            }
+        }
 
-        int age = getAgeforIssueDate(issuedDate, dateOfBirth);
-        if (age > minimumAge && age < maximumAge) {
-            validationData.setValidationStatus(true);
-            validationData.setValue(String.valueOf(age));
-            validationData.setRemarks(getSuccessRemarksMessage());
-        } else {
-            validationData.setRemarks(getFailedRemarksMessage());
-            validationData.setValue(String.valueOf(age));
-            validationData.setValidationStatus(false);
+        return issueDateList;
+    }
+
+    private ValidationData validateIssuedDateAgeLimit(List<Date> issueDateList, List<Date> dateOfBirthList){
+        ValidationData validationData = new ValidationData();
+
+        for (Date issuedDate: issueDateList){
+            for (Date dateOfBirth: dateOfBirthList){
+                int age = getAgeforIssueDate(issuedDate, dateOfBirth);
+                if (age > minimumAge && age < maximumAge) {
+                    validationData.setValidationStatus(true);
+                    validationData.setValue(String.valueOf(age));
+                    validationData.setRemarks(getSuccessRemarksMessage());
+                    break;
+                } else {
+                    validationData.setRemarks(getFailedRemarksMessage());
+                    validationData.setValue(String.valueOf(age));
+                    validationData.setValidationStatus(false);
+                }
+            }
         }
         return validationData;
     }

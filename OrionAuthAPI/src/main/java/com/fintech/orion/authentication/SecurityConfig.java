@@ -61,9 +61,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "oauth/token").permitAll()
-                .antMatchers("oauth/token").permitAll()
-                .antMatchers("oauth/check_token").permitAll();
+                .antMatchers(HttpMethod.OPTIONS, "oauth/token").permitAll().and()
+                .authorizeRequests().antMatchers("oauth/token").permitAll().and()
+                .authorizeRequests().antMatchers("oauth/check_token").permitAll();
         http.authorizeRequests().antMatchers("/login.jsp").permitAll();
         http.authorizeRequests().and().formLogin().loginPage("/login.jsp").loginProcessingUrl("/j_spring_security_check")
                 .usernameParameter("j_username").passwordParameter("j_password");

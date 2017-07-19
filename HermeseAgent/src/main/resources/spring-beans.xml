@@ -16,9 +16,11 @@
         <property name="connectionFactory" ref="connectionFactory" />
         <property name="destinationName" value="idapi-process-queue" />
         <property name="messageListener" ref="messageAdapter" />
+        <property name="errorHandler" ref="errorHandler"/>
     </bean>
 
     <bean id="messageListener" class="com.fintech.orion.hermes.listener.HermesListener"/>
+    <bean id="errorHandler" class="com.fintech.orion.hermes.listener.HermeseErrorHandler"/>
     <bean id="messageConsumer" class="com.fintech.orion.jobchanel.consumer.MessageConsumer">
         <property name="delegate" ref="messageListener"/>
     </bean>

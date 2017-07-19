@@ -43,6 +43,14 @@
     <bean id="addressValidator" class="com.fintech.orion.documentverification.common.address.ValidateAddress"/>
 
 
+    <bean id="preProcessNonePreProcessDelimiterList" class="java.util.ArrayList">
+        <constructor-arg>
+            <array value-type="java.lang.String">
+                <value>NPP</value>
+                <value>PP</value>
+            </array>
+        </constructor-arg>
+    </bean>
 
 
     <import resource="mrz-decoder-configuration.xml"/>
