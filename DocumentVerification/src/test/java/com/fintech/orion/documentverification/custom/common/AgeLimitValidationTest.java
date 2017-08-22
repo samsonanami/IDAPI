@@ -92,11 +92,11 @@ public class AgeLimitValidationTest {
         Mockito.when(dateDecoder.decodeDate("25.07.2014", templateCategory)).thenReturn(df.parse("07/25/2014"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##date_of_birth");
+        passportValue.setId("passport##date_of_birth#NPP");
         passportValue.setValue("25.07.2014");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##date_of_birth");
+        dlFrontValue.setId("drivingLicenseFront##date_of_birth##PP");
         dlFrontValue.setValue("25.07.1974");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
@@ -112,7 +112,7 @@ public class AgeLimitValidationTest {
         ocrResponse.setData(fieldDataList);
 
         ageLimitValidation.setOcrExtractionFieldName("date_of_birth");
-        ageLimitValidation.setMinimumAge(18);
+        ageLimitValidation.setMinimumAge(80);
         ageLimitValidation.setMaximumAge(90);
 
         ValidationData verificationData = ageLimitValidation.validate(resourceName, ocrResponse);
@@ -126,11 +126,11 @@ public class AgeLimitValidationTest {
         Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(df.parse("07/25/1974"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##date_of_birth");
+        passportValue.setId("passport##date_of_birth##NPP");
         passportValue.setValue("25.07.1914");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##date_of_birth");
+        dlFrontValue.setId("drivingLicenseFront##date_of_birth##PP");
         dlFrontValue.setValue("25.07.1974");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
@@ -147,7 +147,7 @@ public class AgeLimitValidationTest {
 
         ageLimitValidation.setOcrExtractionFieldName("date_of_birth");
         ageLimitValidation.setMinimumAge(18);
-        ageLimitValidation.setMaximumAge(90);
+        ageLimitValidation.setMaximumAge(40);
 
         ValidationData verificationData = ageLimitValidation.validate(resourceName, ocrResponse);
         assertFalse(verificationData.getValidationStatus());
@@ -187,15 +187,15 @@ public class AgeLimitValidationTest {
     }
 
     @Test
-    public void should_return_false_if_date_format_is_not_supported() throws Exception {
+    public void should_return_true_if_at_least_one_date_is_in_supported_format() throws Exception {
         Mockito.when(dateDecoder.decodeDate("25/07/1974", templateCategory)).thenThrow(new DateDecoderException("Un supported date format"));
         Mockito.when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(df.parse("07/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##date_of_birth");
+        passportValue.setId("passport##date_of_birth##NPP");
         passportValue.setValue("25/07/1974");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##date_of_birth");
+        dlFrontValue.setId("drivingLicenseFront##date_of_birth##PP");
         dlFrontValue.setValue("25.07.1974");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
@@ -215,6 +215,6 @@ public class AgeLimitValidationTest {
         ageLimitValidation.setMaximumAge(90);
 
         ValidationData verificationData = ageLimitValidation.validate(resourceName, ocrResponse);
-        assertFalse(verificationData.getValidationStatus());
+        assertTrue(verificationData.getValidationStatus());
     }
 }

@@ -21,7 +21,6 @@
                 <ref bean="minimumAgeVerification"/>
                 <ref bean="mrzCheckDigitValidation"/>
                 <ref bean="issuedDateAgeLimitValidation"/>
-                <ref bean="dateOfIssueEndYearValidation"/>
                 <ref bean="ageLimitValidation"/>
             </array>
         </constructor-arg>
@@ -34,7 +33,6 @@
                 <ref bean="minimumAgeVerification"/>
                 <ref bean="mrzCheckDigitValidation"/>
                 <ref bean="issuedDateAgeLimitValidation"/>
-                <ref bean="dateOfIssueEndYearValidation"/>
                 <ref bean="ageLimitValidation"/>
             </array>
         </constructor-arg>
@@ -47,7 +45,6 @@
                 <ref bean="minimumAgeVerification"/>
                 <ref bean="mrzCheckDigitValidation"/>
                 <ref bean="issuedDateAgeLimitValidation"/>
-                <ref bean="dateOfIssueEndYearValidation"/>
                 <ref bean="ageLimitValidation"/>
             </array>
         </constructor-arg>

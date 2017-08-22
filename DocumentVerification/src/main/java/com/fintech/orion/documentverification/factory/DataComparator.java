@@ -103,7 +103,7 @@ public class DataComparator implements DocumentVerification {
             validator = new DocumentDataValidator(strategy);
 
             if (!fieldDataValueList.isEmpty()) {
-                for (FieldDataValue fieldDataValue : fieldDataValueList.subList(0, 2)) {
+                for (FieldDataValue fieldDataValue : fieldDataValueList) {
 
                     fieldDataComparision.addAll(compareValueWithOtherValues(fieldDataValue, fieldDataValueList, ocrResponse, fieldName));
                 }

@@ -248,7 +248,7 @@ public class IssuedDateAgeLimitValidationTest {
     }
 
     @Test
-    public void should_throw_CustomValidationException_false_if_date_format_is_not_supported() throws Exception {
+    public void should_return_true_if_one_pair_of_dates_in_correct_format() throws Exception {
 
         Mockito.when(dateDecoder.decodeDate("20/01/2004", templateCategory)).thenThrow(new DateDecoderException("Unsupported date format"));
         Mockito.when(dateDecoder.decodeDate("20.01.2004", templateCategory)).thenReturn(dateFormat.parse("01/20/2004"));
@@ -256,11 +256,11 @@ public class IssuedDateAgeLimitValidationTest {
 
 
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##date_of_issue");
+        passportValue.setId("passport##date_of_issue##NPP");
         passportValue.setValue("20/01/2004");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##date_of_issue");
+        dlFrontValue.setId("drivingLicenseFront##date_of_issue##NPP");
         dlFrontValue.setValue("20.01.2004");
 
 
@@ -273,7 +273,7 @@ public class IssuedDateAgeLimitValidationTest {
         ocrFieldDataOfIssue.setValue(issuedDateFieldValueList);
 
         OcrFieldValue passportDateOfBirthValue = new OcrFieldValue();
-        passportDateOfBirthValue.setId("passport##date_of_birth");
+        passportDateOfBirthValue.setId("passport##date_of_birth##PP");
         passportDateOfBirthValue.setValue("25.07.1974");
 
         List<OcrFieldValue> dateOfBirtheFieldValueList = new ArrayList<>();
@@ -295,6 +295,6 @@ public class IssuedDateAgeLimitValidationTest {
         resourceName.setName("passport");
 
         ValidationData verificationData = issuedDateAgeLimitValidation.validate(resourceName, ocrResponse);
-        assertFalse(verificationData.getValidationStatus());
+        assertTrue(verificationData.getValidationStatus());
     }
 }

@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 
@@ -91,6 +92,9 @@ public class AbstractDataValidation extends ValidationHelper {
                 ComparisonValueHolder visualValue = new ComparisonValueHolder();
                 ComparisonValueHolder mrZvalue = new ComparisonValueHolder();
                 visualValue.setId(documentName + "##" + getOcrExtractionFieldName() + "##VIS##" + preProcessedStatus);
+                visualValue.setDocumentName(documentName);
+                visualValue.setOcrExtractionField(getOcrExtractionFieldName());
+                visualValue.setPreProcessedDataus(preProcessedStatus);
                 mrZvalue.setId(documentName + "##" + getOcrExtractionFieldName() + "##MRZ##" + preProcessedStatus);
                 String vizValue = getVizValue(getOcrExtractionFieldName(), documentName, ocrResponse, preProcessedStatus);
 
@@ -103,6 +107,7 @@ public class AbstractDataValidation extends ValidationHelper {
                     LOGGER.warn("Error while translating {} field value from visual inspection zone. " +
                                     "Extracted OCR value : {} ",
                             getOcrExtractionFieldName(), vizValue, e);
+                    removeInvalidVisValueFromOcrResponse(ocrResponse, getOcrExtractionFieldName(), documentName,preProcessedStatus);
                 }
                 String rawMRZValue = null;
                 try {
@@ -122,7 +127,7 @@ public class AbstractDataValidation extends ValidationHelper {
                 }
             }
             validateMrzViZvalue(dataValidationValue, visualValueSet, mrzValueSet,
-                    ocrResponseReader.getTemplateCategory(getTemplateName(documentName, ocrResponse)));
+                    ocrResponseReader.getTemplateCategory(getTemplateName(documentName, ocrResponse)), ocrResponse);
             dataValidationValueList.add(dataValidationValue);
         }
         dataValidation.setValue(dataValidationValueList);
@@ -146,10 +151,25 @@ public class AbstractDataValidation extends ValidationHelper {
         this.vizValueSubStringLength = vizValueSubStringLength;
     }
 
+    private void removeInvalidVisValueFromOcrResponse(OcrResponse ocrResponse, String extractionField,
+                                                      String documentName, String preProcessedStatus){
+
+        for (OcrFieldData fieldData : ocrResponse.getData()) {
+            if (fieldData.getId().equalsIgnoreCase(extractionField)) {
+                ListIterator<OcrFieldValue> fieldValueListIterator = fieldData.getValue().listIterator();
+                while (fieldValueListIterator.hasNext()){
+                    if(fieldValueListIterator.next().getId().equalsIgnoreCase(documentName + "##" + extractionField + "##" + preProcessedStatus)){
+                        fieldValueListIterator.remove();
+                    }
+                }
+            }
+        }
+    }
     private Object getVisualValueSubstring(Object translatedVisualValue) {
         Object visualValue = translatedVisualValue;
         if(visualValue.getClass().equals(String.class) && vizValueSubStringLength != null){
-            visualValue = visualValue.toString().substring(0, vizValueSubStringLength);
+            int substringLength = vizValueSubStringLength < visualValue.toString().length() ? vizValueSubStringLength: visualValue.toString().length();
+            visualValue = visualValue.toString().substring(0, substringLength);
         }
         return visualValue;
     }
@@ -157,7 +177,7 @@ public class AbstractDataValidation extends ValidationHelper {
     private void validateMrzViZvalue(DataValidationValue dataValidationValue,
                                      List<ComparisonValueHolder> visualValueSet,
                                      List<ComparisonValueHolder> mrzValueSet,
-                                     String templateCategory) {
+                                     String templateCategory, OcrResponse ocrResponse) {
 
         for (ComparisonValueHolder visualComparisonValue: visualValueSet){
             for (ComparisonValueHolder mrzComparisonValue: mrzValueSet){
@@ -170,10 +190,13 @@ public class AbstractDataValidation extends ValidationHelper {
                         visualComparisonValue.getValue(),
                         templateCategory);
                 if (result.isStatus()){
-                    dataValidationValue.setMrzValue(mrzComparisonValue.getValue().toString());
-                    dataValidationValue.setVizValue(visualComparisonValue.getValue().toString());
+                    dataValidationValue.setMrzValue(mrzComparisonValue.getValue());
+                    dataValidationValue.setVizValue(visualComparisonValue.getValue());
                     dataValidationValue.setStatus(result.isStatus());
                     break;
+                }else {
+                    removeInvalidVisValueFromOcrResponse(ocrResponse, visualComparisonValue.getOcrExtractionField(),
+                            visualComparisonValue.getDocumentName(), visualComparisonValue.getPreProcessedDataus());
                 }
 
             }

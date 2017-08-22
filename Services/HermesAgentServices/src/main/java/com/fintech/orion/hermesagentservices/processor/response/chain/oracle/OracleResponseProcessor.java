@@ -80,7 +80,7 @@ public class OracleResponseProcessor extends ResponseProcessorChain {
 
         sanitizer.sanitize(ocrResponse);
 
-        updateDataComparison(detailedResponse, ocrResponse);
+
         updateDataValidations(detailedResponse, ocrResponse);
         if (isProcessTypeFoundInProcessingRequest(processingRequestId,
                 "idVerification")){
@@ -90,6 +90,7 @@ public class OracleResponseProcessor extends ResponseProcessorChain {
                 "addressVerification")){
             updateAddressDocumentFullValidation(detailedResponse, ocrResponse);
         }
+        updateDataComparison(detailedResponse, ocrResponse);
         ResponseProcessorResult result = new ResponseProcessorResult();
         result.setFinalProcessingStatus(true);
         result.setProcessedString(objectMapper.writeValueAsString(detailedResponse));
