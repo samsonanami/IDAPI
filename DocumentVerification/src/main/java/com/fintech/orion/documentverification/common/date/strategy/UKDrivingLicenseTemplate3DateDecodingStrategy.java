@@ -5,15 +5,16 @@ import com.fintech.orion.documentverification.common.exception.DateDecoderExcept
 import java.util.Date;
 
 /**
- * Created by sasitha on 3/23/17.
+ * Created by sasitha on 8/17/17.
  */
-public class UKDrivingLicenseDateDecodingStrategy implements DateDecodingStrategy  {
+public class UKDrivingLicenseTemplate3DateDecodingStrategy implements DateDecodingStrategy {
 
-    private static final String UK_DL_MRZ_DATE_FORMAT = "^\\d{6}$";
+    private static final String UK_DL3_MRZ_DATE_FORMAT = "^\\d{6}$";
+
     @Override
     public Date decodeDate(String date) throws DateDecoderException {
         Date decodedDate = new Date();
-        DateFormatMatcher dateFormatMatcher = new DateFormatMatcher(UK_DL_MRZ_DATE_FORMAT, date);
+        DateFormatMatcher dateFormatMatcher = new DateFormatMatcher(UK_DL3_MRZ_DATE_FORMAT, date);
         if (dateFormatMatcher.match()){
             decodedDate = decodeUKDLMRZDate(date);
         }else{
@@ -23,7 +24,7 @@ public class UKDrivingLicenseDateDecodingStrategy implements DateDecodingStrateg
     }
 
     private Date decodeUKDLVIZDate(String date) throws DateDecoderException {
-        DrivingLicenseDateDecoder vizDateDecoder = new DrivingLicenseDateDecoder(date, "dd.MM.yyyy");
+        DrivingLicenseDateDecoder vizDateDecoder = new DrivingLicenseDateDecoder(date, "dd-MM-yy");
         return vizDateDecoder.decode();
     }
 

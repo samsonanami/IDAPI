@@ -16,7 +16,7 @@ public class DocumentMrzVizValidationValue {
     private String id = null;
 
     @JsonProperty("value")
-    private String value = null;
+    private Object value = null;
 
     @JsonProperty("confidence")
     private BigDecimal confidence = null;
@@ -51,11 +51,11 @@ public class DocumentMrzVizValidationValue {
      * @return value
      **/
     @ApiModelProperty(value = "")
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 

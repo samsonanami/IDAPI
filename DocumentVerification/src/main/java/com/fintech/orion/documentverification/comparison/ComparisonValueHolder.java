@@ -8,6 +8,9 @@ public class ComparisonValueHolder {
 
     private String id;
     private Object value;
+    private String documentName;
+    private String ocrExtractionField;
+    private String preProcessedDataus;
 
     public ComparisonValueHolder(String id, Object value) {
         this.id = id;
@@ -31,5 +34,29 @@ public class ComparisonValueHolder {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public String getDocumentName() {
+        return documentName;
+    }
+
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
+    }
+
+    public String getOcrExtractionField() {
+        return ocrExtractionField;
+    }
+
+    public void setOcrExtractionField(String ocrExtractionField) {
+        this.ocrExtractionField = ocrExtractionField;
+    }
+
+    public String getPreProcessedDataus() {
+        return preProcessedDataus;
+    }
+
+    public void setPreProcessedDataus(String preProcessedDataus) {
+        this.preProcessedDataus = preProcessedDataus;
     }
 }

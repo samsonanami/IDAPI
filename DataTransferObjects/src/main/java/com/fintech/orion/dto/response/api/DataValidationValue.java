@@ -15,10 +15,10 @@ public class DataValidationValue {
     private String documentName = null;
 
     @JsonProperty("mrzValue")
-    private String mrzValue = null;
+    private Object mrzValue = null;
 
     @JsonProperty("vizValue")
-    private String vizValue = null;
+    private Object vizValue = null;
 
     @JsonProperty("remarks")
     private String remarks = null;
@@ -48,11 +48,11 @@ public class DataValidationValue {
      * @return mrzValue
      **/
     @ApiModelProperty(value = "")
-    public String getMrzValue() {
+    public Object getMrzValue() {
         return mrzValue;
     }
 
-    public void setMrzValue(String mrzValue) {
+    public void setMrzValue(Object mrzValue) {
         this.mrzValue = mrzValue;
     }
 
@@ -62,11 +62,11 @@ public class DataValidationValue {
      * @return vizValue
      **/
     @ApiModelProperty(value = "")
-    public String getVizValue() {
+    public Object getVizValue() {
         return vizValue;
     }
 
-    public void setVizValue(String vizValue) {
+    public void setVizValue(Object vizValue) {
         this.vizValue = vizValue;
     }
 

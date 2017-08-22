@@ -25,7 +25,7 @@
                         <entry key="DLF_Sweden" value="ukDLDateDecoder" />
                         <entry key="DLF_UK" value="ukDLDateDecoder" />
                         <entry key="DLF_UK2" value="ukDLDateDecoder" />
-                        <entry key="DLF_UK3" value="ukDLDateDecoder" />
+                        <entry key="DLF_UK3" value="ukDLTemplate3DateDecoder" />
 
                         <entry key="ID_Finland" value="commonDateDecoder" />
                         <entry key="ID_Germany" value="commonDateDecoder" />
@@ -77,6 +77,9 @@
     <!--date decoding implementation for the ireland drivers license-->
     <bean id="irelandDLDateDecoder"
           class="com.fintech.orion.documentverification.common.date.strategy.IrelandDrivingLicenseDateDecodingStrategy"/>
+
+    <bean id="ukDLTemplate3DateDecoder"
+    class="com.fintech.orion.documentverification.common.date.strategy.UKDrivingLicenseTemplate3DateDecodingStrategy"/>
     <!--date decoding implementation for a basic date decoding. This implementation can be reused for any other
     format by setting the dateFormat property to the desired value-->
     <bean id="commonDateDecoder"

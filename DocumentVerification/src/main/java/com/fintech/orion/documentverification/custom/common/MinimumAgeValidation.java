@@ -79,7 +79,8 @@ public class MinimumAgeValidation extends ValidationHelper implements CustomVali
                 date = dateDecoder.decodeDate(fieldValue.getValue(), templateCategory);
                 processedDateList.add(date);
             } catch (DateDecoderException e) {
-                throw new DateComparatorException("Unable to decode the given date " , e);
+                LOGGER.info("Invalid date of birth from visual inspection field." +
+                        " Actual value received is {} ", fieldValue.getValue(), e);
             }
         }
 
