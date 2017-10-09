@@ -3,6 +3,25 @@ Orion - Changelog
 
 Unreleased
 ----------
+Merge branch 'multi-value-verification-support' into 'develop' Multi value verification support
+
+
+
+See merge request !77 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+IDAPI support UK DL template 3 date format UK DL 3 has a date format MM-DD-YYYY which is not supported form the generic UK DL format DD/MM/YYYY
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into multi-value-verification-support  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Test case updated  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'multi-value-verification-support' into 'develop' mrz check digit validation update
+
+
+
+See merge request !75 (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
 mrz check digit validation update  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 
 Merge branch 'utility-bill-fullname-validation' into 'develop' Utility bill fullname validation

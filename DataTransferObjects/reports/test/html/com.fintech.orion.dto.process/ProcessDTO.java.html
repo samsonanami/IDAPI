@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ProcessDTO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DataTransferObjects</a> &gt; <a href="index.source.html" class="el_package">com.fintech.orion.dto.process</a> &gt; <span class="el_source">ProcessDTO.java</span></div><h1>ProcessDTO.java</h1><pre class="source lang-java linenums">package com.fintech.orion.dto.process;
+
+import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
+import com.fintech.orion.dto.processtype.ProcessTypeDTO;
+import com.fintech.orion.dto.response.ResponseDTO;
+
+import java.util.Date;
+
+/**
+ * Created by TharinduMP on 10/14/2016.
+ */
+<span class="fc" id="L12">public class ProcessDTO {</span>
+
+    private Integer id;
+    private ProcessTypeDTO processTypeDTO;
+    private ProcessingStatusDTO processingStatusDTO;
+    private ResponseDTO responseDTO;
+    private Date requestSentOn;
+    private Date responseReceivedOn;
+    private String processIdentificationCode;
+
+    public Integer getId() {
+<span class="fc" id="L23">        return id;</span>
+    }
+
+    public void setId(Integer id) {
+<span class="fc" id="L27">        this.id = id;</span>
+<span class="fc" id="L28">    }</span>
+
+    public ProcessTypeDTO getProcessTypeDTO() {
+<span class="fc" id="L31">        return processTypeDTO;</span>
+    }
+
+    public void setProcessTypeDTO(ProcessTypeDTO processTypeDTO) {
+<span class="fc" id="L35">        this.processTypeDTO = processTypeDTO;</span>
+<span class="fc" id="L36">    }</span>
+
+    public ProcessingStatusDTO getProcessingStatusDTO() {
+<span class="fc" id="L39">        return processingStatusDTO;</span>
+    }
+
+    public void setProcessingStatusDTO(ProcessingStatusDTO processingStatusDTO) {
+<span class="fc" id="L43">        this.processingStatusDTO = processingStatusDTO;</span>
+<span class="fc" id="L44">    }</span>
+
+    public ResponseDTO getResponseDTO() {
+<span class="nc" id="L47">        return responseDTO;</span>
+    }
+
+    public void setResponseDTO(ResponseDTO responseDTO) {
+<span class="nc" id="L51">        this.responseDTO = responseDTO;</span>
+<span class="nc" id="L52">    }</span>
+
+    public Date getRequestSentOn() {
+<span class="nc" id="L55">        return requestSentOn;</span>
+    }
+
+    public void setRequestSentOn(Date requestSentOn) {
+<span class="nc" id="L59">        this.requestSentOn = requestSentOn;</span>
+<span class="nc" id="L60">    }</span>
+
+    public Date getResponseReceivedOn() {
+<span class="nc" id="L63">        return responseReceivedOn;</span>
+    }
+
+    public void setResponseReceivedOn(Date responseReceivedOn) {
+<span class="nc" id="L67">        this.responseReceivedOn = responseReceivedOn;</span>
+<span class="nc" id="L68">    }</span>
+
+    public String getProcessIdentificationCode() {
+<span class="fc" id="L71">        return processIdentificationCode;</span>
+    }
+
+    public void setProcessIdentificationCode(String processIdentificationCode) {
+<span class="fc" id="L75">        this.processIdentificationCode = processIdentificationCode;</span>
+<span class="fc" id="L76">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -9,7 +9,6 @@
                 <entry key="surname" value-ref="surnameVC"/>
                 <entry key="given_names" value-ref="givenNameVC"/>
                 <entry key="date_of_birth" value-ref="dateOfBirthVC"/>
-                <!--<entry key="place_of_birth" value-ref="placeOfBirthVC"/>-->
                 <entry key="family_name" value-ref="familyNameVC"/>
                 <entry key="sex" value-ref="sexVC"/>
                 <entry key="parents_given_name" value-ref="parentsGivenNameVC"/>

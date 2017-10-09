@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FieldData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DataTransferObjects</a> &gt; <a href="index.source.html" class="el_package">com.fintech.orion.dto.response.api</a> &gt; <span class="el_source">FieldData.java</span></div><h1>FieldData.java</h1><pre class="source lang-java linenums">package com.fintech.orion.dto.response.api;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * FieldData
+ */
+@javax.annotation.Generated(value = &quot;class io.swagger.codegen.languages.SpringCodegen&quot;, date = &quot;2016-12-18T09:12:11.427Z&quot;)
+
+<span class="nc" id="L15">public class FieldData   {</span>
+<span class="nc" id="L16">  @JsonProperty(&quot;id&quot;)</span>
+  private String id = null;
+
+<span class="nc" id="L19">  @JsonProperty(&quot;value&quot;)</span>
+  private List&lt;FieldDataValue&gt; value = new ArrayList&lt;FieldDataValue&gt;();
+
+<span class="nc" id="L22">  @JsonProperty(&quot;comparison&quot;)</span>
+  private List&lt;FieldDataComparision&gt; comparison = new ArrayList&lt;FieldDataComparision&gt;();
+
+  public FieldData id(String id) {
+<span class="nc" id="L26">    this.id = id;</span>
+<span class="nc" id="L27">    return this;</span>
+  }
+
+   /**
+   * Get id
+   * @return id
+  **/
+  @ApiModelProperty(value = &quot;&quot;)
+  public String getId() {
+<span class="nc" id="L36">    return id;</span>
+  }
+
+  public void setId(String id) {
+<span class="nc" id="L40">    this.id = id;</span>
+<span class="nc" id="L41">  }</span>
+
+  public FieldData value(List&lt;FieldDataValue&gt; value) {
+<span class="nc" id="L44">    this.value = value;</span>
+<span class="nc" id="L45">    return this;</span>
+  }
+
+  public FieldData addValueItem(FieldDataValue valueItem) {
+<span class="nc" id="L49">    this.value.add(valueItem);</span>
+<span class="nc" id="L50">    return this;</span>
+  }
+
+   /**
+   * Get value
+   * @return value
+  **/
+  @ApiModelProperty(value = &quot;&quot;)
+  public List&lt;FieldDataValue&gt; getValue() {
+<span class="nc" id="L59">    return value;</span>
+  }
+
+  public void setValue(List&lt;FieldDataValue&gt; value) {
+<span class="nc" id="L63">    this.value = value;</span>
+<span class="nc" id="L64">  }</span>
+
+  public FieldData comparison(List&lt;FieldDataComparision&gt; comparison) {
+<span class="nc" id="L67">    this.comparison = comparison;</span>
+<span class="nc" id="L68">    return this;</span>
+  }
+
+  public FieldData addComparisonItem(FieldDataComparision comparisonItem) {
+<span class="nc" id="L72">    this.comparison.add(comparisonItem);</span>
+<span class="nc" id="L73">    return this;</span>
+  }
+
+   /**
+   * Get comparison
+   * @return comparison
+  **/
+  @ApiModelProperty(value = &quot;&quot;)
+  public List&lt;FieldDataComparision&gt; getComparison() {
+<span class="nc" id="L82">    return comparison;</span>
+  }
+
+  public void setComparison(List&lt;FieldDataComparision&gt; comparison) {
+<span class="nc" id="L86">    this.comparison = comparison;</span>
+<span class="nc" id="L87">  }</span>
+
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L93">      return true;</span>
+    }
+<span class="nc bnc" id="L95" title="All 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L96">      return false;</span>
+    }
+<span class="nc" id="L98">    FieldData fieldData = (FieldData) o;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">    return Objects.equals(this.id, fieldData.id) &amp;&amp;</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        Objects.equals(this.value, fieldData.value) &amp;&amp;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        Objects.equals(this.comparison, fieldData.comparison);</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L106">    return Objects.hash(id, value, comparison);</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="nc" id="L111">    StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L112">    sb.append(&quot;class FieldData {\n&quot;);</span>
+
+<span class="nc" id="L114">    sb.append(&quot;    id: &quot;).append(toIndentedString(id)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L115">    sb.append(&quot;    value: &quot;).append(toIndentedString(value)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L116">    sb.append(&quot;    comparison: &quot;).append(toIndentedString(comparison)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L117">    sb.append(&quot;}&quot;);</span>
+<span class="nc" id="L118">    return sb.toString();</span>
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+<span class="nc bnc" id="L126" title="All 2 branches missed.">    if (o == null) {</span>
+<span class="nc" id="L127">      return &quot;null&quot;;</span>
+    }
+<span class="nc" id="L129">    return o.toString().replace(&quot;\n&quot;, &quot;\n    &quot;);</span>
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

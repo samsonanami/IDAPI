@@ -56,14 +56,14 @@ public class MinimumAgeValidationTest {
     @Test
     public void should_return_true_if_age_in_every_document_is_above_minimum_age() throws Exception {
 
-        when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
+        when(dateDecoder.decodeDate("25.12.1974", templateCategory)).thenReturn(dateFormat.parse("12/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##date_of_birth");
-        passportValue.setValue("25.07.1974");
+        passportValue.setId("passport##date_of_birth##NPP");
+        passportValue.setValue("25.12.1974");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##date_of_birth");
-        dlFrontValue.setValue("25.07.1974");
+        dlFrontValue.setId("drivingLicenseFront##date_of_birth##NPP");
+        dlFrontValue.setValue("25.12.1974");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
         fieldValueList.add(passportValue);
@@ -86,15 +86,15 @@ public class MinimumAgeValidationTest {
 
     @Test
     public void should_return_false_if_age_in_any_document_less_than_minimum_age() throws Exception {
-        when(dateDecoder.decodeDate("25.07.2014", templateCategory)).thenReturn(dateFormat.parse("07/25/2014"));
-        when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
+        when(dateDecoder.decodeDate("25.12.2014", templateCategory)).thenReturn(dateFormat.parse("12/25/2014"));
+        when(dateDecoder.decodeDate("25.12.1974", templateCategory)).thenReturn(dateFormat.parse("12/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##date_of_birth");
-        passportValue.setValue("25.07.2014");
+        passportValue.setId("passport##date_of_birth##NPP");
+        passportValue.setValue("25.12.2014");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##date_of_birth");
-        dlFrontValue.setValue("25.07.1974");
+        dlFrontValue.setId("drivingLicenseFront##date_of_birth##NPP");
+        dlFrontValue.setValue("25.12.1974");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
         fieldValueList.add(passportValue);
@@ -147,8 +147,8 @@ public class MinimumAgeValidationTest {
 
     @Test
     public void should_return_false_if_date_format_is_not_supported() throws Exception {
-        when(dateDecoder.decodeDate("25/07/1974", templateCategory)).thenThrow(new DateDecoderException("Unsupported date"));
-        when(dateDecoder.decodeDate("25.07.1974", templateCategory)).thenReturn(dateFormat.parse("07/25/1974"));
+        when(dateDecoder.decodeDate("25/12/1974", templateCategory)).thenThrow(new DateDecoderException("Unsupported date"));
+        when(dateDecoder.decodeDate("25.12.1974", templateCategory)).thenReturn(dateFormat.parse("12/25/1974"));
         OcrFieldValue passportValue = new OcrFieldValue();
         passportValue.setId("passport##date_of_birth");
         passportValue.setValue("25/07/1974");

@@ -53,14 +53,14 @@ public class ExpireDateValidationTest {
     @Test
     public void should_return_true_if_all_documents_not_expired() throws Exception {
 
-        Mockito.when(dateDecoder.decodeDate("25.07.2017", templateCategory)).thenReturn(dateFormat.parse("07/25/2017"));
+        Mockito.when(dateDecoder.decodeDate("25.12.2017", templateCategory)).thenReturn(dateFormat.parse("12/25/2017"));
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##expire_date");
-        passportValue.setValue("25.07.2017");
+        passportValue.setId("passport##expire_date##NPP");
+        passportValue.setValue("25.12.2017");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##expire_date");
-        dlFrontValue.setValue("25.07.2017");
+        dlFrontValue.setId("drivingLicenseFront##expire_date##NPP");
+        dlFrontValue.setValue("25.12.2017");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
         fieldValueList.add(passportValue);
@@ -80,16 +80,16 @@ public class ExpireDateValidationTest {
 
     @Test
     public void should_return_false_if_one_of_the_document_is_expired() throws Exception {
-        Mockito.when(dateDecoder.decodeDate("25.07.2010", templateCategory)).thenReturn(dateFormat.parse("07/25/2010"));
-        Mockito.when(dateDecoder.decodeDate("25.07.2017", templateCategory)).thenReturn(dateFormat.parse("07/25/2017"));
+        Mockito.when(dateDecoder.decodeDate("25.12.2010", templateCategory)).thenReturn(dateFormat.parse("12/25/2010"));
+        Mockito.when(dateDecoder.decodeDate("25.12.2017", templateCategory)).thenReturn(dateFormat.parse("12/25/2017"));
 
         OcrFieldValue passportValue = new OcrFieldValue();
-        passportValue.setId("passport##expire_date");
-        passportValue.setValue("25.07.2010");
+        passportValue.setId("passport##expire_date##NPP");
+        passportValue.setValue("25.12.2010");
 
         OcrFieldValue dlFrontValue = new OcrFieldValue();
-        dlFrontValue.setId("drivingLicenseFront##expire_date");
-        dlFrontValue.setValue("25.07.2017");
+        dlFrontValue.setId("drivingLicenseFront##expire_date##NPP");
+        dlFrontValue.setValue("25.12.2017");
 
         List<OcrFieldValue> fieldValueList = new ArrayList<>();
         fieldValueList.add(passportValue);

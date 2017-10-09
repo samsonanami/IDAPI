@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>OcrResponse.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DataTransferObjects</a> &gt; <a href="index.source.html" class="el_package">com.fintech.orion.dto.hermese.model.oracle.response</a> &gt; <span class="el_source">OcrResponse.java</span></div><h1>OcrResponse.java</h1><pre class="source lang-java linenums">package com.fintech.orion.dto.hermese.model.oracle.response;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * OcrResponse
+ */
+@javax.annotation.Generated(value = &quot;class io.swagger.codegen.languages.SpringCodegen&quot;, date = &quot;2016-12-02T04:51:04.641Z&quot;)
+
+<span class="nc" id="L15">public class OcrResponse {</span>
+<span class="nc" id="L16">  @JsonProperty(&quot;verificationRequestId&quot;)</span>
+  private String verificationRequestId = null;
+
+<span class="nc" id="L19">  @JsonProperty(&quot;status&quot;)</span>
+  private String status = null;
+
+<span class="nc" id="L22">  @JsonProperty(&quot;data&quot;)</span>
+  private List&lt;OcrFieldData&gt; data = new ArrayList&lt;OcrFieldData&gt;();
+
+  public OcrResponse verificationRequestId(String verificationRequestId) {
+<span class="nc" id="L26">    this.verificationRequestId = verificationRequestId;</span>
+<span class="nc" id="L27">    return this;</span>
+  }
+
+   /**
+   * Get verificationRequestId
+   * @return verificationRequestId
+  **/
+  @ApiModelProperty(value = &quot;&quot;)
+  public String getVerificationRequestId() {
+<span class="nc" id="L36">    return verificationRequestId;</span>
+  }
+
+  public void setVerificationRequestId(String verificationRequestId) {
+<span class="nc" id="L40">    this.verificationRequestId = verificationRequestId;</span>
+<span class="nc" id="L41">  }</span>
+
+  public OcrResponse status(String status) {
+<span class="nc" id="L44">    this.status = status;</span>
+<span class="nc" id="L45">    return this;</span>
+  }
+
+   /**
+   * Get status
+   * @return status
+  **/
+  @ApiModelProperty(value = &quot;&quot;)
+  public String getStatus() {
+<span class="nc" id="L54">    return status;</span>
+  }
+
+  public void setStatus(String status) {
+<span class="nc" id="L58">    this.status = status;</span>
+<span class="nc" id="L59">  }</span>
+
+  public OcrResponse data(List&lt;OcrFieldData&gt; data) {
+<span class="nc" id="L62">    this.data = data;</span>
+<span class="nc" id="L63">    return this;</span>
+  }
+
+  public OcrResponse addDataItem(OcrFieldData dataItem) {
+<span class="nc" id="L67">    this.data.add(dataItem);</span>
+<span class="nc" id="L68">    return this;</span>
+  }
+
+   /**
+   * Get data
+   * @return data
+  **/
+  @ApiModelProperty(value = &quot;&quot;)
+  public List&lt;OcrFieldData&gt; getData() {
+<span class="nc" id="L77">    return data;</span>
+  }
+
+  public void setData(List&lt;OcrFieldData&gt; data) {
+<span class="nc" id="L81">    this.data = data;</span>
+<span class="nc" id="L82">  }</span>
+
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L87" title="All 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L88">      return true;</span>
+    }
+<span class="nc bnc" id="L90" title="All 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L91">      return false;</span>
+    }
+<span class="nc" id="L93">    OcrResponse ocrResponse = (OcrResponse) o;</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">    return Objects.equals(this.verificationRequestId, ocrResponse.verificationRequestId) &amp;&amp;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        Objects.equals(this.status, ocrResponse.status) &amp;&amp;</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        Objects.equals(this.data, ocrResponse.data);</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L101">    return Objects.hash(verificationRequestId, status, data);</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="nc" id="L106">    StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L107">    sb.append(&quot;class OcrResponse {\n&quot;);</span>
+
+<span class="nc" id="L109">    sb.append(&quot;    verificationRequestId: &quot;).append(toIndentedString(verificationRequestId)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L110">    sb.append(&quot;    status: &quot;).append(toIndentedString(status)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L111">    sb.append(&quot;    data: &quot;).append(toIndentedString(data)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L112">    sb.append(&quot;}&quot;);</span>
+<span class="nc" id="L113">    return sb.toString();</span>
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+<span class="nc bnc" id="L121" title="All 2 branches missed.">    if (o == null) {</span>
+<span class="nc" id="L122">      return &quot;null&quot;;</span>
+    }
+<span class="nc" id="L124">    return o.toString().replace(&quot;\n&quot;, &quot;\n    &quot;);</span>
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

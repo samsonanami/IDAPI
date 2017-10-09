@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VerificationProcessDetailedResponse.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DataTransferObjects</a> &gt; <a href="index.source.html" class="el_package">com.fintech.orion.dto.response.api</a> &gt; <span class="el_source">VerificationProcessDetailedResponse.java</span></div><h1>VerificationProcessDetailedResponse.java</h1><pre class="source lang-java linenums">package com.fintech.orion.dto.response.api;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * VerificationProcessDetailedResponse
+ */
+@javax.annotation.Generated(value = &quot;class io.swagger.codegen.languages.SpringCodegen&quot;, date = &quot;2016-12-18T09:12:11.427Z&quot;)
+
+<span class="nc" id="L15">public class VerificationProcessDetailedResponse {</span>
+<span class="nc" id="L16">    @JsonProperty(&quot;facialMatch&quot;)</span>
+    private String facialMatch = null;
+
+<span class="nc" id="L19">    @JsonProperty(&quot;livenessTest&quot;)</span>
+    private String livenessTest = null;
+
+<span class="nc" id="L22">    @JsonProperty(&quot;verificationRequestId&quot;)</span>
+    private String verificationRequestId = null;
+
+<span class="nc" id="L25">    @JsonProperty(&quot;status&quot;)</span>
+    private String status = null;
+
+<span class="nc" id="L28">    @JsonProperty(&quot;data&quot;)</span>
+    private List&lt;FieldData&gt; data = new ArrayList&lt;FieldData&gt;();
+
+<span class="nc" id="L31">    @JsonProperty(&quot;visualAuthenticity&quot;)</span>
+    private List&lt;VisualAuthenticity&gt; visualAuthenticity = new ArrayList&lt;VisualAuthenticity&gt;();
+
+<span class="nc" id="L34">    @JsonProperty(&quot;imageQuality&quot;)</span>
+    private List&lt;ImageQuality&gt; imageQuality = new ArrayList&lt;ImageQuality&gt;();
+
+<span class="nc" id="L37">    @JsonProperty(&quot;dataValidation&quot;)</span>
+    private List&lt;DataValidation&gt; dataValidation = new ArrayList&lt;DataValidation&gt;();
+
+<span class="nc" id="L40">    @JsonProperty(&quot;idDocFullValidations&quot;)</span>
+    private List&lt;ValidationData&gt; idDocFullValidations = new ArrayList&lt;ValidationData&gt;();
+
+<span class="nc" id="L43">    @JsonProperty(&quot;addressDocFullValidations&quot;)</span>
+    private List&lt;ValidationData&gt; addressDocFullValidations = new ArrayList&lt;ValidationData&gt;();
+
+    public VerificationProcessDetailedResponse facialMatch(String facialMatch) {
+<span class="nc" id="L47">        this.facialMatch = facialMatch;</span>
+<span class="nc" id="L48">        return this;</span>
+    }
+
+    /**
+     * Get facialMatch
+     *
+     * @return facialMatch
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public String getFacialMatch() {
+<span class="nc" id="L58">        return facialMatch;</span>
+    }
+
+    public void setFacialMatch(String facialMatch) {
+<span class="nc" id="L62">        this.facialMatch = facialMatch;</span>
+<span class="nc" id="L63">    }</span>
+
+    public VerificationProcessDetailedResponse livenessTest(String livenessTest) {
+<span class="nc" id="L66">        this.livenessTest = livenessTest;</span>
+<span class="nc" id="L67">        return this;</span>
+    }
+
+    /**
+     * Get livenessTest
+     *
+     * @return livenessTest
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public String getLivenessTest() {
+<span class="nc" id="L77">        return livenessTest;</span>
+    }
+
+    public void setLivenessTest(String livenessTest) {
+<span class="nc" id="L81">        this.livenessTest = livenessTest;</span>
+<span class="nc" id="L82">    }</span>
+
+    public VerificationProcessDetailedResponse verificationRequestId(String verificationRequestId) {
+<span class="nc" id="L85">        this.verificationRequestId = verificationRequestId;</span>
+<span class="nc" id="L86">        return this;</span>
+    }
+
+    /**
+     * Get verificationRequestId
+     *
+     * @return verificationRequestId
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public String getVerificationRequestId() {
+<span class="nc" id="L96">        return verificationRequestId;</span>
+    }
+
+    public void setVerificationRequestId(String verificationRequestId) {
+<span class="nc" id="L100">        this.verificationRequestId = verificationRequestId;</span>
+<span class="nc" id="L101">    }</span>
+
+    public VerificationProcessDetailedResponse status(String status) {
+<span class="nc" id="L104">        this.status = status;</span>
+<span class="nc" id="L105">        return this;</span>
+    }
+
+    /**
+     * Get status
+     *
+     * @return status
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public String getStatus() {
+<span class="nc" id="L115">        return status;</span>
+    }
+
+    public void setStatus(String status) {
+<span class="nc" id="L119">        this.status = status;</span>
+<span class="nc" id="L120">    }</span>
+
+    public VerificationProcessDetailedResponse data(List&lt;FieldData&gt; data) {
+<span class="nc" id="L123">        this.data = data;</span>
+<span class="nc" id="L124">        return this;</span>
+    }
+
+    public VerificationProcessDetailedResponse addDataItem(FieldData dataItem) {
+<span class="nc" id="L128">        this.data.add(dataItem);</span>
+<span class="nc" id="L129">        return this;</span>
+    }
+
+    /**
+     * Get data
+     *
+     * @return data
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public List&lt;FieldData&gt; getData() {
+<span class="nc" id="L139">        return data;</span>
+    }
+
+    public void setData(List&lt;FieldData&gt; data) {
+<span class="nc" id="L143">        this.data = data;</span>
+<span class="nc" id="L144">    }</span>
+
+    public VerificationProcessDetailedResponse visualAuthenticity(List&lt;VisualAuthenticity&gt; visualAuthenticity) {
+<span class="nc" id="L147">        this.visualAuthenticity = visualAuthenticity;</span>
+<span class="nc" id="L148">        return this;</span>
+    }
+
+    public VerificationProcessDetailedResponse addVisualAuthenticityItem(VisualAuthenticity visualAuthenticityItem) {
+<span class="nc" id="L152">        this.visualAuthenticity.add(visualAuthenticityItem);</span>
+<span class="nc" id="L153">        return this;</span>
+    }
+
+    /**
+     * Get visualAuthenticity
+     *
+     * @return visualAuthenticity
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public List&lt;VisualAuthenticity&gt; getVisualAuthenticity() {
+<span class="nc" id="L163">        return visualAuthenticity;</span>
+    }
+
+    public void setVisualAuthenticity(List&lt;VisualAuthenticity&gt; visualAuthenticity) {
+<span class="nc" id="L167">        this.visualAuthenticity = visualAuthenticity;</span>
+<span class="nc" id="L168">    }</span>
+
+    public VerificationProcessDetailedResponse imageQuality(List&lt;ImageQuality&gt; imageQuality) {
+<span class="nc" id="L171">        this.imageQuality = imageQuality;</span>
+<span class="nc" id="L172">        return this;</span>
+    }
+
+    public VerificationProcessDetailedResponse addImageQualityItem(ImageQuality imageQualityItem) {
+<span class="nc" id="L176">        this.imageQuality.add(imageQualityItem);</span>
+<span class="nc" id="L177">        return this;</span>
+    }
+
+    /**
+     * Get imageQuality
+     *
+     * @return imageQuality
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public List&lt;ImageQuality&gt; getImageQuality() {
+<span class="nc" id="L187">        return imageQuality;</span>
+    }
+
+    public void setImageQuality(List&lt;ImageQuality&gt; imageQuality) {
+<span class="nc" id="L191">        this.imageQuality = imageQuality;</span>
+<span class="nc" id="L192">    }</span>
+
+    public VerificationProcessDetailedResponse dataValidation(List&lt;DataValidation&gt; dataValidation) {
+<span class="nc" id="L195">        this.dataValidation = dataValidation;</span>
+<span class="nc" id="L196">        return this;</span>
+    }
+
+    public VerificationProcessDetailedResponse addDataValidationItem(DataValidation dataValidationItem) {
+<span class="nc" id="L200">        this.dataValidation.add(dataValidationItem);</span>
+<span class="nc" id="L201">        return this;</span>
+    }
+
+    /**
+     * Get dataValidation
+     *
+     * @return dataValidation
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public List&lt;DataValidation&gt; getDataValidation() {
+<span class="nc" id="L211">        return dataValidation;</span>
+    }
+
+    public void setDataValidation(List&lt;DataValidation&gt; dataValidation) {
+<span class="nc" id="L215">        this.dataValidation = dataValidation;</span>
+<span class="nc" id="L216">    }</span>
+
+    public VerificationProcessDetailedResponse idDocFullValidations(List&lt;ValidationData&gt; idDocFullValidations) {
+<span class="nc" id="L219">        this.idDocFullValidations = idDocFullValidations;</span>
+<span class="nc" id="L220">        return this;</span>
+    }
+
+    public VerificationProcessDetailedResponse addIdDocFullValidationsItem(ValidationData idDocFullValidationsItem) {
+<span class="nc" id="L224">        this.idDocFullValidations.add(idDocFullValidationsItem);</span>
+<span class="nc" id="L225">        return this;</span>
+    }
+
+    /**
+     * Get idDocFullValidations
+     *
+     * @return idDocFullValidations
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public List&lt;ValidationData&gt; getIdDocFullValidations() {
+<span class="nc" id="L235">        return idDocFullValidations;</span>
+    }
+
+    public void setIdDocFullValidations(List&lt;ValidationData&gt; idDocFullValidations) {
+<span class="nc" id="L239">        this.idDocFullValidations = idDocFullValidations;</span>
+<span class="nc" id="L240">    }</span>
+
+    public VerificationProcessDetailedResponse addressDocFullValidations(List&lt;ValidationData&gt; addressDocFullValidations) {
+<span class="nc" id="L243">        this.addressDocFullValidations = addressDocFullValidations;</span>
+<span class="nc" id="L244">        return this;</span>
+    }
+
+    public VerificationProcessDetailedResponse addAddressDocFullValidationsItem(ValidationData addressDocFullValidationsItem) {
+<span class="nc" id="L248">        this.addressDocFullValidations.add(addressDocFullValidationsItem);</span>
+<span class="nc" id="L249">        return this;</span>
+    }
+
+    /**
+     * Get addressDocFullValidations
+     *
+     * @return addressDocFullValidations
+     **/
+    @ApiModelProperty(value = &quot;&quot;)
+    public List&lt;ValidationData&gt; getAddressDocFullValidations() {
+<span class="nc" id="L259">        return addressDocFullValidations;</span>
+    }
+
+    public void setAddressDocFullValidations(List&lt;ValidationData&gt; addressDocFullValidations) {
+<span class="nc" id="L263">        this.addressDocFullValidations = addressDocFullValidations;</span>
+<span class="nc" id="L264">    }</span>
+
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L269" title="All 2 branches missed.">        if (this == o) {</span>
+<span class="nc" id="L270">            return true;</span>
+        }
+<span class="nc bnc" id="L272" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L273">            return false;</span>
+        }
+<span class="nc" id="L275">        VerificationProcessDetailedResponse verificationProcessDetaildResponse = (VerificationProcessDetailedResponse) o;</span>
+<span class="nc" id="L276">        return Objects.equals(this.verificationRequestId, verificationProcessDetaildResponse.verificationRequestId);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L281">        return Objects.hash(facialMatch, livenessTest, verificationRequestId, status, data, visualAuthenticity, imageQuality, dataValidation, idDocFullValidations, addressDocFullValidations);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L286">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L287">        sb.append(&quot;class VerificationProcessDetailedResponse {\n&quot;);</span>
+
+<span class="nc" id="L289">        sb.append(&quot;    facialMatch: &quot;).append(toIndentedString(facialMatch)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L290">        sb.append(&quot;    livenessTest: &quot;).append(toIndentedString(livenessTest)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L291">        sb.append(&quot;    verificationRequestId: &quot;).append(toIndentedString(verificationRequestId)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L292">        sb.append(&quot;    status: &quot;).append(toIndentedString(status)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L293">        sb.append(&quot;    data: &quot;).append(toIndentedString(data)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L294">        sb.append(&quot;    visualAuthenticity: &quot;).append(toIndentedString(visualAuthenticity)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L295">        sb.append(&quot;    imageQuality: &quot;).append(toIndentedString(imageQuality)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L296">        sb.append(&quot;    dataValidation: &quot;).append(toIndentedString(dataValidation)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L297">        sb.append(&quot;    idDocFullValidations: &quot;).append(toIndentedString(idDocFullValidations)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L298">        sb.append(&quot;    addressDocFullValidations: &quot;).append(toIndentedString(addressDocFullValidations)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L299">        sb.append(&quot;}&quot;);</span>
+<span class="nc" id="L300">        return sb.toString();</span>
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+<span class="nc bnc" id="L308" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L309">            return &quot;null&quot;;</span>
+        }
+<span class="nc" id="L311">        return o.toString().replace(&quot;\n&quot;, &quot;\n    &quot;);</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
