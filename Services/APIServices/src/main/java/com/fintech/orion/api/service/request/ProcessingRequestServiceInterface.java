@@ -3,6 +3,7 @@ package com.fintech.orion.api.service.request;
 import com.fintech.orion.api.service.exceptions.DataNotFoundException;
 import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
 import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
+import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.dto.response.external.VerificationResponse;
@@ -20,4 +21,7 @@ public interface ProcessingRequestServiceInterface {
 
     PagedResources<VerificationRequestSummery> verificationRequestSummery(String clientName, Date from, Date to,
                                                                           String page, String size) throws DataNotFoundException;
+
+	String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
+			throws ItemNotFoundException;
 }

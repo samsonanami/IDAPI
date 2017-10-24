@@ -7,6 +7,7 @@ import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInte
 import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorInterface;
 import com.fintech.orion.api.service.validator.ResourceAccessValidator;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
+import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
@@ -210,5 +211,38 @@ public class VerificationApiController implements VerificationApi {
         }
         return resourceIdList;
     }
+    
+	/*
+	 * Update verification data controller
+	 */
+	public ResponseEntity<Object> updateVerificationData(
+			@ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String verificationId,
+			@ApiParam(value = "Processing request", required = true) @RequestBody VerificationResponse body,
+			HttpServletResponse response, HttpServletRequest request) {
+		ResponseEntity<Object> responseEntity = null;
+		GenericErrorMessage errorMessage = new GenericErrorMessage();
+		Principal principal = request.getUserPrincipal();
+		try {
+			clientService.getActiveLicenseOfClient(principal.getName());
+			String processingRequestId = processingRequestHandlerInterface
+					.updateVerificationRequestData(principal.getName(), verificationId, body);
+			VerificationRequestResponse verificationResponse = new VerificationRequestResponse();
+			verificationResponse.setProcessingRequestId(processingRequestId);
+			responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
+		} catch (ItemNotFoundException e) {
+			LOGGER.error("Error ocured wihle processing the request {} submitted by user {}", body, principal.getName(),
+					e);
+			errorMessage.setMessage(e.getMessage());
+			errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
+			responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
+		} catch (ClientServiceException e) {
+			LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(),
+					e);
+			errorMessage.setMessage("Your license is expired or suspended. Please contact support");
+			errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
+			responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
+		}
+		return responseEntity;
+	}
 
 }

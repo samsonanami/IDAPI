@@ -52,6 +52,9 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
     @Autowired
     private ProcessTypeRepositoryInterface processTypeRepositoryInterface;
+    
+	@Autowired
+	private ResponseRepositoryInterface responseRepositoryInterface;
 
     @Transactional(rollbackFor = {ItemNotFoundException.class, DataNotFoundException.class})
     @Override
@@ -199,4 +202,26 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
                 .toUriString();
         return new Link(path,rel);
     }
+    
+    /*
+     * This method will update the existing verification data in the database
+     */
+	@Transactional
+	@Override
+	public String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
+			throws ItemNotFoundException {
+		Client client = clientRepositoryInterface.findClientByUserName(clientName);
+		ProcessingRequest processingRequest = new ProcessingRequest();
+		processingRequest.setClient(client);
+		processingRequest.setReceivedOn(new Date());
+		processingRequest.setProcessingRequestIdentificationCode(UUID.randomUUID().toString());
+		processingRequestRepositoryInterface.save(processingRequest);
+		com.fintech.orion.dataabstraction.entities.orion.Process processEntity = processRepositoryInterface
+				.findProcessByProcessIdentificationCode(verificationId);
+		com.fintech.orion.dataabstraction.entities.orion.Response responseEntity = responseRepositoryInterface
+				.findProcessByProcessingIdentificationCode(processEntity.getId());
+		responseEntity.setRawJson(body.toString());
+		responseRepositoryInterface.save(responseEntity);
+		return processingRequest.getProcessingRequestIdentificationCode();
+	}
 }

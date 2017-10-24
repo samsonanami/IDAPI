@@ -4,6 +4,8 @@ import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
+import com.fintech.orion.dto.response.external.VerificationResponse;
+
 import io.swagger.annotations.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.PagedResources;
@@ -65,4 +67,19 @@ public interface VerificationApi {
             @RequestParam(value = "size", required = false, defaultValue = "10") String pageSize,
             HttpServletRequest request, HttpServletResponse response);
 
+	/*
+	 * Update verification details API
+	 */
+	@ApiOperation(value = "Update verification data", notes = "Updating existing verification data", response = VerificationRequestResponse.class, tags = {})
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "successful operation", response = VerificationRequestResponse.class),
+			@ApiResponse(code = 400, message = "Bad request", response = VerificationRequestResponse.class),
+			@ApiResponse(code = 401, message = "Unauthorized request", response = VerificationRequestResponse.class) })
+	@CrossOrigin
+	@RequestMapping(value = "/v1/verification/{verificationId}", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.PUT)
+	ResponseEntity<Object> updateVerificationData(
+			@ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String resourceId,
+			@ApiParam(value = "Processing request", required = true) @RequestBody VerificationResponse body,
+			HttpServletResponse response, HttpServletRequest request);
 }
