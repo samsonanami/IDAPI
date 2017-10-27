@@ -245,4 +245,50 @@ public class VerificationApiController implements VerificationApi {
 		return responseEntity;
 	}
 
+	/*
+	 * under construction
+	 */
+	public ResponseEntity<Object> updateReVerificationData(
+			@ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String verificationId,
+			@ApiParam(value = "Processing request", required = true) @RequestBody VerificationResponse body,
+			HttpServletResponse response, HttpServletRequest request) {
+		ResponseEntity<Object> responseEntity = null;
+		GenericErrorMessage errorMessage = new GenericErrorMessage();
+		Principal principal = request.getUserPrincipal();
+		try {
+			String licenseKey = clientService.getActiveLicenseOfClient(principal.getName());
+			clientService.getActiveLicenseOfClient(principal.getName());
+			String processingRequestId = processingRequestHandlerInterface
+					.updateVerificationRequestData(principal.getName(), verificationId, body);
+			updateMessageQueueAboutReverification(licenseKey, processingRequestId, true);
+			VerificationRequestResponse verificationResponse = new VerificationRequestResponse();
+			verificationResponse.setProcessingRequestId(processingRequestId);
+			responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
+		} catch (ItemNotFoundException e) {
+			LOGGER.error("Error ocured wihle processing the request {} submitted by user {}", body, principal.getName(),
+					e);
+			errorMessage.setMessage(e.getMessage());
+			errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
+			responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
+		} catch (ClientServiceException e) {
+			LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(),
+					e);
+			errorMessage.setMessage("Your license is expired or suspended. Please contact support");
+			errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
+			responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
+		}
+		return responseEntity;
+	}
+
+	/*
+	 * under construction
+	 */
+	private void updateMessageQueueAboutReverification(String licenseKey, String processingRequestId,
+			boolean reVerification) {
+		ProcessingMessage message = new ProcessingMessage();
+		message.setVerificationRequestCode(processingRequestId);
+		message.setClientLicense(licenseKey);
+		message.setReVerification(reVerification);
+		messageProducer.sendMessage(message, jmsTemplate);
+	}
 }

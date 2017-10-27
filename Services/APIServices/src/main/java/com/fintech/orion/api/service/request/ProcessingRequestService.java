@@ -211,17 +211,17 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 	public String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
 			throws ItemNotFoundException {
 		Client client = clientRepositoryInterface.findClientByUserName(clientName);
-		ProcessingRequest processingRequest = new ProcessingRequest();
+		com.fintech.orion.dataabstraction.entities.orion.Process processEntity = processRepositoryInterface
+				.findProcessByProcessIdentificationCode(verificationId);
+		com.fintech.orion.dataabstraction.entities.orion.Response responseEntity = responseRepositoryInterface
+				.findResponseByProcessID(processEntity.getId());
+		responseEntity.setRawJson(body.toString());
+		responseRepositoryInterface.save(responseEntity);
+		ProcessingRequest processingRequest = processEntity.getProcessingRequest();
 		processingRequest.setClient(client);
 		processingRequest.setReceivedOn(new Date());
 		processingRequest.setProcessingRequestIdentificationCode(UUID.randomUUID().toString());
 		processingRequestRepositoryInterface.save(processingRequest);
-		com.fintech.orion.dataabstraction.entities.orion.Process processEntity = processRepositoryInterface
-				.findProcessByProcessIdentificationCode(verificationId);
-		com.fintech.orion.dataabstraction.entities.orion.Response responseEntity = responseRepositoryInterface
-				.findProcessByProcessingIdentificationCode(processEntity.getId());
-		responseEntity.setRawJson(body.toString());
-		responseRepositoryInterface.save(responseEntity);
 		return processingRequest.getProcessingRequestIdentificationCode();
 	}
 }

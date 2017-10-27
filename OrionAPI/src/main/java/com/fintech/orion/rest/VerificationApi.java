@@ -82,4 +82,20 @@ public interface VerificationApi {
 			@ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String resourceId,
 			@ApiParam(value = "Processing request", required = true) @RequestBody VerificationResponse body,
 			HttpServletResponse response, HttpServletRequest request);
+	
+	/*
+	 * Under construction
+	 */
+	@ApiOperation(value = "Update re-verification data", notes = "Updating re-verification data", response = VerificationRequestResponse.class, tags = {})
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "successful operation", response = VerificationRequestResponse.class),
+			@ApiResponse(code = 400, message = "Bad request", response = VerificationRequestResponse.class),
+			@ApiResponse(code = 401, message = "Unauthorized request", response = VerificationRequestResponse.class) })
+	@CrossOrigin
+	@RequestMapping(value = "/v1/verification/{verificationId}/reverify", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<Object> updateReVerificationData(
+			@ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String resourceId,
+			@ApiParam(value = "Processing request", required = true) @RequestBody VerificationResponse body,
+			HttpServletResponse response, HttpServletRequest request);
 }
