@@ -26,25 +26,28 @@ import javax.persistence.TemporalType;
 )
 public class ProcessingRequest  implements java.io.Serializable {
 
-
-     private Integer id;
-     private Client client;
-     private Date receivedOn;
-     private String processingRequestIdentificationCode;
-     private String finalResponse;
-     private Date processingCompletedOn;
-     private Set<Process> processes = new HashSet<Process>(0);
+    private Integer id;
+    private Client client;
+    private Date receivedOn;
+    private String processingRequestIdentificationCode;
+    private String finalResponse;
+    private Date processingCompletedOn;
+    private Set<Process> processes = new HashSet<Process>(0);
+    private ProcessingStatus finalVerificationStatus;
 
     public ProcessingRequest() {
     }
 
-    public ProcessingRequest(Client client, Date receivedOn, String processingRequestIdentificationCode, String finalResponse, Date processingCompletedOn, Set<Process> processes) {
-       this.client = client;
-       this.receivedOn = receivedOn;
-       this.processingRequestIdentificationCode = processingRequestIdentificationCode;
-       this.finalResponse = finalResponse;
-       this.processingCompletedOn = processingCompletedOn;
-       this.processes = processes;
+    public ProcessingRequest(Client client, Date receivedOn, String processingRequestIdentificationCode,
+            String finalResponse, Date processingCompletedOn, Set<Process> processes,
+            ProcessingStatus finalVerificationStatus) {
+        this.client = client;
+        this.receivedOn = receivedOn;
+        this.processingRequestIdentificationCode = processingRequestIdentificationCode;
+        this.finalResponse = finalResponse;
+        this.processingCompletedOn = processingCompletedOn;
+        this.processes = processes;
+        this.finalVerificationStatus = finalVerificationStatus;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -118,9 +121,14 @@ public class ProcessingRequest  implements java.io.Serializable {
         this.processes = processes;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FINAL_VERIFICATION_STATUS")
+    public ProcessingStatus getFinalVerificationStatus() {
+        return this.finalVerificationStatus;
+    }
 
-
+    public void setFinalVerificationStatus(ProcessingStatus finalVerificationStatus) {
+        this.finalVerificationStatus = finalVerificationStatus;
+    }
 
 }
-
-

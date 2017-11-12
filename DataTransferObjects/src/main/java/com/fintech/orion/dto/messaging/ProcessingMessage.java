@@ -2,6 +2,8 @@ package com.fintech.orion.dto.messaging;
 
 import java.io.Serializable;
 
+import com.fintech.orion.dto.request.api.VerificationDataRequest;
+
 /**
  * Created by sasitha on 12/18/16.
  *
@@ -12,6 +14,8 @@ public class ProcessingMessage implements Serializable{
 
     private String verificationRequestCode;
     private String clientLicense;
+    private boolean reVerification;
+    private VerificationDataRequest verificationDataRequest;
 
     public String getVerificationRequestCode() {
         return verificationRequestCode;
@@ -27,6 +31,22 @@ public class ProcessingMessage implements Serializable{
 
     public void setClientLicense(String clientLicense) {
         this.clientLicense = clientLicense;
+    }
+
+    public boolean isReVerification() {
+        return reVerification;
+    }
+
+    public void setReVerification(boolean reVerification) {
+        this.reVerification = reVerification;
+    }
+
+    public VerificationDataRequest getVerificationDataRequest() {
+        return verificationDataRequest;
+    }
+
+    public void setVerificationDataRequest(VerificationDataRequest verificationDataRequest) {
+        this.verificationDataRequest = verificationDataRequest;
     }
 
     @Override
@@ -61,7 +81,9 @@ public class ProcessingMessage implements Serializable{
 
     @Override
     public String toString() {
-        return "ProcessingMessage [verificationRequestCode=" + verificationRequestCode + ", clientLicense :" + clientLicense +"]";
+        return "ProcessingMessage [verificationRequestCode=" + verificationRequestCode + ", clientLicense :"
+                + clientLicense + " , reVerification=" + reVerification + ", verificationDataRequest="
+                + verificationDataRequest + "]";
     }
 
 }

@@ -9,4 +9,6 @@ public interface ProcessingStatusRepositoryInterface extends CrudRepository<Proc
 
     ProcessingStatus findProcessingStatusByStatus(String status);
 
+    ProcessingStatus findProcessingStatusByStatusIgnoreCase(String status);
+
 }

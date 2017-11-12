@@ -1,5 +1,6 @@
 package com.fintech.orion.coreservices;
 
+import com.fintech.orion.dataabstraction.entities.orion.Resource;
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.exception.ResourceCreationException;
 
@@ -8,8 +9,9 @@ import com.fintech.orion.exception.ResourceCreationException;
  */
 public interface ResourceServiceInterface {
 
+    ResourceDTO createResourceForUser(String newFilename, String contentType, String clientName)
+            throws ResourceCreationException;
 
-    ResourceDTO createResourceForUser(String newFilename, String contentType, String clientName) throws ResourceCreationException;
-
+    Resource getResourceByResourceId(String resourceId);
 
 }

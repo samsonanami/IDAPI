@@ -9,6 +9,8 @@ import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.dto.response.external.VerificationResponse;
 import org.springframework.hateoas.PagedResources;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -23,5 +25,5 @@ public interface ProcessingRequestServiceInterface {
                                                                           String page, String size) throws DataNotFoundException;
 
 	String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
-			throws ItemNotFoundException;
+			throws ItemNotFoundException, JsonProcessingException;
 }

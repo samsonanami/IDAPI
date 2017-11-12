@@ -2,6 +2,7 @@ package com.fintech.orion.dto.processingrequest;
 
 import com.fintech.orion.dto.client.ClientDTO;
 import com.fintech.orion.dto.process.ProcessDTO;
+import com.fintech.orion.dto.processingstatus.ProcessingStatusDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ public class ProcessingRequestDTO {
     private Date receivedOn;
     private String processingRequestIdentificationCode;
     private List<ProcessDTO> processes;
+    private ProcessingStatusDTO processingStatusDTO;
 
     public Integer getId() {
         return id;
@@ -55,5 +57,13 @@ public class ProcessingRequestDTO {
 
     public void setProcesses(List<ProcessDTO> processes) {
         this.processes = processes;
+    }
+    
+    public ProcessingStatusDTO getProcessingStatusDTO() {
+        return processingStatusDTO;
+    }
+
+    public void setProcessingStatusDTO(ProcessingStatusDTO processingStatusDTO) {
+        this.processingStatusDTO = processingStatusDTO;
     }
 }

@@ -1,6 +1,5 @@
 package com.fintech.orion.api.service.request;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.api.service.exceptions.DataNotFoundException;
 import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
 import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
@@ -14,6 +13,7 @@ import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.dto.response.external.VerificationResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +23,9 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,9 +55,9 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
     @Autowired
     private ProcessTypeRepositoryInterface processTypeRepositoryInterface;
-    
-	@Autowired
-	private ResponseRepositoryInterface responseRepositoryInterface;
+
+    @Autowired
+    private ResponseRepositoryInterface responseRepositoryInterface;
 
     @Transactional(rollbackFor = {ItemNotFoundException.class, DataNotFoundException.class})
     @Override
@@ -206,22 +209,30 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     /*
      * This method will update the existing verification data in the database
      */
-	@Transactional
-	@Override
-	public String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
-			throws ItemNotFoundException {
-		Client client = clientRepositoryInterface.findClientByUserName(clientName);
-		com.fintech.orion.dataabstraction.entities.orion.Process processEntity = processRepositoryInterface
-				.findProcessByProcessIdentificationCode(verificationId);
-		com.fintech.orion.dataabstraction.entities.orion.Response responseEntity = responseRepositoryInterface
-				.findResponseByProcessID(processEntity.getId());
-		responseEntity.setRawJson(body.toString());
-		responseRepositoryInterface.save(responseEntity);
-		ProcessingRequest processingRequest = processEntity.getProcessingRequest();
-		processingRequest.setClient(client);
-		processingRequest.setReceivedOn(new Date());
-		processingRequest.setProcessingRequestIdentificationCode(UUID.randomUUID().toString());
-		processingRequestRepositoryInterface.save(processingRequest);
-		return processingRequest.getProcessingRequestIdentificationCode();
-	}
+    @Transactional
+    @Override
+    public String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
+            throws ItemNotFoundException, JsonProcessingException {
+        ProcessingRequest processingRequestEntity = processingRequestRepositoryInterface
+                .findProcessingRequestByProcessingRequestIdentificationCode(verificationId);
+
+        ProcessingStatus processingStatus = processingStatusRepositoryInterface
+                .findProcessingStatusByStatusIgnoreCase(body.getStatus());
+        processingRequestEntity.setFinalVerificationStatus(processingStatus);
+        processingRequestRepositoryInterface.save(processingRequestEntity);
+
+        List<Process> processEntity = processRepositoryInterface
+                .findProcessByProcessingRequest(processingRequestEntity.getProcessingRequestIdentificationCode());
+        for (Process process : processEntity) {
+            com.fintech.orion.dataabstraction.entities.orion.Response responseEntity = responseRepositoryInterface
+                    .findProcessByProcessingIdentificationCode(process.getId());
+            ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            String json = objectWriter.writeValueAsString(body);
+            responseEntity.setRawJson(json);
+            responseRepositoryInterface.save(responseEntity);
+
+        }
+        return verificationId;
+    }
+
 }

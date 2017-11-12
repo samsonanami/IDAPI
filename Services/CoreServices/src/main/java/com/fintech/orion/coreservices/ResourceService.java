@@ -52,4 +52,11 @@ public class ResourceService implements ResourceServiceInterface {
 
         return resourceMapper.resourceToResourceDTO(resource);
     }
+
+    @Override
+    public Resource getResourceByResourceId(String resourceId) {
+        Resource resource = resourceRepositoryInterface.findResourceByResourceIdentificationCode(resourceId);
+        return resource;
+    }
+
 }

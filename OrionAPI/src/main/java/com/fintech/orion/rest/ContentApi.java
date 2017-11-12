@@ -31,4 +31,16 @@ public interface ContentApi {
             @ApiParam(value = "file detail") @RequestPart("file") MultipartFile file,
             HttpServletResponse response, HttpServletRequest request);
 
+    @ApiOperation(value = "Get resource using resource ID", notes = "Get passport image, driving license image or any other allowed content based on id", response = byte[].class, tags = {})
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "successful operation", response = byte[].class),
+            @ApiResponse(code = 400, message = "Bad request", response = byte[].class),
+            @ApiResponse(code = 401, message = "Unauthorized request", response = byte[].class) })
+    @CrossOrigin
+    @RequestMapping(value = "/v1/content/{resourceId}", produces = { "image/jpg", "image/png",
+    "video/mp4" }, method = RequestMethod.GET)
+    ResponseEntity<Object> getResourceByResourceId(
+            @ApiParam(value = "resource id", required = true) @PathVariable("resourceId") String resourceId,
+            HttpServletResponse response, HttpServletRequest request);
 }
+
+

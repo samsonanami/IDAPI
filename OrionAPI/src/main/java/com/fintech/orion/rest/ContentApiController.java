@@ -27,6 +27,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.File;
+import java.io.IOException;
+
+
 
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-18T09:12:11.427Z")
@@ -39,6 +46,10 @@ public class ContentApiController implements ContentApi {
     private ClientLicenseServiceInterface clientService;
     @Autowired
     private ResourceServiceInterface resourceServiceInterface;
+    @Autowired
+    private String workingDir;
+    @Autowired
+    private ResourceAccessValidator resourceAccessValidator;
     @Autowired
     private ResourceBuilder resourceBuilder;
 
@@ -96,6 +107,50 @@ public class ContentApiController implements ContentApi {
         }
 
         return responseEntity;
+    }
+
+    public ResponseEntity<Object> getResourceByResourceId(
+            @ApiParam(value = "resource id", required = true) @PathVariable("resourceId") String resourceId,
+            HttpServletResponse response, HttpServletRequest request) {
+        // do some magic!
+        ResponseEntity<Object> responseEntity = null;
+        GenericErrorMessage errorMessage = new GenericErrorMessage();
+        Principal principal = request.getUserPrincipal();
+        if (!resourceAccessValidator.validateResourceOwnership(principal.getName(), getResourceList(resourceId))) {
+            LOGGER.warn("Client {} tried to access one or more resources not uploaded by them selfs.");
+            errorMessage.setMessage("Unknown resource id was found in the processing request. "
+                    + "Please check all the resource id's and try again");
+            errorMessage.setStatus(HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<Object>(errorMessage, HttpStatus.NOT_FOUND);
+        }
+        try {
+            com.fintech.orion.dataabstraction.entities.orion.Resource resource = resourceServiceInterface
+                    .getResourceByResourceId(resourceId);
+            String location = resource.getLocation();
+            File ImgFile = new File(workingDir + location);
+            byte[] byteArrayResource = Files.readAllBytes(ImgFile.toPath());
+            responseEntity = new ResponseEntity<Object>(byteArrayResource, HttpStatus.OK);
+
+        } catch (BusinessException e) {
+            LOGGER.warn("Business Exception", e);
+            errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
+            errorMessage.setMessage("Bad request : " + e.getMessage());
+            responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
+        } catch (IOException e) {
+            LOGGER.error("IO Exception", e);
+            errorMessage.setMessage("Error in reading resource form the location : " + e.getMessage());
+            errorMessage.setStatus(HttpStatus.valueOf("Unable to read resource " + resourceId).value());
+            responseEntity = new ResponseEntity<Object>(errorMessage,
+                    HttpStatus.valueOf("Unable to read resource " + resourceId));
+        }
+
+        return responseEntity;
+    }
+
+    private List<String> getResourceList(String resourceId) {
+        List<String> resourceIdList = new ArrayList<>();
+        resourceIdList.add(resourceId);
+        return resourceIdList;
     }
 
 }
