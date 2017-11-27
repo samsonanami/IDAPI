@@ -21,8 +21,8 @@ public interface ProcessingRequestServiceInterface {
 
     VerificationResponse getDetailedResponse(String clientName, String verificationRequestId) throws IOException, ResourceAccessPolicyViolationException, ResourceNotFoundException;
 
-    PagedResources<VerificationRequestSummery> verificationRequestSummery(String clientName, Date from, Date to,
-                                                                          String page, String size) throws DataNotFoundException;
+    PagedResources<VerificationRequestSummery> verificationRequestSummery(String principalName,String clientName, Date from, Date to,
+            String page, String size, List<String> status) throws DataNotFoundException;
 
 	String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
 			throws ItemNotFoundException, JsonProcessingException;

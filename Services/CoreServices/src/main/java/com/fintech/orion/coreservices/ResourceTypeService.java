@@ -21,5 +21,12 @@ public class ResourceTypeService implements ResourceTypeServiceInterface {
     public ResourceType findByType(String type) throws ItemNotFoundException {
         return resourceTypeRepositoryInterface.findResourceTypeByType(type);
     }
+    
+    @Transactional
+    @Override
+    public ResourceType findById(int id) throws ItemNotFoundException {
+        return resourceTypeRepositoryInterface.findResourceTypeById(id);
+    }
+
 
 }

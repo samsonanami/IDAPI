@@ -2,7 +2,11 @@ package com.fintech.orion.rest;
 
 import com.fintech.orion.api.service.client.ClientLicenseServiceInterface;
 import com.fintech.orion.api.service.exceptions.ClientServiceException;
+import com.fintech.orion.api.service.validator.ResourceAccessValidator;
 import com.fintech.orion.coreservices.ResourceServiceInterface;
+import com.fintech.orion.coreservices.ResourceTypeServiceInterface;
+import com.fintech.orion.dataabstraction.entities.orion.ResourceType;
+import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.resource.ResourceDTO;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
 import com.fintech.orion.dto.response.api.ResourceUploadResponse;
@@ -12,8 +16,11 @@ import com.fintech.orion.exception.ResourceCreationException;
 import com.fintech.orion.resource.Resource;
 import com.fintech.orion.resource.builder.ResourceBuilder;
 import com.fintech.orion.resource.persistence.exception.PersistenceException;
+import com.fintech.orion.resource.response.ResourceResponse;
 import com.fintech.orion.resource.upload.UploadResource;
+
 import io.swagger.annotations.ApiParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +33,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.security.Principal;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
-
-
-
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-18T09:12:11.427Z")
 
@@ -46,6 +52,8 @@ public class ContentApiController implements ContentApi {
     private ClientLicenseServiceInterface clientService;
     @Autowired
     private ResourceServiceInterface resourceServiceInterface;
+    @Autowired
+    private ResourceTypeServiceInterface resourceTypeServiceInterface;
     @Autowired
     private String workingDir;
     @Autowired
@@ -112,7 +120,6 @@ public class ContentApiController implements ContentApi {
     public ResponseEntity<Object> getResourceByResourceId(
             @ApiParam(value = "resource id", required = true) @PathVariable("resourceId") String resourceId,
             HttpServletResponse response, HttpServletRequest request) {
-        // do some magic!
         ResponseEntity<Object> responseEntity = null;
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         Principal principal = request.getUserPrincipal();
@@ -126,11 +133,13 @@ public class ContentApiController implements ContentApi {
         try {
             com.fintech.orion.dataabstraction.entities.orion.Resource resource = resourceServiceInterface
                     .getResourceByResourceId(resourceId);
-            String location = resource.getLocation();
-            File ImgFile = new File(workingDir + location);
+            ResourceType resourceType = resourceTypeServiceInterface.findById(resource.getResourceType().getId());
+            File ImgFile = new File(workingDir + resource.getLocation());
             byte[] byteArrayResource = Files.readAllBytes(ImgFile.toPath());
-            responseEntity = new ResponseEntity<Object>(byteArrayResource, HttpStatus.OK);
-
+            ResourceResponse resourceResponse = new ResourceResponse();
+            resourceResponse.setContent(Base64.getEncoder().encodeToString(byteArrayResource));
+            resourceResponse.setContentType(resourceType.getType());
+            responseEntity = new ResponseEntity<Object>(resourceResponse, HttpStatus.OK);
         } catch (BusinessException e) {
             LOGGER.warn("Business Exception", e);
             errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -142,6 +151,12 @@ public class ContentApiController implements ContentApi {
             errorMessage.setStatus(HttpStatus.valueOf("Unable to read resource " + resourceId).value());
             responseEntity = new ResponseEntity<Object>(errorMessage,
                     HttpStatus.valueOf("Unable to read resource " + resourceId));
+        } catch (ItemNotFoundException e) {
+            LOGGER.error("Item Not Found Exception", e);
+            errorMessage.setMessage("Error in reading resource with the id " + resourceId);
+            errorMessage.setStatus(HttpStatus.valueOf("Unable to find resource " + resourceId).value());
+            responseEntity = new ResponseEntity<Object>(errorMessage,
+                    HttpStatus.valueOf("Unable to find resource " + resourceId));
         }
 
         return responseEntity;

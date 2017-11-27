@@ -3,6 +3,7 @@ package com.fintech.orion.dto.response.external;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-02T05:17:07.596Z")
 
-public class FacialVerification {
+public class FacialVerification implements Serializable {
     @JsonProperty("status")
     private String status = null;
 
@@ -33,32 +34,34 @@ public class FacialVerification {
         this.status = status;
     }
 
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null)
             return false;
-        }
-        FacialVerification facialVerification = (FacialVerification) o;
-        return Objects.equals(this.status, facialVerification.status);
+        if (getClass() != obj.getClass())
+            return false;
+        FacialVerification other = (FacialVerification) obj;
+        if (status == null) {
+            if (other.status != null)
+                return false;
+        } else if (!status.equals(other.status))
+            return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((status == null) ? 0 : status.hashCode());
+        return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class FacialVerification {\n");
-
-        sb.append("    status: ").append(toIndentedString(status)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "FacialVerification [status=" + status + "]";
     }
 
     /**
@@ -72,4 +75,3 @@ public class FacialVerification {
         return o.toString().replace("\n", "\n    ");
     }
 }
-

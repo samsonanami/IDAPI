@@ -1,6 +1,7 @@
 package com.fintech.orion.api.service.validator;
 
-import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
+import com.fintech.orion.dataabstraction.entities.orion.Client;
+import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 
 import java.util.List;
 
@@ -10,4 +11,7 @@ import java.util.List;
  */
 public interface ResourceAccessValidatorInterface {
     boolean validateResourceOwnership(String userName, List<String> resourceList);
+    boolean validateRequestOwnership(Client client, ProcessingRequest processingRequest);
+    List<Integer> acountIds(Client client);
+    
 }

@@ -2,7 +2,6 @@ package com.fintech.orion.rest;
 
 import com.fintech.orion.dto.mrz.ScriptResult;
 import com.fintech.orion.dto.request.api.MRZRequest;
-import com.fintech.orion.dto.request.api.VerificationDataRequest;
 import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
+
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-18T09:12:11.427Z")
 
@@ -68,7 +69,9 @@ public interface VerificationApi {
             @RequestParam(value = "to", required = false) @DateTimeFormat(pattern = "MM-dd-yyyy") Date to,
             @RequestParam(value = "page", required = false, defaultValue = "1") String pageNumber,
             @RequestParam(value = "size", required = false, defaultValue = "10") String pageSize,
-            HttpServletRequest request, HttpServletResponse response);
+            @RequestParam(value = "status", required = false) List<String> status,
+            @RequestParam(value = "clientName", required = false) String clientName, HttpServletRequest request,
+            HttpServletResponse response);
 
     /*
      * Update verification details API
@@ -99,7 +102,7 @@ public interface VerificationApi {
             "application/json" }, consumes = { "application/json" }, method = RequestMethod.POST)
     ResponseEntity<Object> updateReVerificationData(
             @ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String resourceId,
-            @ApiParam(value = "Processing request", required = true) @RequestBody VerificationDataRequest body,
+            @ApiParam(value = "Processing request", required = true) @RequestBody VerificationResponse body,
             HttpServletResponse response, HttpServletRequest request);
 
     /*

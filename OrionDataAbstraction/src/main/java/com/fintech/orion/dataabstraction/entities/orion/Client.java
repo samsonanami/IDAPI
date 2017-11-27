@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,54 +28,81 @@ import javax.persistence.UniqueConstraint;
 )
 public class Client  implements java.io.Serializable {
 
+    private Integer id;
+    private UserType userType;
+    private String email;
+    private Date registeredOn;
+    private String userName;
+    private String password;
+    private boolean enabled;
+    private Set<Resource> resources = new HashSet<Resource>(0);
+    private Set<License> licenses = new HashSet<License>(0);
+    private Set<AccountMapping> accountMappingsForParent = new HashSet<AccountMapping>(0);
+    private Set<License> licenses_1 = new HashSet<License>(0);
+    private Set<ProcessingRequest> processingRequests = new HashSet<ProcessingRequest>(0);
+    private Set<ProcessingRequest> processingRequests_1 = new HashSet<ProcessingRequest>(0);
+    private Set<Resource> resources_1 = new HashSet<Resource>(0);
+    private Set<ProcessConfig> processConfigs = new HashSet<ProcessConfig>(0);
+    private Set<AccountMapping> accountMappingsForChild = new HashSet<AccountMapping>(0);
 
-     private Integer id;
-     private String email;
-     private Date registeredOn;
-     private String userName;
-     private String password;
-     private boolean enabled;
-     private Set<License> licenses = new HashSet<License>(0);
-     private Set<ProcessingRequest> processingRequests = new HashSet<ProcessingRequest>(0);
-     private Set<Resource> resources = new HashSet<Resource>(0);
-     private Set<ProcessConfig> processConfigs = new HashSet<ProcessConfig>(0);
     public Client() {
     }
 
-	
-    public Client(String email, Date registeredOn, String userName, String password, boolean enabled) {
+    public Client(UserType userType, String email, Date registeredOn, String userName, String password,
+            boolean enabled) {
+        this.userType = userType;
         this.email = email;
         this.registeredOn = registeredOn;
         this.userName = userName;
         this.password = password;
         this.enabled = enabled;
     }
-    public Client(String email, Date registeredOn, String userName, String password, boolean enabled, Set<License> licenses, Set<ProcessingRequest> processingRequests, Set<Resource> resources, Set<ProcessConfig> processConfigs) {
-       this.email = email;
-       this.registeredOn = registeredOn;
-       this.userName = userName;
-       this.password = password;
-       this.enabled = enabled;
-       this.licenses = licenses;
-       this.processingRequests = processingRequests;
-       this.resources = resources;
-       this.processConfigs = processConfigs;
-    }
-   
-     @Id @GeneratedValue(strategy=IDENTITY)
 
-    
-    @Column(name="ID", unique=true, nullable=false)
+    public Client(UserType userType, String email, Date registeredOn, String userName, String password, boolean enabled,
+            Set<Resource> resources, Set<License> licenses, Set<AccountMapping> accountMappingsForParent,
+            Set<License> licenses_1, Set<ProcessingRequest> processingRequests,
+            Set<ProcessingRequest> processingRequests_1, Set<Resource> resources_1, Set<ProcessConfig> processConfigs,
+            Set<AccountMapping> accountMappingsForChild) {
+        this.userType = userType;
+        this.email = email;
+        this.registeredOn = registeredOn;
+        this.userName = userName;
+        this.password = password;
+        this.enabled = enabled;
+        this.resources = resources;
+        this.licenses = licenses;
+        this.accountMappingsForParent = accountMappingsForParent;
+        this.licenses_1 = licenses_1;
+        this.processingRequests = processingRequests;
+        this.processingRequests_1 = processingRequests_1;
+        this.resources_1 = resources_1;
+        this.processConfigs = processConfigs;
+        this.accountMappingsForChild = accountMappingsForChild;
+    }
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+
+    @Column(name = "ID", unique = true, nullable = false)
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
 
-    
-    @Column(name="EMAIL", unique=true, nullable=false, length=256)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_TYPE_ID", nullable = false)
+    public UserType getUserType() {
+        return this.userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    @Column(name = "EMAIL", unique = true, nullable = false, length = 256)
     public String getEmail() {
         return this.email;
     }
@@ -122,7 +151,16 @@ public class Client  implements java.io.Serializable {
         this.enabled = enabled;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    public Set<Resource> getResources() {
+        return this.resources;
+    }
+
+    public void setResources(Set<Resource> resources) {
+        this.resources = resources;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     public Set<License> getLicenses() {
         return this.licenses;
     }
@@ -131,7 +169,25 @@ public class Client  implements java.io.Serializable {
         this.licenses = licenses;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientByParent")
+    public Set<AccountMapping> getAccountMappingsForParent() {
+        return this.accountMappingsForParent;
+    }
+
+    public void setAccountMappingsForParent(Set<AccountMapping> accountMappingsForParent) {
+        this.accountMappingsForParent = accountMappingsForParent;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    public Set<License> getLicenses_1() {
+        return this.licenses_1;
+    }
+
+    public void setLicenses_1(Set<License> licenses_1) {
+        this.licenses_1 = licenses_1;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     public Set<ProcessingRequest> getProcessingRequests() {
         return this.processingRequests;
     }
@@ -140,15 +196,23 @@ public class Client  implements java.io.Serializable {
         this.processingRequests = processingRequests;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="client")
-    public Set<Resource> getResources() {
-        return this.resources;
-    }
-    
-    public void setResources(Set<Resource> resources) {
-        this.resources = resources;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    public Set<ProcessingRequest> getProcessingRequests_1() {
+        return this.processingRequests_1;
     }
 
+    public void setProcessingRequests_1(Set<ProcessingRequest> processingRequests_1) {
+        this.processingRequests_1 = processingRequests_1;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    public Set<Resource> getResources_1() {
+        return this.resources_1;
+    }
+
+    public void setResources_1(Set<Resource> resources_1) {
+        this.resources_1 = resources_1;
+    }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="client")
     public Set<ProcessConfig> getProcessConfigs() {
@@ -159,8 +223,13 @@ public class Client  implements java.io.Serializable {
         this.processConfigs = processConfigs;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientByChild")
+    public Set<AccountMapping> getAccountMappingsForChild() {
+        return this.accountMappingsForChild;
+    }
 
+    public void setAccountMappingsForChild(Set<AccountMapping> accountMappingsForChild) {
+        this.accountMappingsForChild = accountMappingsForChild;
+    }
 
 }
-
-

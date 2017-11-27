@@ -3,6 +3,7 @@ package com.fintech.orion.dto.response.external;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-02T05:17:07.596Z")
 
-public class Verification {
+public class Verification implements Serializable {
     @JsonProperty("verificationProcessName")
     private String verificationProcessName = null;
 
@@ -62,34 +63,41 @@ public class Verification {
         this.imageDetails = imageDetails;
     }
 
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null)
             return false;
-        }
-        Verification verificationDetail = (Verification) o;
-        return Objects.equals(this.verificationProcessName, verificationDetail.verificationProcessName) &&
-                Objects.equals(this.imageDetails, verificationDetail.imageDetails);
+        if (getClass() != obj.getClass())
+            return false;
+        Verification other = (Verification) obj;
+        if (imageDetails == null) {
+            if (other.imageDetails != null)
+                return false;
+        } else if (!imageDetails.equals(other.imageDetails))
+            return false;
+        if (verificationProcessName == null) {
+            if (other.verificationProcessName != null)
+                return false;
+        } else if (!verificationProcessName.equals(other.verificationProcessName))
+            return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(verificationProcessName, imageDetails);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((imageDetails == null) ? 0 : imageDetails.hashCode());
+        result = prime * result + ((verificationProcessName == null) ? 0 : verificationProcessName.hashCode());
+        return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class VerificationDetail {\n");
-
-        sb.append("    verificationProcessName: ").append(toIndentedString(verificationProcessName)).append("\n");
-        sb.append("    imageDetails: ").append(toIndentedString(imageDetails)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "Verification [verificationProcessName=" + verificationProcessName + ", imageDetails=" + imageDetails
+                + "]";
     }
 
     /**
@@ -103,4 +111,3 @@ public class Verification {
         return o.toString().replace("\n", "\n    ");
     }
 }
-

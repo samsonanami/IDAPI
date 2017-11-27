@@ -34,13 +34,14 @@ public class ProcessingRequest  implements java.io.Serializable {
     private Date processingCompletedOn;
     private Set<Process> processes = new HashSet<Process>(0);
     private ProcessingStatus finalVerificationStatus;
+    private String clientName;
 
     public ProcessingRequest() {
     }
 
     public ProcessingRequest(Client client, Date receivedOn, String processingRequestIdentificationCode,
             String finalResponse, Date processingCompletedOn, Set<Process> processes,
-            ProcessingStatus finalVerificationStatus) {
+            ProcessingStatus finalVerificationStatus, String clientName) {
         this.client = client;
         this.receivedOn = receivedOn;
         this.processingRequestIdentificationCode = processingRequestIdentificationCode;
@@ -48,6 +49,7 @@ public class ProcessingRequest  implements java.io.Serializable {
         this.processingCompletedOn = processingCompletedOn;
         this.processes = processes;
         this.finalVerificationStatus = finalVerificationStatus;
+        this.clientName = clientName;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -131,4 +133,14 @@ public class ProcessingRequest  implements java.io.Serializable {
         this.finalVerificationStatus = finalVerificationStatus;
     }
 
+    @Column(name = "CLIENT_NAME")
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+   
 }

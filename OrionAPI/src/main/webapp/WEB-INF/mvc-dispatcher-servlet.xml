@@ -51,6 +51,10 @@
     <bean id="workingDir" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="#{systemProperties['FILE_SAVING_LOCATION']}"/>
     </bean>
+    
+    <bean id="uniqueID" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="#{systemProperties['UNIQUEID_FILE_LOCATION']}"/>
+    </bean>
 
     <bean id="inspectionImageUrl" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="https://www.checkid.online:15045/inspectionimage/"/>

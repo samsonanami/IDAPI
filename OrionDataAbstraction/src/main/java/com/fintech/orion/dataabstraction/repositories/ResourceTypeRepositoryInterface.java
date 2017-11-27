@@ -6,5 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface ResourceTypeRepositoryInterface extends CrudRepository<ResourceType, Integer> {
 
     ResourceType findResourceTypeByType(String type);
+    ResourceType findResourceTypeById(int id);
 
 }

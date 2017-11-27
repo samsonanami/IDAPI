@@ -1,18 +1,19 @@
 package com.fintech.orion.dto.response.external;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Data
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-02T05:17:07.596Z")
 
-public class Data {
+public class Data implements Serializable {
     @JsonProperty("id")
     private String id = null;
 
@@ -89,24 +90,41 @@ public class Data {
         this.comparison = comparison;
     }
 
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null)
             return false;
-        }
-        Data data = (Data) o;
-        return Objects.equals(this.id, data.id) &&
-                Objects.equals(this.value, data.value) &&
-                Objects.equals(this.comparison, data.comparison);
+        if (getClass() != obj.getClass())
+            return false;
+        Data other = (Data) obj;
+        if (comparison == null) {
+            if (other.comparison != null)
+                return false;
+        } else if (!comparison.equals(other.comparison))
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (value == null) {
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, value, comparison);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((comparison == null) ? 0 : comparison.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        return result;
     }
 
     @Override
@@ -132,4 +150,3 @@ public class Data {
         return o.toString().replace("\n", "\n    ");
     }
 }
-

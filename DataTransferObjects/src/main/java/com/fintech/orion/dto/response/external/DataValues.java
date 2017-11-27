@@ -1,17 +1,19 @@
 package com.fintech.orion.dto.response.external;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * DataValues
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-02T05:17:07.596Z")
 
-public class DataValues {
+public class DataValues implements Serializable {
     @JsonProperty("id")
     private String id = null;
 
@@ -78,7 +80,6 @@ public class DataValues {
         this.confidence = confidence;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -88,9 +89,8 @@ public class DataValues {
             return false;
         }
         DataValues dataValues = (DataValues) o;
-        return Objects.equals(this.id, dataValues.id) &&
-                Objects.equals(this.value, dataValues.value) &&
-                Objects.equals(this.confidence, dataValues.confidence);
+        return Objects.equals(this.id, dataValues.id) && Objects.equals(this.value, dataValues.value)
+                && Objects.equals(this.confidence, dataValues.confidence);
     }
 
     @Override
@@ -121,4 +121,3 @@ public class DataValues {
         return o.toString().replace("\n", "\n    ");
     }
 }
-

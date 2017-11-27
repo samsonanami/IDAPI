@@ -6,6 +6,7 @@ package com.fintech.orion.dto.hermese;
 public class ResponseProcessorResult {
     private String processedString;
     private boolean finalProcessingStatus;
+    private String clientName;
 
 
     public String getProcessedString() {
@@ -23,4 +24,13 @@ public class ResponseProcessorResult {
     public void setFinalProcessingStatus(boolean finalProcessingStatus) {
         this.finalProcessingStatus = finalProcessingStatus;
     }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+    
 }

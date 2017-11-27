@@ -3,6 +3,7 @@ package com.fintech.orion.dto.response.external;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-02T05:17:07.596Z")
 
-public class Image {
+public class Image implements Serializable {
     @JsonProperty("id")
     private String id = null;
 
@@ -55,34 +56,40 @@ public class Image {
         this.imageName = imageName;
     }
 
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null)
             return false;
-        }
-        Image imageDetail = (Image) o;
-        return Objects.equals(this.id, imageDetail.id) &&
-                Objects.equals(this.imageName, imageDetail.imageName);
+        if (getClass() != obj.getClass())
+            return false;
+        Image other = (Image) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (imageName == null) {
+            if (other.imageName != null)
+                return false;
+        } else if (!imageName.equals(other.imageName))
+            return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, imageName);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((imageName == null) ? 0 : imageName.hashCode());
+        return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ImageDetail {\n");
-
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    imageName: ").append(toIndentedString(imageName)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "Image [id=" + id + ", imageName=" + imageName + "]";
     }
 
     /**
@@ -96,4 +103,3 @@ public class Image {
         return o.toString().replace("\n", "\n    ");
     }
 }
-

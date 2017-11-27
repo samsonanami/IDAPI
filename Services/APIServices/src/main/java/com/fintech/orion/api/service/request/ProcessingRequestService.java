@@ -3,6 +3,7 @@ package com.fintech.orion.api.service.request;
 import com.fintech.orion.api.service.exceptions.DataNotFoundException;
 import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationException;
 import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
+import com.fintech.orion.api.service.validator.ResourceAccessValidator;
 import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
@@ -10,7 +11,6 @@ import com.fintech.orion.dataabstraction.models.Status;
 import com.fintech.orion.dataabstraction.repositories.*;
 import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
-import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.dto.response.external.VerificationResponse;
 
@@ -25,13 +25,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 public class ProcessingRequestService implements ProcessingRequestServiceInterface {
 
@@ -59,7 +64,15 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     @Autowired
     private ResponseRepositoryInterface responseRepositoryInterface;
 
-    @Transactional(rollbackFor = {ItemNotFoundException.class, DataNotFoundException.class})
+    @Autowired
+    private ResourceAccessValidator resourceAccessValidator;
+
+    @PersistenceContext
+    private EntityManager manager;
+
+    public String query;
+
+    @Transactional(rollbackFor = { ItemNotFoundException.class, DataNotFoundException.class })
     @Override
     public String saveVerificationProcessData(String clientName, List<VerificationProcess> verificationProcessList) throws DataNotFoundException {
         Client client = clientRepositoryInterface.findClientByUserName(clientName);
@@ -111,8 +124,10 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         if (processingRequest == null){
             throw new ResourceNotFoundException("No processing request found with identification code : " + verificationRequestId);
         }
-        if(!processingRequest.getClient().getUserName().equals(client.getUserName())){
-            throw new ResourceAccessPolicyViolationException("Accessing content not belong to the requested user is denied by resource access policy.");
+
+        if (!resourceAccessValidator.validateRequestOwnership(client, processingRequest)) {
+            throw new ResourceAccessPolicyViolationException(
+                    "Accessing content not belong to the requested user is denied by resource access policy.");
         }
         ObjectMapper objectMapper = new ObjectMapper();
         VerificationResponse response = new VerificationResponse();
@@ -129,19 +144,24 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
     @Override
     @Transactional
-    public PagedResources<VerificationRequestSummery> verificationRequestSummery(String clientName, Date from, Date to,
-                                                                                 String page, String size) throws DataNotFoundException {
-        Client client = clientRepositoryInterface.findClientByUserName(clientName);
+    public PagedResources<VerificationRequestSummery> verificationRequestSummery(String principalName,
+            String clientName, Date from, Date to, String page, String size, List<String> statusList)
+            throws DataNotFoundException {
+        Client client = clientRepositoryInterface.findClientByUserName(principalName);
+        List<ProcessingStatus> processingStatusList = new ArrayList<ProcessingStatus>();
+        for (String pr : statusList) {
+            ProcessingStatus processingStatus = processingStatusRepositoryInterface
+                    .findProcessingStatusByStatusIgnoreCase(pr);
 
-        Page<ProcessingRequest> processingRequests;
-        Pageable pageable = new PageRequest(
-                Integer.valueOf(page), Integer.valueOf(size), Sort.Direction.DESC, "id"
-        );
-        processingRequests =  processingRequestRepositoryInterface.findProcessingRequestByClient(client, pageable);
-
-
-        PagedResources.PageMetadata pageMetadata = new PagedResources.PageMetadata( Integer.valueOf(size), Integer.valueOf(page),
-                processingRequests.getTotalElements(), processingRequests.getTotalPages());
+            processingStatusList.add(processingStatus);
+        }
+        Page<ProcessingRequest> processingRequests = null;
+        Pageable pageable = new PageRequest(Integer.valueOf(page), Integer.valueOf(size), Sort.Direction.DESC, "id");
+        List<Integer> ids = resourceAccessValidator.acountIds(client);
+        List<Client> clients = clientRepositoryInterface.findClientsById(ids);
+        processingRequests = buildFilteringQuery(clients, clientName, from, to, processingStatusList, pageable);
+        PagedResources.PageMetadata pageMetadata = new PagedResources.PageMetadata(Integer.valueOf(size),
+                Integer.valueOf(page), processingRequests.getTotalElements(), processingRequests.getTotalPages());
 
         return new PagedResources<>(getVerificationSummeryList(processingRequests.getContent()), pageMetadata,
                 getLink(processingRequests, "page", "size"));
@@ -155,6 +175,8 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
             summery.setRequestedDate(processingRequest.getReceivedOn());
             summery.setProcessingCompletedOn(processingRequest.getProcessingCompletedOn());
             summery.setProcessedString(processingRequest.getFinalResponse());
+            summery.setStatus(processingRequest.getFinalVerificationStatus().getStatus());
+            summery.setClientName(processingRequest.getClientName());
             verificationRequestSummeryList.add(summery);
         }
         return verificationRequestSummeryList;
@@ -207,6 +229,43 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     }
     
     /*
+     * Building query based on the filtering parameters received
+     */
+    public Page<ProcessingRequest> buildFilteringQuery(List<Client> clients,String clientName, Date from, Date to,
+            List<ProcessingStatus> status, Pageable pageable) {
+        Page<ProcessingRequest> processingRequests = null;
+
+        if (from == null & to == null & clientName != null & status != null) {
+            processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringFrom(status,
+                    clientName, pageable, clients);
+        }
+        if (from != null & to != null & clientName == null & status.isEmpty()) {
+            processingRequests = processingRequestRepositoryInterface
+                    .filterProcessingRequestByFilteringFromAndTo(getTimestamp(from), getTimestamp(to), pageable,clients);
+        }
+        if (from != null & to != null & clientName != null & status.isEmpty()) {
+
+            processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringClient(
+                    getTimestamp(from), getTimestamp(to), clientName, pageable, clients);
+        }
+        if (from != null & to != null & clientName != null & status != null) {
+            processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringAll(status,
+                    getTimestamp(from), getTimestamp(to), clientName, pageable,clients);
+        }
+        if (from != null & to != null & clientName == null & status != null) {
+            processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringStatus(status,
+                    getTimestamp(from), getTimestamp(to), pageable, clients);
+        }
+        if (from == null & to == null & clientName != null & status.isEmpty()) {
+            processingRequests = processingRequestRepositoryInterface
+                    .filterProcessingRequestByFilteringclientName(clientName, pageable, clients);
+        }
+
+        return processingRequests;
+
+    }
+
+    /*
      * This method will update the existing verification data in the database
      */
     @Transactional
@@ -233,6 +292,10 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
         }
         return verificationId;
+    }
+
+    public Timestamp getTimestamp(java.util.Date date) {
+        return date == null ? null : new java.sql.Timestamp(date.getTime());
     }
 
 }

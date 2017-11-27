@@ -9,4 +9,5 @@ import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 public interface ResourceTypeServiceInterface {
 
     ResourceType findByType(String type) throws ItemNotFoundException;
+    ResourceType findById(int id) throws ItemNotFoundException;
 }

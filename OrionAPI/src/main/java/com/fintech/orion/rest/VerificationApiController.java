@@ -6,18 +6,15 @@ import com.fintech.orion.api.service.request.ProcessingRequestServiceInterface;
 import com.fintech.orion.api.service.validator.ClientLicenseValidatorServiceInterface;
 import com.fintech.orion.api.service.validator.ProcessingRequestJsonFormatValidatorInterface;
 import com.fintech.orion.api.service.validator.ResourceAccessValidator;
-import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.dto.mrz.ScriptResult;
 import com.fintech.orion.dto.mrz.ScriptResultReader;
 import com.fintech.orion.dto.request.api.MRZRequest;
 import com.fintech.orion.dto.request.api.Resource;
-import com.fintech.orion.dto.request.api.VerificationDataRequest;
 import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
-import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.dto.response.external.VerificationResponse;
@@ -26,24 +23,19 @@ import com.fintech.orion.jobchanel.producer.MessageProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.annotations.ApiParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,6 +76,9 @@ public class VerificationApiController implements VerificationApi {
 
     @Autowired
     private JmsTemplate jmsTemplate;
+    
+    @Autowired
+    private String uniqueID;
 
     public ResponseEntity<Object> verificationPost(
             @ApiParam(value = "", required = true, defaultValue = "true")
@@ -149,8 +144,9 @@ public class VerificationApiController implements VerificationApi {
         return responseEntity;
     }
 
-    private void updateMessageQueue(String integrationRequest, String licenseKey, String processingRequestId) {
-        if (!Boolean.valueOf(integrationRequest)){
+    private void updateMessageQueue(String integrationRequest, String licenseKey, String processingRequestId,
+            boolean reVerification) {
+        if (!Boolean.valueOf(integrationRequest)) {
             ProcessingMessage message = new ProcessingMessage();
             message.setVerificationRequestCode(processingRequestId);
             message.setClientLicense(licenseKey);
@@ -199,12 +195,16 @@ public class VerificationApiController implements VerificationApi {
             @RequestParam(value = "to", required = false) @DateTimeFormat(pattern = "MM-dd-yyyy") Date to,
             @RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber,
             @RequestParam(value = "size", required = false, defaultValue = "10") String pageSize,
-            HttpServletRequest request, HttpServletResponse response) {
-            Principal principal = request.getUserPrincipal();
+            @RequestParam(value = "status", required = false) List<String> status,
+            @RequestParam(value = "clientName", required = false) String clientName, HttpServletRequest request,
+            HttpServletResponse response) {
+        Principal principal = request.getUserPrincipal();
         PagedResources<VerificationRequestSummery> pagedVerificationRequestSummery = null;
         try {
-            pagedVerificationRequestSummery =  processingRequestHandlerInterface
-                    .verificationRequestSummery(principal.getName(), from, to, pageNumber, pageSize);
+            LOGGER.info("Filtering requested with from date :" + from + " to date :" + to + " Status : " + status
+                    + " and client :" + clientName);
+            pagedVerificationRequestSummery = processingRequestHandlerInterface.verificationRequestSummery(
+                    principal.getName(), clientName, from, to, pageNumber, pageSize, status);
 
         } catch (DataNotFoundException e) {
             LOGGER.warn("No history data found for the client {} ", principal.getName(), e);
@@ -291,17 +291,12 @@ public class VerificationApiController implements VerificationApi {
      * Update message queue with the processing request id and re-verification flag
      */
     private void updateMessageQueueAboutReverification(String licenseKey, String processingRequestId,
-            boolean reVerification, VerificationDataRequest body) {
+            boolean reVerification, VerificationResponse body) {
         ProcessingMessage message = new ProcessingMessage();
         message.setVerificationRequestCode(processingRequestId);
         message.setClientLicense(licenseKey);
         message.setReVerification(reVerification);
-        /*
-         * Also need to add VerificationDataRequest body to the message queue. Since we
-         * have some pending things related to how to re-verify by skipping herms
-         * request processor and only executing herms response processor, this will be
-         * update later accordingly.
-         */
+        message.setVerificationResponse(body);
         messageProducer.sendMessage(message, jmsTemplate);
     }
 
@@ -312,25 +307,13 @@ public class VerificationApiController implements VerificationApi {
     public ResponseEntity<Object> generateMRZCode(
             @ApiParam(value = "Processing request", required = true) @RequestBody MRZRequest mrzRequestBody,
             HttpServletResponse response, HttpServletRequest request) {
-
         Principal principal = request.getUserPrincipal();
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         ResponseEntity<Object> responseEntity = null;
-        String cgiTestFileLocation = "";
+        String cgiTestFileLocation = uniqueID + "uniqueid_1.cgi";
         ScriptResult scriptResults = new ScriptResult();
-
         try {
             clientService.getActiveLicenseOfClient(principal.getName());
-            /*
-             * getClassLoader is not working for the wildfly deployment. By default it will
-             * read the location as
-             * [WildFlyHome]/bin/content/OrionAPI-0.1.0--.war/WEB-INF/classes/uniqueid_1.cgi
-             * where there is no bin and content folders inside the wildfly. need to fix it
-             * by following the other alternative solutions.
-             */
-            // String cgiTestFileLocation =
-            // VerificationApiController.class.getClassLoader().getResource("uniqueid_1.cgi").getPath().substring(1);
-            cgiTestFileLocation = "D:\\temp\\uniqueid_1.cgi";
             String[] commands = { "perl", "-wT", cgiTestFileLocation, "givennames=" + mrzRequestBody.getGivenNames(),
                     "surnames=" + mrzRequestBody.getSurNames(), "by=" + mrzRequestBody.getBirthYear(),
                     "bm=" + mrzRequestBody.getBirthMonth(), "bd=" + mrzRequestBody.getBirthDate(),
@@ -338,13 +321,10 @@ public class VerificationApiController implements VerificationApi {
                     "ey=" + mrzRequestBody.getExpireYear(), "em=" + mrzRequestBody.getExpireMonth(),
                     "ed=" + mrzRequestBody.getExpireDate(), "passportnumber=" + mrzRequestBody.getPassportNum(),
                     "pin=" + mrzRequestBody.getPersonalNum(), "nationality=" + mrzRequestBody.getNationality(),
-            "step=1" };
-
-            Runtime rt = Runtime.getRuntime();
+                    "step=1" };
+            Runtime runtime = Runtime.getRuntime();
             ScriptResultReader scriptResultReader = new ScriptResultReader();
-            Process proc = null;
-
-            proc = rt.exec(commands);
+            Process proc = runtime.exec(commands);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String s = stdInput.readLine();
             while (stdInput.ready()) {

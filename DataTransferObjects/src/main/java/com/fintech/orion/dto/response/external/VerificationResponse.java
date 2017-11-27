@@ -1,20 +1,24 @@
 package com.fintech.orion.dto.response.external;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * VerificationResponse
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-04-02T05:17:07.596Z")
 
-public class VerificationResponse {
+public class VerificationResponse implements Serializable {
     @JsonProperty("status")
     private String status = null;
+
+    @JsonProperty("message")
+    private String message = null;
 
     @JsonProperty("verificationRequestId")
     private String verificationRequestId = null;
@@ -60,6 +64,25 @@ public class VerificationResponse {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public VerificationResponse message(String message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return message
+     **/
+    @ApiModelProperty(value = "")
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public VerificationResponse verificationRequestId(String verificationRequestId) {
@@ -229,7 +252,7 @@ public class VerificationResponse {
         this.verificationDetails = verificationDetails;
     }
 
-    public VerificationResponse addProcessingFailureItem(ProcessingFailure processingFailure){
+    public VerificationResponse addProcessingFailureItem(ProcessingFailure processingFailure) {
         this.processingFailures.add(processingFailure);
         return this;
     }
@@ -249,28 +272,88 @@ public class VerificationResponse {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null)
             return false;
-        }
-        VerificationResponse verificationResponse = (VerificationResponse) o;
-        return Objects.equals(this.status, verificationResponse.status) &&
-                Objects.equals(this.verificationRequestId, verificationResponse.verificationRequestId) &&
-                Objects.equals(this.facialVerification, verificationResponse.facialVerification) &&
-                Objects.equals(this.livenessTest, verificationResponse.livenessTest) &&
-                Objects.equals(this.idVerification, verificationResponse.idVerification) &&
-                Objects.equals(this.addressVerification, verificationResponse.addressVerification) &&
-                Objects.equals(this.data, verificationResponse.data) &&
-                Objects.equals(this.imageDetails, verificationResponse.imageDetails) &&
-                Objects.equals(this.verificationDetails, verificationResponse.verificationDetails);
+        if (getClass() != obj.getClass())
+            return false;
+        VerificationResponse other = (VerificationResponse) obj;
+        if (addressVerification == null) {
+            if (other.addressVerification != null)
+                return false;
+        } else if (!addressVerification.equals(other.addressVerification))
+            return false;
+        if (data == null) {
+            if (other.data != null)
+                return false;
+        } else if (!data.equals(other.data))
+            return false;
+        if (facialVerification == null) {
+            if (other.facialVerification != null)
+                return false;
+        } else if (!facialVerification.equals(other.facialVerification))
+            return false;
+        if (idVerification == null) {
+            if (other.idVerification != null)
+                return false;
+        } else if (!idVerification.equals(other.idVerification))
+            return false;
+        if (imageDetails == null) {
+            if (other.imageDetails != null)
+                return false;
+        } else if (!imageDetails.equals(other.imageDetails))
+            return false;
+        if (livenessTest == null) {
+            if (other.livenessTest != null)
+                return false;
+        } else if (!livenessTest.equals(other.livenessTest))
+            return false;
+        if (message == null) {
+            if (other.message != null)
+                return false;
+        } else if (!message.equals(other.message))
+            return false;
+        if (processingFailures == null) {
+            if (other.processingFailures != null)
+                return false;
+        } else if (!processingFailures.equals(other.processingFailures))
+            return false;
+        if (status == null) {
+            if (other.status != null)
+                return false;
+        } else if (!status.equals(other.status))
+            return false;
+        if (verificationDetails == null) {
+            if (other.verificationDetails != null)
+                return false;
+        } else if (!verificationDetails.equals(other.verificationDetails))
+            return false;
+        if (verificationRequestId == null) {
+            if (other.verificationRequestId != null)
+                return false;
+        } else if (!verificationRequestId.equals(other.verificationRequestId))
+            return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, verificationRequestId, facialVerification, livenessTest, idVerification, addressVerification, data, imageDetails, verificationDetails);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((addressVerification == null) ? 0 : addressVerification.hashCode());
+        result = prime * result + ((data == null) ? 0 : data.hashCode());
+        result = prime * result + ((facialVerification == null) ? 0 : facialVerification.hashCode());
+        result = prime * result + ((idVerification == null) ? 0 : idVerification.hashCode());
+        result = prime * result + ((imageDetails == null) ? 0 : imageDetails.hashCode());
+        result = prime * result + ((livenessTest == null) ? 0 : livenessTest.hashCode());
+        result = prime * result + ((message == null) ? 0 : message.hashCode());
+        result = prime * result + ((processingFailures == null) ? 0 : processingFailures.hashCode());
+        result = prime * result + ((status == null) ? 0 : status.hashCode());
+        result = prime * result + ((verificationDetails == null) ? 0 : verificationDetails.hashCode());
+        result = prime * result + ((verificationRequestId == null) ? 0 : verificationRequestId.hashCode());
+        return result;
     }
 
     @Override
@@ -279,6 +362,7 @@ public class VerificationResponse {
         sb.append("class VerificationResponse {\n");
 
         sb.append("    status: ").append(toIndentedString(status)).append("\n");
+        sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    verificationRequestId: ").append(toIndentedString(verificationRequestId)).append("\n");
         sb.append("    facialVerification: ").append(toIndentedString(facialVerification)).append("\n");
         sb.append("    livenessTest: ").append(toIndentedString(livenessTest)).append("\n");
@@ -302,4 +386,3 @@ public class VerificationResponse {
         return o.toString().replace("\n", "\n    ");
     }
 }
-

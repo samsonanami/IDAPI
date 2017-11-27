@@ -36,8 +36,7 @@ public interface ContentApi {
             @ApiResponse(code = 400, message = "Bad request", response = byte[].class),
             @ApiResponse(code = 401, message = "Unauthorized request", response = byte[].class) })
     @CrossOrigin
-    @RequestMapping(value = "/v1/content/{resourceId}", produces = { "image/jpg", "image/png",
-    "video/mp4" }, method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/content/{resourceId}", produces = {"application/json"}, method = RequestMethod.GET)
     ResponseEntity<Object> getResourceByResourceId(
             @ApiParam(value = "resource id", required = true) @PathVariable("resourceId") String resourceId,
             HttpServletResponse response, HttpServletRequest request);
