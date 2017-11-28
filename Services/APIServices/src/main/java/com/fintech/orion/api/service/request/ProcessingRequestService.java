@@ -62,9 +62,6 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     private ProcessTypeRepositoryInterface processTypeRepositoryInterface;
 
     @Autowired
-    private ResponseRepositoryInterface responseRepositoryInterface;
-
-    @Autowired
     private ResourceAccessValidator resourceAccessValidator;
 
     @PersistenceContext
@@ -175,7 +172,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
             summery.setRequestedDate(processingRequest.getReceivedOn());
             summery.setProcessingCompletedOn(processingRequest.getProcessingCompletedOn());
             summery.setProcessedString(processingRequest.getFinalResponse());
-            summery.setStatus(processingRequest.getFinalVerificationStatus().getStatus());
+            summery.setFinalVerificationStatus(processingRequest.getFinalVerificationStatus().getStatus());
             summery.setClientName(processingRequest.getClientName());
             verificationRequestSummeryList.add(summery);
         }
@@ -235,28 +232,28 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
             List<ProcessingStatus> status, Pageable pageable) {
         Page<ProcessingRequest> processingRequests = null;
 
-        if ( clientName != null && !status.isEmpty() && from == null && to == null ) {
+        if (clientName != null && clientName.length() != 0 && !status.isEmpty() && from == null && to == null) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringFrom(status,
                     clientName, pageable, clients);
         }
-        if (from != null && to != null && clientName == null && status.isEmpty()) {
-            processingRequests = processingRequestRepositoryInterface
-                    .filterProcessingRequestByFilteringFromAndTo(getTimestamp(from), getTimestamp(to), pageable,clients);
+        if (from != null && to != null && (clientName == null || clientName.length() == 0) && status.isEmpty()) {
+            processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringFromAndTo(
+                    getTimestamp(from), getTimestamp(to), pageable, clients);
         }
         if (from != null && to != null && clientName != null && status.isEmpty()) {
 
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringClient(
                     getTimestamp(from), getTimestamp(to), clientName, pageable, clients);
         }
-        if (from != null && to != null && clientName != null && !status.isEmpty()) {
+        if (from != null && to != null && clientName != null && clientName.length() != 0 && !status.isEmpty()) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringAll(status,
-                    getTimestamp(from), getTimestamp(to), clientName, pageable,clients);
+                    getTimestamp(from), getTimestamp(to), clientName, pageable, clients);
         }
-        if (from != null && to != null  && !status.isEmpty() && clientName == null) {
+        if (from != null && to != null && !status.isEmpty() && (clientName == null || clientName.length() == 0)) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringStatus(status,
                     getTimestamp(from), getTimestamp(to), pageable, clients);
         }
-        if (from == null && to == null && clientName != null && status.isEmpty()) {
+        if (from == null && to == null && clientName != null && clientName.length() != 0 && status.isEmpty()) {
             processingRequests = processingRequestRepositoryInterface
                     .filterProcessingRequestByFilteringclientName(clientName, pageable, clients);
         }
@@ -277,20 +274,11 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
         ProcessingStatus processingStatus = processingStatusRepositoryInterface
                 .findProcessingStatusByStatusIgnoreCase(body.getStatus());
+        ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = objectWriter.writeValueAsString(body);
         processingRequestEntity.setFinalVerificationStatus(processingStatus);
+        processingRequestEntity.setFinalResponse(json);
         processingRequestRepositoryInterface.save(processingRequestEntity);
-
-        List<Process> processEntity = processRepositoryInterface
-                .findProcessByProcessingRequest(processingRequestEntity.getProcessingRequestIdentificationCode());
-        for (Process process : processEntity) {
-            com.fintech.orion.dataabstraction.entities.orion.Response responseEntity = responseRepositoryInterface
-                    .findProcessByProcessingIdentificationCode(process.getId());
-            ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            String json = objectWriter.writeValueAsString(body);
-            responseEntity.setRawJson(json);
-            responseRepositoryInterface.save(responseEntity);
-
-        }
         return verificationId;
     }
 
