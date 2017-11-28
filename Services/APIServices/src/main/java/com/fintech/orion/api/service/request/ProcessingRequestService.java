@@ -235,28 +235,28 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
             List<ProcessingStatus> status, Pageable pageable) {
         Page<ProcessingRequest> processingRequests = null;
 
-        if (from == null & to == null & clientName != null & status != null) {
+        if ( clientName != null && !status.isEmpty() && from == null && to == null ) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringFrom(status,
                     clientName, pageable, clients);
         }
-        if (from != null & to != null & clientName == null & status.isEmpty()) {
+        if (from != null && to != null && clientName == null && status.isEmpty()) {
             processingRequests = processingRequestRepositoryInterface
                     .filterProcessingRequestByFilteringFromAndTo(getTimestamp(from), getTimestamp(to), pageable,clients);
         }
-        if (from != null & to != null & clientName != null & status.isEmpty()) {
+        if (from != null && to != null && clientName != null && status.isEmpty()) {
 
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringClient(
                     getTimestamp(from), getTimestamp(to), clientName, pageable, clients);
         }
-        if (from != null & to != null & clientName != null & status != null) {
+        if (from != null && to != null && clientName != null && !status.isEmpty()) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringAll(status,
                     getTimestamp(from), getTimestamp(to), clientName, pageable,clients);
         }
-        if (from != null & to != null & clientName == null & status != null) {
+        if (from != null && to != null  && !status.isEmpty() && clientName == null) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringStatus(status,
                     getTimestamp(from), getTimestamp(to), pageable, clients);
         }
-        if (from == null & to == null & clientName != null & status.isEmpty()) {
+        if (from == null && to == null && clientName != null && status.isEmpty()) {
             processingRequests = processingRequestRepositoryInterface
                     .filterProcessingRequestByFilteringclientName(clientName, pageable, clients);
         }
