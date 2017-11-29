@@ -118,7 +118,7 @@ public class VerificationApiController implements VerificationApi {
 
             String processingRequestId = processingRequestHandlerInterface.saveVerificationProcessData(principal.getName(), body.getVerificationProcesses());
 
-            updateMessageQueue(integrationRequest, licenseKey, processingRequestId);
+            updateMessageQueue(integrationRequest, licenseKey, processingRequestId, false);
 
             VerificationRequestResponse verificationResponse = new VerificationRequestResponse();
             verificationResponse.setProcessingRequestId(processingRequestId);
@@ -265,7 +265,7 @@ public class VerificationApiController implements VerificationApi {
      */
     public ResponseEntity<Object> updateReVerificationData(
             @ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String verificationId,
-            @ApiParam(value = "Processing request", required = true) @RequestBody VerificationDataRequest body,
+            @ApiParam(value = "Processing request", required = true) @RequestBody VerificationResponse body,
             HttpServletResponse response, HttpServletRequest request) {
         ResponseEntity<Object> responseEntity = null;
         GenericErrorMessage errorMessage = new GenericErrorMessage();
