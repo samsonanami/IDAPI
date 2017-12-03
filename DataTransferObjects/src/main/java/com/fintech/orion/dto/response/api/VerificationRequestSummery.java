@@ -14,6 +14,7 @@ public class VerificationRequestSummery {
     private String requestIdentificationCode;
     private Date processingCompletedOn;
     private String clientName;
+    private boolean requestStatus;
 
     public Date getRequestedDate() {
         return requestedDate;
@@ -62,5 +63,15 @@ public class VerificationRequestSummery {
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
+
+    public boolean isRequestStatus() {
+        return requestStatus;
+    }
+
+    public void setRequestStatus(boolean requestStatus) {
+        this.requestStatus = requestStatus;
+    }
+    
+    
 
 }

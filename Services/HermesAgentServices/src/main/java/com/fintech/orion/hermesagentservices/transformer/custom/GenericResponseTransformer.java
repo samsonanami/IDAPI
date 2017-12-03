@@ -148,9 +148,7 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
         idVerification.setDataValidations(getDocumentMrzVizValidations(detailedResponse,
                 idVerificationName));
         idVerification.setCustomValidations(getCustomValidations(detailedResponse.getIdDocFullValidations()));
-        idVerification.setStatus(calculateIntermediateStatus(idVerification.getCustomValidations(), idVerification.getDataValidations()));
-
-
+        idVerification.setStatus(String.valueOf(calculateIntermediateStatus(idVerification.getCustomValidations(), idVerification.getDataValidations())));
         return idVerification;
 
     }
@@ -159,8 +157,7 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
         AddressVerification addressVerification = new AddressVerification();
         addressVerification.setDataValidations(getDocumentMrzVizValidations(detailedResponse, addressVerificationName));
         addressVerification.setCustomValidations(getCustomValidations(detailedResponse.getAddressDocFullValidations()));
-        addressVerification.setStatus(calculateIntermediateStatus(addressVerification.getCustomValidations(), addressVerification.getDataValidations()));
-
+        addressVerification.setStatus(String.valueOf(calculateIntermediateStatus(addressVerification.getCustomValidations(), addressVerification.getDataValidations())));
         return addressVerification;
     }
 
@@ -192,7 +189,7 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
                 if (dataValidationValue.getDocumentName().equalsIgnoreCase(resourceName)) {
                     MrzVizValidation mrzVizValidation = new MrzVizValidation();
                     mrzVizValidation.setId(dataValidation.getId());
-                    mrzVizValidation.setStatus(dataValidationValue.getStatus());
+                    mrzVizValidation.setStatus(String.valueOf(dataValidationValue.getStatus()));
                     mrzVizValidation.setValues(getMriVizValidationVales(dataValidationValue));
                     mrzVizValidation.setACriticalValidation(dataValidationValue.isCriticalValidation());
                     documentMrzVizValidation.add(mrzVizValidation);

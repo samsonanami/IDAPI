@@ -15,7 +15,7 @@ public class DataComparision {
     private String id = null;
 
     @JsonProperty("status")
-    private Boolean status = null;
+    private String status = null;
 
     public DataComparision id(String id) {
         this.id = id;
@@ -36,7 +36,7 @@ public class DataComparision {
         this.id = id;
     }
 
-    public DataComparision status(Boolean status) {
+    public DataComparision status(String status) {
         this.status = status;
         return this;
     }
@@ -47,11 +47,11 @@ public class DataComparision {
      * @return status
      **/
     @ApiModelProperty(value = "")
-    public Boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

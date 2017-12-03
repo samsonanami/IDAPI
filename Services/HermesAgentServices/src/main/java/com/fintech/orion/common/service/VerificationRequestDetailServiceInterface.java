@@ -1,5 +1,6 @@
 package com.fintech.orion.common.service;
 
+import com.fintech.orion.dataabstraction.entities.orion.Client;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessType;
 import com.fintech.orion.dataabstraction.entities.orion.ProcessingRequest;
@@ -24,7 +25,7 @@ public interface VerificationRequestDetailServiceInterface {
 
     void saveResponse(String rawResponse, String processedResponse, Process process);
 
-    void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode);
+    void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode, String clientName);
 
     boolean isVerificationProcessFoundInProcessingRequest(String processingRequestCode, String processType);
 

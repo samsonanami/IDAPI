@@ -37,7 +37,7 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
 
         for (DocumentMrzVizValidation documentMrzVizValidation : documentMrzVizValidations){
             for (MrzVizValidation mrzVizValidation : documentMrzVizValidation.getValidations()){
-                if (!mrzVizValidation.getStatus()){
+                if (mrzVizValidation.getStatus().equals("false") || mrzVizValidation.getStatus().equals("failed")){
                     verificationStatus = false;
                 }
             }
@@ -63,13 +63,13 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
 
         if (isVerificationIsRequested(idVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
-                !finalVerificationResponse.getIdVerification().getStatus()){
+                 (finalVerificationResponse.getIdVerification().getStatus().equals("false") || finalVerificationResponse.getIdVerification().getStatus().equals("failed"))){  
             finalVerificationStatus = false;
         }
 
         if (isVerificationIsRequested(addressVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
-                !finalVerificationResponse.getAddressVerification().getStatus()){
+                (finalVerificationResponse.getAddressVerification().getStatus().equals("false") || finalVerificationResponse.getAddressVerification().getStatus().equals("failed"))){
             finalVerificationStatus = false;
         }
         return finalVerificationStatus;

@@ -3,6 +3,7 @@ package com.fintech.orion.rest;
 import com.fintech.orion.dto.mrz.ScriptResult;
 import com.fintech.orion.dto.request.api.MRZRequest;
 import com.fintech.orion.dto.request.api.VerificationRequest;
+import com.fintech.orion.dto.response.api.ProcessingRequestStatusResponse;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
@@ -70,7 +71,7 @@ public interface VerificationApi {
             @RequestParam(value = "page", required = false, defaultValue = "1") String pageNumber,
             @RequestParam(value = "size", required = false, defaultValue = "10") String pageSize,
             @RequestParam(value = "status", required = false) List<String> status,
-            @RequestParam(value = "clientName", required = false) String clientName, HttpServletRequest request,
+            @RequestParam(value = "search", required = false) String search,HttpServletRequest request,
             HttpServletResponse response);
 
     /*
@@ -119,4 +120,20 @@ public interface VerificationApi {
             @ApiParam(value = "Processing request", required = true) @RequestBody MRZRequest mrzRequestBody,
             HttpServletResponse response, HttpServletRequest request);
 
+    
+    /*
+     * update Processing Request locked/unlocked Status 
+     */
+    @ApiOperation(value = "update Processing Status details request", notes = "update Processing Request Status ", response = ProcessingRequestStatusResponse.class, tags = {})
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "successful operation", response = ProcessingRequestStatusResponse.class),
+    @ApiResponse(code = 400, message = "Bad request", response = ProcessingRequestStatusResponse.class),
+    @ApiResponse(code = 401, message = "Unauthorized request", response = ProcessingRequestStatusResponse.class) })
+  
+    @CrossOrigin
+    @RequestMapping(value = "/v1/verification/status/{verificationId}/{status}", produces = { "application/json" }, consumes = {
+            "application/json" }, method = RequestMethod.POST)
+    ResponseEntity<Object> updateProcessingRequestStatus(
+    		@ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String resourceId,
+            @ApiParam(value = "status", required = true) @PathVariable("status") String status,
+            HttpServletResponse response, HttpServletRequest request);
 }

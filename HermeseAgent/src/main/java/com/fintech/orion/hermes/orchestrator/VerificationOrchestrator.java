@@ -72,7 +72,7 @@ public class VerificationOrchestrator {
     @Transactional
     private void saveProcessResponse(ResponseProcessorResult responseProcessorResult, String verificationCode){
         verificationRequestDetailService.saveFinalVerificationResponse(responseProcessorResult.getProcessedString(),
-                verificationCode);
+                verificationCode,responseProcessorResult.getClientName());
     }
 
 }

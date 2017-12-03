@@ -18,28 +18,28 @@ public interface ProcessingRequestRepositoryInterface extends JpaRepository<Proc
 
     ProcessingRequest findProcessingRequestByProcessingRequestIdentificationCodeAndClient(String identificationCode, Client client);
 
-    Page<ProcessingRequest> findProcessingRequestByClient(Client client, Pageable pageable);
-
-    @Query("select pr from ProcessingRequest pr where pr.finalVerificationStatus in ?1 and pr.receivedOn >= ?2 and pr.processingCompletedOn <= ?3 and pr.clientName= ?4 and pr.client in ?5")
+    @Query("select pr from ProcessingRequest pr where pr.finalVerificationStatus in ?1 and pr.receivedOn >= ?2 and pr.processingCompletedOn <= ?3 and (pr.clientName LIKE %?4% or pr.processingRequestIdentificationCode LIKE %?4%) and pr.client in ?5")
     Page<ProcessingRequest> filterProcessingRequestByFilteringAll(List<ProcessingStatus> status, Date from, Date to,
-            String clientName, Pageable pageable,List<Client> clients);
+            String clientName, List<Client> clients, Pageable pageable);
 
     @Query("select pr from ProcessingRequest pr where  pr.receivedOn >= ?1 and pr.processingCompletedOn <= ?2 and pr.client in ?3")
-    Page<ProcessingRequest> filterProcessingRequestByFilteringFromAndTo(Date from, Date to, Pageable pageable,List<Client> clients);
+    Page<ProcessingRequest> filterProcessingRequestByFilteringFromAndTo(Date from, Date to, List<Client> clients, Pageable pageable);
 
-    @Query("select pr from ProcessingRequest pr where  pr.finalVerificationStatus in ?1 and pr.clientName= ?2 and pr.client in ?3")
-    Page<ProcessingRequest> filterProcessingRequestByFilteringFrom(List<ProcessingStatus> statusId, String clientName,
-            Pageable pageable,List<Client> clients);
+    @Query("select pr from ProcessingRequest pr where  pr.finalVerificationStatus in ?1 and (pr.clientName LIKE %?2% or pr.processingRequestIdentificationCode LIKE %?2%) and pr.client in ?3")
+    Page<ProcessingRequest> filterProcessingRequestByFilteringFrom(List<ProcessingStatus> statusId, String clientName, List<Client> clients, Pageable pageable);
 
-    @Query("select pr from ProcessingRequest pr where  pr.receivedOn >= ?1 and pr.processingCompletedOn <= ?2 and pr.clientName= ?3 and pr.client in ?4")
-    Page<ProcessingRequest> filterProcessingRequestByFilteringClient(Date from, Date to, String clientName,
-            Pageable pageable,List<Client> clients);
+    @Query("select pr from ProcessingRequest pr where  pr.receivedOn >= ?1 and pr.processingCompletedOn <= ?2 and (pr.clientName LIKE %?3% or pr.processingRequestIdentificationCode LIKE %?3%) and pr.client in ?4")
+    Page<ProcessingRequest> filterProcessingRequestByFilteringClient(Date from, Date to, String clientName, List<Client> clients,
+            Pageable pageable);
 
     @Query("select pr from ProcessingRequest pr where pr.finalVerificationStatus in ?1 and pr.receivedOn >= ?2 and pr.processingCompletedOn <= ?3 and pr.client in ?4")
     Page<ProcessingRequest> filterProcessingRequestByFilteringStatus(List<ProcessingStatus> statusId, Date from,
-            Date to, Pageable pageable,List<Client> clients);
+            Date to, List<Client> clients, Pageable pageable);
 
-    @Query("select pr from ProcessingRequest pr where  pr.clientName >= ?1 and pr.client in ?2 ")
-    Page<ProcessingRequest> filterProcessingRequestByFilteringclientName(String clientName, Pageable pageable,List<Client> clients);
+    @Query("select pr from ProcessingRequest pr where  (pr.clientName LIKE %?1% or pr.processingRequestIdentificationCode LIKE %?1%) and pr.client in ?2 ")
+    Page<ProcessingRequest> filterProcessingRequestByFilteringclientName(String clientName, List<Client> clients, Pageable pageable);
+
+    @Query("select pr from ProcessingRequest pr where pr.finalVerificationStatus in ?1 and pr.client in ?2")
+    Page<ProcessingRequest> filterProcessingRequestByFilteringStatus(List<ProcessingStatus> status, List<Client> clients, Pageable pageable);
 
 }

@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class IdVerification {
     @JsonProperty("status")
-    private boolean status = false;
+    private String status = null;
 
     @JsonProperty("dataValidations")
     private List<DocumentMrzVizValidation> dataValidations = new ArrayList<DocumentMrzVizValidation>();
@@ -22,7 +22,7 @@ public class IdVerification {
     @JsonProperty("customValidations")
     private List<CustomValidation> customValidations = new ArrayList<CustomValidation>();
 
-    public IdVerification status(boolean status) {
+    public IdVerification status(String status) {
         this.status = status;
         return this;
     }
@@ -33,11 +33,11 @@ public class IdVerification {
      * @return status
      **/
     @ApiModelProperty(value = "")
-    public boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

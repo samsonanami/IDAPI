@@ -57,10 +57,13 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
 
     @Override
     @Transactional
-    public void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode) {
-        ProcessingRequest verificationRequest = processingRequestRepositoryInterface.findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestCode);
+    public void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode,
+            String clientName) {
+        ProcessingRequest verificationRequest = processingRequestRepositoryInterface
+                .findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestCode);
         verificationRequest.setFinalResponse(verificationResponse);
         verificationRequest.setProcessingCompletedOn(new Date());
+        verificationRequest.setClientName(clientName);
         processingRequestRepositoryInterface.save(verificationRequest);
     }
 
