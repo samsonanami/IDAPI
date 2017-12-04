@@ -116,7 +116,7 @@ public class DataComparator implements DocumentVerification {
 
     private List<FieldDataValue> filterFieldDataValueList(FieldDataValue base, List<FieldDataValue> values) {
 
-        String idOfTheFirstObject = base.getId();
+      /*  String idOfTheFirstObject = base.getId();
         String prefixOfFirstObjectId = idOfTheFirstObject.substring(0, idOfTheFirstObject.lastIndexOf('#') + 1);
         String suffixOfFirstObjectId = idOfTheFirstObject.split("##")[2].toString();
 
@@ -126,7 +126,7 @@ public class DataComparator implements DocumentVerification {
         } else if (suffixOfFirstObjectId.equals("NPP")) {
             String removeObjectId = prefixOfFirstObjectId.concat("PP");
             return values.stream().filter(p -> !p.getId().equals(removeObjectId)).collect(Collectors.toList());
-        }
+        }*/
         return values;
     }
 

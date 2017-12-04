@@ -29,6 +29,12 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
     @Autowired
     private ResponseTransformerFactory responseTransformerFactory;
 
+    @Autowired
+    private String verificationStatusSuccess;
+
+    @Autowired
+    private String verificationStatusFail;
+
     @Override
     public ResponseProcessorResult processVerificationResults(List<VerificationResult> verificationResults,
                                                               String processingRequestId) {
@@ -52,11 +58,7 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
             LOGGER.error("Unable to transform internal state object {} to a verification response",
                     verificationProcessDetailedResponse, e);
         }
-        if (STATUS_FAILED.equalsIgnoreCase(verificationResponse.getStatus())) {
-            result.setFinalProcessingStatus(false);
-        }else {
-            result.setFinalProcessingStatus(true);
-        }
+        result.setFinalProcessingStatus(verificationResponse.getStatus());
         return result;
     }
 }

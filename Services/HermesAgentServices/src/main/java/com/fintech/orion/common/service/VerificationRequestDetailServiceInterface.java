@@ -24,7 +24,7 @@ public interface VerificationRequestDetailServiceInterface {
 
     void saveResponse(String rawResponse, String processedResponse, Process process);
 
-    void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode);
+    void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode, String verificationStatus);
 
     boolean isVerificationProcessFoundInProcessingRequest(String processingRequestCode, String processType);
 

@@ -33,8 +33,16 @@
         <property name="facialVerificationName" value="facialVerification"/>
         <property name="criticalErrorSetOcrExtractionFieldName" value="critical_error_set"/>
         <property name="processingFailureOcrExtractionFieldName" value="processing_failure"/>
-        <property name="verificationStatusFail" value="failed"/>
-        <property name="verificationStatusPass" value="passed"/>
+        <property name="verificationStatusFail" value="pendingManualVerification"/>
+        <property name="verificationStatusPass" value="autoVerified"/>
+    </bean>
+
+    <bean id="verificationStatusSuccess" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="autoVerified"/>
+    </bean>
+
+    <bean id="verificationStatusFail" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="pendingManualVerification"/>
     </bean>
 
 </beans>

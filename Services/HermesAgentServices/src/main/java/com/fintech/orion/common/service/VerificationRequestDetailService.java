@@ -35,6 +35,9 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
     @Autowired
     private ProcessTypeRepositoryInterface processTypeRepositoryInterface;
 
+    @Autowired
+    private ProcessingStatusRepositoryInterface processingStatusRepositoryInterface;
+
     @Override
     @Transactional
     public ProcessingRequest getProcessingRequest(String processingRequestId) throws ItemNotFoundException {
@@ -48,19 +51,30 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
     @Override
     @Transactional
     public void saveResponse(String rawResponse, String processedResponse, Process process) {
-        Response response = new Response();
-        response.setProcess(process);
-        response.setRawJson(rawResponse);
-        response.setExtractedJson(processedResponse);
-        responseRepositoryInterface.save(response);
+        Response response;
+        if(responseRepositoryInterface.exists(process.getId())){
+            response = responseRepositoryInterface.findOne(process.getId());
+            response.setRawJson(rawResponse);
+            responseRepositoryInterface.save(response);
+        }else {
+            response = new Response();
+            response.setProcess(process);
+            response.setRawJson(rawResponse);
+            response.setExtractedJson(processedResponse);
+            responseRepositoryInterface.save(response);
+        }
+
     }
 
     @Override
     @Transactional
-    public void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode) {
+    public void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode,
+                                              String verificationStatus) {
+        ProcessingStatus processingStatus = processingStatusRepositoryInterface.findProcessingStatusByStatusIgnoreCase(verificationStatus);
         ProcessingRequest verificationRequest = processingRequestRepositoryInterface.findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestCode);
         verificationRequest.setFinalResponse(verificationResponse);
         verificationRequest.setProcessingCompletedOn(new Date());
+        verificationRequest.setFinalVerificationStatus(processingStatus);
         processingRequestRepositoryInterface.save(verificationRequest);
     }
 
@@ -128,7 +142,7 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
         return verificationProcessDetails;
     }
 
-    @Transactional
+
     private List<ImageDetail> getImageDetailsOfAProcess(Process process){
         List<ImageDetail> imageDetails = new ArrayList<>();
         for (Resource resource : process.getResources()){

@@ -47,6 +47,12 @@ public class OracleResponseProcessor extends ResponseProcessorChain {
     @Autowired
     private Sanitizer sanitizer;
 
+    @Autowired
+    private String verificationStatusSuccess;
+
+    @Autowired
+    private String verificationStatusFail;
+
     @Override
     protected void execute(VerificationProcessDetailedResponse response,
                            List<VerificationResult> verificationResults, String processingRequestId) {
@@ -92,7 +98,6 @@ public class OracleResponseProcessor extends ResponseProcessorChain {
         }
         updateDataComparison(detailedResponse, ocrResponse);
         ResponseProcessorResult result = new ResponseProcessorResult();
-        result.setFinalProcessingStatus(true);
         result.setProcessedString(objectMapper.writeValueAsString(detailedResponse));
     }
 
