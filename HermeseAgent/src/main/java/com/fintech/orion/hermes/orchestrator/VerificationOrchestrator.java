@@ -95,9 +95,10 @@ public class VerificationOrchestrator {
         return results;
     }
 
+    @Transactional
     private void saveProcessResponse(ResponseProcessorResult responseProcessorResult, String verificationCode){
         verificationRequestDetailService.saveFinalVerificationResponse(responseProcessorResult.getProcessedString(),
-                verificationCode, responseProcessorResult.getFinalProcessingStatus());
+                verificationCode, responseProcessorResult.getFinalProcessingStatus(), responseProcessorResult.getClientName());
     }
 
 }

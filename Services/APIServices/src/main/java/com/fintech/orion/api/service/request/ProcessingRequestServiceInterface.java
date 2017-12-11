@@ -30,7 +30,7 @@ public interface ProcessingRequestServiceInterface {
 	String updateProcessingRequestStatus(String clientName, String processingRequestIdentificationCode,
 			String status) throws JsonProcessingException;
 	
-	boolean getProcessingRequestLockedStatus(String verificationRequestId);
+	boolean getProcessingRequestLockedStatus(String verificationRequestId, String clientName);
 	
 	
 }

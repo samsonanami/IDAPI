@@ -3,7 +3,6 @@ package com.fintech.orion.common.service;
 import com.fintech.orion.dataabstraction.entities.orion.*;
 import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
-import com.fintech.orion.dataabstraction.models.verificationresult.VerificationRequest;
 import com.fintech.orion.dataabstraction.repositories.*;
 import com.fintech.orion.dto.response.api.ImageDetail;
 import com.fintech.orion.dto.response.api.VerificationProcessDetail;
@@ -69,12 +68,13 @@ public class VerificationRequestDetailService implements VerificationRequestDeta
     @Override
     @Transactional
     public void saveFinalVerificationResponse(String verificationResponse, String verificationRequestCode,
-                                              String verificationStatus) {
+                                              String verificationStatus,String clientName) {
         ProcessingStatus processingStatus = processingStatusRepositoryInterface.findProcessingStatusByStatusIgnoreCase(verificationStatus);
         ProcessingRequest verificationRequest = processingRequestRepositoryInterface.findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestCode);
         verificationRequest.setFinalResponse(verificationResponse);
         verificationRequest.setProcessingCompletedOn(new Date());
         verificationRequest.setFinalVerificationStatus(processingStatus);
+        verificationRequest.setClientName(clientName);
         processingRequestRepositoryInterface.save(verificationRequest);
     }
 

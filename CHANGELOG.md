@@ -3,7 +3,15 @@ Orion - Changelog
 
 Unreleased
 ----------
+Merge branch 'manual-verification-api-update' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  Conflicts:
+	HermeseAgent/src/main/java/com/fintech/orion/hermes/orchestrator/VerificationOrchestrator.java
+	Services/HermesAgentServices/src/main/java/com/fintech/orion/common/service/VerificationRequestDetailService.java
+	Services/HermesAgentServices/src/main/java/com/fintech/orion/common/service/VerificationRequestDetailServiceInterface.java
+ (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
 re verification implementation  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
+added new API realted to locked/unlocked status and changes in history API  (Nagarjuna Avula)(navula@metanoiasolutions.net)
 
 added un committed changes  (Nagarjuna Avula)(navula@metanoiasolutions.net)
 

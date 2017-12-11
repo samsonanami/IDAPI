@@ -163,7 +163,7 @@ public class VerificationApiController implements VerificationApi {
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         try {
             clientService.getActiveLicenseOfClient(principal.getName());
-            boolean isItLocked = processingRequestHandlerInterface.getProcessingRequestLockedStatus(verificationId);
+            boolean isItLocked = processingRequestHandlerInterface.getProcessingRequestLockedStatus(verificationId,principal.getName());
             if(isItLocked) {
                 LOGGER.warn("Client {} requested processing request which is processing by some other operator {}",
                         principal.getName(), verificationId);

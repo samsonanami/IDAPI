@@ -145,13 +145,14 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     
     @Override
     @Transactional
-    public boolean getProcessingRequestLockedStatus(String verificationRequestId){
+    public boolean getProcessingRequestLockedStatus(String verificationRequestId, String clientName){
         boolean status = false;
         ProcessingRequest processingRequest = processingRequestRepositoryInterface
                 .findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestId);
         ProcessingRequestStatus processingRequestStatus = processingRequestStatusRepositoryInterface
                 .findProcessingRequestStatusByProcessingRequest(processingRequest);
-        if(processingRequestStatus != null &&  processingRequestStatus.getStatus().equals("locked")) {
+        Client client = clientRepositoryInterface.findClientByUserName(clientName);
+        if(processingRequestStatus != null &&  processingRequestStatus.getStatus().equals("locked") && ! client.getId().equals(processingRequestStatus.getClient().getId())) {
             status = true;
         }
         return status;
