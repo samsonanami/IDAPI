@@ -6,6 +6,7 @@ import com.fintech.orion.common.Processor;
 import com.fintech.orion.common.exceptions.license.LicenseHandlerException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailService;
+import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dto.hermese.ResponseProcessorResult;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
@@ -17,6 +18,7 @@ import com.fintech.orion.hermesagentservices.transformer.custom.ReVerificationOC
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

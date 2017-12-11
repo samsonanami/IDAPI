@@ -15,6 +15,7 @@ import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.request.api.VerificationRequest;
 import com.fintech.orion.dto.response.api.GenericErrorMessage;
+import com.fintech.orion.dto.response.api.ProcessingRequestStatusResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.dto.response.external.VerificationResponse;
@@ -157,14 +158,25 @@ public class VerificationApiController implements VerificationApi {
     public ResponseEntity<Object> verificationVerificationIdGet(
             @ApiParam(value = "verification id",required=true ) @PathVariable("verificationId") String verificationId,
             HttpServletResponse response, HttpServletRequest request) {
-        VerificationResponse verificationResponse;
         ResponseEntity<Object> responseEntity =null;
         Principal principal = request.getUserPrincipal();
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         try {
             clientService.getActiveLicenseOfClient(principal.getName());
-            verificationResponse = processingRequestHandlerInterface.getDetailedResponse(principal.getName(), verificationId);
-            responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
+            boolean isItLocked = processingRequestHandlerInterface.getProcessingRequestLockedStatus(verificationId);
+            if(isItLocked) {
+                LOGGER.warn("Client {} requested processing request which is processing by some other operator {}",
+                        principal.getName(), verificationId);
+                errorMessage.setMessage("Processing Request "+ verificationId + " is Locked ! and some other operator working on it.");
+                errorMessage.setStatus(HttpStatus.ALREADY_REPORTED.value());
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.ALREADY_REPORTED);
+            }
+            else {
+                VerificationResponse verificationResponse = processingRequestHandlerInterface.getDetailedResponse(principal.getName(),
+                        verificationId);
+                responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);   
+            }
+            
         } catch (ClientServiceException e) {
             LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(), e);
             errorMessage.setMessage("Your license is expired or suspended. Please contact support");
@@ -196,15 +208,15 @@ public class VerificationApiController implements VerificationApi {
             @RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber,
             @RequestParam(value = "size", required = false, defaultValue = "10") String pageSize,
             @RequestParam(value = "status", required = false) List<String> status,
-            @RequestParam(value = "clientName", required = false) String clientName, HttpServletRequest request,
+            @RequestParam(value = "search", required = false) String search,HttpServletRequest request,
             HttpServletResponse response) {
         Principal principal = request.getUserPrincipal();
         PagedResources<VerificationRequestSummery> pagedVerificationRequestSummery = null;
         try {
             LOGGER.info("Filtering requested with from date :" + from + " to date :" + to + " Status : " + status
-                    + " and client :" + clientName);
+                    + " client/request id :" +search );
             pagedVerificationRequestSummery = processingRequestHandlerInterface.verificationRequestSummery(
-                    principal.getName(), clientName, from, to, pageNumber, pageSize, status);
+                    principal.getName(), search, from, to, pageNumber, pageSize, status);
 
         } catch (DataNotFoundException e) {
             LOGGER.warn("No history data found for the client {} ", principal.getName(), e);
@@ -349,5 +361,42 @@ public class VerificationApiController implements VerificationApi {
         return responseEntity;
 
     }
+    
+    /*
+     * Update processing request locked/unlocked status controller
+     */
+    public ResponseEntity<Object> updateProcessingRequestStatus(
+            @ApiParam(value = "verification id", required = true) @PathVariable("verificationId") String verificationId,
+            @ApiParam(value = "status", required = true) @PathVariable("status") String status,
+            HttpServletResponse response, HttpServletRequest request) {
+        ResponseEntity<Object> responseEntity = null;
+        GenericErrorMessage errorMessage = new GenericErrorMessage();
+        Principal principal = request.getUserPrincipal();
+        LOGGER.info("In updateProcessingRequestStatus ");
+        try {
+                clientService.getActiveLicenseOfClient(principal.getName());
+                String processingRequeststatus = processingRequestHandlerInterface
+                        .updateProcessingRequestStatus(principal.getName(), verificationId, status);
+                ProcessingRequestStatusResponse verificationResponse = new ProcessingRequestStatusResponse();
+                verificationResponse.setStatus(processingRequeststatus);
+                verificationResponse.setMessage("Processing Request identification code is "+ processingRequeststatus +" successfully");
+                responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
+           
+            } catch (ClientServiceException e) {
+                LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(),
+                        e);
+                errorMessage.setMessage("Your license is expired or suspended. Please contact support");
+                errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
+                responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.UNAUTHORIZED);
+            } catch (JsonProcessingException e) {
+                LOGGER.error("Erro occured while converting the request object to json string :" + principal.getName(), e);
+                errorMessage.setMessage("Erro occured while converting the request object to json string ");
+                errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
+                responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
+            }
+            return responseEntity;
+    }
+
+	
 
 }

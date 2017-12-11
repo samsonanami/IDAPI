@@ -17,7 +17,7 @@ public class MrzVizValidation {
     private String id = null;
 
     @JsonProperty("status")
-    private boolean status = false;
+    private String status = null;
 
     @JsonProperty("isACriticalValidation")
     private boolean isACriticalValidation = false;
@@ -44,7 +44,7 @@ public class MrzVizValidation {
         this.id = id;
     }
 
-    public MrzVizValidation status(boolean status) {
+    public MrzVizValidation status(String status) {
         this.status = status;
         return this;
     }
@@ -55,11 +55,11 @@ public class MrzVizValidation {
      * @return status
      **/
     @ApiModelProperty(value = "")
-    public boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

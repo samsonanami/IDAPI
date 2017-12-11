@@ -3,6 +3,26 @@ Orion - Changelog
 
 Unreleased
 ----------
+re verification implementation  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
+added un committed changes  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Modified update verification data API functionality and fixed minor issues in history API  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+updated the alter processing statuses database script with the latest status codes  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+code quality changes in the ProcessingRequestService file  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Updated History, Image, MRZ Generation and Multiple Accounts Api's  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+updated update verification API and added get image API  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Added functionality for Updating Processing Request ID data in processing_request table  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+update verification data API added  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Merge branch 'master' of git.zone24x7.lk:IDAPI/IDAPI into develop  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
 Merge branch 'multi-value-verification-support' into 'develop' Multi value verification support
 
 
@@ -15,12 +35,6 @@ IDAPI support UK DL template 3 date format UK DL 3 has a date format MM-DD-YYYY 
 Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into multi-value-verification-support  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 
 Test case updated  (Sasitha Gunadasa)(sasithag@zone24x7.com)
-
-Merge branch 'develop' into 'master' Develop
-
-
-
-See merge request !76 (Sasitha Gunadasa)(sasithag@zone24x7.com)
 
 1.0.3 (2017-07-19 10:20:52 +0530)
 ---------------------------------

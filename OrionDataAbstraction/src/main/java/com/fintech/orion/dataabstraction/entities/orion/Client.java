@@ -43,6 +43,7 @@ public class Client  implements java.io.Serializable {
     private Set<ProcessingRequest> processingRequests_1 = new HashSet<ProcessingRequest>(0);
     private Set<Resource> resources_1 = new HashSet<Resource>(0);
     private Set<ProcessConfig> processConfigs = new HashSet<ProcessConfig>(0);
+    private Set<ProcessingRequestStatus> processingRequestStatuses = new HashSet<ProcessingRequestStatus>(0);
     private Set<AccountMapping> accountMappingsForChild = new HashSet<AccountMapping>(0);
 
     public Client() {
@@ -62,7 +63,7 @@ public class Client  implements java.io.Serializable {
             Set<Resource> resources, Set<License> licenses, Set<AccountMapping> accountMappingsForParent,
             Set<License> licenses_1, Set<ProcessingRequest> processingRequests,
             Set<ProcessingRequest> processingRequests_1, Set<Resource> resources_1, Set<ProcessConfig> processConfigs,
-            Set<AccountMapping> accountMappingsForChild) {
+            Set<ProcessingRequestStatus> processingRequestStatuses, Set<AccountMapping> accountMappingsForChild) {
         this.userType = userType;
         this.email = email;
         this.registeredOn = registeredOn;
@@ -77,6 +78,7 @@ public class Client  implements java.io.Serializable {
         this.processingRequests_1 = processingRequests_1;
         this.resources_1 = resources_1;
         this.processConfigs = processConfigs;
+        this.processingRequestStatuses = processingRequestStatuses;
         this.accountMappingsForChild = accountMappingsForChild;
     }
 
@@ -221,6 +223,15 @@ public class Client  implements java.io.Serializable {
     
     public void setProcessConfigs(Set<ProcessConfig> processConfigs) {
         this.processConfigs = processConfigs;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    public Set<ProcessingRequestStatus> getProcessingRequestStatuses() {
+        return this.processingRequestStatuses;
+    }
+
+    public void setProcessingRequestStatuses(Set<ProcessingRequestStatus> processingRequestStatuses) {
+        this.processingRequestStatuses = processingRequestStatuses;
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientByChild")

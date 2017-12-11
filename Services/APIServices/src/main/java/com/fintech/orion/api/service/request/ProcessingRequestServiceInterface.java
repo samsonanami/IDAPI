@@ -24,6 +24,13 @@ public interface ProcessingRequestServiceInterface {
     PagedResources<VerificationRequestSummery> verificationRequestSummery(String principalName,String clientName, Date from, Date to,
             String page, String size, List<String> status) throws DataNotFoundException;
 
-	String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
-			throws ItemNotFoundException, JsonProcessingException;
+    String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
+            throws ItemNotFoundException, JsonProcessingException;
+
+	String updateProcessingRequestStatus(String clientName, String processingRequestIdentificationCode,
+			String status) throws JsonProcessingException;
+	
+	boolean getProcessingRequestLockedStatus(String verificationRequestId);
+	
+	
 }

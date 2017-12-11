@@ -50,6 +50,9 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     private ProcessingStatusRepositoryInterface processingStatusRepositoryInterface;
 
     @Autowired
+    ProcessingRequestStatusRepositoryInterface processingRequestStatusRepositoryInterface;
+
+    @Autowired
     private ProcessRepositoryInterface processRepositoryInterface;
 
     @Autowired
@@ -138,11 +141,29 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         }
         return response;
     }
+    
+    
+    @Override
+    @Transactional
+    public boolean getProcessingRequestLockedStatus(String verificationRequestId){
+        boolean status = false;
+        ProcessingRequest processingRequest = processingRequestRepositoryInterface
+                .findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestId);
+        ProcessingRequestStatus processingRequestStatus = processingRequestStatusRepositoryInterface
+                .findProcessingRequestStatusByProcessingRequest(processingRequest);
+        if(processingRequestStatus != null &&  processingRequestStatus.getStatus().equals("locked")) {
+            status = true;
+        }
+        return status;
+        
+    }
+    
+   
 
     @Override
     @Transactional
     public PagedResources<VerificationRequestSummery> verificationRequestSummery(String principalName,
-            String clientName, Date from, Date to, String page, String size, List<String> statusList)
+            String search, Date from, Date to, String page, String size, List<String> statusList)
             throws DataNotFoundException {
         Client client = clientRepositoryInterface.findClientByUserName(principalName);
         List<ProcessingStatus> processingStatusList = new ArrayList<ProcessingStatus>();
@@ -156,7 +177,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         Pageable pageable = new PageRequest(Integer.valueOf(page), Integer.valueOf(size), Sort.Direction.DESC, "id");
         List<Integer> ids = resourceAccessValidator.acountIds(client);
         List<Client> clients = clientRepositoryInterface.findClientsById(ids);
-        processingRequests = buildFilteringQuery(clients, clientName, from, to, processingStatusList, pageable);
+        processingRequests = buildFilteringQuery(clients, search, from, to, processingStatusList, pageable);
         PagedResources.PageMetadata pageMetadata = new PagedResources.PageMetadata(Integer.valueOf(size),
                 Integer.valueOf(page), processingRequests.getTotalElements(), processingRequests.getTotalPages());
 
@@ -174,12 +195,31 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
             summery.setProcessedString(processingRequest.getFinalResponse());
             summery.setFinalVerificationStatus(processingRequest.getFinalVerificationStatus().getStatus());
             summery.setClientName(processingRequest.getClientName());
+            summery.setRequestIdentificationCode(processingRequest.getProcessingRequestIdentificationCode());
+            summery.setRequestStatus(requestStatus(processingRequest));
             verificationRequestSummeryList.add(summery);
         }
         return verificationRequestSummeryList;
     }
+    
+    @Transactional
+    private boolean requestStatus(ProcessingRequest processingRequest) {
+        boolean status = false;
+        ProcessingRequestStatus processingRequestStatus = processingRequestStatusRepositoryInterface
+                .findProcessingRequestStatusByProcessingRequest(processingRequest);
+        if (processingRequestStatus != null) {
+            if(processingRequestStatus.getStatus().equals("locked") ) {
+                status = true;
+            }
+            
+        }
+        else {
+            status = false;  
+        }
+        return status;
+    }
 
-    private List<Link> getLink(Page page, String pageParam, String sizeParam){
+    private List<Link> getLink(Page page, String pageParam, String sizeParam) {
         List<Link> linkList = new ArrayList<>();
 
         if(page.hasPrevious()){
@@ -234,30 +274,32 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
         if (clientName != null && clientName.length() != 0 && !status.isEmpty() && from == null && to == null) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringFrom(status,
-                    clientName, pageable, clients);
+                    clientName, clients, pageable);
         }
         if (from != null && to != null && (clientName == null || clientName.length() == 0) && status.isEmpty()) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringFromAndTo(
-                    getTimestamp(from), getTimestamp(to), pageable, clients);
+                    getTimestamp(from), getTimestampWithExtraHours(to), clients, pageable);
         }
-        if (from != null && to != null && clientName != null && status.isEmpty()) {
+        if (from != null && to != null && clientName != null && clientName.length() != 0 && status.isEmpty()) {
 
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringClient(
-                    getTimestamp(from), getTimestamp(to), clientName, pageable, clients);
+                    getTimestamp(from), getTimestampWithExtraHours(to), clientName, clients, pageable);
         }
         if (from != null && to != null && clientName != null && clientName.length() != 0 && !status.isEmpty()) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringAll(status,
-                    getTimestamp(from), getTimestamp(to), clientName, pageable, clients);
+                    getTimestamp(from), getTimestampWithExtraHours(to), clientName, clients, pageable);
         }
         if (from != null && to != null && !status.isEmpty() && (clientName == null || clientName.length() == 0)) {
             processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringStatus(status,
-                    getTimestamp(from), getTimestamp(to), pageable, clients);
+                    getTimestamp(from), getTimestampWithExtraHours(to), clients, pageable);
         }
         if (from == null && to == null && clientName != null && clientName.length() != 0 && status.isEmpty()) {
             processingRequests = processingRequestRepositoryInterface
-                    .filterProcessingRequestByFilteringclientName(clientName, pageable, clients);
+                    .filterProcessingRequestByFilteringclientName(clientName, clients, pageable);
         }
-
+        if (from == null && to == null && (clientName == null || clientName.length() == 0) && !status.isEmpty()) {
+            processingRequests = processingRequestRepositoryInterface.filterProcessingRequestByFilteringStatus(status ,clients, pageable);
+        }
         return processingRequests;
 
     }
@@ -282,6 +324,49 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         return verificationId;
     }
 
+    
+    /*
+     * This method will update the existing status data in the database
+     */
+    @Transactional
+    @Override
+    public String updateProcessingRequestStatus(String clientName, String statusCode, String status)
+            throws JsonProcessingException {
+        ProcessingRequest processingRequestEntity = processingRequestRepositoryInterface
+                .findProcessingRequestByProcessingRequestIdentificationCode(statusCode);
+        System.out.println(processingRequestEntity.toString());
+        Client client = clientRepositoryInterface.findClientByUserName(clientName);
+        ProcessingRequestStatus processingRequestStatus = processingRequestStatusRepositoryInterface
+                .findProcessingRequestStatusByProcessingRequest(processingRequestEntity);
+        if (processingRequestStatus == null) {
+            processingRequestStatus = new ProcessingRequestStatus();
+        }
+        if (status.equals("locked")) {
+            processingRequestStatus.setStatus(status);
+            processingRequestStatus.setLockedOn(new Date());
+            processingRequestStatus.setClient(client);
+            processingRequestStatus.setProcessingRequest(processingRequestEntity);
+            processingRequestStatusRepositoryInterface.save(processingRequestStatus);
+        } else {
+            processingRequestStatus.setStatus(status);
+            processingRequestStatus.setUnlockedOn(new Date());
+            processingRequestStatus.setClient(client);
+            processingRequestStatus.setProcessingRequest(processingRequestEntity);
+            processingRequestStatusRepositoryInterface.save(processingRequestStatus);
+        }
+
+        return status;
+    }
+
+    
+    
+    public Timestamp getTimestampWithExtraHours(java.util.Date date) {
+        final long hoursInMillis = 60L * 60L * 1000L;
+        Date newDate = new Date(date.getTime() + 
+                (24L * hoursInMillis));
+        return new java.sql.Timestamp(newDate.getTime());
+    }
+    
     public Timestamp getTimestamp(java.util.Date date) {
         return date == null ? null : new java.sql.Timestamp(date.getTime());
     }
