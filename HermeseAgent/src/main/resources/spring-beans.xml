@@ -48,11 +48,11 @@
     </bean>
 
     <bean id="resourceBaseLocation" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="/opt/wildfly_data"/>
+        <constructor-arg type="java.lang.String" value="/media/sasitha/Projects/IDAPI/tmp"/>
     </bean>
 
     <bean id="commandsFileLocation" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="/home/sasitha/Pictures/idapi/compression/commands.json"/>
+        <constructor-arg type="java.lang.String" value="/home/sasitha/Pictures/idapi/commands.json"/>
     </bean>
 
     <bean id="maximumWaitingTimeInSeconds" class="java.lang.String">

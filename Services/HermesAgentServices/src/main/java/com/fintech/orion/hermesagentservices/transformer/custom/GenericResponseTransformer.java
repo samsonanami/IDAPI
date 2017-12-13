@@ -34,6 +34,11 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
     private String processingFailureOcrExtractionFieldName;
     private String verificationStatusPass;
     private String verificationStatusFail;
+    private String livenessPass;
+    private String livenessFail;
+    private String faceMatchPass;
+    private String faceMatchFail;
+    private String faceMatchManual;
 
     public void setIdVerificationName(String idVerificationName) {
         this.idVerificationName = idVerificationName;
@@ -63,9 +68,35 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
         this.facialVerificationName = facialVerificationName;
     }
 
+    public void setLivenessPass(String livenessPass) {
+        this.livenessPass = livenessPass;
+    }
+
+    public void setLivenessFail(String livenessFail) {
+        this.livenessFail = livenessFail;
+    }
+
+    public void setFaceMatchPass(String faceMatchPass) {
+        this.faceMatchPass = faceMatchPass;
+    }
+
+    public void setFaceMatchFail(String faceMatchFail) {
+        this.faceMatchFail = faceMatchFail;
+    }
+
+    public void setFaceMatchManual(String faceMatchManual) {
+        this.faceMatchManual = faceMatchManual;
+    }
+
     @Override
     public VerificationResponse transform(VerificationProcessDetailedResponse detailedResponse) throws RequestTransformerException {
-        statusCalculator = new DefaultResponseTransformerStatusCalculator(idVerificationName, addressVerificationName, facialVerificationName, verificationStatusPass);
+        statusCalculator = new DefaultResponseTransformerStatusCalculator(
+                idVerificationName,
+                addressVerificationName,
+                facialVerificationName,
+                verificationStatusPass,
+                livenessPass,
+                faceMatchPass);
         VerificationResponse verificationResponse = new VerificationResponse();
 
         verificationResponse.setVerificationRequestId(detailedResponse.getVerificationRequestId());
@@ -259,8 +290,10 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
                 .calculateFinalVerificationStatus(detailedResponse, verificationResponse);
         if (finalVerificationStatus) {
             verificationResponse.setStatus(verificationStatusPass);
-        } else {
+        } else if(detailedResponse.getStatus().equalsIgnoreCase("pending")){
             verificationResponse.setStatus(verificationStatusFail);
+        } else {
+            verificationResponse.setStatus(detailedResponse.getStatus());
         }
     }
 

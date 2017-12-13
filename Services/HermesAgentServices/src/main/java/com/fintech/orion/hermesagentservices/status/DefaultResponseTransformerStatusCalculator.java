@@ -14,15 +14,21 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
     private String addressVerificationLiteralName;
     private String facialVerificationLiteralName;
     private String passedStatusLiteral;
+    private String livenessPassLiteral;
+    private String faceMatchPassLiteral;
 
     public DefaultResponseTransformerStatusCalculator(String idVerificationLiteralName,
                                                       String addressVerificationLiteralName,
                                                       String facialVerificationLiteralName,
-                                                      String passedStatusLiteral) {
+                                                      String passedStatusLiteral,
+                                                      String livenessPass,
+                                                      String faceMatchPass) {
         this.idVerificationLiteralName = idVerificationLiteralName;
         this.addressVerificationLiteralName = addressVerificationLiteralName;
         this.facialVerificationLiteralName = facialVerificationLiteralName;
         this.passedStatusLiteral = passedStatusLiteral;
+        this.livenessPassLiteral = livenessPass;
+        this.faceMatchPassLiteral = faceMatchPass;
     }
 
     @Override
@@ -51,13 +57,13 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
         boolean finalVerificationStatus = true;
         if (isVerificationIsRequested(facialVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
-                !passedStatusLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())){
+                !faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())){
             finalVerificationStatus = false;
         }
 
         if (isVerificationIsRequested(facialVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
-                !passedStatusLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())){
+                !livenessPassLiteral.equalsIgnoreCase(finalVerificationResponse.getLivenessTest().getStatus())){
             finalVerificationStatus = false;
         }
 
@@ -72,6 +78,7 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
                 (finalVerificationResponse.getAddressVerification().getStatus().equals("false") || finalVerificationResponse.getAddressVerification().getStatus().equals("failed"))){
             finalVerificationStatus = false;
         }
+
         return finalVerificationStatus;
     }
 

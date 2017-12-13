@@ -3,6 +3,8 @@ Orion - Changelog
 
 Unreleased
 ----------
+added client name related changes  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
 Merge branch 'manual-verification-api-update' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  Conflicts:
 	HermeseAgent/src/main/java/com/fintech/orion/hermes/orchestrator/VerificationOrchestrator.java
 	Services/HermesAgentServices/src/main/java/com/fintech/orion/common/service/VerificationRequestDetailService.java

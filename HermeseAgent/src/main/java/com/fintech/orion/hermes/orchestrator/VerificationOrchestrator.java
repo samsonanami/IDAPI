@@ -1,26 +1,20 @@
 package com.fintech.orion.hermes.orchestrator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fintech.orion.common.Processor;
 import com.fintech.orion.common.exceptions.license.LicenseHandlerException;
 import com.fintech.orion.common.exceptions.request.RequestProcessorException;
 import com.fintech.orion.common.service.VerificationRequestDetailService;
-import com.fintech.orion.dataabstraction.entities.orion.Process;
 import com.fintech.orion.dto.hermese.ResponseProcessorResult;
-import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
 import com.fintech.orion.hermesagentservices.license.LicenseHandlerInterface;
 import com.fintech.orion.hermesagentservices.processor.VerificationResult;
 import com.fintech.orion.hermesagentservices.processor.request.HermeseRequestProcessor;
 import com.fintech.orion.hermesagentservices.processor.response.HermesResponseProcessor;
-import com.fintech.orion.hermesagentservices.transformer.custom.ReVerificationOCRDataTransformer;
+import com.fintech.orion.hermesagentservices.processor.reverify.ReVerificationResultsTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -44,6 +38,9 @@ public class VerificationOrchestrator {
     @Autowired
     private HermeseRequestProcessor hermeseRequestProcessor;
 
+    @Autowired
+    private ReVerificationResultsTransformer reVerificationResultsTransformer;
+
 
     public void orchestrate(Object message){
         long start = System.currentTimeMillis();
@@ -59,7 +56,8 @@ public class VerificationOrchestrator {
                 LOGGER.error("Unable process verification request {} ", processingMessage, e);
             }
         }else {
-            verificationResultList = verificationResultsForReVerification(processingMessage);
+            verificationResultList =
+                    reVerificationResultsTransformer.verificationResultsFromManualPortalInput(processingMessage);
         }
 
         ResponseProcessorResult responseProcessorResult =
@@ -71,34 +69,19 @@ public class VerificationOrchestrator {
         LOGGER.info("Total time elapse to complete the full processing {} ",  System.currentTimeMillis() - start);
 
         try {
-            licenseHandler.updateLicense(processingMessage.getClientLicense(), processingMessage.getVerificationRequestCode());
+            licenseHandler.updateLicense(processingMessage.getClientLicense(),
+                    processingMessage.getVerificationRequestCode());
         } catch (LicenseHandlerException e) {
             LOGGER.error("Unable to update license for license key {} ", processingMessage.getClientLicense(), e);
         }
 
     }
 
-    private List<VerificationResult> verificationResultsForReVerification(ProcessingMessage processingMessage){
-
-        List<VerificationResult> results = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        VerificationResult oracleResults = new VerificationResult();
-        oracleResults.setProcessor(Processor.ORACLE);
-        try {
-            ReVerificationOCRDataTransformer transformer = new ReVerificationOCRDataTransformer();
-            OcrResponse ocrResponse = transformer.transform(processingMessage.getVerificationResponse());
-            oracleResults.setResultString(objectMapper.writeValueAsString(ocrResponse));
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Unable to parse json {} ", e);
-        }
-        results.add(oracleResults);
-        return results;
-    }
-
     @Transactional
     private void saveProcessResponse(ResponseProcessorResult responseProcessorResult, String verificationCode){
         verificationRequestDetailService.saveFinalVerificationResponse(responseProcessorResult.getProcessedString(),
-                verificationCode, responseProcessorResult.getFinalProcessingStatus(), responseProcessorResult.getClientName());
+                verificationCode, responseProcessorResult.getFinalProcessingStatus(),
+                responseProcessorResult.getClientName());
     }
 
 }

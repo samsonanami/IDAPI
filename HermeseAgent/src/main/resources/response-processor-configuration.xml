@@ -35,6 +35,11 @@
         <property name="processingFailureOcrExtractionFieldName" value="processing_failure"/>
         <property name="verificationStatusFail" value="pendingManualVerification"/>
         <property name="verificationStatusPass" value="autoVerified"/>
+        <property name="faceMatchPass" value="passed"/>
+        <property name="faceMatchFail" value="failed" />
+        <property name="faceMatchManual" value="manual"/>
+        <property name="livenessFail" value="failed"/>
+        <property name="livenessPass" value="passed"/>
     </bean>
 
     <bean id="verificationStatusSuccess" class="java.lang.String">
@@ -43,6 +48,12 @@
 
     <bean id="verificationStatusFail" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="pendingManualVerification"/>
+    </bean>
+
+    <bean id="reVerificationDataTransformer" class="com.fintech.orion.hermesagentservices.processor.reverify.ReVerificationResultsTransformer">
+        <property name="idVerificationName" value="idVerification"/>
+        <property name="addressVerificationName" value="addressVerification"/>
+        <property name="facialVerificationName" value="facialVerification"/>
     </bean>
 
 </beans>
