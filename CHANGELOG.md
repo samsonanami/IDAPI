@@ -3,6 +3,8 @@ Orion - Changelog
 
 Unreleased
 ----------
+Re verification 1. Facial and liveness test re verification update 2. after re verification status change accordingly  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
 added client name related changes  (Nagarjuna Avula)(navula@metanoiasolutions.net)
 
 Merge branch 'manual-verification-api-update' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  Conflicts:
