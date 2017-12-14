@@ -3,6 +3,8 @@ Orion - Changelog
 
 Unreleased
 ----------
+update final verification status calculation logic  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
 Re verification 1. Facial and liveness test re verification update 2. after re verification status change accordingly  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
 
 added client name related changes  (Nagarjuna Avula)(navula@metanoiasolutions.net)

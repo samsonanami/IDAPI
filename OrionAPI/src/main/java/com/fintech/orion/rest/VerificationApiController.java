@@ -158,25 +158,14 @@ public class VerificationApiController implements VerificationApi {
     public ResponseEntity<Object> verificationVerificationIdGet(
             @ApiParam(value = "verification id",required=true ) @PathVariable("verificationId") String verificationId,
             HttpServletResponse response, HttpServletRequest request) {
+        VerificationResponse verificationResponse;
         ResponseEntity<Object> responseEntity =null;
         Principal principal = request.getUserPrincipal();
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         try {
             clientService.getActiveLicenseOfClient(principal.getName());
-            boolean isItLocked = processingRequestHandlerInterface.getProcessingRequestLockedStatus(verificationId,principal.getName());
-            if(isItLocked) {
-                LOGGER.warn("Client {} requested processing request which is processing by some other operator {}",
-                        principal.getName(), verificationId);
-                errorMessage.setMessage("Processing Request "+ verificationId + " is Locked ! and some other operator working on it.");
-                errorMessage.setStatus(HttpStatus.ALREADY_REPORTED.value());
-                return new ResponseEntity<Object>(errorMessage, HttpStatus.ALREADY_REPORTED);
-            }
-            else {
-                VerificationResponse verificationResponse = processingRequestHandlerInterface.getDetailedResponse(principal.getName(),
-                        verificationId);
-                responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);   
-            }
-            
+            verificationResponse = processingRequestHandlerInterface.getDetailedResponse(principal.getName(), verificationId);
+            responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
         } catch (ClientServiceException e) {
             LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(), e);
             errorMessage.setMessage("Your license is expired or suspended. Please contact support");
@@ -245,12 +234,23 @@ public class VerificationApiController implements VerificationApi {
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         Principal principal = request.getUserPrincipal();
         try {
-            clientService.getActiveLicenseOfClient(principal.getName());
-            String processingRequestId = processingRequestHandlerInterface
-                    .updateVerificationRequestData(principal.getName(), verificationId, body);
-            VerificationRequestResponse verificationResponse = new VerificationRequestResponse();
-            verificationResponse.setProcessingRequestId(processingRequestId);
-            responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
+            boolean isLockRequestedBySameOperator = processingRequestHandlerInterface.getProcessingRequestLockedStatus(verificationId,principal.getName());
+            if(isLockRequestedBySameOperator) {
+                clientService.getActiveLicenseOfClient(principal.getName());
+                String processingRequestId = processingRequestHandlerInterface
+                        .updateVerificationRequestData(principal.getName(), verificationId, body);
+                VerificationRequestResponse verificationResponse = new VerificationRequestResponse();
+                verificationResponse.setProcessingRequestId(processingRequestId);
+                responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);    
+            }
+            else {
+                LOGGER.warn("Client {} requested processing request which is processing by some other operator {} / which is not locked by himself",
+                        principal.getName(), verificationId);
+                errorMessage.setMessage("Processing Request "+ verificationId + " is not locked by "+ principal.getName() +" or some other operator working on it.");
+                errorMessage.setStatus(HttpStatus.ALREADY_REPORTED.value());
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.ALREADY_REPORTED);   
+            }
+           
         } catch (ItemNotFoundException e) {
             LOGGER.error("Error ocured wihle processing the request {} submitted by user {}", body, principal.getName(),
                     e);
@@ -283,12 +283,23 @@ public class VerificationApiController implements VerificationApi {
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         Principal principal = request.getUserPrincipal();
         try {
-            String licenseKey = clientService.getActiveLicenseOfClient(principal.getName());
-            clientService.getActiveLicenseOfClient(principal.getName());
-            updateMessageQueueAboutReverification(licenseKey, verificationId, true, body);
-            VerificationRequestResponse verificationResponse = new VerificationRequestResponse();
-            verificationResponse.setProcessingRequestId(verificationId);
-            responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
+            boolean isLockRequestedBySameOperator = processingRequestHandlerInterface.getProcessingRequestLockedStatus(verificationId,principal.getName());
+            if(isLockRequestedBySameOperator) {
+                String licenseKey = clientService.getActiveLicenseOfClient(principal.getName());
+                clientService.getActiveLicenseOfClient(principal.getName());
+                updateMessageQueueAboutReverification(licenseKey, verificationId, true, body);
+                VerificationRequestResponse verificationResponse = new VerificationRequestResponse();
+                verificationResponse.setProcessingRequestId(verificationId);
+                responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK); 
+            }
+            else {
+                LOGGER.warn("Client {} requested processing request which is processing by some other operator {} / which is not locked by himself",
+                        principal.getName(), verificationId);
+                errorMessage.setMessage("Processing Request "+ verificationId + " is not locked by "+ principal.getName() +" or some other operator working on it.");
+                errorMessage.setStatus(HttpStatus.ALREADY_REPORTED.value());
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.ALREADY_REPORTED); 
+            }
+           
         } catch (ClientServiceException e) {
             LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(),
                     e);
@@ -372,16 +383,40 @@ public class VerificationApiController implements VerificationApi {
         ResponseEntity<Object> responseEntity = null;
         GenericErrorMessage errorMessage = new GenericErrorMessage();
         Principal principal = request.getUserPrincipal();
-        LOGGER.info("In updateProcessingRequestStatus ");
         try {
+            /*
+             * Trying to un-lock the request id with one of the conditions 
+             * 1. Record not there with the status locked to un-lock.
+             * 2. Record already locked by some other operator due to expiration.
+             * 3. Operator doesn't hold the current lock. 
+             */
+            boolean isLockRequestedBySameOperator = processingRequestHandlerInterface.getProcessingRequestLockedStatusByClient(verificationId,principal.getName());
+            if(status.equals("unlocked") && ! isLockRequestedBySameOperator) {
+                LOGGER.warn("Client {} requested to unlock the already un-locked verification id or locked by the some other operator {}",
+                        principal.getName(), verificationId);
+                errorMessage.setMessage("Error in un-locking. Either other operator is working on it or it is already un-locked");
+                errorMessage.setStatus(HttpStatus.ALREADY_REPORTED.value());
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.ALREADY_REPORTED);
+            }
+            /*
+             * Trying to lock the request id with one of the conditions 
+             * 1. RequestId which is already locked by himself.
+             * 2. RequestId which is already locked and locked on time is not expired till now.
+             */
+            boolean isAlreadyLocked = processingRequestHandlerInterface.getProcessingRequestUnLockedStatus(verificationId,principal.getName());
+            if(status.equals("locked") && isAlreadyLocked) {
+                LOGGER.warn("Client {} requested to lock the already locked verification id or verification id which is processing by the other operator {}",
+                        principal.getName(), verificationId);
+                errorMessage.setMessage("Error in locking. Either other operator is working on it or it is already locked");
+                errorMessage.setStatus(HttpStatus.ALREADY_REPORTED.value());
+                return new ResponseEntity<Object>(errorMessage, HttpStatus.ALREADY_REPORTED); 
+            }
+            else {
                 clientService.getActiveLicenseOfClient(principal.getName());
-                String processingRequeststatus = processingRequestHandlerInterface
+                ProcessingRequestStatusResponse processingRequestStatusResponse = processingRequestHandlerInterface
                         .updateProcessingRequestStatus(principal.getName(), verificationId, status);
-                ProcessingRequestStatusResponse verificationResponse = new ProcessingRequestStatusResponse();
-                verificationResponse.setStatus(processingRequeststatus);
-                verificationResponse.setMessage("Processing Request identification code is "+ processingRequeststatus +" successfully");
-                responseEntity = new ResponseEntity<Object>(verificationResponse, HttpStatus.OK);
-           
+                responseEntity = new ResponseEntity<Object>(processingRequestStatusResponse, HttpStatus.OK);  
+            }
             } catch (ClientServiceException e) {
                 LOGGER.error("Could not find an active license key for the client with client name :" + principal.getName(),
                         e);
@@ -391,6 +426,11 @@ public class VerificationApiController implements VerificationApi {
             } catch (JsonProcessingException e) {
                 LOGGER.error("Erro occured while converting the request object to json string :" + principal.getName(), e);
                 errorMessage.setMessage("Erro occured while converting the request object to json string ");
+                errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
+                responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
+            } catch (DataNotFoundException e) {
+                LOGGER.error("Error ocured wihle locking or unlocking the request id ", verificationId, principal.getName(), e);
+                errorMessage.setMessage(e.getMessage());
                 errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
                 responseEntity = new ResponseEntity<Object>(errorMessage, HttpStatus.BAD_REQUEST);
             }

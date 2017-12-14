@@ -5,6 +5,7 @@ import com.fintech.orion.api.service.exceptions.ResourceAccessPolicyViolationExc
 import com.fintech.orion.api.service.exceptions.ResourceNotFoundException;
 import com.fintech.orion.dataabstraction.exceptions.ItemNotFoundException;
 import com.fintech.orion.dto.request.api.VerificationProcess;
+import com.fintech.orion.dto.response.api.ProcessingRequestStatusResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.dto.response.external.VerificationResponse;
 import org.springframework.hateoas.PagedResources;
@@ -27,10 +28,13 @@ public interface ProcessingRequestServiceInterface {
     String updateVerificationRequestData(String clientName, String verificationId, VerificationResponse body)
             throws ItemNotFoundException, JsonProcessingException;
 
-	String updateProcessingRequestStatus(String clientName, String processingRequestIdentificationCode,
-			String status) throws JsonProcessingException;
-	
-	boolean getProcessingRequestLockedStatus(String verificationRequestId, String clientName);
-	
-	
+    ProcessingRequestStatusResponse updateProcessingRequestStatus(String clientName, String processingRequestIdentificationCode, String status)
+            throws DataNotFoundException, JsonProcessingException;
+    
+    boolean getProcessingRequestLockedStatus(String verificationRequestId, String clientName);
+    
+    boolean getProcessingRequestUnLockedStatus(String verificationId, String clientName);
+
+	boolean getProcessingRequestLockedStatusByClient(String verificationId, String name);
+
 }

@@ -11,6 +11,7 @@ import com.fintech.orion.dataabstraction.models.Status;
 import com.fintech.orion.dataabstraction.repositories.*;
 import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
+import com.fintech.orion.dto.response.api.ProcessingRequestStatusResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
 import com.fintech.orion.dto.response.external.VerificationResponse;
 
@@ -30,6 +31,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,7 +73,10 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
     @PersistenceContext
     private EntityManager manager;
-
+    
+    @Autowired
+    private String lockedOnExpiry;
+   
     public String query;
 
     @Transactional(rollbackFor = { ItemNotFoundException.class, DataNotFoundException.class })
@@ -142,21 +149,53 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         return response;
     }
     
-    
     @Override
     @Transactional
-    public boolean getProcessingRequestLockedStatus(String verificationRequestId, String clientName){
+    public boolean getProcessingRequestLockedStatus(String verificationId, String clientName){
         boolean status = false;
         ProcessingRequest processingRequest = processingRequestRepositoryInterface
-                .findProcessingRequestByProcessingRequestIdentificationCode(verificationRequestId);
+                .findProcessingRequestByProcessingRequestIdentificationCode(verificationId);
         ProcessingRequestStatus processingRequestStatus = processingRequestStatusRepositoryInterface
                 .findProcessingRequestStatusByProcessingRequest(processingRequest);
         Client client = clientRepositoryInterface.findClientByUserName(clientName);
-        if(processingRequestStatus != null &&  processingRequestStatus.getStatus().equals("locked") && ! client.getId().equals(processingRequestStatus.getClient().getId())) {
+        if(processingRequestStatus != null &&  processingRequestStatus.getStatus().equals("locked") && client.getId().equals(processingRequestStatus.getClient().getId())) {
             status = true;
         }
         return status;
+    }
+    
+    @Override
+    @Transactional
+    public boolean getProcessingRequestLockedStatusByClient(String verificationId, String clientName){
+        boolean status = false;
+        ProcessingRequest processingRequest = processingRequestRepositoryInterface
+                .findProcessingRequestByProcessingRequestIdentificationCode(verificationId);
+        ProcessingRequestStatus processingRequestStatus = processingRequestStatusRepositoryInterface
+                .findProcessingRequestStatusByProcessingRequest(processingRequest);
+        Client client = clientRepositoryInterface.findClientByUserName(clientName);
+        if(processingRequestStatus != null &&  processingRequestStatus.getStatus().equals("unlocked") && client.getId().equals(processingRequestStatus.getClient().getId())) {
+            status = true;
+        }else
+        	if(processingRequestStatus != null &&  processingRequestStatus.getStatus().equals("locked") && client.getId().equals(processingRequestStatus.getClient().getId())) {
+                status = true;
+            }
+        return status;
+    }
+    @Override
+    @Transactional
+    public boolean getProcessingRequestUnLockedStatus(String verificationId, String clientName) {
+        boolean status = false;
+        Integer lockedOnExp =  Integer.valueOf(lockedOnExpiry);
+        Client client = clientRepositoryInterface.findClientByUserName(clientName);
+        ProcessingRequest processingRequest = processingRequestRepositoryInterface
+                .findProcessingRequestByProcessingRequestIdentificationCode(verificationId);
+        ProcessingRequestStatus processingRequestStatus = processingRequestStatusRepositoryInterface
+                .findProcessingRequestStatusByProcessingRequest(processingRequest);
+        if(processingRequestStatus != null && processingRequestStatus.getStatus().equals("locked") && getLockedOnTimeInMin(processingRequestStatus.getLockedOn()) < lockedOnExp && client != processingRequestStatus.getClient()) {
+            status = true;
+        }
         
+        return status;
     }
     
    
@@ -331,45 +370,121 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
      */
     @Transactional
     @Override
-    public String updateProcessingRequestStatus(String clientName, String statusCode, String status)
-            throws JsonProcessingException {
+    public ProcessingRequestStatusResponse updateProcessingRequestStatus(String clientName, String verificationId, String status)
+            throws DataNotFoundException, JsonProcessingException {
+    	Integer lockedOnExp =  Integer.valueOf(lockedOnExpiry);
         ProcessingRequest processingRequestEntity = processingRequestRepositoryInterface
-                .findProcessingRequestByProcessingRequestIdentificationCode(statusCode);
-        System.out.println(processingRequestEntity.toString());
+                .findProcessingRequestByProcessingRequestIdentificationCode(verificationId);
         Client client = clientRepositoryInterface.findClientByUserName(clientName);
         ProcessingRequestStatus processingRequestStatus = processingRequestStatusRepositoryInterface
                 .findProcessingRequestStatusByProcessingRequest(processingRequestEntity);
-        if (processingRequestStatus == null) {
+        boolean lockedBySameOperator= getProcessingRequestLockedStatus(verificationId, clientName);
+        ProcessingRequestStatusResponse processingRequestStatusResponse = new ProcessingRequestStatusResponse();
+        /*
+         * First time lock for the verification id
+         */
+        if (processingRequestStatus == null && status.equals("locked")) {
             processingRequestStatus = new ProcessingRequestStatus();
-        }
-        if (status.equals("locked")) {
             processingRequestStatus.setStatus(status);
             processingRequestStatus.setLockedOn(new Date());
             processingRequestStatus.setClient(client);
             processingRequestStatus.setProcessingRequest(processingRequestEntity);
             processingRequestStatusRepositoryInterface.save(processingRequestStatus);
-        } else {
+            processingRequestStatusResponse.setStatus(status);
+            processingRequestStatusResponse.setMessage("Processing Request identification code is "+ status +" successfully");
+        }
+        /*
+         * Locking the request id which in unlocked state. This will update the exiting record.
+         */
+        if (processingRequestStatus != null && status.equals("locked") && processingRequestStatus.getStatus().equals("unlocked")) {
+            processingRequestStatus.setStatus(status);
+            processingRequestStatus.setLockedOn(new Date());
+            processingRequestStatus.setClient(client);
+            processingRequestStatus.setProcessingRequest(processingRequestEntity);
+            processingRequestStatusRepositoryInterface.save(processingRequestStatus);
+            processingRequestStatusResponse.setStatus(status);
+            processingRequestStatusResponse.setMessage("Processing Request identification code is "+ status +" successfully");  
+        }
+        /*
+         * Acquiring the lock which is already locked but expired due to time limit 
+         */
+        if (processingRequestStatus != null && status.equals("locked") && getLockedOnTimeInMin(processingRequestStatus.getLockedOn()) >= lockedOnExp && processingRequestStatus.getStatus().equals("locked")) {
+            processingRequestStatus.setStatus(status);
+            processingRequestStatus.setLockedOn(new Date());
+            processingRequestStatus.setClient(client);
+            processingRequestStatus.setProcessingRequest(processingRequestEntity);
+            processingRequestStatusRepositoryInterface.save(processingRequestStatus);
+            processingRequestStatusResponse.setStatus(status);
+            processingRequestStatusResponse.setMessage("Processing Request identification code is "+ status +" successfully");     
+        }
+        /*
+         * Acquiring the un-lock which is already un-locked but same client login
+         */
+        if (processingRequestStatus != null && status.equals("unlocked")  && processingRequestStatus.getStatus().equals("unlocked") && client.getId().equals(processingRequestStatus.getClient().getId())) {
+            processingRequestStatus.setStatus(status);
+            processingRequestStatus.setLockedOn(new Date());
+            processingRequestStatus.setClient(client);
+            processingRequestStatus.setProcessingRequest(processingRequestEntity);
+            processingRequestStatusRepositoryInterface.save(processingRequestStatus);
+            processingRequestStatusResponse.setStatus(status);
+            processingRequestStatusResponse.setMessage("Processing Request identification code is "+ status +" successfully");     
+        }
+     
+        /*
+         * Acquiring the lock which is already locked but same client login
+         */
+        if (processingRequestStatus != null && status.equals("locked") && processingRequestStatus.getStatus().equals("locked") && client.getId().equals(processingRequestStatus.getClient().getId())) {
+            processingRequestStatus.setStatus(status);
+            processingRequestStatus.setLockedOn(new Date());
+            processingRequestStatus.setClient(client);
+            processingRequestStatus.setProcessingRequest(processingRequestEntity);
+            processingRequestStatusRepositoryInterface.save(processingRequestStatus);
+            processingRequestStatusResponse.setStatus(status);
+            processingRequestStatusResponse.setMessage("Processing Request identification code is "+ status +" successfully");     
+        }
+        /*
+         * Un-Locking the request id which is already locked by same person
+         */
+        if(status.equals("unlocked") && lockedBySameOperator) {
             processingRequestStatus.setStatus(status);
             processingRequestStatus.setUnlockedOn(new Date());
             processingRequestStatus.setClient(client);
             processingRequestStatus.setProcessingRequest(processingRequestEntity);
-            processingRequestStatusRepositoryInterface.save(processingRequestStatus);
+            processingRequestStatusRepositoryInterface.save(processingRequestStatus);   
+            processingRequestStatusResponse.setStatus(status);
+            processingRequestStatusResponse.setMessage("Processing Request identification code is "+ status +" successfully");
         }
-
-        return status;
+        return processingRequestStatusResponse;
     }
 
-    
-    
-    public Timestamp getTimestampWithExtraHours(java.util.Date date) {
+    private Timestamp getTimestampWithExtraHours(java.util.Date date) {
         final long hoursInMillis = 60L * 60L * 1000L;
         Date newDate = new Date(date.getTime() + 
                 (24L * hoursInMillis));
         return new java.sql.Timestamp(newDate.getTime());
     }
     
-    public Timestamp getTimestamp(java.util.Date date) {
+    private Timestamp getTimestamp(java.util.Date date) {
         return date == null ? null : new java.sql.Timestamp(date.getTime());
     }
 
+    private int getLockedOnTimeInMin(Date lockedOn) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        String lockOn = dateFormat.format(lockedOn);
+        long difference;
+        long diffMinutes = 0;
+        Date date1;
+        try {
+            date1 = (Date) dateFormat.parse(lockOn);
+            Date date2 = (Date) dateFormat.parse(dateFormat.format(date));
+            difference = date2.getTime() - date1.getTime();
+            diffMinutes = difference / (60 * 1000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return (int) diffMinutes;
+
+    }
 }
