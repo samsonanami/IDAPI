@@ -2,9 +2,7 @@ package com.fintech.orion.dto.mrz;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fintech.orion.dto.response.api.VerificationRequestResponse;
 
 import io.swagger.annotations.ApiModelProperty;
 

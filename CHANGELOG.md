@@ -3,6 +3,12 @@ Orion - Changelog
 
 Unreleased
 ----------
+messages.properties file with the overrided default bad credentials error message  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Overriding default 'bad credentials' error message to 'invalid credentials'  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Added lock/unlock funcationality updates and lock expiration  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
 update final verification status calculation logic  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
 
 Re verification 1. Facial and liveness test re verification update 2. after re verification status change accordingly  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
