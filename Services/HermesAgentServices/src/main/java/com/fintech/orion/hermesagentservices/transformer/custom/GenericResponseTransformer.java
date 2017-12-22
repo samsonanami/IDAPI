@@ -288,17 +288,30 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
                                                   VerificationProcessDetailedResponse detailedResponse) {
         boolean finalVerificationStatus = statusCalculator
                 .calculateFinalVerificationStatus(detailedResponse, verificationResponse);
-        if (finalVerificationStatus) {
-            verificationResponse.setStatus(verificationStatusPass);
-        } else if(
-                        detailedResponse.getStatus().equalsIgnoreCase("pending") ||
-                        detailedResponse.getStatus().equalsIgnoreCase("processing_failed") ||
-                        detailedResponse.getStatus().equalsIgnoreCase("processing_successful")
-                ){
-            verificationResponse.setStatus(verificationStatusFail);
-        } else {
-            verificationResponse.setStatus(detailedResponse.getStatus());
+
+
+        if(detailedResponse.getStatus() == null){
+            if(finalVerificationStatus){
+                verificationResponse.setStatus(verificationStatusPass);
+            }else {
+                verificationResponse.setStatus(verificationStatusFail);
+            }
+        }else {
+            if (finalVerificationStatus) {
+                verificationResponse.setStatus(verificationStatusPass);
+            } else if(
+                    detailedResponse.getStatus().equalsIgnoreCase("pending") ||
+                            detailedResponse.getStatus().equalsIgnoreCase("processing_failed") ||
+                            detailedResponse.getStatus().equalsIgnoreCase("processing_successful")
+                    ){
+                verificationResponse.setStatus(verificationStatusFail);
+            } else {
+                verificationResponse.setStatus(detailedResponse.getStatus());
+            }
         }
+
+
+
     }
 
 }

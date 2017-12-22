@@ -50,6 +50,7 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
         VerificationProcessDetailedResponse verificationProcessDetailedResponse =
                 new VerificationProcessDetailedResponse();
         VerificationResponse verificationResponse = new VerificationResponse();
+        verificationProcessDetailedResponse.setVerificationRequestId(processingRequestId);
         hermesResponseProcessorChainHead.start(verificationProcessDetailedResponse,
                 verificationResults, processingRequestId);
 

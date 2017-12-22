@@ -81,7 +81,6 @@ public class OracleResponseProcessor extends ResponseProcessorChain {
         VerificationProcessDetailedResponse detailedResponse = response;
         OcrResponse ocrResponse = objectMapper.readValue(rawString, OcrResponse.class);
         detailedResponse.setStatus(ocrResponse.getStatus());
-        detailedResponse.setVerificationRequestId(processingRequestId);
         ocrResponse.setVerificationRequestId(processingRequestId);
 
         sanitizer.sanitize(ocrResponse);

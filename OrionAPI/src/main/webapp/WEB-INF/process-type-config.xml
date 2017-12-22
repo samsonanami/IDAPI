@@ -61,7 +61,7 @@
 
     <bean id="idResourceType" class="com.fintech.orion.dto.request.api.Resource">
         <property name="resourceId" value=""/>
-        <property name="resourceName" value="id"/>
+        <property name="resourceName" value="idFront"/>
     </bean>
 
     <bean id="passportResourceType" class="com.fintech.orion.dto.request.api.Resource">
