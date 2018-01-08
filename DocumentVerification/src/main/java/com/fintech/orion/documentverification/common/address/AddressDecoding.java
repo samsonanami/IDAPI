@@ -42,9 +42,9 @@ public class AddressDecoding {
 
         Matcher matcher = pattern.matcher(address);
         if (matcher.find()){
-            results.setNumber(matcher.group(0).trim());
-            results.setFlatNumber(matcher.group(0).trim());
-            results.setPostalCode(matcher.group(matcher.groupCount() - 1).trim());
+            results.setNumber(matcher.group(1).trim());
+            results.setFlatNumber(matcher.group(2).trim());
+            results.setPostalCode(matcher.group(matcher.groupCount()).trim());
             results.setAddressType(addressType.getType().trim());
         }
         return results;
