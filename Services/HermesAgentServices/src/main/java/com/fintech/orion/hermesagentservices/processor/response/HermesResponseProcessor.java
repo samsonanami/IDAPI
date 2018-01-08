@@ -44,7 +44,8 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
 
     @Override
     public ResponseProcessorResult processVerificationResults(List<VerificationResult> verificationResults,
-                                                              String processingRequestId) {
+                                                              String processingRequestId, boolean isReVerification,
+                                                              String reVerificationStatus) {
         ResponseProcessorResult result = new ResponseProcessorResult();
         ObjectMapper objectMapper = new ObjectMapper();
         VerificationProcessDetailedResponse verificationProcessDetailedResponse =
@@ -57,7 +58,7 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
         try {
             ResponseTransformer responseTransformer =
                     responseTransformerFactory.getResponseTransformer("defaultResponseTransformer");
-            verificationResponse = (VerificationResponse)responseTransformer.transform(verificationProcessDetailedResponse);
+            verificationResponse = (VerificationResponse)responseTransformer.transform(verificationProcessDetailedResponse, isReVerification, reVerificationStatus);
             result.setProcessedString(objectMapper.writeValueAsString(verificationResponse));
             String clientName = processClientName(verificationProcessDetailedResponse.getData());
             result.setClientName(clientName);

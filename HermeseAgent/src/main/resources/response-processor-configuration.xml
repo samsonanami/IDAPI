@@ -33,8 +33,9 @@
         <property name="facialVerificationName" value="facialVerification"/>
         <property name="criticalErrorSetOcrExtractionFieldName" value="critical_error_set"/>
         <property name="processingFailureOcrExtractionFieldName" value="processing_failure"/>
-        <property name="verificationStatusFail" value="pendingManualVerification"/>
+        <property name="verificationStatusPending" value="pendingManualVerification"/>
         <property name="verificationStatusPass" value="autoVerified"/>
+        <property name="verificationStatusFail" value="autoVerifiedFailed"/>
         <property name="faceMatchPass" value="passed"/>
         <property name="faceMatchFail" value="failed" />
         <property name="faceMatchManual" value="manual"/>

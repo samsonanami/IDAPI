@@ -28,6 +28,9 @@
                 <entry key="nationality" value-ref="stringTranslatorConfiguration"/>
                 <entry key="address" value-ref="stringTranslatorConfiguration"/>
                 <entry key="passport_number" value-ref="stringTranslatorConfiguration"/>
+                <entry key="address_line1" value-ref="stringTranslatorConfiguration"/>
+                <entry key="address_line2" value-ref="stringTranslatorConfiguration"/>
+                <entry key="address_line3" value-ref="stringTranslatorConfiguration"/>
                 <entry key="MRZ_passport_number" value-ref="stringTranslatorConfiguration"/>
                 <entry key="MRZ_surname" value-ref="stringTranslatorConfiguration"/>
                 <entry key="MRZ_given_names" value-ref="stringTranslatorConfiguration"/>

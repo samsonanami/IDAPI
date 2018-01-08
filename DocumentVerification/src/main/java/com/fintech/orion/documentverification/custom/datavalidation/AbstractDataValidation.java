@@ -99,10 +99,12 @@ public class AbstractDataValidation extends ValidationHelper {
                 String vizValue = getVizValue(getOcrExtractionFieldName(), documentName, ocrResponse, preProcessedStatus);
 
                 try {
-                    Object translatedVisualValue = visualOcrValeTranslator.translate(vizValue, templateCategory);
-                    translatedVisualValue = getVisualValueSubstring(translatedVisualValue);
-                    visualValue.setValue(translatedVisualValue);
-                    visualValueSet.add(visualValue);
+                    if(vizValue != null && !vizValue.isEmpty()){
+                        Object translatedVisualValue = visualOcrValeTranslator.translate(vizValue, templateCategory);
+                        translatedVisualValue = getVisualValueSubstring(translatedVisualValue);
+                        visualValue.setValue(translatedVisualValue);
+                        visualValueSet.add(visualValue);
+                    }
                 } catch (TranslatorException e) {
                     LOGGER.warn("Error while translating {} field value from visual inspection zone. " +
                                     "Extracted OCR value : {} ",
@@ -189,14 +191,15 @@ public class AbstractDataValidation extends ValidationHelper {
                 result = validator.executeStrategy(mrzComparisonValue.getValue(),
                         visualComparisonValue.getValue(),
                         templateCategory);
-                if (result.isStatus()){
+                if(!result.isStatus() && (visualComparisonValue.getValue() == null ||
+                        visualComparisonValue.getValue() == "")){
+                    removeInvalidVisValueFromOcrResponse(ocrResponse, visualComparisonValue.getOcrExtractionField(),
+                            visualComparisonValue.getDocumentName(), visualComparisonValue.getPreProcessedDataus());
+                }else {
                     dataValidationValue.setMrzValue(mrzComparisonValue.getValue());
                     dataValidationValue.setVizValue(visualComparisonValue.getValue());
                     dataValidationValue.setStatus(result.isStatus());
                     break;
-                }else {
-                    removeInvalidVisValueFromOcrResponse(ocrResponse, visualComparisonValue.getOcrExtractionField(),
-                            visualComparisonValue.getDocumentName(), visualComparisonValue.getPreProcessedDataus());
                 }
 
             }

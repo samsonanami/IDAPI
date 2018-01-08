@@ -5,5 +5,6 @@ import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 
 public interface ResponseTransformer<E> {
 
-    E transform(VerificationProcessDetailedResponse detailedResponse) throws RequestTransformerException;
+    E transform(VerificationProcessDetailedResponse detailedResponse, boolean isReVerification, String reVerificationStatus)
+            throws RequestTransformerException;
 }

@@ -36,7 +36,7 @@ public class AddressDecoding {
 
     public AddressDecodeResults devideToElement(AddressType addressType, String address) {
         String regularExpression = addressType.getDecodeRegularExpression();
-        regularExpression = addressType.getValidateRegularExpression();
+        regularExpression = addressType.getDecodeRegularExpression();
         AddressDecodeResults results = new AddressDecodeResults();
         Pattern pattern = Pattern.compile(regularExpression);
 

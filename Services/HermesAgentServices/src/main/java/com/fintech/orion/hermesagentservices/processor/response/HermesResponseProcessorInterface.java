@@ -12,5 +12,6 @@ import java.util.List;
 public interface HermesResponseProcessorInterface {
 
     ResponseProcessorResult processVerificationResults(List<VerificationResult> verificationResults,
-                                                       String processingRequestId);
+                                                       String processingRequestId, boolean isReVerification,
+                                                       String reVerificationStatus);
 }

@@ -10,11 +10,9 @@
                 <entry key="given_names" value-ref="givenNameVC"/>
                 <entry key="date_of_birth" value-ref="dateOfBirthVC"/>
                 <!--<entry key="place_of_birth" value-ref="placeOfBirthVC"/>-->
-                <entry key="family_name" value-ref="familyNameVC"/>
                 <entry key="sex" value-ref="sexVC"/>
-                <entry key="parents_given_name" value-ref="parentsGivenNameVC"/>
                 <entry key="nationality" value-ref="nationalityVC"/>
-                <entry key="address" value-ref="addressVC"/>
+                <entry key="address_line1" value-ref="addressVC"/>
             </map>
         </constructor-arg>
     </bean>

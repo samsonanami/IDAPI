@@ -2,18 +2,17 @@ package com.fintech.orion.hermesagentservices.status;
 
 import com.fintech.orion.dto.response.api.VerificationProcessDetail;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
-import com.fintech.orion.dto.response.external.CustomValidation;
-import com.fintech.orion.dto.response.external.DocumentMrzVizValidation;
-import com.fintech.orion.dto.response.external.MrzVizValidation;
-import com.fintech.orion.dto.response.external.VerificationResponse;
+import com.fintech.orion.dto.response.external.*;
 
 import java.util.List;
 
-public class DefaultResponseTransformerStatusCalculator implements VerificationProcessStatusCalculator<VerificationResponse, Boolean>{
+public class DefaultResponseTransformerStatusCalculator implements VerificationProcessStatusCalculator<VerificationResponse, String>{
     private String idVerificationLiteralName;
     private String addressVerificationLiteralName;
     private String facialVerificationLiteralName;
-    private String passedStatusLiteral;
+    private String verificationStatusPass;
+    private String verificationStatusFail;
+    private String verificationStatusPending;
     private String livenessPassLiteral;
     private String faceMatchPassLiteral;
 
@@ -21,30 +20,35 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
                                                       String addressVerificationLiteralName,
                                                       String facialVerificationLiteralName,
                                                       String passedStatusLiteral,
+                                                      String verificationStatusFail,
+                                                      String verificationStatusPending,
                                                       String livenessPass,
                                                       String faceMatchPass) {
         this.idVerificationLiteralName = idVerificationLiteralName;
         this.addressVerificationLiteralName = addressVerificationLiteralName;
         this.facialVerificationLiteralName = facialVerificationLiteralName;
-        this.passedStatusLiteral = passedStatusLiteral;
+        this.verificationStatusPass = passedStatusLiteral;
+        this.verificationStatusFail = verificationStatusFail;
+        this.verificationStatusPending = verificationStatusPending;
         this.livenessPassLiteral = livenessPass;
         this.faceMatchPassLiteral = faceMatchPass;
     }
 
     @Override
-    public Boolean calculateSingleVerificationProcessStatus(List<CustomValidation> customValidations, List<DocumentMrzVizValidation> documentMrzVizValidations) {
-        boolean verificationStatus = true;
+    public String calculateSingleVerificationProcessStatus(List<CustomValidation> customValidations,
+                                                           List<DocumentMrzVizValidation> documentMrzVizValidations) {
+        String verificationStatus = "true";
 
         for (CustomValidation customValidation : customValidations){
             if (!customValidation.getStatus()){
-                verificationStatus = false;
+                verificationStatus = "false";
             }
         }
 
         for (DocumentMrzVizValidation documentMrzVizValidation : documentMrzVizValidations){
             for (MrzVizValidation mrzVizValidation : documentMrzVizValidation.getValidations()){
                 if (mrzVizValidation.getStatus().equals("false") || mrzVizValidation.getStatus().equals("failed")){
-                    verificationStatus = false;
+                    verificationStatus = "false";
                 }
             }
         }
@@ -52,40 +56,66 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
     }
 
     @Override
-    public Boolean calculateFinalVerificationStatus(VerificationProcessDetailedResponse detailedResponse,
-                                                    VerificationResponse finalVerificationResponse) {
-        boolean finalVerificationStatus = true;
-        if (isVerificationIsRequested(facialVerificationLiteralName,
-                detailedResponse.getVerificationProcessDetails()) &&
-                !faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())){
-            finalVerificationStatus = false;
-        }
+    public String calculateFinalVerificationStatus(VerificationProcessDetailedResponse detailedResponse,
+                                                    VerificationResponse finalVerificationResponse,
+                                                   boolean isReVerification, String reVerificationStatus) {
+        String finalVerificationStatus = (!isReVerification) ? verificationStatusPending : reVerificationStatus;
+        boolean dataComparisonStatus = checkDataComparisonStatus(finalVerificationResponse);
 
-        if (isVerificationIsRequested(facialVerificationLiteralName,
-                detailedResponse.getVerificationProcessDetails()) &&
-                !livenessPassLiteral.equalsIgnoreCase(finalVerificationResponse.getLivenessTest().getStatus())){
-            finalVerificationStatus = false;
+
+        if ((isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails())
+                || isVerificationIsRequested(facialVerificationLiteralName, detailedResponse.getVerificationProcessDetails())) &&
+                faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus()) &&
+                livenessPassLiteral.equalsIgnoreCase(finalVerificationResponse.getLivenessTest().getStatus())){
+            finalVerificationStatus = (!isReVerification) ? verificationStatusPass : reVerificationStatus;
         }
 
         if (isVerificationIsRequested(idVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
-                 (finalVerificationResponse.getIdVerification().getStatus().equals("false") || finalVerificationResponse.getIdVerification().getStatus().equals("failed"))){  
-            finalVerificationStatus = false;
+                (finalVerificationResponse.getIdVerification().getStatus().equals("true") ||
+                        finalVerificationResponse.getIdVerification().getStatus().equals("passed"))){
+            finalVerificationStatus =  verificationStatusPass;
+        }else if (isVerificationIsRequested(idVerificationLiteralName,
+                detailedResponse.getVerificationProcessDetails()) &&
+                (finalVerificationResponse.getIdVerification().getStatus().equals("true") ||
+                        finalVerificationResponse.getIdVerification().getStatus().equals("passed"))&&
+                !dataComparisonStatus){
+            finalVerificationStatus = verificationStatusFail;
         }
 
         if (isVerificationIsRequested(addressVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
-                (finalVerificationResponse.getAddressVerification().getStatus().equals("false") || finalVerificationResponse.getAddressVerification().getStatus().equals("failed"))){
-            finalVerificationStatus = false;
+                (finalVerificationResponse.getAddressVerification().getStatus().equals("true") ||
+                        finalVerificationResponse.getAddressVerification().getStatus().equals("passed"))){
+            finalVerificationStatus = verificationStatusPass;
+        }else if(isVerificationIsRequested(addressVerificationLiteralName,
+                detailedResponse.getVerificationProcessDetails()) &&
+                (finalVerificationResponse.getAddressVerification().getStatus().equals("true") ||
+                        finalVerificationResponse.getAddressVerification().getStatus().equals("passed"))&&
+                !dataComparisonStatus){
+            finalVerificationStatus = verificationStatusFail;
         }
 
         return finalVerificationStatus;
     }
 
+    private boolean checkDataComparisonStatus(VerificationResponse finalVerificationResponse){
+        boolean dataComparisonStatus = true;
+
+        for (Data data : finalVerificationResponse.getData()){
+            for (DataComparision dataComparision : data.getComparison()){
+                if(dataComparision.getStatus().equalsIgnoreCase("false")){
+                    dataComparisonStatus = false;
+                    break;
+                }
+            }
+        }
+        return dataComparisonStatus;
+    }
+
     private boolean isVerificationIsRequested(String verificationRequestType,
                                               List<VerificationProcessDetail> verificationProcessDetails){
-        boolean isVerificationFound = false;
-        for (VerificationProcessDetail verificationProcessDetail : verificationProcessDetails){
+        boolean isVerificationFound = false;        for (VerificationProcessDetail verificationProcessDetail : verificationProcessDetails){
             if (verificationProcessDetail.getVerificationProcessName().equalsIgnoreCase(verificationRequestType)){
                 isVerificationFound = true;
                 break;

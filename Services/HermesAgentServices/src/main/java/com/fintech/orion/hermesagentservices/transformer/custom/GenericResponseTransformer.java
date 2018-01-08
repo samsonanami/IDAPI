@@ -34,6 +34,7 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
     private String processingFailureOcrExtractionFieldName;
     private String verificationStatusPass;
     private String verificationStatusFail;
+    private String verificationStatusPending;
     private String livenessPass;
     private String livenessFail;
     private String faceMatchPass;
@@ -88,13 +89,20 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
         this.faceMatchManual = faceMatchManual;
     }
 
+    public void setVerificationStatusPending(String verificationStatusPending) {
+        this.verificationStatusPending = verificationStatusPending;
+    }
+
     @Override
-    public VerificationResponse transform(VerificationProcessDetailedResponse detailedResponse) throws RequestTransformerException {
+    public VerificationResponse transform(VerificationProcessDetailedResponse detailedResponse,
+                                          boolean isReVerification, String reVerificationStatus) throws RequestTransformerException {
         statusCalculator = new DefaultResponseTransformerStatusCalculator(
                 idVerificationName,
                 addressVerificationName,
                 facialVerificationName,
                 verificationStatusPass,
+                verificationStatusFail,
+                verificationStatusPending,
                 livenessPass,
                 faceMatchPass);
         VerificationResponse verificationResponse = new VerificationResponse();
@@ -114,7 +122,7 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
         if (isVerificationIsRequested(addressVerificationName, detailedResponse.getVerificationProcessDetails())) {
             verificationResponse.setAddressVerification(getAddressVerificationDetails(detailedResponse));
         }
-        calculateFinalVerificationStatus(verificationResponse, detailedResponse);
+        calculateFinalVerificationStatus(verificationResponse, detailedResponse, isReVerification, reVerificationStatus);
 
 
         return verificationResponse;
@@ -179,7 +187,7 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
         idVerification.setDataValidations(getDocumentMrzVizValidations(detailedResponse,
                 idVerificationName));
         idVerification.setCustomValidations(getCustomValidations(detailedResponse.getIdDocFullValidations()));
-        idVerification.setStatus(String.valueOf(calculateIntermediateStatus(idVerification.getCustomValidations(), idVerification.getDataValidations())));
+        idVerification.setStatus(calculateIntermediateStatus(idVerification.getCustomValidations(), idVerification.getDataValidations()));
         return idVerification;
 
     }
@@ -279,39 +287,18 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
         return isVerificationFound;
     }
 
-    private boolean calculateIntermediateStatus(List<CustomValidation> customValidations,
+    private String calculateIntermediateStatus(List<CustomValidation> customValidations,
                                                 List<DocumentMrzVizValidation> documentMrzVizValidations) {
         return statusCalculator.calculateSingleVerificationProcessStatus(customValidations, documentMrzVizValidations);
     }
 
     private void calculateFinalVerificationStatus(VerificationResponse verificationResponse,
-                                                  VerificationProcessDetailedResponse detailedResponse) {
-        boolean finalVerificationStatus = statusCalculator
-                .calculateFinalVerificationStatus(detailedResponse, verificationResponse);
+                                                  VerificationProcessDetailedResponse detailedResponse,
+                                                  boolean isReVerification, String reVerificationStatus) {
+        String finalVerificationStatus = statusCalculator
+                .calculateFinalVerificationStatus(detailedResponse, verificationResponse, isReVerification, reVerificationStatus);
 
-
-        if(detailedResponse.getStatus() == null){
-            if(finalVerificationStatus){
-                verificationResponse.setStatus(verificationStatusPass);
-            }else {
-                verificationResponse.setStatus(verificationStatusFail);
-            }
-        }else {
-            if (finalVerificationStatus) {
-                verificationResponse.setStatus(verificationStatusPass);
-            } else if(
-                    detailedResponse.getStatus().equalsIgnoreCase("pending") ||
-                            detailedResponse.getStatus().equalsIgnoreCase("processing_failed") ||
-                            detailedResponse.getStatus().equalsIgnoreCase("processing_successful")
-                    ){
-                verificationResponse.setStatus(verificationStatusFail);
-            } else {
-                verificationResponse.setStatus(detailedResponse.getStatus());
-            }
-        }
-
-
-
+        verificationResponse.setStatus(finalVerificationStatus);
     }
 
 }

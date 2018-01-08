@@ -49,6 +49,7 @@ public class VerificationOrchestrator {
 
         List<VerificationResult> verificationResultList  =
                 null;
+        String reVerificationStatus = "";
         if(!processingMessage.isReVerification()){
             try {
                 verificationResultList = hermeseRequestProcessor.processVerificationRequest(processingMessage);
@@ -58,11 +59,12 @@ public class VerificationOrchestrator {
         }else {
             verificationResultList =
                     reVerificationResultsTransformer.verificationResultsFromManualPortalInput(processingMessage);
+            reVerificationStatus = processingMessage.getVerificationResponse().getStatus();
         }
 
         ResponseProcessorResult responseProcessorResult =
                 hermesResponseProcessor.processVerificationResults(verificationResultList,
-                        processingMessage.getVerificationRequestCode());
+                        processingMessage.getVerificationRequestCode(), processingMessage.isReVerification(), reVerificationStatus);
 
         saveProcessResponse(responseProcessorResult, processingMessage.getVerificationRequestCode());
 
@@ -78,7 +80,7 @@ public class VerificationOrchestrator {
     }
 
     @Transactional
-    private void saveProcessResponse(ResponseProcessorResult responseProcessorResult, String verificationCode){
+    public void saveProcessResponse(ResponseProcessorResult responseProcessorResult, String verificationCode){
         verificationRequestDetailService.saveFinalVerificationResponse(responseProcessorResult.getProcessedString(),
                 verificationCode, responseProcessorResult.getFinalProcessingStatus(),
                 responseProcessorResult.getClientName());

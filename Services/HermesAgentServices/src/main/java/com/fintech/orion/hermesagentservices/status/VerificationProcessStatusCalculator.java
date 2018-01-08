@@ -12,5 +12,5 @@ public interface VerificationProcessStatusCalculator<E, I> {
                                                      List<DocumentMrzVizValidation> documentMrzVizValidations);
 
     I calculateFinalVerificationStatus(VerificationProcessDetailedResponse detailedResponse,
-                                             E finalVerificationResponse);
+                                             E finalVerificationResponse, boolean isReVerification, String reVerificationStatus);
 }

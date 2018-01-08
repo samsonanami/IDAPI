@@ -3,6 +3,14 @@ Orion - Changelog
 
 Unreleased
 ----------
+add id doucment suport db script  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
+Merge branch 'manual-verification-api-update' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
+fixed facial validation not working issue  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
+Added uniqueid_1.cgi perl script file  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
 messages.properties file with the overrided default bad credentials error message  (Nagarjuna Avula)(navula@metanoiasolutions.net)
 
 Overriding default 'bad credentials' error message to 'invalid credentials'  (Nagarjuna Avula)(navula@metanoiasolutions.net)

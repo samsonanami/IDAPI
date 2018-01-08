@@ -108,7 +108,6 @@ public class DataComparator implements DocumentVerification {
                     fieldDataComparision.addAll(compareValueWithOtherValues(fieldDataValue, fieldDataValueList, ocrResponse, fieldName));
                 }
             }
-
         }
 
         return fieldDataComparision;
@@ -116,17 +115,20 @@ public class DataComparator implements DocumentVerification {
 
     private List<FieldDataValue> filterFieldDataValueList(FieldDataValue base, List<FieldDataValue> values) {
 
-      /*  String idOfTheFirstObject = base.getId();
+        String idOfTheFirstObject = base.getId();
         String prefixOfFirstObjectId = idOfTheFirstObject.substring(0, idOfTheFirstObject.lastIndexOf('#') + 1);
-        String suffixOfFirstObjectId = idOfTheFirstObject.split("##")[2].toString();
+        if(idOfTheFirstObject.split("##").length > 2){
+            String suffixOfFirstObjectId = idOfTheFirstObject.split("##")[2].toString();
 
-        if (suffixOfFirstObjectId.equals("PP")) {
-            String removeObjectId = prefixOfFirstObjectId.concat("NPP");
-            return values.stream().filter(p -> !p.getId().equals(removeObjectId)).collect(Collectors.toList());
-        } else if (suffixOfFirstObjectId.equals("NPP")) {
-            String removeObjectId = prefixOfFirstObjectId.concat("PP");
-            return values.stream().filter(p -> !p.getId().equals(removeObjectId)).collect(Collectors.toList());
-        }*/
+            if (suffixOfFirstObjectId.equals("PP")) {
+                String removeObjectId = prefixOfFirstObjectId.concat("NPP");
+                return values.stream().filter(p -> !p.getId().equals(removeObjectId)).collect(Collectors.toList());
+            } else if (suffixOfFirstObjectId.equals("NPP")) {
+                String removeObjectId = prefixOfFirstObjectId.concat("PP");
+                return values.stream().filter(p -> !p.getId().equals(removeObjectId)).collect(Collectors.toList());
+            }
+        }
+
         return values;
     }
 

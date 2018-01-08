@@ -22,7 +22,7 @@ public class ReverificationLinessTestDataTransformer implements ReverificationFa
         double confidence = 0.0;
         if(livenessStatus.equalsIgnoreCase("ManuallyVerifiedFailed")){
             confidence = 0.02;
-        }else if (faceMatchStatus.equalsIgnoreCase("manuallyVerified")){
+        }else if (faceMatchStatus.equalsIgnoreCase("ManuallyVerifiedPassed")){
             confidence = 1.0;
         }else if(faceMatchStatus.equalsIgnoreCase("ManuallyVerifiedFailed")){
             confidence = 0.1;
