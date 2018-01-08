@@ -42,15 +42,15 @@ public class BillDateEndMonthValidation extends ValidationHelper implements Cust
         validationData.setRemarks(getFailedRemarksMessage());
         OcrFieldData fieldData = getFieldDataById(getOcrExtractionFieldName(), ocrResponse);
         if (fieldData.getValue().isEmpty()) {
-            throw new CustomValidationException("Skipping verification because no utility bill issue date is extracted " +
-                    "from any of the given documents");
+            /*throw new CustomValidationException("Skipping verification because no utility bill issue date is extracted " +
+                    "from any of the given documents");*/
         }
         validationData = validateInput(fieldData);
         if (validationData.getValidationStatus()) {
             validationData = validateBillDateEndMonth(fieldData, ocrResponse);
         }
         validationData.setCriticalValidation(isCriticalValidation());
-        validationData.setId("Bill date end month verification");
+        validationData.setId("Address proof document issue date validation");
         return validationData;
     }
 

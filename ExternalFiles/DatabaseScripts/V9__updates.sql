@@ -1,0 +1,1 @@
+DELETE FROM `idapi`.`resource_name_ocr_extraction_field` WHERE `ID`='4';

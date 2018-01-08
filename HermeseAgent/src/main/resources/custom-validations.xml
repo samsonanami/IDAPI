@@ -53,7 +53,6 @@
         <constructor-arg>
             <array value-type="com.fintech.orion.documentverification.custom.CustomValidation">
                 <ref bean="nameInUtilityBillValidation"/>
-                <ref bean="addressValidation"/>
                 <ref bean="utilityBillDateEndMonthValidation"/>
             </array>
         </constructor-arg>

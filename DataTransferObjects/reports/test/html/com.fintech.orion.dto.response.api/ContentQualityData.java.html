@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ContentQualityData.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DataTransferObjects</a> &gt; <a href="index.source.html" class="el_package">com.fintech.orion.dto.response.api</a> &gt; <span class="el_source">ContentQualityData.java</span></div><h1>ContentQualityData.java</h1><pre class="source lang-java linenums">package com.fintech.orion.dto.response.api;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Objects;
+
+/**
+ * ContentQualityData
+ */
+@javax.annotation.Generated(value = &quot;class io.swagger.codegen.languages.SpringCodegen&quot;, date = &quot;2016-12-18T09:12:11.427Z&quot;)
+
+<span class="nc" id="L13">public class ContentQualityData   {</span>
+<span class="nc" id="L14">  @JsonProperty(&quot;id&quot;)</span>
+  private String id = null;
+
+<span class="nc" id="L17">  @JsonProperty(&quot;compliance&quot;)</span>
+  private Integer compliance = null;
+
+  public ContentQualityData id(String id) {
+<span class="nc" id="L21">    this.id = id;</span>
+<span class="nc" id="L22">    return this;</span>
+  }
+
+   /**
+   * Get id
+   * @return id
+  **/
+  @ApiModelProperty(value = &quot;&quot;)
+  public String getId() {
+<span class="nc" id="L31">    return id;</span>
+  }
+
+  public void setId(String id) {
+<span class="nc" id="L35">    this.id = id;</span>
+<span class="nc" id="L36">  }</span>
+
+  public ContentQualityData compliance(Integer compliance) {
+<span class="nc" id="L39">    this.compliance = compliance;</span>
+<span class="nc" id="L40">    return this;</span>
+  }
+
+   /**
+   * Get compliance
+   * @return compliance
+  **/
+  @ApiModelProperty(value = &quot;&quot;)
+  public Integer getCompliance() {
+<span class="nc" id="L49">    return compliance;</span>
+  }
+
+  public void setCompliance(Integer compliance) {
+<span class="nc" id="L53">    this.compliance = compliance;</span>
+<span class="nc" id="L54">  }</span>
+
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L60">      return true;</span>
+    }
+<span class="nc bnc" id="L62" title="All 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L63">      return false;</span>
+    }
+<span class="nc" id="L65">    ContentQualityData contentQualityData = (ContentQualityData) o;</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">    return Objects.equals(this.id, contentQualityData.id) &amp;&amp;</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        Objects.equals(this.compliance, contentQualityData.compliance);</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L72">    return Objects.hash(id, compliance);</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="nc" id="L77">    StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L78">    sb.append(&quot;class ContentQualityData {\n&quot;);</span>
+
+<span class="nc" id="L80">    sb.append(&quot;    id: &quot;).append(toIndentedString(id)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L81">    sb.append(&quot;    compliance: &quot;).append(toIndentedString(compliance)).append(&quot;\n&quot;);</span>
+<span class="nc" id="L82">    sb.append(&quot;}&quot;);</span>
+<span class="nc" id="L83">    return sb.toString();</span>
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">    if (o == null) {</span>
+<span class="nc" id="L92">      return &quot;null&quot;;</span>
+    }
+<span class="nc" id="L94">    return o.toString().replace(&quot;\n&quot;, &quot;\n    &quot;);</span>
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

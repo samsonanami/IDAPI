@@ -68,10 +68,17 @@ public class DataComparator implements DocumentVerification {
                 fieldDataValueList.add(responseFieldDataValue);
             }
             responseFieldData.setValue(fieldDataValueList);
-            responseFieldData.setComparison(getFieldComparisonList(fieldDataValueList, fieldData.getId(), ocrResponse));
+            if(isComparisonEnabledForField(fieldData.getId())){
+                responseFieldData.setComparison(getFieldComparisonList(fieldDataValueList,
+                        fieldData.getId(), ocrResponse));
+            }
             fieldDataList.add(responseFieldData);
         }
         return fieldDataList;
+    }
+
+    private boolean isComparisonEnabledForField(String ocrExtractionField){
+        return verificationConfigurationMap.keySet().contains(ocrExtractionField);
     }
 
     private boolean isComparisonsAlreadyHappens(String baseId, String compareId, List<FieldDataComparision> comparision) {
