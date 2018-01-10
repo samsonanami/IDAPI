@@ -13,6 +13,8 @@ import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.response.api.ProcessingRequestStatusResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
+import com.fintech.orion.dto.response.external.Data;
+import com.fintech.orion.dto.response.external.DataValues;
 import com.fintech.orion.dto.response.external.VerificationResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -360,6 +363,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         String json = objectWriter.writeValueAsString(body);
         processingRequestEntity.setFinalVerificationStatus(processingStatus);
         processingRequestEntity.setFinalResponse(json);
+        processingRequestEntity.setClientName(processClientName(body.getData()));
         processingRequestRepositoryInterface.save(processingRequestEntity);
         return verificationId;
     }
@@ -486,5 +490,24 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
         return (int) diffMinutes;
 
+    }
+    
+    private String processClientName(List<Data> input) {
+        String clientName = "";
+            for (Data data : input) {
+                int count = 0;
+                if (data.getId().equalsIgnoreCase("surname") || data.getId().equalsIgnoreCase("given_names")) {
+                    List<DataValues> dataValuesList = data.getValue();
+                    for (DataValues dataValues : dataValuesList) {
+                       String tempName = dataValues.getValue();
+                       if(tempName!=null && ! tempName.equals("") && count <1) {
+                           clientName += tempName; 
+                           clientName += " ";
+                           count ++;
+                       }
+                    }
+                }
+            }
+        return clientName.trim();
     }
 }
