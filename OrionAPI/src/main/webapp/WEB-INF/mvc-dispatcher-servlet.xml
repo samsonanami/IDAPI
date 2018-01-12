@@ -78,6 +78,14 @@
     <bean id="contentType" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="content-type"/>
     </bean>
+    
+     <bean id="surname" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="surname"/>
+    </bean>
+    
+     <bean id="givenname" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="given_names"/>
+    </bean>
 
     <bean id="usersByUsernameQuery" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="SELECT USER_NAME as username, PASSWORD as password, enabled as

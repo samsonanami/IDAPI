@@ -38,7 +38,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,6 +78,12 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     
     @Autowired
     private String lockedOnExpiry;
+    
+    @Autowired
+    private String surname;
+    
+    @Autowired
+    private String givenname;
    
     public String query;
 
@@ -494,20 +499,44 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     
     private String processClientName(List<Data> input) {
         String clientName = "";
-            for (Data data : input) {
-                int count = 0;
-                if (data.getId().equalsIgnoreCase("surname") || data.getId().equalsIgnoreCase("given_names")) {
-                    List<DataValues> dataValuesList = data.getValue();
-                    for (DataValues dataValues : dataValuesList) {
-                       String tempName = dataValues.getValue();
-                       if(tempName!=null && ! tempName.equals("") && count <1) {
-                           clientName += tempName; 
-                           clientName += " ";
-                           count ++;
-                       }
-                    }
-                }
+        for (Data data : input) {
+            if (data.getId().equalsIgnoreCase(surname)) {
+                clientName += processSurname(data.getValue());
+                clientName += " ";
             }
-        return clientName.trim();
+            if (data.getId().equalsIgnoreCase(givenname)) {
+                clientName += processGivenname(data.getValue());
+            }
+        }
+        return clientName ;
+
+    }
+    
+    private String processSurname(List<DataValues> input) {
+        String surname ="";
+        int count = 0;
+        for (DataValues dataValues : input) {
+            String tempName = dataValues.getValue();
+            if (tempName != null && !tempName.equals("") && count < 1) {
+                surname += tempName;
+                count++;
+            }
+        }
+        return surname;
+        
+    }
+    
+    private String processGivenname(List<DataValues> input) {
+        String givenname ="";
+        int count = 0;
+        for (DataValues dataValues : input) {
+            String tempName = dataValues.getValue();
+            if (tempName != null && !tempName.equals("") && count < 1) {
+                givenname += tempName;
+                count++;
+            }
+        }
+        return givenname;
+        
     }
 }
