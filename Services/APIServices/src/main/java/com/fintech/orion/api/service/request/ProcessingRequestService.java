@@ -13,6 +13,8 @@ import com.fintech.orion.dto.request.api.Resource;
 import com.fintech.orion.dto.request.api.VerificationProcess;
 import com.fintech.orion.dto.response.api.ProcessingRequestStatusResponse;
 import com.fintech.orion.dto.response.api.VerificationRequestSummery;
+import com.fintech.orion.dto.response.external.Data;
+import com.fintech.orion.dto.response.external.DataValues;
 import com.fintech.orion.dto.response.external.VerificationResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +78,12 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
     
     @Autowired
     private String lockedOnExpiry;
+    
+    @Autowired
+    private String surname;
+    
+    @Autowired
+    private String givenname;
    
     public String query;
 
@@ -360,6 +368,7 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
         String json = objectWriter.writeValueAsString(body);
         processingRequestEntity.setFinalVerificationStatus(processingStatus);
         processingRequestEntity.setFinalResponse(json);
+        processingRequestEntity.setClientName(processClientName(body.getData()));
         processingRequestRepositoryInterface.save(processingRequestEntity);
         return verificationId;
     }
@@ -486,5 +495,48 @@ public class ProcessingRequestService implements ProcessingRequestServiceInterfa
 
         return (int) diffMinutes;
 
+    }
+    
+    private String processClientName(List<Data> input) {
+        String clientName = "";
+        for (Data data : input) {
+            if (data.getId().equalsIgnoreCase(surname)) {
+                clientName += processSurname(data.getValue());
+                clientName += " ";
+            }
+            if (data.getId().equalsIgnoreCase(givenname)) {
+                clientName += processGivenname(data.getValue());
+            }
+        }
+        return clientName ;
+
+    }
+    
+    private String processSurname(List<DataValues> input) {
+        String surname ="";
+        int count = 0;
+        for (DataValues dataValues : input) {
+            String tempName = dataValues.getValue();
+            if (tempName != null && !tempName.equals("") && count < 1) {
+                surname += tempName;
+                count++;
+            }
+        }
+        return surname;
+        
+    }
+    
+    private String processGivenname(List<DataValues> input) {
+        String givenname ="";
+        int count = 0;
+        for (DataValues dataValues : input) {
+            String tempName = dataValues.getValue();
+            if (tempName != null && !tempName.equals("") && count < 1) {
+                givenname += tempName;
+                count++;
+            }
+        }
+        return givenname;
+        
     }
 }

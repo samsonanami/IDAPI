@@ -3,6 +3,15 @@ Orion - Changelog
 
 Unreleased
 ----------
+Added client name save functionality in Update Verification API  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  Conflicts:
+	CHANGELOG.md
+	HermeseAgent/src/main/resources/data-comparisons.xml
+ (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
+Manual portal backend defect fixes and AutoVerifiedFaild status implementation 1. [71589](https://track.zone24x7.lk/issues/71589) 2. [71656](https://track.zone24x7.lk/issues/71656) 3. [71698](https://track.zone24x7.lk/issues/71698) 3. [71785](https://track.zone24x7.lk/issues/71785) 5. [71823](https://track.zone24x7.lk/issues/71823) 6. [71822](https://track.zone24x7.lk/issues/71822)  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
 add id doucment suport db script  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
 
 Merge branch 'manual-verification-api-update' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
@@ -50,6 +59,8 @@ Added functionality for Updating Processing Request ID data in processing_reques
 update verification data API added  (Nagarjuna Avula)(navula@metanoiasolutions.net)
 
 Merge branch 'master' of git.zone24x7.lk:IDAPI/IDAPI into develop  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+updated test files  (Sasitha Gunadasa)(sasithag@zone24x7.com)
 
 Merge branch 'multi-value-verification-support' into 'develop' Multi value verification support
 
