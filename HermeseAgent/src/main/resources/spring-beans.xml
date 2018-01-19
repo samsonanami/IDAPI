@@ -14,7 +14,7 @@
 
     <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="connectionFactory" />
-        <property name="destinationName" value="idapi-process-queue" />
+        <property name="destinationName" value="process-queue-dev" />
         <property name="messageListener" ref="messageAdapter" />
         <property name="errorHandler" ref="errorHandler"/>
     </bean>
@@ -40,7 +40,7 @@
 
     <bean id="configurationProvider" class="com.fintech.orion.hermesagentservices.provider.ConfigurationProvider"/>
     <bean id="oracleAPIBaseUrl" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="http://10.101.15.212:8080/oracle/v1/"/>
+        <constructor-arg type="java.lang.String" value="http://localhost:8080/oracle/v1/"/>
     </bean>
 
     <bean id="compressionLabsBaseUrl" class="java.lang.String">

@@ -68,6 +68,8 @@ public class PassportMRZDecodingStrategy implements MRZDecodingStrategy {
 
         } catch (MRZDecodingConfigurationException e) {
             throw new PassportMRZDecodeException("Unable to decode passport mrz : " + mrz, e);
+        } catch (IndexOutOfBoundsException ex){
+            throw new PassportMRZDecodeException("Unable to decode passport mrz : " + mrz, ex);
         }
         return results;
     }

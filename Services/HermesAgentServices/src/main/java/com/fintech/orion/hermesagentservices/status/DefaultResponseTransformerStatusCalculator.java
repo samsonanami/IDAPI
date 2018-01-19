@@ -73,27 +73,39 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
         if (isVerificationIsRequested(idVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
                 (finalVerificationResponse.getIdVerification().getStatus().equals("true") ||
-                        finalVerificationResponse.getIdVerification().getStatus().equals("passed"))){
+                        finalVerificationResponse.getIdVerification().getStatus().equals("passed")) &&
+                dataComparisonStatus){
             finalVerificationStatus =  verificationStatusPass;
         }else if (isVerificationIsRequested(idVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
                 (finalVerificationResponse.getIdVerification().getStatus().equals("true") ||
                         finalVerificationResponse.getIdVerification().getStatus().equals("passed"))&&
                 !dataComparisonStatus){
-            finalVerificationStatus = verificationStatusFail;
+            return verificationStatusFail;
+        }else if(isVerificationIsRequested(idVerificationLiteralName,
+                detailedResponse.getVerificationProcessDetails()) &&
+                (finalVerificationResponse.getIdVerification().getStatus().equals("false") ||
+                        finalVerificationResponse.getIdVerification().getStatus().equals("failed"))){
+            return (!isReVerification) ? verificationStatusPending : reVerificationStatus;
         }
 
         if (isVerificationIsRequested(addressVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
                 (finalVerificationResponse.getAddressVerification().getStatus().equals("true") ||
-                        finalVerificationResponse.getAddressVerification().getStatus().equals("passed"))){
+                        finalVerificationResponse.getAddressVerification().getStatus().equals("passed")) &&
+                dataComparisonStatus){
             finalVerificationStatus = verificationStatusPass;
         }else if(isVerificationIsRequested(addressVerificationLiteralName,
                 detailedResponse.getVerificationProcessDetails()) &&
                 (finalVerificationResponse.getAddressVerification().getStatus().equals("true") ||
                         finalVerificationResponse.getAddressVerification().getStatus().equals("passed"))&&
                 !dataComparisonStatus){
-            finalVerificationStatus = verificationStatusFail;
+            return verificationStatusFail;
+        }else if(isVerificationIsRequested(addressVerificationLiteralName,
+                detailedResponse.getVerificationProcessDetails()) &&
+                (finalVerificationResponse.getAddressVerification().getStatus().equals("false") ||
+                        finalVerificationResponse.getAddressVerification().getStatus().equals("faile"))){
+            return (!isReVerification) ? verificationStatusPending : reVerificationStatus;
         }
 
         return finalVerificationStatus;
