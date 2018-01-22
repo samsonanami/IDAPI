@@ -16,6 +16,9 @@ public class IdVerification {
     @JsonProperty("status")
     private String status = null;
 
+    @JsonProperty("message")
+    private String message = null;
+    
     @JsonProperty("dataValidations")
     private List<DocumentMrzVizValidation> dataValidations = new ArrayList<DocumentMrzVizValidation>();
 
@@ -41,6 +44,25 @@ public class IdVerification {
         this.status = status;
     }
 
+    public IdVerification message(String message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return message
+     **/
+    @ApiModelProperty(value = "")
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    
     public IdVerification dataValidations(List<DocumentMrzVizValidation> dataValidations) {
         this.dataValidations = dataValidations;
         return this;
@@ -100,13 +122,14 @@ public class IdVerification {
         }
         IdVerification idVerification = (IdVerification) o;
         return Objects.equals(this.status, idVerification.status) &&
+                Objects.equals(this.message, idVerification.message) &&
                 Objects.equals(this.dataValidations, idVerification.dataValidations) &&
                 Objects.equals(this.customValidations, idVerification.customValidations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(status, dataValidations, customValidations);
+        return Objects.hash(status, message, dataValidations, customValidations);
     }
 
     @Override
@@ -115,6 +138,7 @@ public class IdVerification {
         sb.append("class IdVerification {\n");
 
         sb.append("    status: ").append(toIndentedString(status)).append("\n");
+        sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    dataValidations: ").append(toIndentedString(dataValidations)).append("\n");
         sb.append("    customValidations: ").append(toIndentedString(customValidations)).append("\n");
         sb.append("}");

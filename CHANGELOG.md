@@ -3,6 +3,8 @@ Orion - Changelog
 
 Unreleased
 ----------
+Implemented git code reviews suggested by Sasitha  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
 Added client name save functionality in Update Verification API  (Nagarjuna Avula)(navula@metanoiasolutions.net)
 
 Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  Conflicts:
