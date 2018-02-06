@@ -6,14 +6,32 @@
 
     <bean id="hermesResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.HermesResponseProcessor"/>
 
-    <bean id="hermesResponseProcessorChainHead" class="com.fintech.orion.hermesagentservices.processor.response.chain.ResponseProcessorChainHead">
+    <bean id="hermesResponseProcessorChainHead"
+          class="com.fintech.orion.hermesagentservices.processor.response.chain.ResponseProcessorChainHead">
         <property name="next" ref="oracleResponseProcessor"/>
     </bean>
+
+    <bean id="hermeseReVerificationProcessorChainHead"
+          class="com.fintech.orion.hermesagentservices.processor.response.chain.ResponseProcessorChainHead">
+        <property name="next" ref="oracleReVerificationResponseProcessor"/>
+    </bean>
+
+    <bean id="oracleReVerificationResponseProcessor"
+          class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.OracleResponseProcessor">
+        <property name="next" ref="facialReVerificationProcessor"/>
+    </bean>
+
     <bean id="oracleResponseProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.OracleResponseProcessor">
         <property name="next" ref="facialVerificationProcessor"/>
     </bean>
 
-    <bean id="facialVerificationProcessor" class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialVerificationProcessor">
+    <bean id="facialVerificationProcessor"
+          class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialVerificationProcessor">
+        <property name="next" ref="imageDetailsProcessor"/>
+    </bean>
+
+    <bean id="facialReVerificationProcessor"
+          class="com.fintech.orion.hermesagentservices.processor.response.chain.oracle.FacialReVerificationProcessor">
         <property name="next" ref="imageDetailsProcessor"/>
     </bean>
 

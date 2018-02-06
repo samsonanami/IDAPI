@@ -33,7 +33,7 @@ public class AddressCompare implements Address {
             result.setAddressOneType(addressOneresult.getAddressType());
             result.setaddressTwoType(addressOneresult.getAddressType());
 
-            resultMap.put("AddressType", this.addressTypeCompare(addressOneresult, addressTwoResult));
+            //resultMap.put("AddressType", this.addressTypeCompare(addressOneresult, addressTwoResult));
             resultMap.put("PropertyNumber", this.addressNumberCompre(addressOneresult, addressTwoResult));
             resultMap.put("FlatNumber", this.addressFlatNumberCompre(addressOneresult, addressTwoResult));
             resultMap.put("PostalCode", this.addressPostalCodeCompre(addressOneresult, addressTwoResult));
@@ -58,38 +58,22 @@ public class AddressCompare implements Address {
     }
 
     public Boolean addressNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        Boolean compare = false;
-        if (addressOne.getNumber().equals(addressTwo.getNumber())) {
-            compare = true;
-        }
-
-        return compare;
+       return compareFields(addressOne.getNumber(), addressTwo.getNumber());
     }
 
     public Boolean addressFlatNumberCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        Boolean compare = false;
-        if (addressOne.getFlatNumber().equals(addressTwo.getFlatNumber())) {
-            compare = true;
-        }
-
-        return compare;
+        return compareFields(addressOne.getFlatNumber(), addressTwo.getFlatNumber());
     }
 
     public Boolean addressPostalCodeCompre(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        Boolean compare = false;
-        if (addressOne.getPostalCode().equals(addressTwo.getPostalCode())) {
-            compare = true;
-        }
-
-        return compare;
+       return  compareFields(addressOne.getPostalCode(), addressTwo.getPostalCode());
     }
 
     public Boolean addressTypeCompare(AddressDecodeResults addressOne, AddressDecodeResults addressTwo) {
-        Boolean compare = false;
-        if (addressOne.getAddressType().equals(addressTwo.getAddressType())) {
-            compare = true;
-        }
+        return compareFields(addressOne.getAddressType(), addressTwo.getAddressType());
+    }
 
-        return compare;
+    private Boolean compareFields(String fieldOne, String fieldTwo){
+        return (!fieldOne.isEmpty() && !fieldTwo.isEmpty() && fieldOne.equalsIgnoreCase(fieldTwo));
     }
 }

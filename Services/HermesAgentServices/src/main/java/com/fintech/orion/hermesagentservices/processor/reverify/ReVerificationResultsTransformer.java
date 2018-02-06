@@ -3,6 +3,7 @@ package com.fintech.orion.hermesagentservices.processor.reverify;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fintech.orion.common.Processor;
+import com.fintech.orion.dto.hermese.model.compressionlabs.response.FacialReVerificationResponse;
 import com.fintech.orion.dto.hermese.model.compressionlabs.response.FacialVerificationResponse;
 import com.fintech.orion.dto.hermese.model.oracle.response.OcrResponse;
 import com.fintech.orion.dto.messaging.ProcessingMessage;
@@ -45,7 +46,7 @@ public class ReVerificationResultsTransformer {
             compressionLabsResult.setProcessor(Processor.COMPRESSION_LABS);
 
             ReverificationLinessTestDataTransformer livenessDataTransformer = new ReverificationLinessTestDataTransformer();
-            FacialVerificationResponse facialResponse = livenessDataTransformer.transform(processingMessage.getVerificationResponse());
+            FacialReVerificationResponse facialResponse = livenessDataTransformer.transform(processingMessage.getVerificationResponse());
 
             try {
                 compressionLabsResult.setResultString(objectMapper.writeValueAsString(facialResponse));

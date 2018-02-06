@@ -15,6 +15,7 @@
     <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="connectionFactory" />
         <property name="destinationName" value="process-queue-dev" />
+        <!--<property name="destinationName" value="idapi-process-queue" />-->
         <property name="messageListener" ref="messageAdapter" />
         <property name="errorHandler" ref="errorHandler"/>
     </bean>

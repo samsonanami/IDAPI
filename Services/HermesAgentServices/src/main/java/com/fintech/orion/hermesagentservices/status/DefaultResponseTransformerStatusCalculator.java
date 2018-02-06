@@ -63,11 +63,12 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
         boolean dataComparisonStatus = checkDataComparisonStatus(finalVerificationResponse);
 
 
-        if ((isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails())
-                || isVerificationIsRequested(facialVerificationLiteralName, detailedResponse.getVerificationProcessDetails())) &&
+        if (isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails()) &&
                 faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus()) &&
                 livenessPassLiteral.equalsIgnoreCase(finalVerificationResponse.getLivenessTest().getStatus())){
             finalVerificationStatus = (!isReVerification) ? verificationStatusPass : reVerificationStatus;
+        }else if(isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails())){
+            return (!isReVerification) ? verificationStatusPending : reVerificationStatus;
         }
 
         if (isVerificationIsRequested(idVerificationLiteralName,

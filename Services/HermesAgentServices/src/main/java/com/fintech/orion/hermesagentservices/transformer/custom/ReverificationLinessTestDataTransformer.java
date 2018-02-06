@@ -1,20 +1,19 @@
 package com.fintech.orion.hermesagentservices.transformer.custom;
 
+import com.fintech.orion.dto.hermese.model.compressionlabs.response.FacialReVerificationResponse;
 import com.fintech.orion.dto.hermese.model.compressionlabs.response.FacialVerificationResponse;
 import com.fintech.orion.dto.response.external.VerificationResponse;
-import com.fintech.orion.hermesagentservices.transformer.ReverificationFacialDataTransformer;
+import com.fintech.orion.hermesagentservices.transformer.ReVerificationFacialDataTransformer;
 
-public class ReverificationLinessTestDataTransformer implements ReverificationFacialDataTransformer {
+public class ReverificationLinessTestDataTransformer implements ReVerificationFacialDataTransformer {
 
     @Override
-    public FacialVerificationResponse transform(VerificationResponse verificationResponse) {
-        FacialVerificationResponse facialVerificationResponse = new FacialVerificationResponse();
-        facialVerificationResponse.setConfidence(
-                getConfidence(verificationResponse.getFacialVerification().getStatus(),
-                        verificationResponse.getLivenessTest().getStatus()));
+    public FacialReVerificationResponse transform(VerificationResponse verificationResponse) {
+        FacialReVerificationResponse reVerificationResponse  = new FacialReVerificationResponse();
+        reVerificationResponse.setFaceMatchStatus(verificationResponse.getFacialVerification().getStatus());
+        reVerificationResponse.setLivenessStatus(verificationResponse.getLivenessTest().getStatus());
 
-
-        return facialVerificationResponse;
+        return reVerificationResponse;
 
     }
 

@@ -34,6 +34,9 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
     private ResponseProcessorChainHead hermesResponseProcessorChainHead;
 
     @Autowired
+    private ResponseProcessorChainHead hermeseReVerificationProcessorChainHead;
+
+    @Autowired
     private ResponseTransformerFactory responseTransformerFactory;
 
     @Autowired
@@ -52,8 +55,15 @@ public class HermesResponseProcessor implements HermesResponseProcessorInterface
                 new VerificationProcessDetailedResponse();
         VerificationResponse verificationResponse = new VerificationResponse();
         verificationProcessDetailedResponse.setVerificationRequestId(processingRequestId);
-        hermesResponseProcessorChainHead.start(verificationProcessDetailedResponse,
-                verificationResults, processingRequestId);
+
+
+        if(isReVerification){
+            hermeseReVerificationProcessorChainHead.start(verificationProcessDetailedResponse,
+                    verificationResults, processingRequestId);
+        }else {
+            hermesResponseProcessorChainHead.start(verificationProcessDetailedResponse,
+                    verificationResults, processingRequestId);
+        }
 
         try {
             ResponseTransformer responseTransformer =
