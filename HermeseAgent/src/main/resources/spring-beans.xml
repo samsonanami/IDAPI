@@ -45,15 +45,15 @@
     </bean>
 
     <bean id="compressionLabsBaseUrl" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="https://api.compressionlabs.com/v1/"/>
+        <constructor-arg type="java.lang.String" value="https://api.compressionlabs.com/v3/"/>
     </bean>
 
     <bean id="resourceBaseLocation" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="/media/sasitha/Projects/IDAPI/tmp"/>
+        <constructor-arg type="java.lang.String" value="/home/akash/Documents/IDAPI/IDAPI/tmp"/>
     </bean>
 
     <bean id="commandsFileLocation" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="/home/sasitha/Pictures/idapi/commands.json"/>
+        <constructor-arg type="java.lang.String" value="/home/akash/Documents/IDAPI/idapi-images/commands.json"/>
     </bean>
 
     <bean id="maximumWaitingTimeInSeconds" class="java.lang.String">

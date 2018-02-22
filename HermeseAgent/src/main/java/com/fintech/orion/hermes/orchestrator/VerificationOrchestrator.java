@@ -45,6 +45,7 @@ public class VerificationOrchestrator {
     public void orchestrate(Object message){
         long start = System.currentTimeMillis();
         LOGGER.debug("Start orchestrating message {} ", message);
+
         ProcessingMessage processingMessage = (ProcessingMessage)message;
 
         List<VerificationResult> verificationResultList  =

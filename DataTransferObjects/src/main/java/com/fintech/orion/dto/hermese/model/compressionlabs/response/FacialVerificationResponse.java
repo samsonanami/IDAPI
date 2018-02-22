@@ -8,31 +8,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FacialVerificationResponse {
 
-    private double confidence;
-    @JsonProperty("commands_followed")
-    private int commandsFollowed;
+    @JsonProperty("result")
+    private String result;
 
-    public double getConfidence() {
-        return confidence;
+    @JsonProperty("selfie_frame")
+    private String selfie_frame;
+
+    public String getResult() {
+        return result;
     }
 
-    public void setConfidence(double confidence) {
-        this.confidence = confidence;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public int getCommandsFollowed() {
-        return commandsFollowed;
+    public String getSelfie_frame() {
+        return selfie_frame;
     }
 
-    public void setCommandsFollowed(int commandsFollowed) {
-        this.commandsFollowed = commandsFollowed;
+    public void setSelfie_frame(String selfie_frame) {
+        this.selfie_frame = selfie_frame;
     }
 
     @Override
     public String toString() {
         return "FacialVerificationResponse{" +
-                "confidence=" + confidence +
-                ", commandsFollowed=" + commandsFollowed +
+                "result=" + result +
+                ", selfie_frame=" + selfie_frame +
                 '}';
     }
 }

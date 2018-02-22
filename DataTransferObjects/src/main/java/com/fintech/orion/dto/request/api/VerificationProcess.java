@@ -13,6 +13,8 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2016-12-18T09:12:11.427Z")
 
 public class VerificationProcess {
+
+
   @JsonProperty("verificationProcessType")
   private String verificationProcessType = null;
 

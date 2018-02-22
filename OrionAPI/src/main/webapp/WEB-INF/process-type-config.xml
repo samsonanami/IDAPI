@@ -9,6 +9,7 @@
             <array value-type="com.fintech.orion.dto.request.api.VerificationProcess">
                 <ref bean="idVerificationType"/>
                 <ref bean="addressVerificationType"/>
+                <ref bean="facialVerificationType"/>
             </array>
         </constructor-arg>
     </bean>
@@ -55,6 +56,9 @@
             <array value-type="com.fintech.orion.dto.request.api.Resource">
                 <ref bean="faceImageResourceType"/>
                 <ref bean="facialVideoResourceType"/>
+                <ref bean="commandFollowdResourceType"/>
+                <ref bean="faceMatchImageResourceType"/>
+
             </array>
         </constructor-arg>
     </bean>
@@ -97,6 +101,16 @@
     <bean id="faceImageResourceType" class="com.fintech.orion.dto.request.api.Resource">
         <property name="resourceId" value=""/>
         <property name="resourceName" value="faceImage"/>
+    </bean>
+
+    <bean id="commandFollowdResourceType" class="com.fintech.orion.dto.request.api.Resource">
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="commandFollowed"/>
+    </bean>
+
+    <bean id="faceMatchImageResourceType" class="com.fintech.orion.dto.request.api.Resource">
+        <property name="resourceId" value=""/>
+        <property name="resourceName" value="faceMatchImage"/>
     </bean>
 
 </beans>

@@ -3,9 +3,22 @@ Orion - Changelog
 
 Unreleased
 ----------
+Reverification implemented as a processing chain Reverification implemented following chain of responsibility
+ (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Merge branch 'manual-verification-api-update' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  (Sasitha Gunadasa)(sasithag@zone24x7.com)
+
+Added message param and related getters and setters in IdVerification and AddressVerification classes  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Merge branch 'manual-verification-api-update' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
+fixed PDF conversion error  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
+
 Implemented git code reviews suggested by Sasitha  (Nagarjuna Avula)(navula@metanoiasolutions.net)
 
 Added client name save functionality in Update Verification API  (Nagarjuna Avula)(navula@metanoiasolutions.net)
+
+Address decoder flat number not decoding issue fixed.  (Sasitha Gunadasa)(sasitha@Sasitha-G.Zone24x7.lk)
 
 Merge branch 'develop' of git.zone24x7.lk:IDAPI/IDAPI into manual-verification-api-update  Conflicts:
 	CHANGELOG.md

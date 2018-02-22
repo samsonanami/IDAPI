@@ -90,7 +90,7 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
     }
 
     @Transactional
-    private void updateProcessStarte(List<Process> processList, Date date){
+    public void updateProcessStarte(List<Process> processList, Date date){
         for (Process process : processList){
             process.setRequestSentOn(date);
         }
@@ -98,7 +98,7 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
     }
 
     @Transactional
-    private void updateProcessCompletedTime(List<Process> processList, Date date){
+    public void updateProcessCompletedTime(List<Process> processList, Date date){
         for (Process process : processList){
             process.setResponseReceivedOn(date);
         }
@@ -106,7 +106,7 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
     }
 
     @Transactional
-    private FacialVerificationResponse sendPostRequest(BaseRequest postRequest) throws FailedRequestException, IOException {
+    public FacialVerificationResponse sendPostRequest(BaseRequest postRequest) throws FailedRequestException, IOException {
         LOGGER.debug("Submitting request with body {} ", postRequest.toString());
         HttpResponse<String> response = requestSubmitter.submitRequest(postRequest);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -114,7 +114,7 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
     }
 
     @Transactional
-    private BaseRequest buildPostRequest(ProcessingRequest processingRequest) {
+    public BaseRequest buildPostRequest(ProcessingRequest processingRequest) {
         Map<String, String> processConfigurationMap = new HashMap<>();
         processConfigurationMap.put("url", compressionLabsBaseUrl + "match");
 
@@ -125,8 +125,11 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
         return builder.buildPostRequest(processConfigurationMap, getRequestBodyContent(processingRequest));
     }
 
+
+    String commandFollowed = commandsFileLocation;
+
     @Transactional
-    private Map<String, Object> getRequestBodyContent(ProcessingRequest processingRequest) {
+    public Map<String, Object> getRequestBodyContent(ProcessingRequest processingRequest) {
         List<String> processTypeList = new ArrayList<>();
         processTypeList.add("facialVerification");
         Map<String, Object> requestBodyContent = new HashMap<>();
@@ -139,23 +142,40 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
                     process.getResources()) {
                 requestBodyContent.put(getShortRequestName(resource.getResourceName().getName()), resourceBaseLocation
                         + "/" + resource.getLocation());
+
+                System.out.println(resource.getLocation());
             }
         }
 
-        requestBodyContent.put("f3", commandsFileLocation);
-        requestBodyContent.put("f1-contentType", "video/mp4");
+/** Setting f1 resourse type and commandFollowed boolean **/
+
+        Support support = new Support();
+        support.set(requestBodyContent);
+        String f1Type = support.f1Type;
+        boolean set_CommandFollowed = support.set_CommandFollowed;
+
+/** --------------------------------- **/
+
+        System.out.println(f1Type);
+        if(!set_CommandFollowed) {
+            requestBodyContent.put("f3", commandsFileLocation);
+        }
+        requestBodyContent.put("f1-contentType", f1Type);
         requestBodyContent.put("f2-contentType", "image/jpeg");
         requestBodyContent.put("f3-contentType", "application/json");
         return requestBodyContent;
     }
 
     @Transactional
-    private String getShortRequestName(String resourceName){
+    public String getShortRequestName(String resourceName){
         String shortName = "f1";
         if ("facialVideo".equalsIgnoreCase(resourceName)){
             shortName = "f1";
         }else if ("faceImage".equalsIgnoreCase(resourceName)){
             shortName = "f2";
+        }
+        else if("commandFollowed".equalsIgnoreCase(resourceName)){
+            shortName = "f3";
         }
         return shortName;
     }

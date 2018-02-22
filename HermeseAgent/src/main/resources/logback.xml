@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
-  <property name="LOG_HOME" value="/tmp/hermesAgent/" />
+  <property name="LOG_HOME" value="/home/akash/Documents/IDAPI/IDAPI/HermeseAgent/build/logs/" />
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">

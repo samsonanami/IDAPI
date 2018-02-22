@@ -61,7 +61,7 @@ public class ContentApiController implements ContentApi {
     @Autowired
     private ResourceBuilder resourceBuilder;
 
-    public ResponseEntity<Object> contentContentTypePost(
+    public ResponseEntity<Object> contentContentTypePost (
             @ApiParam(value = "type of the content you are submiting \"image\" \"video\" \"file\"",required=true )
             @PathVariable("contentType") String contentType,
             @ApiParam(value = "file detail") @RequestPart("file") MultipartFile file,

@@ -26,4 +26,13 @@ public class CommonConfigurationMapValidator implements ValidatorInterface {
         }
         return new ValidatorResult();
     }
+
+    public static void main(String[] args) {
+        for (DataValidationStrategyType s : DataValidationStrategyType.values()){
+
+            System.out.println(s);
+        }
+
+
+    }
 }
