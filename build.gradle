@@ -1,13 +1,10 @@
 plugins {
-    id "com.gradle.build-scan" version "1.2"
+
     id "net.vivin.gradle-semantic-build-versioning" version "2.0.2"
     id "com.selesse.git.changelog" version "0.3.0"
     id "com.palantir.jacoco-coverage" version "0.4.0"
 }
-buildScan {
-    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
-    licenseAgree = 'yes'
-}
+
 apply plugin: 'com.selesse.git.changelog'
 apply plugin: 'com.palantir.jacoco-full-report'
 allprojects {
