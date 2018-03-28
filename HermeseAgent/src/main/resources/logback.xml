@@ -29,10 +29,10 @@
   <!-- package based log level -->
   <logger name="com.mchange" level="WARN"/>
   <logger name="org.apache.activemq.transport.AbstractInactivityMonitor" level="WARN"/>
-  <logger name="org.apache.http.impl.conn" level="WARN"/>
+  <!--<logger name="org.apache.http.impl.conn" level="WARN"/>-->
   <logger name="org.springframework" level="WARN"/>
   <logger name="org.hibernate" level="WARN"/>
-  <logger name="org.apache.http.wire" level="WARN"/>
+  <!--<logger name="org.apache.http.wire" level="WARN"/>-->
 
 
 

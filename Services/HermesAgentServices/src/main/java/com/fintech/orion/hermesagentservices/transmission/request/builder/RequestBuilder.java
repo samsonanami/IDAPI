@@ -15,7 +15,7 @@ public abstract class RequestBuilder {
     public BaseRequest buildPostRequest(Map<String,String> configurations, Map content){
         Assert.notNull(configurations, "Configurations cannot be null");
         String body = (String)content.get("body");
-
+        System.out.println(body);
         return Unirest.post(configurations.get("url"))
                 .header("Content-Type", configurations.get("header.contentType"))
                 .body(body);

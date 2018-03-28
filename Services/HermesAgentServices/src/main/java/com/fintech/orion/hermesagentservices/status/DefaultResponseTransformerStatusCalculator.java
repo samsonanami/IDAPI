@@ -66,8 +66,18 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
         if (isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails()) &&
                 faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus()) &&
                 livenessPassLiteral.equalsIgnoreCase(finalVerificationResponse.getLivenessTest().getStatus())){
+
+
             finalVerificationStatus = (!isReVerification) ? verificationStatusPass : reVerificationStatus;
-        }else if(isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails())){
+
+        }if (isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails()) &&
+                faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())){
+
+
+            finalVerificationStatus = (!isReVerification) ? verificationStatusPass : reVerificationStatus;
+            return finalVerificationStatus;
+
+        }        else if(isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails())){
             return (!isReVerification) ? verificationStatusPending : reVerificationStatus;
         }
 

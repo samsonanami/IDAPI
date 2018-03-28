@@ -45,7 +45,7 @@
     </bean>
 
     <bean id="compressionLabsBaseUrl" class="java.lang.String">
-        <constructor-arg type="java.lang.String" value="https://api.compressionlabs.com/v3/"/>
+        <constructor-arg type="java.lang.String" value="https://api2.compressionlabs.com/v4/"/>
     </bean>
 
     <bean id="resourceBaseLocation" class="java.lang.String">

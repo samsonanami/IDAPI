@@ -104,7 +104,7 @@ public class Resource  implements java.io.Serializable {
 
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="RESOURCE_NAME")
-    public ResourceName getResourceName() {
+    public ResourceName     getResourceName() {
         return this.resourceName;
     }
     

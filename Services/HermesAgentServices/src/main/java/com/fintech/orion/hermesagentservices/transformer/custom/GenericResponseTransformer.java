@@ -299,6 +299,7 @@ public class GenericResponseTransformer implements ResponseTransformer<Verificat
                 .calculateFinalVerificationStatus(detailedResponse, verificationResponse, isReVerification, reVerificationStatus);
 
         verificationResponse.setStatus(finalVerificationStatus);
+        System.out.println(verificationResponse);
     }
 
 }

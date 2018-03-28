@@ -71,11 +71,14 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
             }
 
             BaseRequest postRequest = buildPostRequest(processingRequest);
+            System.out.println(postRequest);
 
             try {
                 updateProcessStarte(processList, new Date());
                 verificationResponse = sendPostRequest(postRequest);
+                System.out.println(verificationResponse);
                 updateProcessCompletedTime(processList, new Date());
+
                 LOGGER.debug("Received response from compression labs {} ", verificationResponse);
 
             } catch (FailedRequestException e) {
@@ -109,18 +112,22 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
     public FacialVerificationResponse sendPostRequest(BaseRequest postRequest) throws FailedRequestException, IOException {
         LOGGER.debug("Submitting request with body {} ", postRequest.toString());
         HttpResponse<String> response = requestSubmitter.submitRequest(postRequest);
+        System.out.println(response);
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(response.getBody(), FacialVerificationResponse.class);
     }
 
     @Transactional
     public BaseRequest buildPostRequest(ProcessingRequest processingRequest) {
+
         Map<String, String> processConfigurationMap = new HashMap<>();
-        processConfigurationMap.put("url", compressionLabsBaseUrl + "match");
+        processConfigurationMap.put("url", compressionLabsBaseUrl + "match/");
 
 
         RequestBuilderFactory requestBuilderFactory = new RequestBuilderFactory();
         RequestBuilder builder = requestBuilderFactory.getRequestBuilder(BuilderType.COMPRESSION);
+
+        System.out.println(builder.buildPostRequest(processConfigurationMap, getRequestBodyContent(processingRequest)));
 
         return builder.buildPostRequest(processConfigurationMap, getRequestBodyContent(processingRequest));
     }
@@ -137,13 +144,17 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
                 .getProcessListBelongsToProcessingRequest(processingRequest.getProcessingRequestIdentificationCode(),
                         processTypeList);
 
+
+
         for (Process process : processList){
             for (Resource resource :
                     process.getResources()) {
+                System.out.println(resource.getResourceName().getName()+"       resource.getResourceName().getName()");
+                System.out.println(resource.getLocation()+"         resource.getLocation()");
                 requestBodyContent.put(getShortRequestName(resource.getResourceName().getName()), resourceBaseLocation
                         + "/" + resource.getLocation());
 
-                System.out.println(resource.getLocation());
+
             }
         }
 
@@ -157,25 +168,27 @@ public class CompressionLabsRequestProcessor implements RequestProcessor {
 /** --------------------------------- **/
 
         System.out.println(f1Type);
-        if(!set_CommandFollowed) {
-            requestBodyContent.put("f3", commandsFileLocation);
+        if(set_CommandFollowed == true) {
+            requestBodyContent.put("commands_file", commandsFileLocation);
         }
-        requestBodyContent.put("f1-contentType", f1Type);
-        requestBodyContent.put("f2-contentType", "image/jpeg");
-        requestBodyContent.put("f3-contentType", "application/json");
+
+        System.out.println(requestBodyContent);
+        System.out.println(set_CommandFollowed);
         return requestBodyContent;
     }
 
     @Transactional
-    public String getShortRequestName(String resourceName){
-        String shortName = "f1";
+    public String getShortRequestName(String resourceName){    //id_image  commands_file
+        String shortName = "selfie_video";
         if ("facialVideo".equalsIgnoreCase(resourceName)){
-            shortName = "f1";
+            shortName = "selfie_video";
         }else if ("faceImage".equalsIgnoreCase(resourceName)){
-            shortName = "f2";
+            shortName = "id_image";
+        }else if ("faceMatchImage".equalsIgnoreCase(resourceName)){
+            shortName = "selfie_image";
         }
         else if("commandFollowed".equalsIgnoreCase(resourceName)){
-            shortName = "f3";
+            shortName = "commands_file";
         }
         return shortName;
     }

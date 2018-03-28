@@ -37,6 +37,7 @@ public class FacialVerificationProcessor extends ResponseProcessorChain {
     protected void execute(VerificationProcessDetailedResponse response, List<VerificationResult> verificationResults, String processingRequestId) {
         String rawString = "";
         String clientId = "";
+
         for (VerificationResult verificationResult : verificationResults){
             if (verificationResult.getProcessor().equals(Processor.COMPRESSION_LABS)){
                 rawString = verificationResult.getResultString();
@@ -47,6 +48,7 @@ public class FacialVerificationProcessor extends ResponseProcessorChain {
         if (rawString != null && !"null".equalsIgnoreCase(rawString) && !rawString.isEmpty()) {
             try {
                 saveResponseString(processingRequestId, rawString, "");
+                System.out.println(rawString);
                 processRawString(response, rawString, processingRequestId, clientId);
             } catch (IOException e) {
                 LOGGER.error("Error processing raw response {} for processing request id {} ",
@@ -57,9 +59,10 @@ public class FacialVerificationProcessor extends ResponseProcessorChain {
 
     private void processRawString(VerificationProcessDetailedResponse response, String rawString,
                                   String processingRequestId, String clientId) throws IOException {
+
         ObjectMapper objectMapper = new ObjectMapper();
         FacialVerificationResponse facialVerificationResponse = objectMapper.readValue(rawString, FacialVerificationResponse.class);
-
+        System.out.println(response+"--------------------------------------------");
         facialVerification(response, facialVerificationResponse, clientId);
 
     }
@@ -82,20 +85,27 @@ public class FacialVerificationProcessor extends ResponseProcessorChain {
         }
 
 
-        if (facialVerificationResponse.getConfidence() == Double.valueOf(livenessTestFaileValue)){
+        if(facialVerificationResponse.getLiveness() == null){
             response.setLivenessTest("failed");
-        }else {
-            response.setLivenessTest("passed");
+        }
+        else{
+            if (facialVerificationResponse.getLiveness().equalsIgnoreCase("true")){
+                response.setLivenessTest("passed");
+
+            }else {
+                response.setLivenessTest("failed");
+            }
         }
 
-        if (facialVerificationResponse.getConfidence() >= Double.valueOf(facialVerificationSuccessValue)){
+
+        if (facialVerificationResponse.getFace_match().equalsIgnoreCase("pass")){
             response.setFacialMatch("passed");
-        }else if (facialVerificationResponse.getConfidence() < Double.valueOf(facialVerificationSuccessValue) &&
-                facialVerificationResponse.getConfidence() >= Double.valueOf(facialVerificationFailedValue)){
-            response.setFacialMatch("manual");
-        }else if (facialVerificationResponse.getConfidence() < Double.valueOf(facialVerificationFailedValue)){
+        }else{
             response.setFacialMatch("failed");
         }
+
+        System.out.println(facialVerificationResponse.getLiveness()+"       facialVerificationResponse.getLiveness()");
+        System.out.println(facialVerificationResponse.getFace_match()+"     facialVerificationResponse.getFace_match()");
 
     }
 
