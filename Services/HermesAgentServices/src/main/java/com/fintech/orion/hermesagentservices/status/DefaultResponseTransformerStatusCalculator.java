@@ -1,5 +1,6 @@
 package com.fintech.orion.hermesagentservices.status;
 
+import com.fintech.orion.dto.response.api.ImageDetail;
 import com.fintech.orion.dto.response.api.VerificationProcessDetail;
 import com.fintech.orion.dto.response.api.VerificationProcessDetailedResponse;
 import com.fintech.orion.dto.response.external.*;
@@ -15,6 +16,7 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
     private String verificationStatusPending;
     private String livenessPassLiteral;
     private String faceMatchPassLiteral;
+    private boolean faceMatchImageAvailable;
 
     public DefaultResponseTransformerStatusCalculator(String idVerificationLiteralName,
                                                       String addressVerificationLiteralName,
@@ -62,23 +64,27 @@ public class DefaultResponseTransformerStatusCalculator implements VerificationP
         String finalVerificationStatus = (!isReVerification) ? verificationStatusPending : reVerificationStatus;
         boolean dataComparisonStatus = checkDataComparisonStatus(finalVerificationResponse);
 
+        for (ImageDetail imageDetails : detailedResponse.getImageDetails()) {
+            if (imageDetails.getResourceName().equalsIgnoreCase("faceMatchImage")) {
+                this.faceMatchImageAvailable = true;
+            }
+        }
 
-        if (isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails()) &&
-                faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus()) &&
-                livenessPassLiteral.equalsIgnoreCase(finalVerificationResponse.getLivenessTest().getStatus())){
-
-
-            finalVerificationStatus = (!isReVerification) ? verificationStatusPass : reVerificationStatus;
-
-        }if (isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails()) &&
-                faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())){
-
-
-            finalVerificationStatus = (!isReVerification) ? verificationStatusPass : reVerificationStatus;
-            return finalVerificationStatus;
-
-        }        else if(isVerificationIsRequested(facialVerificationLiteralName,detailedResponse.getVerificationProcessDetails())){
-            return (!isReVerification) ? verificationStatusPending : reVerificationStatus;
+        if (this.faceMatchImageAvailable) {
+            if (isVerificationIsRequested(facialVerificationLiteralName, detailedResponse.getVerificationProcessDetails()) &&
+                    faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus())) {
+                finalVerificationStatus = (!isReVerification) ? verificationStatusPass : reVerificationStatus;
+            } else if (isVerificationIsRequested(facialVerificationLiteralName, detailedResponse.getVerificationProcessDetails())) {
+                return (!isReVerification) ? verificationStatusPending : reVerificationStatus;
+            }
+        } else {
+            if (isVerificationIsRequested(facialVerificationLiteralName, detailedResponse.getVerificationProcessDetails()) &&
+                    faceMatchPassLiteral.equalsIgnoreCase(finalVerificationResponse.getFacialVerification().getStatus()) &&
+                    livenessPassLiteral.equalsIgnoreCase(finalVerificationResponse.getLivenessTest().getStatus())) {
+                finalVerificationStatus = (!isReVerification) ? verificationStatusPass : reVerificationStatus;
+            } else if (isVerificationIsRequested(facialVerificationLiteralName, detailedResponse.getVerificationProcessDetails())) {
+                return (!isReVerification) ? verificationStatusPending : reVerificationStatus;
+            }
         }
 
         if (isVerificationIsRequested(idVerificationLiteralName,
